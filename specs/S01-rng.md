@@ -175,6 +175,15 @@ Harness experiments (2026-09-30) showed:
 - Option 4 works: in a harness-only copy of the original with the start-up seed fixed, two runs of the same turns
   (up to 20 turns, with random events and computer players) give identical game data. Only file ids and checksums
   differ, because the file salt mixes in the clock (see "Draws outside the rules").
+- **Draws before turn generation (2026-10-01):** none, in a host-mode run (`-g`) of a game without computer
+  players. Method: a second harness copy also fixes the clock read in the file-header code, so each file's salt
+  shows its `random(2000)` draw exactly. In a two-player game (no random events) every turn's files carry the
+  draws at positions 7 (first player file), 8 (second player file) and 9 (host file) of the sequence from the
+  start-up state, so each turn made exactly 7 draws. The mining draws of that turn (two homeworlds, boranium and
+  germanium each with a remainder of 60: round up below 60) match draws 0–3 and no other offset, so turn
+  generation starts with the start-up state unchanged. The other 3 draws of that turn are still to be placed (S02).
+  Computer players draw before turn generation in the same sequence; those draws belong to the AI spec (S22).
+- **File salts are drawn after the turn**, one per file, player files in player order first, then the host file.
 
 ## Worked examples
 
@@ -204,5 +213,6 @@ Clock method: tick count 0 gives `(257, 491)`, tick count 0x1234 gives `(5, 673)
 
 ## Open questions
 
-1. How many draws happen between program start and turn generation in a host-mode run of the original, with and
-   without computer players. To be answered by the harness spike.
+1. Answered for games without computer players: none (see "Verification notes"). With computer players, the
+   count is the AI's own draws (S22).
+2. Which steps make the 3 draws of a two-player turn that are not mining (S02 turn order).

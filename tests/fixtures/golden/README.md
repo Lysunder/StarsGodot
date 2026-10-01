@@ -25,7 +25,7 @@ seed is fixed to 0x1234:
 3. Convert: `python tools/harness/stars_import.py <name>.xy t00N/<name>.hst t00N.json`.
 
 The random stream state in each file is the start-up state of the fixed-seed copy (S01 clock method with 0x1234).
-How many draws the original makes between start-up and turn generation is still open (S01), so the golden runner
-may adjust it.
+For `tiny2` this is exactly the state at the start of turn generation (S01: no draws before it without computer
+players), and each of its turns makes 7 draws. In `tiny3ai` the computer players draw first (S22).
 
 Regenerate these files whenever the importer or the save format changes.

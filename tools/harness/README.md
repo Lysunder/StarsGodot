@@ -84,7 +84,10 @@ converted files with neutral names: never the original's files, and never files 
 
 ## Open questions
 
-- How many random draws the original makes between start-up and turn generation (S01). Until that is known, the
-  `--rng` state in converted files is the start-up state, and the golden runner may have to find the offset.
+- Answered (S01): in a game without computer players the original makes no draws between start-up and turn
+  generation, so the default `--rng` is exactly the state at the start of the turn. With computer players, their
+  draws come first (S22). A second harness copy that also fixes the clock in the file-header code makes each
+  file's salt show its `random(2000)` draw; locating those draws in the sequence gives the turn's total draw count,
+  a check for our engine.
 - Not converted yet: `.m` files (each player's view, S15), `.x` order files (a later pass of S23) and `.r` race
   files.
