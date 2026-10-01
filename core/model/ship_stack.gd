@@ -9,7 +9,7 @@ var design: int = 0
 var count: int = 0
 ## 0..100.
 var damaged_percent: int = 0
-## 0..511, in 1/500 of the design's armor.
+## 0..499, in 1/500 of the design's armor.
 var damage: int = 0
 ## Ironium, boranium, germanium and resources actually paid for these ships (B14 fix, S11).
 var paid: Array[int] = [0, 0, 0, 0]

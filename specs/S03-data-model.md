@@ -125,7 +125,7 @@ whole game. "Each planet" means in id order.
 | `population` | units of 100 colonists |
 | `extra_colonists` | 0 … 99 single colonists (S08) |
 | `mines`, `factories` | 0 … 4095 |
-| `defenses` | 0 … 4095 (the planet's maximum is lower, S08) |
+| `defenses` | 0 … 255 (the planet's maximum is lower, S08) |
 | `homeworld` | flag |
 | `starbase` | none, or the design slot of the owner's starbase design plus its stack damage (below) |
 | `mass_driver` | destination planet and warp for packets (S09, S14) |
@@ -156,7 +156,7 @@ whole game. "Each planet" means in id order.
 | `design` | ship design slot of the owner |
 | `count` | ships, 1 … `limits.ships_per_stack` |
 | `damaged_percent` | 0 … 100: percentage of the stack's ships that are damaged |
-| `damage` | 0 … 511: damage of each damaged ship, in 1/500 of the design's armor |
+| `damage` | 0 … 499: damage of each damaged ship, in 1/500 of the design's armor (the original caps it at 499 when loading) |
 | `paid` | resources and minerals actually paid for these ships (B14 fix, S11) |
 
 The damage pair is the original's representation, and the battle, mine and gate rules (S12, S13, S16) are written

@@ -187,6 +187,16 @@ func test_validator_checks_limits() -> void:
 	for i in 90:
 		f.waypoints.append(Waypoint.new(1000, 1000))
 	state.rng = RngStreams.new(1 << 53, true)
-	assert_array(Array(StateValidator.validate(state, _content))).contains_exactly_in_any_order(
-		["/rng/game_seed: must be 0 .. 2^53 - 1", "/fleets/1/waypoints: more than 87 waypoints"]
+	f.stacks[0].damage = 500
+	state.planets[0].defenses = 256
+	(
+		assert_array(Array(StateValidator.validate(state, _content)))
+		. contains_exactly_in_any_order(
+			[
+				"/rng/game_seed: must be 0 .. 2^53 - 1",
+				"/fleets/1/waypoints: more than 87 waypoints",
+				"/fleets/1/stacks/0/damage: must be 0 .. 499, not 500",
+				"/planets/0/defenses: must be 0 .. 255, not 256",
+			]
+		)
 	)

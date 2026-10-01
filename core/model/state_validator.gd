@@ -8,7 +8,8 @@ extends RefCounted
 
 const MAX_SEED := (1 << 53) - 1
 const MAX_INSTALLATIONS := 4095
-const MAX_STACK_DAMAGE := 511
+const MAX_DEFENSES := 255
+const MAX_STACK_DAMAGE := 499
 const MAX_WARP := 11
 
 var _content: ContentRegistry
@@ -154,8 +155,9 @@ func _check_planet(pl: Planet, path: String) -> void:
 	_list_range(pl.surface, 3, 0, 1 << 53, path + "/surface")
 	_range(pl.population, 0, 1 << 53, path + "/population")
 	_range(pl.extra_colonists, 0, 99, path + "/extra_colonists")
-	for field in ["mines", "factories", "defenses"]:
-		_range(pl.get(field), 0, MAX_INSTALLATIONS, "%s/%s" % [path, field])
+	_range(pl.mines, 0, MAX_INSTALLATIONS, path + "/mines")
+	_range(pl.factories, 0, MAX_INSTALLATIONS, path + "/factories")
+	_range(pl.defenses, 0, MAX_DEFENSES, path + "/defenses")
 	if pl.starbase != null:
 		if pl.owner < 0:
 			_err(path + "/starbase", "an unowned planet has no starbase")

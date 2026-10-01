@@ -40,5 +40,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S11](S11-orders-and-waypoint-tasks.md) | Orders and waypoint tasks | draft |
 | [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
 | [S13](S13-minefields.md) | Minefields | draft |
+| [S23](S23-file-formats.md) | File formats (harness import only) | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).
