@@ -36,7 +36,7 @@ Phase ids are ours (MODDING §7). "Order inside" lists what is confirmed so far;
 | 8 | `space.move_before_fleets` | `MoveSpaceObjects(0)` | Mystery Trader moves; packets in space move, decay and hit (S14, S18). |
 | 9 | `fleets.move` | `MoveFleets` | Movement, fuel, stargates, wormholes, minefield checks during movement (S12, S13). |
 | 10 | (planet and player loop) | loop in `GenerateTurn` | Per-planet and per-player bookkeeping after movement; to identify (open). |
-| 11 | `minefields.resolve_hits` | `ProcessMinefieldHits` | Damage and messages for fleets that hit minefields (S13). |
+| 11 | `space.decay_and_detonate` | `ProcessMinefieldHits` (misnamed) | Salvage decays (10% of each mineral, at least 10), packets decay (S14), Space Demolition fields detonate, minefields decay (S13). Hits during movement are handled in phase 9. |
 | 12 | `fleets.is_growth` | `GrowColonistsInFleets` | Inner-Strength colonists grow in cargo holds (S19). |
 | 13 | `production` | `DoProduction` | 13a mining for every planet (`MinePlanets`, S08) → 13b per planet: resources, research, construction, packet launches (S09) → 13c population growth for every planet (`GrowPopulations`, S08) → 13d tech levels (`UpdateTechLevels` with the Super-Stealth spy bonus, S05) → 13e random events (`DoRandomEvents`, S18). |
 | 14 | `space.move_after_production` | `MoveSpaceObjects(1)` | Wormholes shift; packets launched this turn move and hit (S14). |
@@ -72,7 +72,8 @@ The community list agrees with most of the above. Differences found in the code:
 |---|---|---|
 | Wormholes shift | after fleets move, before mining | after production, together with newly launched packets (phase 14) |
 | Random events | after refueling, before battles | at the end of production, before new packets and refueling (13e) |
-| Mass packets and salvage decay | after fleets move | inside the packet handling of phases 8 and 14 (S14 to confirm) |
+| Mass packets and salvage decay | after fleets move | phase 11, after fleets move (agrees) |
+| Minefields decay | late, after waypoint 1 load tasks | phase 11, right after fleets move, together with SD detonation |
 | CA instaforming | before mine sweeping | Claim Adjuster terraforming runs after sweeping and repair (19); whether an instaform step also runs in task pass 4 is open (S10) |
 | Remote mining | after meeting the MT | in task pass 3 (16c), after the MT; AR mining of its own worlds is part of mining (13a, S08) |
 | Load order | waypoint load tasks in random player order | no random draw in the task passes: fleets are handled in owner order, then fleet number (S11; harness to confirm) |

@@ -38,5 +38,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S08](S08-planet-economy.md) | Planet economy | draft |
 | [S11](S11-orders-and-waypoint-tasks.md) | Orders and waypoint tasks | draft |
 | [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
+| [S13](S13-minefields.md) | Minefields | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).
