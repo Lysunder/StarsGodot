@@ -1,0 +1,134 @@
+# S12 Movement and fuel
+
+Status: draft (2026-09-30), first pass. Fleet movement, fuel use, fuel shortage, warp-10 engine damage, stargate
+preconditions, wormhole jumps and arrival read from the code. Overgating formulas, refueling, the follow/intercept
+chains and waypoint advancing are listed as open items.
+References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
+`Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
+`UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
+`GenerateFleetFuel@10a8:1cfa`. Community "Fuel Usage" and "Overgating" pages as oracles.
+
+## Summary
+
+Each turn every fleet with a destination moves toward its next waypoint at that waypoint's warp, up to warp² light
+years, burning fuel that depends on its engines, its mass and its cargo. Fleets can run out of fuel, lose ships at
+warp 10 with unsafe engines, jump through stargates and wormholes, and hit minefields on the way (S13).
+
+## Data used
+
+- Fleet: position, ships per design, cargo (with fuel in mg), waypoints (position, target, warp 1–10 or 11 for
+  stargate travel, task).
+- Designs (S04): engines and their fuel table (warp 0–10), mass, cargo and fuel capacity.
+- Race traits: Improved Fuel Efficiency, Cheap Engines, Inter-stellar Traveler, Alternate Reality.
+
+## Algorithm
+
+### Which fleets move
+
+At the start of movement every fleet is marked "didn't move" (S11 uses this mark). A fleet stays where it is when:
+
+- it has no ships, or no next waypoint;
+- its next waypoint's warp is 0;
+- its current waypoint has a transport task (so "wait for %" holds it, S11) or a lay-mines task with years left.
+
+Fleets are handled in fleet order (S11). Movement repeats for up to 11 passes so that fleets whose waypoint targets
+another fleet move after their target; a pass only handles fleets not yet settled.
+
+### Cheap Engines failure
+
+For a Cheap Engines race, a fleet travelling above warp 6 (not stargate travel) draws `random(10)`; on 0 the engines
+don't engage, the player is told, and the fleet doesn't move this turn.
+
+### Warp-10 engine damage
+
+A fleet travelling at warp 10: for every ship whose design's engine is not one of Interspace-10, Enigma Pulsar,
+Trans-Star 10, Trans-Galactic Mizer Scoop or Galaxy Scoop, draw `random(10)`; on 0 that ship is destroyed. Ships are
+rolled design by design, one draw per ship. If no ships are left the fleet is gone; otherwise cargo is redistributed
+over the remaining ships and the player is told how many were lost.
+
+### Alternate Reality colonists in transit
+
+An Alternate Reality fleet carrying more than 10 colonists (cargo units) loses (colonists + 11) × 3 div 100 of them
+when it moves.
+
+### Fuel use
+
+For a move of distance d (light years) at warp w:
+
+1. For each design in the fleet: the engine is the part in the design's first engine slot. If that slot isn't
+   completely filled, the ship can't move (it counts as using an enormous amount of fuel). Otherwise f = the engine's
+   fuel table value at warp w; with Improved Fuel Efficiency, f = f − (15f) div 100.
+2. The fleet's cargo (minerals and colonists, not fuel) is spread over its designs in increasing order of f: each
+   design takes up to its total cargo capacity before the next.
+3. usage = Σ over designs with f > 0 of (f × d × m) div 2000, where m = the design's mass × ship count + the cargo
+   it carries. For large values the original uses floating point to avoid overflow; the result is the same
+   quantity.
+4. Fuel needed = (usage + 9) div 10 mg.
+
+(Community check: 1 mg moves 200 kT one light year at fuel factor 100, which is the same ÷ 20000.)
+
+The same routine also gives the fleet's range with its current fuel: (fuel × 1000) div (usage for 1000 ly).
+
+### Moving
+
+1. The move budget is w² light years; a fleet following another fleet uses the target's current position.
+2. If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
+   allows and ends with 0 fuel; then its next waypoint's warp is lowered to the highest warp at which it uses no
+   fuel (if that is warp 1 or less the fleet is stuck), with a message.
+3. If the budget reaches the destination, the fleet is placed on it (on the planet if the waypoint targets a
+   planet). Otherwise it moves along the straight line: x = x₀ + trunc((x₁ − x₀) × budget ÷ distance), likewise y,
+   with the distance computed in floating point.
+4. Minefields are checked along the path (S13) and may stop the fleet early.
+5. A fleet that moves loses its "didn't move" mark.
+6. **Ram scoops:** a fleet moving at a speed its engines can do without fuel makes fuel (`Fleet_RamScoopFuel`), with a
+   message.
+7. **Radiating Hydro-Ram Scoop:** a fleet using it, carrying colonists of a race that isn't immune to radiation and
+   whose radiation range center c = (low + high) div 2 is below 85, loses colonists × ((86 − c) div 2) div 100 (at
+   least 1).
+8. **Wormholes:** a fleet arriving on a wormhole is moved to the other end; both ends become known to its owner.
+9. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
+
+### Stargates (warp 11)
+
+1. The fleet must be at a planet with a stargate owned by its owner or a friend, or every ship must have a Jump
+   Gate.
+2. The destination must be a planet with a stargate owned by the owner or a friend.
+3. Races other than Inter-stellar Traveler can't take cargo through a gate: minerals and colonists are left on the
+   source planet first; if colonists are aboard and the source planet isn't the owner's, the jump is refused.
+4. The jump itself, with range and mass limits and overgating losses, is `Fleet_UseStargate`: designs beyond the
+   gate's range or mass limit risk damage and loss; Inter-stellar Traveler has no loss chance. (Formulas: open.)
+
+## Randomness
+
+In fleet order: Cheap Engines (`random(10)` per fleet above warp 6), warp-10 damage (`random(10)` per ship at
+risk), overgating (S12 open item), minefield hits (S13).
+
+## Edge cases
+
+- A design with a partly filled engine slot can't move at all.
+- A fleet with no fuel can still move at warps its engines do for free.
+- Cargo goes on the most fuel-efficient ships first, which lowers fuel use for mixed fleets.
+
+## Worked examples
+
+- Scout (mass 14 with Quick Jump 5 and Bat Scanner) at warp 5 (f = 100) for 25 ly: 100 × 25 × 14 div 2000 = 17;
+  fuel (17 + 9) div 10 = 2 mg.
+- Same with Improved Fuel Efficiency: f = 100 − 15 = 85; 85 × 25 × 14 div 2000 = 14; fuel 2 mg.
+
+## Mod hooks
+
+- Formulas: `movement.fuel_use`, `movement.move_budget`, `movement.engine_failure` (Cheap Engines),
+  `movement.warp10_damage`, `movement.stargate`.
+- Content: engines' `fuel_table`, the `warp10_safe` behaviour (to become an engine tag), trait parameters
+  (IFE 15%, CE failure 10%).
+
+## Open questions
+
+1. Overgating: `Fleet_StargateRange` and the damage and loss formulas (community "Overgating" page as oracle).
+2. Refueling at docks and the fuel generation rules (`GenerateFleetFuel`, partly in S04).
+3. Following and intercepting other fleets: the retarget rules (`UpdateWaypointTargets`, `RetargetFollowers`) and
+   the fix for B12 (fleet "stuck" while a lower-numbered fleet targets it).
+4. Where the waypoint list advances after arrival, and how repeat orders loop.
+5. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
+   planned usage; purpose unclear).
+6. Ram-scoop fuel amounts (`Fleet_RamScoopFuel`, read in S04 notes but not specified).

@@ -154,7 +154,9 @@ it. Otherwise the player gets a message.
 
 Pass 3 only. Conditions (each failure sends a message; the task stays and is tried again next turn):
 
-1. The fleet didn't move this turn.
+1. The fleet didn't move this turn (S12: every fleet is marked at the start of movement and the mark is cleared
+   when it moves; a fleet whose current waypoint has a transport or lay-mines task doesn't move, which is how
+   "wait for %" holds it).
 2. It is at a planet (not deep space).
 3. The planet has no owner. (A fleet of an Alternate Reality race at an owned planet does nothing here; AR mines its
    own worlds during the mining phase, S08.)
@@ -225,8 +227,6 @@ scrapping tech gain (S24) draw from the generator in their own specs.
 1. Exact transport amounts for "set amount to", "set waypoint to" and "load optimal" (fuel), and the rule that
    lets a fleet pick up minerals from the player's own remote-mining fleet at an unowned planet (seen in the target
    selection, not yet understood).
-2. How "wait for %" keeps the fleet at the waypoint (it rewrites waypoint 0 each pass).
-3. When the "didn't move" flag is set and cleared (S12).
-4. Repeat orders: how the waypoint list loops (S12).
-5. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
+2. Repeat orders: how the waypoint list loops (S12).
+3. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
    the same planet in one turn).
