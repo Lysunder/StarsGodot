@@ -1,0 +1,37 @@
+[
+  {
+    "type": "part",
+    "id": "part.armor.tritanium",
+    "category": "armor",
+    "mass": 60,
+    "cost": { "ironium": 5, "boranium": 0, "germanium": 0, "resources": 10 },
+    "stats": { "armor": 50 },
+    "tags": ["provisional"]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.laser",
+    "category": "beam",
+    "mass": 1,
+    "cost": { "ironium": 0, "boranium": 6, "germanium": 0, "resources": 5 },
+    "stats": { "power": 10, "range": 1, "initiative": 9 },
+    "tags": ["provisional", "beam"]
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.bat",
+    "category": "scanner",
+    "mass": 2,
+    "cost": { "ironium": 1, "boranium": 0, "germanium": 1, "resources": 1 },
+    "stats": { "scan_range": 0, "pen_range": 0 },
+    "tags": ["provisional"]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.quick_jump_5",
+    "category": "engine",
+    "mass": 4,
+    "cost": { "ironium": 3, "boranium": 0, "germanium": 1, "resources": 3 },
+    "tags": ["provisional"]
+  }
+]

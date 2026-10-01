@@ -1,0 +1,8 @@
+[
+  { "type": "tech_field", "id": "tech_field.energy", "order": 0 },
+  { "type": "tech_field", "id": "tech_field.weapons", "order": 1 },
+  { "type": "tech_field", "id": "tech_field.propulsion", "order": 2 },
+  { "type": "tech_field", "id": "tech_field.construction", "order": 3 },
+  { "type": "tech_field", "id": "tech_field.electronics", "order": 4 },
+  { "type": "tech_field", "id": "tech_field.biotech", "order": 5 }
+]

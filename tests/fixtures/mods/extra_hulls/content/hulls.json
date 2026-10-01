@@ -1,0 +1,13 @@
+{
+  "type": "hull",
+  "id": "extra_hulls.hull.long_scout",
+  "mass": 10,
+  "cost": { "ironium": 5, "boranium": 2, "germanium": 5, "resources": 14 },
+  "armor": 30,
+  "fuel": 120,
+  "slots": [
+    { "accepts": ["engine"], "max": 1, "required": true },
+    { "accepts": ["scanner"], "max": 2 }
+  ],
+  "required_traits": ["trait.prt.JoaT"]
+}

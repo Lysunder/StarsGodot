@@ -1,0 +1,22 @@
+{
+  "tech_field.energy.name": "Energy",
+  "tech_field.weapons.name": "Weapons",
+  "tech_field.propulsion.name": "Propulsion",
+  "tech_field.construction.name": "Construction",
+  "tech_field.electronics.name": "Electronics",
+  "tech_field.biotech.name": "Biotechnology",
+  "trait.prt.JoaT.name": "Jack of All Trades",
+  "trait.lrt.IFE.name": "Improved Fuel Efficiency",
+  "part.armor.tritanium.name": "Tritanium",
+  "part.beam.laser.name": "Laser",
+  "part.scanner.bat.name": "Bat Scanner",
+  "part.engine.quick_jump_5.name": "Quick Jump 5",
+  "hull.scout.name": "Scout",
+  "hull.small_freighter.name": "Small Freighter",
+  "constant.battle.max_rounds.name": "Battle rounds",
+  "constant.limits.fleets_per_player.name": "Fleets per player",
+  "constant.limits.minefields.name": "Minefields",
+  "constant.limits.ship_designs.name": "Ship designs per player",
+  "constant.limits.starbase_designs.name": "Starbase designs per player",
+  "constant.limits.battle_tokens.name": "Battle tokens"
+}

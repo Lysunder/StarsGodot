@@ -1,0 +1,4 @@
+[
+  { "target": "part.beam.laser", "set": { "stats.power": 12 }, "append": { "tags": ["extra_hulls"] } },
+  { "select": { "type": "hull" }, "pct": { "cost.resources": 90 } }
+]

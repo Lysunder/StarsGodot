@@ -1,0 +1,17 @@
+[
+  {
+    "type": "trait",
+    "id": "trait.prt.JoaT",
+    "kind": "primary",
+    "cost": 0,
+    "params": { "economy.max_pop_pct": 120 },
+    "tags": ["provisional"]
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.IFE",
+    "kind": "lesser",
+    "cost": 0,
+    "tags": ["provisional"]
+  }
+]

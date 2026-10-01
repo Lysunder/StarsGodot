@@ -1,0 +1,9 @@
+{
+  "id": "core",
+  "name": "Stars! Standard",
+  "version": "0.1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "authors": ["StarsGodot contributors"],
+  "description": "The base game, packaged as a mod. Minimal provisional pack until specs S04-S07 generate the full one."
+}
