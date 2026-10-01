@@ -32,6 +32,7 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 |---|---|---|
 | [S01](S01-rng.md) | Random number generator | draft |
 | [S02](S02-turn-order.md) | Turn order | draft |
+| [S03](S03-data-model.md) | Data model | draft |
 | [S04](S04-parts-and-hulls.md) | Parts and hulls | draft |
 | [S05](S05-research.md) | Research | draft |
 | [S06](S06-race-and-traits.md) | Race, traits and advantage points | draft |

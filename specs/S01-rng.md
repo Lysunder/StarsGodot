@@ -1,8 +1,8 @@
 # S01 Random number generator
 
-Status: implemented (2026-10-01, `core/rng/`). Generator, seeding and table checked against the disassembly; the
-generator and the seed table, including the entry-55 quirk, confirmed against real files from the original (see
-"Verification notes").
+Status: draft (2026-09-30); implemented in `core/rng/` (2026-10-01). Generator, seeding and table checked against
+the disassembly; the generator and the seed table, including the entry-55 quirk, confirmed against real files from
+the original (see "Verification notes").
 References: `Random@1038:8730`, `SeedRandom@1038:86cc`, `SeedRandomFromGameSeed@1038:8672`,
 `PushRandomState@1038:0000`, `PopRandomState@1038:8654`, `GenerateTurn@10a8:0000`, `WinMain@1010:0000`,
 `NewGameFromDefFile@1070:39d4`. Algorithm: P. L'Ecuyer, "Efficient and portable combined random number
