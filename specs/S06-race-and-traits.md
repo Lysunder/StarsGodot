@@ -33,7 +33,7 @@ What each trait does during play is specified in the subsystem specs; the "Trait
 | Mine output | 5–25 | kT of each mineral per 10 mines per year |
 | Mine cost | 2–15 | resources per mine |
 | Mines operated | 5–25 | mines per 10,000 colonists |
-| Research cost, per field (energy, weapons, propulsion, construction, electronics, biotech) | 0, 1, 2 | 0 = expensive, 1 = normal, 2 = cheap (S05 confirms the cost factors) |
+| Research cost, per field (energy, weapons, propulsion, construction, electronics, biotech) | 0, 1, 2 | 0 = expensive (+75%), 1 = normal, 2 = cheap (−50%) (S05) |
 | Leftover points | 0–4 | what unspent points (up to 50) buy at the start: 0 surface minerals, 1 mineral concentrations, 2 mines, 3 factories, 4 defenses (S07) |
 | Option: techs start at 3 | yes/no | expensive research fields start at tech 3 (S05) |
 | Option: cheap factories | yes/no | factories cost 1 kT less germanium (S09) |
@@ -260,5 +260,5 @@ Random 50/50/50.
    distance of a .5 boundary; and H only matters through H div 2000. Verify against the original for a set of races
    (harness: the race wizard, or games whose invalid-race repair reveals the sign).
 2. Leftover-point choices 5 and 6 are allowed by the clamp table but have no label; check whether they mean anything.
-3. Exact cost factors of the research settings and the techs-start-at-3 option (S05).
+3. The techs-start-at-3 option (S07 universe setup); the research cost factors are settled in S05.
 4. The race file format is our own (D6); nothing here depends on the original's race files.

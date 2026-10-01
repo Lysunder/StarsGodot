@@ -13,7 +13,10 @@
     "type": "trait",
     "id": "trait.prt.SS",
     "kind": "primary",
-    "cost": 95
+    "cost": 95,
+    "params": {
+      "research.spy_pct": 50
+    }
   },
   {
     "type": "trait",
@@ -94,7 +97,11 @@
     "type": "trait",
     "id": "trait.lrt.GR",
     "kind": "lesser",
-    "cost": -40
+    "cost": -40,
+    "params": {
+      "research.current_field_pct": 50,
+      "research.other_field_pct": 15
+    }
   },
   {
     "type": "trait",
