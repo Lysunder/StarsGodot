@@ -203,7 +203,7 @@ number, which gives the same order since all share one owner value).
   original scans p's fleets in number order for the first gap). It is inserted in (owner, number) order.
   Numbers are never reused while the fleet exists and never renumbered.
 - **Space objects:** the same rule within one (kind, owner): the lowest unused number.
-- **Limits:** a player has at most `limits.fleets` fleets (512); a (kind, owner) has at most
+- **Limits:** a player has at most `limits.fleets_per_player` fleets (512); a (kind, owner) has at most
   `limits.space_object_numbers` numbers; the game has at most `limits.space_objects` space objects in total (the
   original refuses to create one beyond 4050). When a limit is reached, creation fails and the rule that tried it
   says what happens (usually nothing is created).
@@ -280,9 +280,9 @@ None. The order rules above decide which object receives which draw in every oth
   constant, and a merge that would exceed it is refused instead of losing ships.
 - **B25 crash with the 10th starbase design:** our design slots are a list indexed from 0 with bounds checks; the
   turn engine never reads past the end. The root cause in the original is still to be found (S16 or S09).
-- **L01 limits:** `limits.players` 16, `limits.fleets` 512, `limits.ship_designs` 16, `limits.starbase_designs`
-  10, `limits.waypoints` 87, `limits.space_objects` 4050, plus the battle limit in S16. They are content constants,
-  so mods can raise them.
+- **L01 limits:** `limits.players` 16, `limits.fleets_per_player` 512, `limits.ship_designs` 16,
+  `limits.starbase_designs` 10, `limits.waypoints` 87, `limits.space_objects` 4050, plus the battle limit in S16.
+  They are content constants, so mods can raise them.
 
 ## Worked examples
 
@@ -295,8 +295,9 @@ None. The order rules above decide which object receives which draw in every oth
 
 ## Mod hooks
 
-- Content constants: `limits.players`, `limits.fleets`, `limits.ship_designs`, `limits.starbase_designs`,
-  `limits.waypoints`, `limits.ships_per_stack`, `limits.space_objects`, `limits.space_object_numbers`.
+- Content constants (ids `constant.limits.<name>`): `limits.players`, `limits.fleets_per_player`,
+  `limits.ship_designs`, `limits.starbase_designs`, `limits.waypoints`, `limits.ships_per_stack`,
+  `limits.space_objects`, `limits.space_object_numbers`.
 - `mod_data` on every entity.
 - Mods cannot add new entity kinds in this version; they attach data to existing ones.
 

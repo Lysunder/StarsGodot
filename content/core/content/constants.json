@@ -1,8 +1,12 @@
 [
   { "type": "constant", "id": "constant.battle.max_rounds", "value": 16 },
+  { "type": "constant", "id": "constant.limits.players", "value": 16 },
   { "type": "constant", "id": "constant.limits.fleets_per_player", "value": 512 },
-  { "type": "constant", "id": "constant.limits.minefields", "value": 512 },
   { "type": "constant", "id": "constant.limits.ship_designs", "value": 16 },
   { "type": "constant", "id": "constant.limits.starbase_designs", "value": 10 },
+  { "type": "constant", "id": "constant.limits.waypoints", "value": 87 },
+  { "type": "constant", "id": "constant.limits.ships_per_stack", "value": 32767 },
+  { "type": "constant", "id": "constant.limits.space_objects", "value": 4050 },
+  { "type": "constant", "id": "constant.limits.space_object_numbers", "value": 512 },
   { "type": "constant", "id": "constant.limits.battle_tokens", "value": 256 }
 ]
