@@ -5,7 +5,8 @@
     "kind": "primary",
     "cost": 40,
     "params": {
-      "race.growth_rate_pct": 200
+      "race.growth_rate_pct": 200,
+      "planet.max_pop_pct": 50
     }
   },
   {
@@ -60,7 +61,10 @@
     "type": "trait",
     "id": "trait.prt.JoaT",
     "kind": "primary",
-    "cost": -66
+    "cost": -66,
+    "params": {
+      "planet.max_pop_pct": 120
+    }
   },
   {
     "type": "trait",
@@ -120,7 +124,10 @@
     "type": "trait",
     "id": "trait.lrt.OBRM",
     "kind": "lesser",
-    "cost": -255
+    "cost": -255,
+    "params": {
+      "planet.max_pop_extra_pct": 110
+    }
   },
   {
     "type": "trait",

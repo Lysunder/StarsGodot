@@ -134,7 +134,7 @@ computes it in floating point (x87 doubles); see "Open questions".
 
 ### Planet value for a race
 
-Used by H above and by the economy (S08 owns this rule; repeated here because S06 depends on it). For a planet with
+Used by H above and by the planet economy (S08 refers to this section). For a planet with
 values v (per axis) and a race with low, center c, high:
 
 1. For each axis:
@@ -250,7 +250,7 @@ Random 50/50/50.
   hulls. New traits from mods take part in the advantage-point calculation through their `cost` only (steps 10–11).
 - Formulas (M5): `race.advantage_points`, `race.hab_points`, `planet.hab_value` (shared with S08).
 - Trait parameters so far: `race.growth_rate_pct` (HE 200), `design.armor_part_pct` (RS 50), `design.shield_pct`
-  (RS 140). The step-specific rules for HE, PP, SS, JoaT and AR in steps 5, 11 and 14 are parameters of the Standard
+  (RS 140), `planet.max_pop_pct` (HE 50, JoaT 120), `planet.max_pop_extra_pct` (OBRM 110, applied last; S08). The step-specific rules for HE, PP, SS, JoaT and AR in steps 5, 11 and 14 are parameters of the Standard
   `race.advantage_points` formula, listed by primary trait.
 
 ## Open questions
