@@ -36,6 +36,8 @@ var mass_driver_warp: int = 0
 var route: int = -1
 ## Production queue (S09).
 var queue: Array = []
+## Only resources left over after the queue go to research (S09).
+var leftover_to_research: bool = false
 ## Random-event artifact (S18).
 var artifact: Variant = null
 var mod_data: Dictionary = {}
@@ -65,6 +67,7 @@ func _schema() -> Array:
 		["mass_driver_warp", Kind.INT],
 		["route", Kind.INT],
 		["queue", Kind.JSON],
+		["leftover_to_research", Kind.BOOL],
 		["artifact", Kind.JSON],
 		["mod_data", Kind.JSON],
 	]

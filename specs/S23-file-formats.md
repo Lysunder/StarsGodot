@@ -65,8 +65,9 @@ The salt is drawn when the file is written: one `random(2000)` from the game's g
 
 ### Cipher
 
-The data of each encrypted block is XORed with a keystream from the S01 generator (`next_raw`, the raw combined
-value), seeded from the header:
+The data of each encrypted block is XORed with a keystream made from the two S01 component generators, seeded from
+the header. Each keystream value is (s1 − s2) mod 2^32 after both components advance: the plain 32-bit difference,
+**without** the correction `random()` applies when the difference is below 1.
 
 1. salt = header word at 12 shifted right by 5 (11 bits). i = salt & 31, j = (salt >> 5) & 31. If bit 10 of the salt
    is set, i += 32; otherwise j += 32.
@@ -226,7 +227,7 @@ Sections:
    colonists).
 3. **Installations** (flag 0x800, 8 bytes): byte 0 extra colonists (`extra_colonists`); bytes 1–3 mines (12 bits)
    and factories (12 bits); byte 4 defenses; byte 5 unknown; byte 6 bit 7 "contribute only leftover resources to
-   research" (S09, kept with the queue), bit 0 set when the planet has **no** planetary scanner (`has_scanner`);
+   research" (S09; `leftover_to_research`), bit 0 set when the planet has **no** planetary scanner (`has_scanner`);
    byte 7 zero.
 4. **Starbase** (flag 0x200), full planets 4 bytes as two words:
    - word 0: bits 0–3 starbase design slot (`starbase.design`); bits 4–15 damage in armor points
@@ -360,6 +361,15 @@ them would let fixtures give orders to human players, so they can exercise rules
 - The importer writes one save per `.hst` (the host state) and keeps each `.m` file's view for player knowledge.
 - The classic random stream's state at the start of the turn comes from the harness (S01, "Verification notes"),
   not from the files.
+- Names: by default the importer writes neutral names (`Race 0`, `Design 3`, `Plan 1`, `Planet 17`) and drops
+  fleet names, so converted files hold no text from the original and can serve as fixtures. A `--keep-names`
+  option keeps race, design, plan and fleet names for local use.
+- Relations shorter than the player count are padded with neutral entries.
+- Values the importer cannot know yet are written as defaults and marked here: `paid` on stacks (0), `repeat` on
+  fleets (false; the flag is not located yet), `trader_parts` and the trader's `item` (S18), task data and
+  queue items in raw form (S11, S09).
+- Implementation: `tools/harness/starsfile.py` (container, cipher, packed text) and `stars_import.py` (mapping);
+  `tools/check_save.gd` loads converted files with `SaveFile` and `StateValidator`.
 
 ## Randomness
 

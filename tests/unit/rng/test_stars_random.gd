@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Spec S01. Expected values are the spec's worked examples, computed independently in Python.
-## The generator and the seed table (entry 55 = 279) are confirmed by the harness: the original's
-## file cipher uses both, and a real file keyed through entry 55 only decodes with 279.
+## The component generators and the seed table (entry 55 = 279) are confirmed by the harness: the
+## original's file cipher uses both, and a real file keyed through entry 55 only decodes with 279.
 
 
 func _raws(rng: StarsRandom, count: int) -> Array[int]:

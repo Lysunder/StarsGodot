@@ -168,7 +168,8 @@ Harness experiments (2026-09-30) showed:
   off. Mining rounds fractional output up at random (`Planet_Mine@1020:3a72`), so every turn with a colony draws
   from the generator. No fixture avoids randomness.
 - Universe creation from a definition file with a seed is reproducible.
-- The original's file cipher uses this generator, seeded from the same table. A real host file whose cipher key
+- The original's file cipher uses the same two component generators, seeded from the same table (it combines them
+  as a plain 32-bit difference, S23). A real host file whose cipher key
   goes through table entry 55 decodes correctly with 279 and gives garbage with 269, which confirms the generator
   and the quirk.
 - Option 4 works: in a harness-only copy of the original with the start-up seed fixed, two runs of the same turns

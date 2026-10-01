@@ -63,3 +63,6 @@ jobs:
 
       - name: gdformat --check
         run: gdformat --check core tests tools
+
+      - name: Harness tests (Python)
+        run: python -m unittest discover -s tools/harness -p "test_*.py" -v
