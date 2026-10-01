@@ -164,6 +164,9 @@
         ],
         "max": 2
       }
+    ],
+    "required_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -476,6 +479,9 @@
         ],
         "max": 4
       }
+    ],
+    "required_traits": [
+      "trait.prt.WM"
     ]
   },
   {
@@ -682,6 +688,9 @@
         ],
         "max": 2
       }
+    ],
+    "required_traits": [
+      "trait.prt.WM"
     ]
   },
   {
@@ -842,6 +851,9 @@
         ],
         "max": 1
       }
+    ],
+    "required_traits": [
+      "trait.prt.SS"
     ]
   },
   {
@@ -958,6 +970,9 @@
         ],
         "max": 1
       }
+    ],
+    "required_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -1114,6 +1129,9 @@
         ],
         "max": 3
       }
+    ],
+    "required_traits": [
+      "trait.prt.SS"
     ]
   },
   {
@@ -1205,6 +1223,12 @@
         ],
         "max": 2
       }
+    ],
+    "required_traits": [
+      "trait.lrt.ARM"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
     ]
   },
   {
@@ -1308,6 +1332,12 @@
         ],
         "max": 1
       }
+    ],
+    "required_traits": [
+      "trait.lrt.ARM"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
     ]
   },
   {
@@ -1366,6 +1396,9 @@
         ],
         "max": 1
       }
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
     ]
   },
   {
@@ -1424,6 +1457,12 @@
         ],
         "max": 2
       }
+    ],
+    "required_traits": [
+      "trait.lrt.ARM"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
     ]
   },
   {
@@ -1455,6 +1494,9 @@
         ],
         "max": 1
       }
+    ],
+    "required_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -1534,6 +1576,9 @@
         ],
         "max": 1
       }
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -1594,6 +1639,9 @@
         ],
         "max": 3
       }
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -1983,6 +2031,9 @@
         ],
         "max": 2
       }
+    ],
+    "required_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -2107,6 +2158,9 @@
         ],
         "max": 16
       }
+    ],
+    "required_traits": [
+      "trait.lrt.ISB"
     ]
   },
   {
@@ -2330,6 +2384,9 @@
         ],
         "max": 16
       }
+    ],
+    "required_traits": [
+      "trait.lrt.ISB"
     ]
   },
   {
@@ -2454,6 +2511,9 @@
         ],
         "max": 32
       }
+    ],
+    "required_traits": [
+      "trait.prt.AR"
     ]
   }
 ]

@@ -22,6 +22,9 @@
       275,
       480,
       576
+    ],
+    "required_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -75,6 +78,9 @@
       235,
       360,
       420
+    ],
+    "required_traits": [
+      "trait.lrt.IFE"
     ]
   },
   {
@@ -215,6 +221,9 @@
       80,
       90,
       100
+    ],
+    "required_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -307,6 +316,9 @@
       375,
       600,
       720
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -336,6 +348,9 @@
       210,
       380,
       456
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -365,6 +380,9 @@
       100,
       145,
       174
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -394,6 +412,9 @@
       65,
       90,
       108
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -423,6 +444,9 @@
       0,
       70,
       84
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   },
   {
@@ -452,6 +476,12 @@
       0,
       0,
       60
+    ],
+    "required_traits": [
+      "trait.lrt.IFE"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NRSE"
     ]
   }
 ]

@@ -122,7 +122,10 @@
     "stats": {
       "armor": 175,
       "shield": 50
-    }
+    },
+    "required_traits": [
+      "trait.prt.IS"
+    ]
   },
   {
     "type": "part",
@@ -142,7 +145,10 @@
     "stats": {
       "armor": 200,
       "cloak": 50
-    }
+    },
+    "required_traits": [
+      "trait.prt.SS"
+    ]
   },
   {
     "type": "part",

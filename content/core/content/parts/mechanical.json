@@ -12,6 +12,9 @@
     },
     "tags": [
       "colonizer"
+    ],
+    "forbidden_traits": [
+      "trait.prt.AR"
     ]
   },
   {
@@ -28,6 +31,9 @@
     "tags": [
       "colonizer",
       "orbital_construction"
+    ],
+    "required_traits": [
+      "trait.prt.AR"
     ]
   },
   {

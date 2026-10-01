@@ -223,6 +223,9 @@
     },
     "tags": [
       "retro"
+    ],
+    "required_traits": [
+      "trait.prt.CA"
     ]
   },
   {
@@ -246,6 +249,9 @@
     },
     "tags": [
       "smart"
+    ],
+    "forbidden_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -269,6 +275,9 @@
     },
     "tags": [
       "smart"
+    ],
+    "forbidden_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -292,6 +301,9 @@
     },
     "tags": [
       "smart"
+    ],
+    "forbidden_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -315,6 +327,9 @@
     },
     "tags": [
       "smart"
+    ],
+    "forbidden_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -338,6 +353,9 @@
     },
     "tags": [
       "smart"
+    ],
+    "forbidden_traits": [
+      "trait.prt.IS"
     ]
   }
 ]

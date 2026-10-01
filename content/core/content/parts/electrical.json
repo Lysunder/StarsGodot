@@ -12,7 +12,10 @@
     },
     "stats": {
       "cloak": 300
-    }
+    },
+    "required_traits": [
+      "trait.prt.SS"
+    ]
   },
   {
     "type": "part",
@@ -69,7 +72,10 @@
     },
     "stats": {
       "cloak": 540
-    }
+    },
+    "required_traits": [
+      "trait.prt.SS"
+    ]
   },
   {
     "type": "part",
@@ -166,7 +172,10 @@
     },
     "stats": {
       "jamming": 10
-    }
+    },
+    "required_traits": [
+      "trait.prt.IS"
+    ]
   },
   {
     "type": "part",
@@ -223,7 +232,10 @@
     },
     "stats": {
       "jamming": 50
-    }
+    },
+    "required_traits": [
+      "trait.prt.IS"
+    ]
   },
   {
     "type": "part",
@@ -267,6 +279,9 @@
     },
     "tags": [
       "capacitor"
+    ],
+    "required_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -286,6 +301,9 @@
     },
     "tags": [
       "energy_dampener"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -305,6 +323,9 @@
     },
     "tags": [
       "tachyon_detector"
+    ],
+    "required_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -328,6 +349,9 @@
     },
     "tags": [
       "antimatter_generator"
+    ],
+    "required_traits": [
+      "trait.prt.IT"
     ]
   }
 ]

@@ -210,9 +210,9 @@ All other costs, masses and tech levels of the 191 items Posey lists agree.
 2. Meaning of the engine code word (values 0–6) and the scanner code word (0–4).
 3. Effects of the Energy Dampener, Tachyon Detector, capacitors and Beam Deflector in battle and scanning (S15/S16).
 4. Hull flag bits 6–7 and the class byte (probably roles used by the AI and the designer).
-5. **Part availability by race.** `GetPartInfo` reports some items as unavailable depending on the primary and
-   lesser traits (for example Settler's Delight, stargates, mass drivers, some armors and mine layers). The content
-   has `required_traits` and `forbidden_traits` for this; filling them needs the trait ids from S06.
+5. **Part availability by race:** resolved in S06 ("Part availability by trait"); the content now has
+   `required_traits` and `forbidden_traits`. Still open here: the hull-only parts (Settler's Delight on the
+   Mini-Colony Ship, the Orbital Construction Module on the Colony Ship) as a design rule.
 6. Mystery Trader parts (`Part_NeedsMysteryTraderItem`): which items need the trader (S18).
 
 ## Data tables

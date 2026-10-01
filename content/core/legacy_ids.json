@@ -917,5 +917,77 @@
   },
   "hull.death_star": {
     "hull": 36
+  },
+  "trait.prt.HE": {
+    "prt": 0
+  },
+  "trait.prt.SS": {
+    "prt": 1
+  },
+  "trait.prt.WM": {
+    "prt": 2
+  },
+  "trait.prt.CA": {
+    "prt": 3
+  },
+  "trait.prt.IS": {
+    "prt": 4
+  },
+  "trait.prt.SD": {
+    "prt": 5
+  },
+  "trait.prt.PP": {
+    "prt": 6
+  },
+  "trait.prt.IT": {
+    "prt": 7
+  },
+  "trait.prt.AR": {
+    "prt": 8
+  },
+  "trait.prt.JoaT": {
+    "prt": 9
+  },
+  "trait.lrt.IFE": {
+    "lrt_bit": 0
+  },
+  "trait.lrt.TT": {
+    "lrt_bit": 1
+  },
+  "trait.lrt.ARM": {
+    "lrt_bit": 2
+  },
+  "trait.lrt.ISB": {
+    "lrt_bit": 3
+  },
+  "trait.lrt.GR": {
+    "lrt_bit": 4
+  },
+  "trait.lrt.UR": {
+    "lrt_bit": 5
+  },
+  "trait.lrt.MA": {
+    "lrt_bit": 6
+  },
+  "trait.lrt.NRSE": {
+    "lrt_bit": 7
+  },
+  "trait.lrt.CE": {
+    "lrt_bit": 8
+  },
+  "trait.lrt.OBRM": {
+    "lrt_bit": 9
+  },
+  "trait.lrt.NAS": {
+    "lrt_bit": 10
+  },
+  "trait.lrt.LSP": {
+    "lrt_bit": 11
+  },
+  "trait.lrt.BET": {
+    "lrt_bit": 12
+  },
+  "trait.lrt.RS": {
+    "lrt_bit": 13
   }
 }

@@ -72,3 +72,28 @@ func test_every_part_and_hull_has_a_legacy_id() -> void:
 			assert_bool(legacy.has(id)).override_failure_message("no legacy id: " + id).is_true()
 	assert_dict(legacy["part.beam.laser"]).is_equal({"kind": 16, "item": 0})
 	assert_dict(legacy["hull.death_star"]).is_equal({"hull": 36})
+
+
+func test_traits() -> void:
+	assert_int(_reg.ids("trait").size()).is_equal(24)
+	assert_int(_reg.trait_def("trait.prt.IT")["cost"]).is_equal(180)
+	assert_int(_reg.trait_def("trait.lrt.IFE")["cost"]).is_equal(235)
+	assert_int(_reg.trait_def("trait.lrt.NAS")["cost"]).is_equal(-325)
+	assert_str(_reg.display_name("trait.prt.IT")).is_equal("Inter-stellar Traveler")
+
+
+func test_race_availability() -> void:
+	assert_array(_reg.part("part.engine.settler_s_delight")["required_traits"]).is_equal(
+		["trait.prt.HE"]
+	)
+	assert_array(_reg.part("part.mine_layer.speed_trap_20")["required_traits"]).is_equal(
+		["trait.prt.IS", "trait.prt.SD"]
+	)
+	var midget := _reg.hull("hull.midget_miner")
+	assert_array(midget["required_traits"]).is_equal(["trait.lrt.ARM"])
+	assert_array(midget["forbidden_traits"]).is_equal(["trait.lrt.OBRM"])
+	assert_array(_reg.hull("hull.death_star")["required_traits"]).is_equal(["trait.prt.AR"])
+	assert_array(_reg.part("part.orbital.stargate_any_any")["forbidden_traits"]).is_equal(
+		["trait.prt.HE"]
+	)
+	assert_bool(_reg.part("part.beam.laser").has("required_traits")).is_false()

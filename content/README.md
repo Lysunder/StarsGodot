@@ -61,6 +61,12 @@ with `<mod_id>.<type>.` (e.g. `extra_hulls.hull.long_scout`), so mods can never 
 torpedo, bomb, mining_robot, mine_layer, orbital, planetary, electrical, mechanical, terraform (the last three are
 also used for planet items that never go in a ship slot). Part stat names and their meanings are listed in spec S04.
 
+**Race restrictions** on parts and hulls: `required_traits` lists traits of which the race must have **at least
+one**; `forbidden_traits` lists traits of which it may have **none**. Both empty or absent means everyone can use it
+(tech levels still apply).
+
+**Trait costs** are in advantage points consumed: positive costs points, negative gives points back.
+
 **Replacing** a definition from an earlier mod: define the same id and type with `"$replace": true`.
 
 ## Patches (`patches/`)

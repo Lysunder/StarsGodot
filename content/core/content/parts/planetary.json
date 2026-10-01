@@ -12,7 +12,10 @@
     },
     "stats": {
       "scan_range": 50
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -30,7 +33,10 @@
     },
     "stats": {
       "scan_range": 90
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -48,7 +54,10 @@
     },
     "stats": {
       "scan_range": 150
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -66,7 +75,10 @@
     },
     "stats": {
       "scan_range": 220
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -84,7 +96,10 @@
     },
     "stats": {
       "scan_range": 280
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -107,6 +122,10 @@
     },
     "tags": [
       "penetrating"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NAS",
+      "trait.prt.AR"
     ]
   },
   {
@@ -130,6 +149,10 @@
     },
     "tags": [
       "penetrating"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NAS",
+      "trait.prt.AR"
     ]
   },
   {
@@ -153,6 +176,10 @@
     },
     "tags": [
       "penetrating"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NAS",
+      "trait.prt.AR"
     ]
   },
   {
@@ -176,6 +203,10 @@
     },
     "tags": [
       "penetrating"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.NAS",
+      "trait.prt.AR"
     ]
   },
   {
@@ -191,7 +222,10 @@
     },
     "stats": {
       "defense": 10
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -209,7 +243,10 @@
     },
     "stats": {
       "defense": 20
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR"
+    ]
   },
   {
     "type": "part",
@@ -227,7 +264,11 @@
     },
     "stats": {
       "defense": 24
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR",
+      "trait.prt.WM"
+    ]
   },
   {
     "type": "part",
@@ -245,7 +286,11 @@
     },
     "stats": {
       "defense": 30
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR",
+      "trait.prt.WM"
+    ]
   },
   {
     "type": "part",
@@ -263,7 +308,11 @@
     },
     "stats": {
       "defense": 38
-    }
+    },
+    "forbidden_traits": [
+      "trait.prt.AR",
+      "trait.prt.WM"
+    ]
   },
   {
     "type": "part",

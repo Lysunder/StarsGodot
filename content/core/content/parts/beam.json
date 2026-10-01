@@ -57,6 +57,9 @@
     },
     "tags": [
       "gatling"
+    ],
+    "required_traits": [
+      "trait.prt.IS"
     ]
   },
   {
@@ -311,6 +314,9 @@
     },
     "tags": [
       "gatling"
+    ],
+    "required_traits": [
+      "trait.prt.WM"
     ]
   },
   {
@@ -351,7 +357,10 @@
       "range": 0,
       "power": 592,
       "initiative": 11
-    }
+    },
+    "required_traits": [
+      "trait.prt.WM"
+    ]
   },
   {
     "type": "part",

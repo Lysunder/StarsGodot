@@ -32,5 +32,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 |---|---|---|
 | [S01](S01-rng.md) | Random number generator | draft |
 | [S04](S04-parts-and-hulls.md) | Parts and hulls | draft |
+| [S06](S06-race-and-traits.md) | Race, traits and advantage points | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).

@@ -12,7 +12,13 @@
     },
     "stats": {
       "mining_rate": 5
-    }
+    },
+    "required_traits": [
+      "trait.lrt.ARM"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
+    ]
   },
   {
     "type": "part",
@@ -50,7 +56,10 @@
     },
     "stats": {
       "mining_rate": 12
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
+    ]
   },
   {
     "type": "part",
@@ -69,7 +78,10 @@
     },
     "stats": {
       "mining_rate": 18
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
+    ]
   },
   {
     "type": "part",
@@ -88,7 +100,10 @@
     },
     "stats": {
       "mining_rate": 27
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
+    ]
   },
   {
     "type": "part",
@@ -107,7 +122,13 @@
     },
     "stats": {
       "mining_rate": 25
-    }
+    },
+    "required_traits": [
+      "trait.lrt.ARM"
+    ],
+    "forbidden_traits": [
+      "trait.lrt.OBRM"
+    ]
   },
   {
     "type": "part",
@@ -153,6 +174,9 @@
     },
     "tags": [
       "orbital_adjuster"
+    ],
+    "required_traits": [
+      "trait.prt.CA"
     ]
   }
 ]

@@ -15,6 +15,9 @@
     },
     "tags": [
       "standard_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -37,6 +40,9 @@
     },
     "tags": [
       "standard_mines"
+    ],
+    "forbidden_traits": [
+      "trait.prt.WM"
     ]
   },
   {
@@ -59,6 +65,9 @@
     },
     "tags": [
       "standard_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -81,6 +90,9 @@
     },
     "tags": [
       "standard_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -103,6 +115,9 @@
     },
     "tags": [
       "heavy_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -125,6 +140,9 @@
     },
     "tags": [
       "heavy_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -147,6 +165,9 @@
     },
     "tags": [
       "heavy_mines"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -169,6 +190,10 @@
     },
     "tags": [
       "speed_trap"
+    ],
+    "required_traits": [
+      "trait.prt.IS",
+      "trait.prt.SD"
     ]
   },
   {
@@ -191,6 +216,9 @@
     },
     "tags": [
       "speed_trap"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   },
   {
@@ -213,6 +241,9 @@
     },
     "tags": [
       "speed_trap"
+    ],
+    "required_traits": [
+      "trait.prt.SD"
     ]
   }
 ]

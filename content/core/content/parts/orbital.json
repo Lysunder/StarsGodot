@@ -20,6 +20,9 @@
     },
     "tags": [
       "stargate"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -43,6 +46,12 @@
     },
     "tags": [
       "stargate"
+    ],
+    "required_traits": [
+      "trait.prt.IT"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -66,6 +75,9 @@
     },
     "tags": [
       "stargate"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -89,6 +101,9 @@
     },
     "tags": [
       "stargate"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -112,6 +127,12 @@
     },
     "tags": [
       "stargate"
+    ],
+    "required_traits": [
+      "trait.prt.IT"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -135,6 +156,12 @@
     },
     "tags": [
       "stargate"
+    ],
+    "required_traits": [
+      "trait.prt.IT"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -158,6 +185,12 @@
     },
     "tags": [
       "stargate"
+    ],
+    "required_traits": [
+      "trait.prt.IT"
+    ],
+    "forbidden_traits": [
+      "trait.prt.HE"
     ]
   },
   {
@@ -179,6 +212,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -200,6 +236,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -242,6 +281,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -263,6 +305,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -305,6 +350,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -326,6 +374,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   },
   {
@@ -347,6 +398,9 @@
     },
     "tags": [
       "mass_driver"
+    ],
+    "required_traits": [
+      "trait.prt.PP"
     ]
   }
 ]

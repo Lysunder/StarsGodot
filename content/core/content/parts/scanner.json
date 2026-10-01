@@ -108,6 +108,9 @@
     },
     "tags": [
       "steals_from_fleets"
+    ],
+    "required_traits": [
+      "trait.prt.SS"
     ]
   },
   {
@@ -128,7 +131,10 @@
     "stats": {
       "scan_range": 160,
       "cloak": 40
-    }
+    },
+    "required_traits": [
+      "trait.prt.SS"
+    ]
   },
   {
     "type": "part",
@@ -148,7 +154,10 @@
     },
     "stats": {
       "scan_range": 185
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.NAS"
+    ]
   },
   {
     "type": "part",
@@ -168,7 +177,10 @@
     },
     "stats": {
       "scan_range": 220
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.NAS"
+    ]
   },
   {
     "type": "part",
@@ -245,7 +257,10 @@
     },
     "stats": {
       "scan_range": 300
-    }
+    },
+    "forbidden_traits": [
+      "trait.lrt.NAS"
+    ]
   },
   {
     "type": "part",
@@ -288,6 +303,9 @@
     "tags": [
       "steals_from_fleets",
       "steals_from_planets"
+    ],
+    "required_traits": [
+      "trait.prt.SS"
     ]
   },
   {

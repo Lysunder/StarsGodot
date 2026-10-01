@@ -1,17 +1,153 @@
 [
   {
     "type": "trait",
+    "id": "trait.prt.HE",
+    "kind": "primary",
+    "cost": 40,
+    "params": {
+      "race.growth_rate_pct": 200
+    }
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.SS",
+    "kind": "primary",
+    "cost": 95
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.WM",
+    "kind": "primary",
+    "cost": 45
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.CA",
+    "kind": "primary",
+    "cost": 10
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.IS",
+    "kind": "primary",
+    "cost": -100
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.SD",
+    "kind": "primary",
+    "cost": -150
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.PP",
+    "kind": "primary",
+    "cost": 120
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.IT",
+    "kind": "primary",
+    "cost": 180
+  },
+  {
+    "type": "trait",
+    "id": "trait.prt.AR",
+    "kind": "primary",
+    "cost": 90
+  },
+  {
+    "type": "trait",
     "id": "trait.prt.JoaT",
     "kind": "primary",
-    "cost": 0,
-    "params": { "economy.max_pop_pct": 120 },
-    "tags": ["provisional"]
+    "cost": -66
   },
   {
     "type": "trait",
     "id": "trait.lrt.IFE",
     "kind": "lesser",
-    "cost": 0,
-    "tags": ["provisional"]
+    "cost": 235
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.TT",
+    "kind": "lesser",
+    "cost": 25
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.ARM",
+    "kind": "lesser",
+    "cost": 159
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.ISB",
+    "kind": "lesser",
+    "cost": 201
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.GR",
+    "kind": "lesser",
+    "cost": -40
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.UR",
+    "kind": "lesser",
+    "cost": 240
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.MA",
+    "kind": "lesser",
+    "cost": 155
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.NRSE",
+    "kind": "lesser",
+    "cost": -160
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.CE",
+    "kind": "lesser",
+    "cost": -240
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.OBRM",
+    "kind": "lesser",
+    "cost": -255
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.NAS",
+    "kind": "lesser",
+    "cost": -325
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.LSP",
+    "kind": "lesser",
+    "cost": -180
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.BET",
+    "kind": "lesser",
+    "cost": -70
+  },
+  {
+    "type": "trait",
+    "id": "trait.lrt.RS",
+    "kind": "lesser",
+    "cost": -30,
+    "params": {
+      "design.armor_part_pct": 50,
+      "design.shield_pct": 140
+    }
   }
 ]
