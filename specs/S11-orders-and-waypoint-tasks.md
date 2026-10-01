@@ -227,6 +227,5 @@ scrapping tech gain (S24) draw from the generator in their own specs.
 1. Exact transport amounts for "set amount to", "set waypoint to" and "load optimal" (fuel), and the rule that
    lets a fleet pick up minerals from the player's own remote-mining fleet at an unowned planet (seen in the target
    selection, not yet understood).
-2. Repeat orders: how the waypoint list loops (S12).
-3. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
+2. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
    the same planet in one turn).

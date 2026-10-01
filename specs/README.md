@@ -37,6 +37,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S06](S06-race-and-traits.md) | Race, traits and advantage points | draft |
 | [S08](S08-planet-economy.md) | Planet economy | draft |
 | [S11](S11-orders-and-waypoint-tasks.md) | Orders and waypoint tasks | draft |
-| [S12](S12-movement-and-fuel.md) | Movement and fuel | draft (first pass) |
+| [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).

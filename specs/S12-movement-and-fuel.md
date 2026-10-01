@@ -1,8 +1,8 @@
 # S12 Movement and fuel
 
-Status: draft (2026-09-30), first pass. Fleet movement, fuel use, fuel shortage, warp-10 engine damage, stargate
-preconditions, wormhole jumps and arrival read from the code. Overgating formulas, refueling, the follow/intercept
-chains and waypoint advancing are listed as open items.
+Status: draft (2026-09-30), second pass. Movement, fuel, ram scoops, warp-10 damage, stargates with overgating,
+wormholes, arrival, waypoint advancing with repeat orders, and refueling read from the code. Intercept retargeting
+details remain open.
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
@@ -80,13 +80,32 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    with the distance computed in floating point.
 4. Minefields are checked along the path (S13) and may stop the fleet early.
 5. A fleet that moves loses its "didn't move" mark.
-6. **Ram scoops:** a fleet moving at a speed its engines can do without fuel makes fuel (`Fleet_RamScoopFuel`), with a
-   message.
+6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the
+   number of engines on the design, k = e; if warp w + 1 is also free, k = 3e; if w + 2 is too, k = 6e; if w ≤ 7 and
+   w + 3 is free as well, k = 10e. Fuel made = Σ ships × k × distance moved, added up to the free fuel space (the
+   message shows at most 32,500).
 7. **Radiating Hydro-Ram Scoop:** a fleet using it, carrying colonists of a race that isn't immune to radiation and
    whose radiation range center c = (low + high) div 2 is below 85, loses colonists × ((86 − c) div 2) div 100 (at
    least 1).
 8. **Wormholes:** a fleet arriving on a wormhole is moved to the other end; both ends become known to its owner.
 9. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
+
+### Waypoints after movement
+
+After all movement passes:
+
+1. Waypoints that target a fleet are moved to that fleet's position (unless frozen because the target jumped through
+   a gate); if the target no longer exists the waypoint becomes a deep-space waypoint.
+2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
+   the planet or deep space the fleet is at), then the reached waypoint is removed from the list.
+3. **Repeat orders:** with repeat on, the removed waypoint is appended at the end of the list, so the route loops.
+
+### Refueling (S02 phase 15)
+
+1. A fleet at a planet whose starbase belongs to its owner or a friend **and has a dock** (Space Dock and larger; an
+   Orbital Fort has none) is refueled to full capacity.
+2. Otherwise the fleet makes fuel: 50 mg per Anti-Matter Generator and 200 mg per ship with the Fuel Transport or
+   Super-Fuel Xport hull, up to its capacity.
 
 ### Stargates (warp 11)
 
@@ -95,13 +114,28 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 2. The destination must be a planet with a stargate owned by the owner or a friend.
 3. Races other than Inter-stellar Traveler can't take cargo through a gate: minerals and colonists are left on the
    source planet first; if colonists are aboard and the source planet isn't the owner's, the jump is refused.
-4. The jump itself, with range and mass limits and overgating losses, is `Fleet_UseStargate`: designs beyond the
-   gate's range or mass limit risk damage and loss; Inter-stellar Traveler has no loss chance. (Formulas: open.)
+4. **Limits, per design in the fleet**, with R the gate's range and L₁, L₂ the two gates' mass limits (−1 =
+   unlimited; an unlimited range counts as 8000), d the jump distance and m the ship's mass:
+   - d > 5R, or m > 5L for either gate: the jump is refused with a message ("out of range" / "too massive").
+   - Survival S starts at 10000. For each limit exceeded (d > R, m > L₁, m > L₂) multiply by the factor
+     (5X − x) × 2500 div X (X the limit, x the value), dividing by 10000 after the first: the factor falls linearly
+     from 10000 at the limit to 0 at five times the limit. A factor below 1 destroys the design's ships outright.
+   - Damage D = (10000 − S) div 100 percent.
+5. **Applying damage D to a design's ships (n ships, armor A):**
+   - Races other than Inter-stellar Traveler lose ships: for each ship draw `random(100)`; below D div 3 the ship is
+     lost, and if already-damaged ships remain, a second draw `random(500)` against their damage level decides whether
+     the lost ship was one of them.
+   - The survivors take d = D × A div 100 damage each (at least 1). If already-damaged ships would reach their armor
+     (d + their existing damage ≥ A) they are destroyed. The rest share the new average damage, and all count as
+     damaged.
+   - The player is told how many ships were lost (few, many, most).
+6. The rule for which gate's range applies (source or destination) is to be confirmed; mass limits apply for both.
 
 ## Randomness
 
 In fleet order: Cheap Engines (`random(10)` per fleet above warp 6), warp-10 damage (`random(10)` per ship at
-risk), overgating (S12 open item), minefield hits (S13).
+risk), overgating (`random(100)` per ship, plus `random(500)` for lost ships while damaged ships remain), minefield
+hits (S13).
 
 ## Edge cases
 
@@ -114,6 +148,12 @@ risk), overgating (S12 open item), minefield hits (S13).
 - Scout (mass 14 with Quick Jump 5 and Bat Scanner) at warp 5 (f = 100) for 25 ly: 100 × 25 × 14 div 2000 = 17;
   fuel (17 + 9) div 10 = 2 mg.
 - Same with Improved Fuel Efficiency: f = 100 − 15 = 85; 85 × 25 × 14 div 2000 = 14; fuel 2 mg.
+- Overgating: Stargate 100/250, a 150 kT ship jumping 300 ly (both gates 100/250): range factor
+  (1250 − 300) × 2500 div 250 = 9500; mass factor (500 − 150) × 2500 div 100 = 8750 for each gate;
+  S = 9500 × 8750 div 10000 = 8312, then × 8750 div 10000 = 7273; D = (10000 − 7273) div 100 = 27%; loss chance per
+  ship 27 div 3 = 9% (none for Inter-stellar Traveler).
+- Ram scoop: Galaxy Scoop is free up to warp 9, so at warp 6 one engine gives k = 10 (warps 7, 8, 9 also free); a
+  single ship moving 36 ly makes 10 × 36 = 360 mg.
 
 ## Mod hooks
 
@@ -124,11 +164,9 @@ risk), overgating (S12 open item), minefield hits (S13).
 
 ## Open questions
 
-1. Overgating: `Fleet_StargateRange` and the damage and loss formulas (community "Overgating" page as oracle).
-2. Refueling at docks and the fuel generation rules (`GenerateFleetFuel`, partly in S04).
-3. Following and intercepting other fleets: the retarget rules (`UpdateWaypointTargets`, `RetargetFollowers`) and
-   the fix for B12 (fleet "stuck" while a lower-numbered fleet targets it).
-4. Where the waypoint list advances after arrival, and how repeat orders loop.
-5. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
+1. Intercepting and following: the retarget rules in `UpdateWaypointTargets` for fleets that become invisible, and
+   the fix for B12 (a fleet "stuck" while a lower-numbered fleet targets it): our engine resolves follow chains in
+   dependency order with cycle handling.
+2. Which gate's range applies to a jump (source or destination).
+3. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
    planned usage; purpose unclear).
-6. Ram-scoop fuel amounts (`Fleet_RamScoopFuel`, read in S04 notes but not specified).
