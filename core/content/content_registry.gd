@@ -81,6 +81,12 @@ func ids(type_name: String) -> PackedStringArray:
 	return result
 
 
+## The gameplay mods this content came from, as "id@version" in load order (cosmetic mods are
+## not listed: they never change the rules).
+func gameplay_mods() -> PackedStringArray:
+	return _gameplay_mods.duplicate()
+
+
 ## Which mods touched a definition, in order ("core:add", "extra_hulls:patch patches/x.json", ...).
 func provenance(id: String) -> PackedStringArray:
 	return PackedStringArray(_provenance.get(id, []))

@@ -2,62 +2,12 @@ extends GdUnitTestSuite
 ## Spec S03: the model round-trips, copies deeply, compares by saved form, and keeps the
 ## original's numbering and iteration order.
 
+const SampleGame := preload("res://tests/fixtures/model/sample_game.gd")
 const FLEET_LIMIT := 512
 
 
-## A small hand-built game: two players, three planets, fleets, space objects and mod data.
 static func sample_state() -> GameState:
-	var state := GameState.new()
-	state.turn = 7
-	state.rng = RngStreams.new(1234567890, true)
-	state.rng.get_stream("classic").random(100)
-	state.rng.get_stream("fixes").next_raw()
-	state.settings.universe_width = 800
-	state.settings.density = "dense"
-	state.settings.slow_tech = true
-	state.settings.mods = [{"id": "core", "version": "0.1.0"}]
-	for i in 2:
-		var p := Player.new()
-		p.index = i
-		p.race.name = "Race %d" % i
-		p.race.primary_trait = "trait.prt.joat"
-		p.race.lesser_traits.assign(["trait.lrt.ife", "trait.lrt.rs"])
-		p.relations.assign(["neutral", "enemy"] if i == 0 else ["enemy", "neutral"])
-		p.homeworld = i
-		var d := Design.new()
-		d.slot = 3
-		d.name = "Scout"
-		d.hull = "hull.scout"
-		d.parts.assign([DesignSlot.new("part.engine.quick_jump_5", 1), DesignSlot.new()])
-		p.set_design(d, false)
-		state.players.append(p)
-	for i in 3:
-		var pl := Planet.new()
-		pl.id = i
-		pl.name = "Planet %d" % i
-		pl.x = 1000 + 10 * i
-		pl.y = 1100
-		pl.owner = i if i < 2 else -1
-		pl.population = 250 * (i + 1)
-		pl.surface.assign([100, 200, 300])
-		if i == 0:
-			pl.starbase = Starbase.new()
-			pl.homeworld = true
-		state.planets.append(pl)
-	var f := state.add_fleet(1, FLEET_LIMIT)
-	f.add_ships(3, 2)
-	f.cargo[Fleet.CARGO_FUEL] = 150
-	var wp := Waypoint.new(1010, 1100)
-	wp.target = "planet"
-	wp.target_id = 1
-	f.waypoints.append(wp)
-	state.add_fleet(0, FLEET_LIMIT).add_ships(3, 1)
-	state.add_minefield(0, 512).mines = 2500
-	state.add_packet(1, true, 512).minerals.assign([5, 0, 7])
-	state.add_wormhole(512).other_end = 1
-	state.add_wormhole(512).other_end = 0
-	state.mod_data = {"extra_hulls": {"b": 2, "a": [1, "x", true, null]}}
-	return state
+	return SampleGame.build()
 
 
 func _reload(text: String) -> GameState:

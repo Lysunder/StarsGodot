@@ -1,5 +1,6 @@
 [
   { "type": "constant", "id": "constant.battle.max_rounds", "value": 16 },
+  { "type": "constant", "id": "constant.research.max_level", "value": 26 },
   { "type": "constant", "id": "constant.limits.players", "value": 16 },
   { "type": "constant", "id": "constant.limits.fleets_per_player", "value": 512 },
   { "type": "constant", "id": "constant.limits.ship_designs", "value": 16 },
