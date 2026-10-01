@@ -30,7 +30,7 @@ Phase ids are ours (MODDING §7). "Order inside" lists what is confirmed so far;
 | 2 | `orders.apply` | `ApplyLoggedOrders` per player | Players in index order; each player's order blocks in file order (S11). |
 | 3 | `orders.cleanup` | loops in `GenerateTurn` | Bookkeeping after orders: per-player fleet checks, unused-design cleanup. |
 | 4 | `fleets.resolve_targets` | `UpdateWaypointTargets`, then up to 8 passes over fleets | Resolves waypoints that target other fleets (follow and intercept chains); message when a followed fleet didn't move. |
-| 5 | `wp0.tasks` | `DoWaypointTasks(0)` | 5a Mystery Trader (wp0 part) → 5b task pass 1 (unload) → 5c ground combat → 5d tech update → 5e task pass 2 (load and other tasks) → 5f queued cargo transfers. |
+| 5 | `wp0.tasks` | `DoWaypointTasks(0)` | 5a Mystery Trader (wp0 part) → 5b task pass 1 (unloads, scrap, colonize) → 5c ground combat and colonization → 5d tech update → 5e task pass 2 (loads, merges, colonize) → 5f queued cargo transfers. Fleets are handled in owner order, then fleet number (S11). |
 | 6 | `races.validate` | loop in `GenerateTurn` | Clamps every race setting to its range; repairs an invalid race (message to the player). |
 | 7 | `minefields.reset` | `ResetMinefieldTurnState` | Clears per-turn minefield state. |
 | 8 | `space.move_before_fleets` | `MoveSpaceObjects(0)` | Mystery Trader moves; packets in space move, decay and hit (S14, S18). |
@@ -41,7 +41,7 @@ Phase ids are ours (MODDING §7). "Order inside" lists what is confirmed so far;
 | 13 | `production` | `DoProduction` | 13a mining for every planet (`MinePlanets`, S08) → 13b per planet: resources, research, construction, packet launches (S09) → 13c population growth for every planet (`GrowPopulations`, S08) → 13d tech levels (`UpdateTechLevels` with the Super-Stealth spy bonus, S05) → 13e random events (`DoRandomEvents`, S18). |
 | 14 | `space.move_after_production` | `MoveSpaceObjects(1)` | Wormholes shift; packets launched this turn move and hit (S14). |
 | 15 | `fleets.refuel` | `GenerateFleetFuel` | Refuel at friendly docks; fuel transports and Anti-Matter Generators make fuel (S12, S19). |
-| 16 | `wp1.tasks` | `DoWaypointTasks(1)` | 16a battles, then bombing (`RunBattles` → `DoBombing`, S16, S17) → 16b Mystery Trader (wp1 part, S18) → 16c task pass 3 (unload, colonize) → 16d ground combat (S17) → 16e tech update → 16f task pass 4 (load and other tasks: mine laying, transfers, merges, remote mining … S11, S13). |
+| 16 | `wp1.tasks` | `DoWaypointTasks(1)` | 16a battles, then bombing (`RunBattles` → `DoBombing`, S16, S17) → 16b Mystery Trader (wp1 part, S18) → 16c task pass 3 (unloads, colonize, remote mining, mine laying) → 16d ground combat and colonization (S17) → 16e tech update → 16f task pass 4 (loads, merges, fleet transfers to other players, route defaults) (S11, S13). |
 | 17 | `minefields.sweep` | `SweepMinefields` | (S13) |
 | 18 | `fleets.repair` | `RepairFleetsAndStarbases` | (S19) |
 | 19 | `planets.ca_terraform` | `ClaimAdjusterTerraform` | Claim Adjuster automatic and permanent terraforming (S10). |
@@ -74,7 +74,8 @@ The community list agrees with most of the above. Differences found in the code:
 | Random events | after refueling, before battles | at the end of production, before new packets and refueling (13e) |
 | Mass packets and salvage decay | after fleets move | inside the packet handling of phases 8 and 14 (S14 to confirm) |
 | CA instaforming | before mine sweeping | Claim Adjuster terraforming runs after sweeping and repair (19); whether an instaform step also runs in task pass 4 is open (S10) |
-| Remote mining | after meeting the MT | in task pass 4 (16f), except AR mining of its own worlds, which is part of mining (13a, S08) |
+| Remote mining | after meeting the MT | in task pass 3 (16c), after the MT; AR mining of its own worlds is part of mining (13a, S08) |
+| Load order | waypoint load tasks in random player order | no random draw in the task passes: fleets are handled in owner order, then fleet number (S11; harness to confirm) |
 
 ## Edge cases
 
@@ -94,7 +95,6 @@ The community list agrees with most of the above. Differences found in the code:
 1. Phase 3 and phase 10: identify each loop's purpose exactly (they don't call named functions).
 2. The meaning of the `random(8)` value stored at phase 26.
 3. Inside phases 8 and 14: which packet and salvage steps happen in which call (S14).
-4. Iteration order of the global fleet list used by the task passes (by owner and fleet number, or creation
-   order) and whether load tasks use a random player order as the community list says (no random draw was found
-   in the task passes; S11).
+4. Resolved in S11: the fleet list is kept sorted by owner, then fleet number, and the task passes use that order
+   (no random player order). Harness to confirm.
 5. How many draws `WriteGameFile` makes besides the header (S01).
