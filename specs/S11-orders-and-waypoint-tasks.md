@@ -1,8 +1,7 @@
 # S11 Orders and waypoint tasks
 
-Status: draft (2026-09-30), first pass. Structure read from the code: which order kinds exist, when orders are
-applied, which waypoint task runs in which pass, and the fleet order. The exact amounts of each transport action,
-scrap recovery and mine-laying rates are marked for a second pass (see "Open questions").
+Status: draft (2026-09-30), second pass. Structure, colonize, scrap, remote mining, mine laying and task completion
+read from the code; transport amounts partly (see "Open questions").
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -75,7 +74,9 @@ rules.
 and 4 use the waypoint the fleet is at after movement (its new waypoint 0, which was waypoint 1 if it arrived).
 Ground combat and colonization are resolved between the two passes of each pair (S02 5c, 16d).
 
-**Task done:** when a task is complete the player gets a message and the fleet advances to its next waypoint.
+**Task done:** when a task finishes (transport, colonize, scrap, merge), the task is cleared from the fleet's current
+waypoint. A fleet with no further waypoints also gets the "completed its assigned orders" message. Remote mining
+and lay-mines (with years left) don't finish. Movement takes the fleet on to its next waypoint (S12).
 
 ### Transport
 
@@ -104,21 +105,45 @@ Rules visible in the code (amounts to be confirmed, see "Open questions"):
 
 ### Colonize
 
-At a planet with no owner, a fleet carrying colonists colonizes it; the colonization is recorded and resolved
-together with ground combat (S17), so several players colonizing the same planet in one turn are resolved there.
-If the planet has an owner, or the fleet has no colonists, or it isn't at a planet, the player gets a message.
+At a planet with no owner, a fleet carrying colonists colonizes it. Conditions, in order (each failure sends the
+player a message and the task stays):
 
-**Fix B16:** the fleet must contain a ship with a colonization module (or an orbital construction module), checked
-on the ships actually in the fleet. The original didn't check this.
+1. The fleet is at a planet (not deep space).
+2. The planet has no owner.
+3. The fleet carries colonists.
+4. At least one ship type in the fleet has a Colonization Module or an Orbital Construction Module in its design.
+
+The fleet is then dismantled: 3/4 of the ships' mineral cost (per mineral, rounded down) plus all minerals in the
+cargo go to the planet's surface, and the colonization is recorded and resolved together with ground combat (S17),
+so several players colonizing the same planet in one turn are resolved there.
+
+**Fix B16:** the original checks the *current* design of each ship type, so a design changed after the ships were
+built gives the wrong answer. We check the ships actually in the fleet (each ship keeps the design it was built
+with).
 
 ### Scrap
 
-Pass 1 only. At the fleet's own planet the colonists aboard join the planet's population. The ships are dismantled:
-at a starbase or a planet the owner gets minerals and resources back; in deep space they become salvage.
-Ultimate Recycling improves the recovery; scrapping can also give tech (S24).
+Pass 1 only. The fleet is dismantled; per mineral, with M = Σ ships × the design's cost of that mineral:
 
-**Fix B14:** recovery is based on the cost actually paid for each ship (stored with the ship), and never more than
-the scrapping player's own cost for the design.
+| Where | Minerals recovered |
+|---|---|
+| Planet with a starbase | 4M / 5 |
+| Planet with a starbase, planet owner has Ultimate Recycling | 9M / 10 |
+| Planet without a starbase | M / 3 |
+| Planet without a starbase, planet owner has Ultimate Recycling | 9M / 20 |
+| Deep space | M / 3, left as salvage |
+
+- Minerals in the cargo are added in full; colonists in the cargo join the population if the planet is the fleet
+  owner's own.
+- The recovery goes to the planet whoever owns it, and the Ultimate Recycling check is on the **planet's owner**.
+- With Ultimate Recycling the ships' resource cost R (capped at 65,535) is also banked for the planet's next year;
+  the message reports R × r / (R + r), where r is the planet's resources.
+- Bleeding Edge Technology: the design's cost is recomputed with the scrapper's current tech first.
+- Designs marked as having parts the player can no longer build count at a quarter of their cost.
+- Scrapping at a planet with a starbase can give the planet's owner tech (S24).
+
+**Fix B14:** M uses the cost actually paid for each ship (stored with the ship), and never more than the scrapping
+player's own cost for that design; this removes profit from scrapping other races' cheaper ships.
 
 ### Merge with fleet
 
@@ -127,9 +152,32 @@ it. Otherwise the player gets a message.
 
 ### Remote mining
 
-Pass 3 only, for a fleet with mining robots that was at the planet before movement. Mining uses the fleet's mining
-rate (sum of its robots, S04) with the planet's concentrations and wears them down (S08 "Mining"). Rules about which
-planets may be remote mined (unowned, or the race's own for Alternate Reality) are part of the second pass.
+Pass 3 only. Conditions (each failure sends a message; the task stays and is tried again next turn):
+
+1. The fleet didn't move this turn.
+2. It is at a planet (not deep space).
+3. The planet has no owner. (A fleet of an Alternate Reality race at an owned planet does nothing here; AR mines its
+   own worlds during the mining phase, S08.)
+4. The fleet's mining rate is above 0: Σ ships × the design's mining robots' `mining_rate`, capped at 4,000.
+
+The planet is mined at that rate (S08 "Mining", remote form: rate × concentration, no mine-output factor); the yield
+goes to the planet's surface. Remote mining never completes; it repeats every turn.
+
+### Lay mines
+
+Pass 3 only.
+
+1. The fleet must not have moved this turn, except for Space Demolition races, whose moving fleets lay half.
+2. The fleet's rate per mine type (standard, heavy, speed bump) is Σ ships × the design's `mines_…` stats, doubled
+   for the Mini and Super Mine Layer hulls (S04). With no rate at all the player gets a message.
+3. The task's number is how many more years to lay: 0 means this year only (the task then ends), the "indefinitely"
+   value keeps it forever, any other number counts down.
+4. For each mine type with mines to lay: find the player's minefield of that type that already contains the fleet
+   (distance² ≤ the field's mine count) and is nearest. If there is one and it holds at most 999,999 mines, the new
+   mines join it and its center moves to the mine-weighted average of the two positions (integer division);
+   otherwise a new field is created at the fleet's position (S13).
+5. A Space Demolition fleet without a task at its current waypoint, whose next waypoint has the lay-mines task,
+   also lays mines (at the moving rate) as it travels.
 
 ### Transfer fleet
 
@@ -174,11 +222,11 @@ scrapping tech gain (S24) draw from the generator in their own specs.
 
 ## Open questions
 
-1. Exact transport amounts for every action, including how "set amount to" and "set waypoint to" choose between
-   loading and unloading, and the fuel "optimal" amount.
-2. Scrap recovery percentages (with and without a starbase, with Ultimate Recycling and Bleeding Edge Technology).
-3. Remote mining conditions (which planets, the "was already here" flag) and Alternate Reality's own-world mining.
-4. Mine-laying rates and the Space Demolition rule for moving minelayers (S13).
-5. When "task done" fires for each task, and how repeat orders loop.
-6. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
+1. Exact transport amounts for "set amount to", "set waypoint to" and "load optimal" (fuel), and the rule that
+   lets a fleet pick up minerals from the player's own remote-mining fleet at an unowned planet (seen in the target
+   selection, not yet understood).
+2. How "wait for %" keeps the fleet at the waypoint (it rewrites waypoint 0 each pass).
+3. When the "didn't move" flag is set and cleared (S12).
+4. Repeat orders: how the waypoint list loops (S12).
+5. Confirm the fleet order and the absence of a random player order with the harness (two players loading from
    the same planet in one turn).

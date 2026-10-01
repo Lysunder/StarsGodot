@@ -71,7 +71,7 @@ All part records share a 52-byte head. Categories with more numbers add words af
 | Torpedo | 60 | range, power, initiative, base accuracy (%) |
 | Bomb | 58 | always 1; population kill (tenths of a percent); installations destroyed |
 | Mining robot | 54 | mining rate |
-| Mine layer | 54 | mines laid per year ÷ 10 |
+| Mine layer | 54 | mines laid per year ÷ 10 (items 0–3 standard, 4–6 heavy, 7–9 speed bump; content stats `mines_standard`, `mines_heavy`, `mines_speed_bump`) |
 | Orbital | 56 | stargates: mass limit, range (−1 = unlimited); mass drivers: warp, 0 |
 | Electrical, mechanical | 54 | one value whose meaning depends on the item (see "Per-item effects") |
 | Planetary | 54 | scanners: range (negative = penetrating); defenses: coverage value |
@@ -113,7 +113,10 @@ integer.
 8. **Cloak units** = Σ count × `cloak`. The conversion to a cloaking percentage is S15.
 9. **Mine sweep rate** = Σ count × power × r² over beam slots, where r is the beam's range, or 4 for gatling beams.
    Sapper beams don't sweep. Starbases add 1 to r.
-10. **Fuel generation per year**: 50 per Anti-Matter Generator, plus 200 per ship with the Fuel Transport or
+10. **Mines laid per year**, per mine type: Σ count × that type's `mines_…` stat; doubled for the Mini Mine Layer and
+    Super Mine Layer hulls (hull stat `mine_laying_pct` 200); capped at 100,000,000 (S11, S13).
+11. **Mining rate** = Σ count × `mining_rate` over mining robots (the Orbital Adjuster has none), capped at 4,000.
+12. **Fuel generation per year**: 50 per Anti-Matter Generator, plus 200 per ship with the Fuel Transport or
     Super-Fuel Xport hull (applied in S12/S19).
 
 These design values combine part effects in non-additive ways and are specified by the subsystem specs, using the
@@ -135,7 +138,7 @@ Stat names are the ones our content uses.
 | Mega Poly Shell (armor 9) | shield 100, cloak 40, jamming 20, scan_range 80 |
 | Enigma Pulsar (engine 8) | cloak 20, battle_move_halves 1 |
 | Chameleon Scanner (scanner 6) | cloak 40 |
-| Multi Contained Munition (beam 18) | cloak 20, torpedo_accuracy 10, scan_range 150 |
+| Multi Contained Munition (beam 18) | cloak 20, torpedo_accuracy 10, scan_range 150, mines_standard 40 |
 | Alien Miner (mining robot 6) | cloak 60, jamming 30, battle_move_halves 1 |
 | Orbital Adjuster (mining robot 7) | cloak 50 |
 | Cloaking devices (electrical 0–3) | cloak = record value |
@@ -162,7 +165,6 @@ Behavior groups by item number, named from the items. The rules are in S13, S16 
 
 - bombs 0–4 normal, 5–7 installation-only (LBU), 8 Hush-a-Boom, 9 retro, 10–14 smart;
 - torpedoes 8–11 capital missiles;
-- mine layers 0–3 standard, 4–6 heavy, 7–9 speed traps;
 - mechanical 0 colonization module, 1 orbital construction module, 9 jump gate;
 - electrical 14 energy dampener, 15 tachyon detector;
 - scanners 5 and 14 steal cargo from fleets; 14 also from planets.
@@ -317,7 +319,7 @@ purpose slot (scanner, shield, armor, beam, torpedo, mine layer, electrical, mec
 | 15 | `part.beam.myopic_disruptor` | Myopic Disruptor | We18 | 1 | 0/14/0/12 | range 1, power 169, initiative 9 | – |
 | 16 | `part.beam.blunderbuss` | Blunderbuss | We19 | 10 | 0/30/0/13 | range 0, power 592, initiative 11 | – |
 | 17 | `part.beam.disruptor` | Disruptor | We20 | 2 | 0/16/0/20 | range 2, power 169, initiative 8 | – |
-| 18 | `part.beam.multi_contained_munition` | Multi Contained Munition | En21 We21 El16 Bi12 | 8 | 6/40/6/40 | range 3, power 140, initiative 6, cloak 20, torpedo_accuracy 10, scan_range 150 | – |
+| 18 | `part.beam.multi_contained_munition` | Multi Contained Munition | En21 We21 El16 Bi12 | 8 | 6/40/6/40 | range 3, power 140, initiative 6, cloak 20, torpedo_accuracy 10, scan_range 150, mines_standard 40 | – |
 | 19 | `part.beam.syncro_sapper` | Syncro Sapper | En11 We21 | 1 | 0/0/8/21 | range 3, power 541, initiative 14 | sapper |
 | 20 | `part.beam.mega_disruptor` | Mega Disruptor | We22 | 2 | 0/30/0/33 | range 3, power 169, initiative 6 | – |
 | 21 | `part.beam.big_mutha_cannon` | Big Mutha Cannon | We23 | 3 | 0/36/0/23 | range 2, power 204, initiative 13 | gatling |
@@ -378,16 +380,16 @@ purpose slot (scanner, shield, armor, beam, torpedo, mine layer, electrical, mec
 
 | # | Id | Name | Tech | Mass | Fe/Bo/Ge/Res | Stats | Tags |
 |---|---|---|---|---|---|---|---|
-| 0 | `part.mine_layer.mine_dispenser_40` | Mine Dispenser 40 | – | 25 | 2/10/8/45 | mines_per_year 40 | standard_mines |
-| 1 | `part.mine_layer.mine_dispenser_50` | Mine Dispenser 50 | En2 Bi4 | 30 | 2/12/10/55 | mines_per_year 50 | standard_mines |
-| 2 | `part.mine_layer.mine_dispenser_80` | Mine Dispenser 80 | En3 Bi7 | 30 | 2/14/10/65 | mines_per_year 80 | standard_mines |
-| 3 | `part.mine_layer.mine_dispenser_130` | Mine Dispenser 130 | En6 Bi12 | 30 | 2/18/10/80 | mines_per_year 130 | standard_mines |
-| 4 | `part.mine_layer.heavy_dispenser_50` | Heavy Dispenser 50 | En5 Bi3 | 10 | 2/20/5/50 | mines_per_year 50 | heavy_mines |
-| 5 | `part.mine_layer.heavy_dispenser_110` | Heavy Dispenser 110 | En9 Bi5 | 15 | 2/30/5/70 | mines_per_year 110 | heavy_mines |
-| 6 | `part.mine_layer.heavy_dispenser_200` | Heavy Dispenser 200 | En14 Bi7 | 20 | 2/45/5/90 | mines_per_year 200 | heavy_mines |
-| 7 | `part.mine_layer.speed_trap_20` | Speed Trap 20 | Pr2 Bi2 | 100 | 30/0/12/60 | mines_per_year 20 | speed_trap |
-| 8 | `part.mine_layer.speed_trap_30` | Speed Trap 30 | Pr3 Bi6 | 135 | 32/0/14/72 | mines_per_year 30 | speed_trap |
-| 9 | `part.mine_layer.speed_trap_50` | Speed Trap 50 | Pr5 Bi11 | 140 | 40/0/15/80 | mines_per_year 50 | speed_trap |
+| 0 | `part.mine_layer.mine_dispenser_40` | Mine Dispenser 40 | – | 25 | 2/10/8/45 | mines_standard 40 | – |
+| 1 | `part.mine_layer.mine_dispenser_50` | Mine Dispenser 50 | En2 Bi4 | 30 | 2/12/10/55 | mines_standard 50 | – |
+| 2 | `part.mine_layer.mine_dispenser_80` | Mine Dispenser 80 | En3 Bi7 | 30 | 2/14/10/65 | mines_standard 80 | – |
+| 3 | `part.mine_layer.mine_dispenser_130` | Mine Dispenser 130 | En6 Bi12 | 30 | 2/18/10/80 | mines_standard 130 | – |
+| 4 | `part.mine_layer.heavy_dispenser_50` | Heavy Dispenser 50 | En5 Bi3 | 10 | 2/20/5/50 | mines_heavy 50 | – |
+| 5 | `part.mine_layer.heavy_dispenser_110` | Heavy Dispenser 110 | En9 Bi5 | 15 | 2/30/5/70 | mines_heavy 110 | – |
+| 6 | `part.mine_layer.heavy_dispenser_200` | Heavy Dispenser 200 | En14 Bi7 | 20 | 2/45/5/90 | mines_heavy 200 | – |
+| 7 | `part.mine_layer.speed_trap_20` | Speed Trap 20 | Pr2 Bi2 | 100 | 30/0/12/60 | mines_speed_bump 20 | – |
+| 8 | `part.mine_layer.speed_trap_30` | Speed Trap 30 | Pr3 Bi6 | 135 | 32/0/14/72 | mines_speed_bump 30 | – |
+| 9 | `part.mine_layer.speed_trap_50` | Speed Trap 50 | Pr5 Bi11 | 140 | 40/0/15/80 | mines_speed_bump 50 | – |
 
 #### Orbital (kind 0x0200)
 

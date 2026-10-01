@@ -11,11 +11,8 @@
       "resources": 45
     },
     "stats": {
-      "mines_per_year": 40
+      "mines_standard": 40
     },
-    "tags": [
-      "standard_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -36,11 +33,8 @@
       "resources": 55
     },
     "stats": {
-      "mines_per_year": 50
+      "mines_standard": 50
     },
-    "tags": [
-      "standard_mines"
-    ],
     "forbidden_traits": [
       "trait.prt.WM"
     ]
@@ -61,11 +55,8 @@
       "resources": 65
     },
     "stats": {
-      "mines_per_year": 80
+      "mines_standard": 80
     },
-    "tags": [
-      "standard_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -86,11 +77,8 @@
       "resources": 80
     },
     "stats": {
-      "mines_per_year": 130
+      "mines_standard": 130
     },
-    "tags": [
-      "standard_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -111,11 +99,8 @@
       "resources": 50
     },
     "stats": {
-      "mines_per_year": 50
+      "mines_heavy": 50
     },
-    "tags": [
-      "heavy_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -136,11 +121,8 @@
       "resources": 70
     },
     "stats": {
-      "mines_per_year": 110
+      "mines_heavy": 110
     },
-    "tags": [
-      "heavy_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -161,11 +143,8 @@
       "resources": 90
     },
     "stats": {
-      "mines_per_year": 200
+      "mines_heavy": 200
     },
-    "tags": [
-      "heavy_mines"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -186,11 +165,8 @@
       "resources": 60
     },
     "stats": {
-      "mines_per_year": 20
+      "mines_speed_bump": 20
     },
-    "tags": [
-      "speed_trap"
-    ],
     "required_traits": [
       "trait.prt.IS",
       "trait.prt.SD"
@@ -212,11 +188,8 @@
       "resources": 72
     },
     "stats": {
-      "mines_per_year": 30
+      "mines_speed_bump": 30
     },
-    "tags": [
-      "speed_trap"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]
@@ -237,11 +210,8 @@
       "resources": 80
     },
     "stats": {
-      "mines_per_year": 50
+      "mines_speed_bump": 50
     },
-    "tags": [
-      "speed_trap"
-    ],
     "required_traits": [
       "trait.prt.SD"
     ]

@@ -405,7 +405,8 @@
       "initiative": 6,
       "cloak": 20,
       "torpedo_accuracy": 10,
-      "scan_range": 150
+      "scan_range": 150,
+      "mines_standard": 40
     }
   },
   {
