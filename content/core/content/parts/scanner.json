@@ -1,0 +1,312 @@
+[
+  {
+    "type": "part",
+    "id": "part.scanner.bat_scanner",
+    "category": "scanner",
+    "mass": 2,
+    "cost": {
+      "ironium": 1,
+      "boranium": 0,
+      "germanium": 1,
+      "resources": 1
+    },
+    "stats": {
+      "scan_range": 0
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.rhino_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.electronics": 1
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 3
+    },
+    "stats": {
+      "scan_range": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.mole_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.electronics": 4
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 9
+    },
+    "stats": {
+      "scan_range": 100
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.dna_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.propulsion": 3,
+      "tech_field.biotech": 6
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 1,
+      "boranium": 1,
+      "germanium": 1,
+      "resources": 5
+    },
+    "stats": {
+      "scan_range": 125
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.possum_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.electronics": 5
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 18
+    },
+    "stats": {
+      "scan_range": 150
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.pick_pocket_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.electronics": 4,
+      "tech_field.biotech": 4
+    },
+    "mass": 15,
+    "cost": {
+      "ironium": 8,
+      "boranium": 10,
+      "germanium": 6,
+      "resources": 35
+    },
+    "stats": {
+      "scan_range": 80
+    },
+    "tags": [
+      "steals_from_fleets"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.chameleon_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.electronics": 6
+    },
+    "mass": 6,
+    "cost": {
+      "ironium": 4,
+      "boranium": 6,
+      "germanium": 4,
+      "resources": 25
+    },
+    "stats": {
+      "scan_range": 160,
+      "cloak": 40
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.ferret_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.electronics": 7,
+      "tech_field.biotech": 2
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 36
+    },
+    "stats": {
+      "scan_range": 185
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.dolphin_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.electronics": 10,
+      "tech_field.biotech": 4
+    },
+    "mass": 4,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 10,
+      "resources": 40
+    },
+    "stats": {
+      "scan_range": 220
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.gazelle_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.electronics": 8
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 4,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 24
+    },
+    "stats": {
+      "scan_range": 225
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.rna_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.propulsion": 5,
+      "tech_field.biotech": 10
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 1,
+      "boranium": 1,
+      "germanium": 2,
+      "resources": 20
+    },
+    "stats": {
+      "scan_range": 230
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.cheetah_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.electronics": 11
+    },
+    "mass": 4,
+    "cost": {
+      "ironium": 3,
+      "boranium": 1,
+      "germanium": 13,
+      "resources": 50
+    },
+    "stats": {
+      "scan_range": 275
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.elephant_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 6,
+      "tech_field.electronics": 16,
+      "tech_field.biotech": 7
+    },
+    "mass": 6,
+    "cost": {
+      "ironium": 8,
+      "boranium": 5,
+      "germanium": 14,
+      "resources": 70
+    },
+    "stats": {
+      "scan_range": 300
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.eagle_eye_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 6,
+      "tech_field.electronics": 14
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 3,
+      "boranium": 2,
+      "germanium": 21,
+      "resources": 64
+    },
+    "stats": {
+      "scan_range": 335
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.robber_baron_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 10,
+      "tech_field.electronics": 15,
+      "tech_field.biotech": 10
+    },
+    "mass": 20,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 10,
+      "resources": 90
+    },
+    "stats": {
+      "scan_range": 220
+    },
+    "tags": [
+      "steals_from_fleets",
+      "steals_from_planets"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.scanner.peerless_scanner",
+    "category": "scanner",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.electronics": 24
+    },
+    "mass": 4,
+    "cost": {
+      "ironium": 3,
+      "boranium": 2,
+      "germanium": 30,
+      "resources": 90
+    },
+    "stats": {
+      "scan_range": 500
+    }
+  }
+]

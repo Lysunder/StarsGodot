@@ -1,0 +1,218 @@
+[
+  {
+    "type": "part",
+    "id": "part.mine_layer.mine_dispenser_40",
+    "category": "mine_layer",
+    "mass": 25,
+    "cost": {
+      "ironium": 2,
+      "boranium": 10,
+      "germanium": 8,
+      "resources": 45
+    },
+    "stats": {
+      "mines_per_year": 40
+    },
+    "tags": [
+      "standard_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.mine_dispenser_50",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.biotech": 4
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 2,
+      "boranium": 12,
+      "germanium": 10,
+      "resources": 55
+    },
+    "stats": {
+      "mines_per_year": 50
+    },
+    "tags": [
+      "standard_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.mine_dispenser_80",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.biotech": 7
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 2,
+      "boranium": 14,
+      "germanium": 10,
+      "resources": 65
+    },
+    "stats": {
+      "mines_per_year": 80
+    },
+    "tags": [
+      "standard_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.mine_dispenser_130",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 6,
+      "tech_field.biotech": 12
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 2,
+      "boranium": 18,
+      "germanium": 10,
+      "resources": 80
+    },
+    "stats": {
+      "mines_per_year": 130
+    },
+    "tags": [
+      "standard_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.heavy_dispenser_50",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.biotech": 3
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 2,
+      "boranium": 20,
+      "germanium": 5,
+      "resources": 50
+    },
+    "stats": {
+      "mines_per_year": 50
+    },
+    "tags": [
+      "heavy_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.heavy_dispenser_110",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 9,
+      "tech_field.biotech": 5
+    },
+    "mass": 15,
+    "cost": {
+      "ironium": 2,
+      "boranium": 30,
+      "germanium": 5,
+      "resources": 70
+    },
+    "stats": {
+      "mines_per_year": 110
+    },
+    "tags": [
+      "heavy_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.heavy_dispenser_200",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.energy": 14,
+      "tech_field.biotech": 7
+    },
+    "mass": 20,
+    "cost": {
+      "ironium": 2,
+      "boranium": 45,
+      "germanium": 5,
+      "resources": 90
+    },
+    "stats": {
+      "mines_per_year": 200
+    },
+    "tags": [
+      "heavy_mines"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.speed_trap_20",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.propulsion": 2,
+      "tech_field.biotech": 2
+    },
+    "mass": 100,
+    "cost": {
+      "ironium": 30,
+      "boranium": 0,
+      "germanium": 12,
+      "resources": 60
+    },
+    "stats": {
+      "mines_per_year": 20
+    },
+    "tags": [
+      "speed_trap"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.speed_trap_30",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.propulsion": 3,
+      "tech_field.biotech": 6
+    },
+    "mass": 135,
+    "cost": {
+      "ironium": 32,
+      "boranium": 0,
+      "germanium": 14,
+      "resources": 72
+    },
+    "stats": {
+      "mines_per_year": 30
+    },
+    "tags": [
+      "speed_trap"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mine_layer.speed_trap_50",
+    "category": "mine_layer",
+    "tech": {
+      "tech_field.propulsion": 5,
+      "tech_field.biotech": 11
+    },
+    "mass": 140,
+    "cost": {
+      "ironium": 40,
+      "boranium": 0,
+      "germanium": 15,
+      "resources": 80
+    },
+    "stats": {
+      "mines_per_year": 50
+    },
+    "tags": [
+      "speed_trap"
+    ]
+  }
+]

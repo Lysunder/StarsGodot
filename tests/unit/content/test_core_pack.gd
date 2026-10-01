@@ -37,7 +37,7 @@ func test_fixture_mod_adds_hull_and_overrides_stat() -> void:
 	assert_int(reg.hull("hull.small_freighter")["cost"]["resources"]).is_equal(18)
 	assert_int(reg.hull("extra_hulls.hull.long_scout")["cost"]["resources"]).is_equal(12)
 	assert_array(Array(reg.provenance("part.beam.laser"))).is_equal(
-		["core:add content/parts.json", "extra_hulls:patch patches/laser.json"]
+		["core:add content/parts/beam.json", "extra_hulls:patch patches/laser.json"]
 	)
 
 

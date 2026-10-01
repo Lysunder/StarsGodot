@@ -1,0 +1,431 @@
+[
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_3",
+    "category": "terraform",
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 3
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_5",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 5
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_7",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 6
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 7
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_10",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 9
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 10
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_15",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 13
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 15
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_20",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 17
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 20
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_25",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 22
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 25
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.total_terraform_30",
+    "category": "terraform",
+    "tech": {
+      "tech_field.biotech": 25
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 70
+    },
+    "stats": {
+      "terraform": 30
+    },
+    "tags": [
+      "terraform_total"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.gravity_terraform_3",
+    "category": "terraform",
+    "tech": {
+      "tech_field.propulsion": 1,
+      "tech_field.biotech": 1
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 3
+    },
+    "tags": [
+      "terraform_gravity"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.gravity_terraform_7",
+    "category": "terraform",
+    "tech": {
+      "tech_field.propulsion": 5,
+      "tech_field.biotech": 2
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 7
+    },
+    "tags": [
+      "terraform_gravity"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.gravity_terraform_11",
+    "category": "terraform",
+    "tech": {
+      "tech_field.propulsion": 10,
+      "tech_field.biotech": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 11
+    },
+    "tags": [
+      "terraform_gravity"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.gravity_terraform_15",
+    "category": "terraform",
+    "tech": {
+      "tech_field.propulsion": 16,
+      "tech_field.biotech": 4
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 15
+    },
+    "tags": [
+      "terraform_gravity"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.temp_terraform_3",
+    "category": "terraform",
+    "tech": {
+      "tech_field.energy": 1,
+      "tech_field.biotech": 1
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 3
+    },
+    "tags": [
+      "terraform_temperature"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.temp_terraform_7",
+    "category": "terraform",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.biotech": 2
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 7
+    },
+    "tags": [
+      "terraform_temperature"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.temp_terraform_11",
+    "category": "terraform",
+    "tech": {
+      "tech_field.energy": 10,
+      "tech_field.biotech": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 11
+    },
+    "tags": [
+      "terraform_temperature"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.temp_terraform_15",
+    "category": "terraform",
+    "tech": {
+      "tech_field.energy": 16,
+      "tech_field.biotech": 4
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 15
+    },
+    "tags": [
+      "terraform_temperature"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.radiation_terraform_3",
+    "category": "terraform",
+    "tech": {
+      "tech_field.weapons": 1,
+      "tech_field.biotech": 1
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 3
+    },
+    "tags": [
+      "terraform_radiation"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.radiation_terraform_7",
+    "category": "terraform",
+    "tech": {
+      "tech_field.weapons": 5,
+      "tech_field.biotech": 2
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 7
+    },
+    "tags": [
+      "terraform_radiation"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.radiation_terraform_11",
+    "category": "terraform",
+    "tech": {
+      "tech_field.weapons": 10,
+      "tech_field.biotech": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 11
+    },
+    "tags": [
+      "terraform_radiation"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.terraform.radiation_terraform_15",
+    "category": "terraform",
+    "tech": {
+      "tech_field.weapons": 16,
+      "tech_field.biotech": 4
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "terraform": 15
+    },
+    "tags": [
+      "terraform_radiation"
+    ]
+  }
+]

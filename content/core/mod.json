@@ -5,5 +5,5 @@
   "api_version": 1,
   "kind": "gameplay",
   "authors": ["StarsGodot contributors"],
-  "description": "The base game, packaged as a mod. Minimal provisional pack until specs S04-S07 generate the full one."
+  "description": "The base game, packaged as a mod. Parts and hulls from spec S04; races and universe data arrive with S05-S07."
 }

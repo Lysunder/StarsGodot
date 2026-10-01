@@ -1,0 +1,291 @@
+[
+  {
+    "type": "part",
+    "id": "part.planetary.viewer_50",
+    "category": "planetary",
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.viewer_90",
+    "category": "planetary",
+    "tech": {
+      "tech_field.electronics": 1
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 90
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.scoper_150",
+    "category": "planetary",
+    "tech": {
+      "tech_field.electronics": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 150
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.scoper_220",
+    "category": "planetary",
+    "tech": {
+      "tech_field.electronics": 6
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 220
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.scoper_280",
+    "category": "planetary",
+    "tech": {
+      "tech_field.electronics": 8
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 280
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.snooper_320x",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.electronics": 10,
+      "tech_field.biotech": 3
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 320
+    },
+    "tags": [
+      "penetrating"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.snooper_400x",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.electronics": 13,
+      "tech_field.biotech": 6
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 400
+    },
+    "tags": [
+      "penetrating"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.snooper_500x",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.electronics": 16,
+      "tech_field.biotech": 7
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 500
+    },
+    "tags": [
+      "penetrating"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.snooper_620x",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.electronics": 23,
+      "tech_field.biotech": 9
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 10,
+      "boranium": 10,
+      "germanium": 70,
+      "resources": 100
+    },
+    "stats": {
+      "scan_range": 620
+    },
+    "tags": [
+      "penetrating"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.sdi",
+    "category": "planetary",
+    "mass": 0,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "defense": 10
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.missile_battery",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 5
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "defense": 20
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.laser_battery",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 10
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "defense": 24
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.planetary_shield",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 16
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "defense": 30
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.neutron_shield",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 23
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 5,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "defense": 38
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.planetary.genesis_device",
+    "category": "planetary",
+    "tech": {
+      "tech_field.energy": 20,
+      "tech_field.weapons": 10,
+      "tech_field.propulsion": 10,
+      "tech_field.construction": 20,
+      "tech_field.electronics": 10,
+      "tech_field.biotech": 20
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 5000
+    },
+    "tags": [
+      "genesis_device"
+    ]
+  }
+]

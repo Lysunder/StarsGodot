@@ -1,0 +1,509 @@
+[
+  {
+    "type": "part",
+    "id": "part.beam.laser",
+    "category": "beam",
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 6,
+      "germanium": 0,
+      "resources": 5
+    },
+    "stats": {
+      "range": 1,
+      "power": 10,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.x_ray_laser",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 3
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 6,
+      "germanium": 0,
+      "resources": 6
+    },
+    "stats": {
+      "range": 1,
+      "power": 16,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.mini_gun",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 5
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 0,
+      "boranium": 16,
+      "germanium": 0,
+      "resources": 10
+    },
+    "stats": {
+      "range": 2,
+      "power": 13,
+      "initiative": 12
+    },
+    "tags": [
+      "gatling"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.yakimora_light_phaser",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 6
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 8,
+      "germanium": 0,
+      "resources": 7
+    },
+    "stats": {
+      "range": 1,
+      "power": 26,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.blackjack",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 7
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 0,
+      "boranium": 16,
+      "germanium": 0,
+      "resources": 7
+    },
+    "stats": {
+      "range": 0,
+      "power": 90,
+      "initiative": 10
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.phaser_bazooka",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 8
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 8,
+      "germanium": 0,
+      "resources": 11
+    },
+    "stats": {
+      "range": 2,
+      "power": 26,
+      "initiative": 7
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.pulsed_sapper",
+    "category": "beam",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.weapons": 9
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 4,
+      "resources": 12
+    },
+    "stats": {
+      "range": 3,
+      "power": 82,
+      "initiative": 14
+    },
+    "tags": [
+      "sapper"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.colloidal_phaser",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 10
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 14,
+      "germanium": 0,
+      "resources": 18
+    },
+    "stats": {
+      "range": 3,
+      "power": 26,
+      "initiative": 5
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.gatling_gun",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 11
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 0,
+      "boranium": 20,
+      "germanium": 0,
+      "resources": 13
+    },
+    "stats": {
+      "range": 2,
+      "power": 31,
+      "initiative": 12
+    },
+    "tags": [
+      "gatling"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.mini_blaster",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 12
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 10,
+      "germanium": 0,
+      "resources": 9
+    },
+    "stats": {
+      "range": 1,
+      "power": 66,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.bludgeon",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 13
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 0,
+      "boranium": 22,
+      "germanium": 0,
+      "resources": 9
+    },
+    "stats": {
+      "range": 0,
+      "power": 231,
+      "initiative": 10
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.mark_iv_blaster",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 14
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 12,
+      "germanium": 0,
+      "resources": 15
+    },
+    "stats": {
+      "range": 2,
+      "power": 66,
+      "initiative": 7
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.phased_sapper",
+    "category": "beam",
+    "tech": {
+      "tech_field.energy": 8,
+      "tech_field.weapons": 15
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 16
+    },
+    "stats": {
+      "range": 3,
+      "power": 211,
+      "initiative": 14
+    },
+    "tags": [
+      "sapper"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.heavy_blaster",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 16
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 20,
+      "germanium": 0,
+      "resources": 25
+    },
+    "stats": {
+      "range": 3,
+      "power": 66,
+      "initiative": 5
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.gatling_neutrino_cannon",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 17
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 0,
+      "boranium": 28,
+      "germanium": 0,
+      "resources": 17
+    },
+    "stats": {
+      "range": 2,
+      "power": 80,
+      "initiative": 13
+    },
+    "tags": [
+      "gatling"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.myopic_disruptor",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 18
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 14,
+      "germanium": 0,
+      "resources": 12
+    },
+    "stats": {
+      "range": 1,
+      "power": 169,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.blunderbuss",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 19
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 0,
+      "boranium": 30,
+      "germanium": 0,
+      "resources": 13
+    },
+    "stats": {
+      "range": 0,
+      "power": 592,
+      "initiative": 11
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.disruptor",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 20
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 16,
+      "germanium": 0,
+      "resources": 20
+    },
+    "stats": {
+      "range": 2,
+      "power": 169,
+      "initiative": 8
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.multi_contained_munition",
+    "category": "beam",
+    "tech": {
+      "tech_field.energy": 21,
+      "tech_field.weapons": 21,
+      "tech_field.electronics": 16,
+      "tech_field.biotech": 12
+    },
+    "mass": 8,
+    "cost": {
+      "ironium": 6,
+      "boranium": 40,
+      "germanium": 6,
+      "resources": 40
+    },
+    "stats": {
+      "range": 3,
+      "power": 140,
+      "initiative": 6,
+      "cloak": 20,
+      "torpedo_accuracy": 10,
+      "scan_range": 150
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.syncro_sapper",
+    "category": "beam",
+    "tech": {
+      "tech_field.energy": 11,
+      "tech_field.weapons": 21
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 21
+    },
+    "stats": {
+      "range": 3,
+      "power": 541,
+      "initiative": 14
+    },
+    "tags": [
+      "sapper"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.mega_disruptor",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 22
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 30,
+      "germanium": 0,
+      "resources": 33
+    },
+    "stats": {
+      "range": 3,
+      "power": 169,
+      "initiative": 6
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.big_mutha_cannon",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 23
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 0,
+      "boranium": 36,
+      "germanium": 0,
+      "resources": 23
+    },
+    "stats": {
+      "range": 2,
+      "power": 204,
+      "initiative": 13
+    },
+    "tags": [
+      "gatling"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.beam.streaming_pulverizer",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 24
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 20,
+      "germanium": 0,
+      "resources": 16
+    },
+    "stats": {
+      "range": 1,
+      "power": 433,
+      "initiative": 9
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.beam.anti_matter_pulverizer",
+    "category": "beam",
+    "tech": {
+      "tech_field.weapons": 26
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 0,
+      "boranium": 22,
+      "germanium": 0,
+      "resources": 27
+    },
+    "stats": {
+      "range": 2,
+      "power": 433,
+      "initiative": 8
+    }
+  }
+]

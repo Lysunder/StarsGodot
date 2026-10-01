@@ -1,0 +1,275 @@
+[
+  {
+    "type": "part",
+    "id": "part.torpedo.alpha_torpedo",
+    "category": "torpedo",
+    "mass": 25,
+    "cost": {
+      "ironium": 9,
+      "boranium": 3,
+      "germanium": 3,
+      "resources": 5
+    },
+    "stats": {
+      "range": 4,
+      "power": 5,
+      "initiative": 0,
+      "accuracy": 35
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.beta_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 5,
+      "tech_field.propulsion": 1
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 18,
+      "boranium": 6,
+      "germanium": 4,
+      "resources": 6
+    },
+    "stats": {
+      "range": 4,
+      "power": 12,
+      "initiative": 1,
+      "accuracy": 45
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.delta_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 10,
+      "tech_field.propulsion": 2
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 22,
+      "boranium": 8,
+      "germanium": 5,
+      "resources": 8
+    },
+    "stats": {
+      "range": 4,
+      "power": 26,
+      "initiative": 1,
+      "accuracy": 60
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.epsilon_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 14,
+      "tech_field.propulsion": 3
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 30,
+      "boranium": 10,
+      "germanium": 6,
+      "resources": 10
+    },
+    "stats": {
+      "range": 5,
+      "power": 48,
+      "initiative": 2,
+      "accuracy": 65
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.rho_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 18,
+      "tech_field.propulsion": 4
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 34,
+      "boranium": 12,
+      "germanium": 8,
+      "resources": 12
+    },
+    "stats": {
+      "range": 5,
+      "power": 90,
+      "initiative": 2,
+      "accuracy": 75
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.upsilon_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 22,
+      "tech_field.propulsion": 5
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 40,
+      "boranium": 14,
+      "germanium": 9,
+      "resources": 15
+    },
+    "stats": {
+      "range": 5,
+      "power": 169,
+      "initiative": 3,
+      "accuracy": 75
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.omega_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 26,
+      "tech_field.propulsion": 6
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 52,
+      "boranium": 18,
+      "germanium": 12,
+      "resources": 18
+    },
+    "stats": {
+      "range": 5,
+      "power": 316,
+      "initiative": 4,
+      "accuracy": 80
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.anti_matter_torpedo",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 11,
+      "tech_field.propulsion": 12,
+      "tech_field.biotech": 21
+    },
+    "mass": 8,
+    "cost": {
+      "ironium": 3,
+      "boranium": 8,
+      "germanium": 1,
+      "resources": 50
+    },
+    "stats": {
+      "range": 6,
+      "power": 60,
+      "initiative": 0,
+      "accuracy": 85
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.jihad_missile",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 12,
+      "tech_field.propulsion": 6
+    },
+    "mass": 35,
+    "cost": {
+      "ironium": 37,
+      "boranium": 13,
+      "germanium": 9,
+      "resources": 13
+    },
+    "stats": {
+      "range": 5,
+      "power": 85,
+      "initiative": 0,
+      "accuracy": 20
+    },
+    "tags": [
+      "capital_missile"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.juggernaut_missile",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 16,
+      "tech_field.propulsion": 8
+    },
+    "mass": 35,
+    "cost": {
+      "ironium": 48,
+      "boranium": 16,
+      "germanium": 11,
+      "resources": 16
+    },
+    "stats": {
+      "range": 5,
+      "power": 150,
+      "initiative": 1,
+      "accuracy": 20
+    },
+    "tags": [
+      "capital_missile"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.doomsday_missile",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 20,
+      "tech_field.propulsion": 10
+    },
+    "mass": 35,
+    "cost": {
+      "ironium": 60,
+      "boranium": 20,
+      "germanium": 13,
+      "resources": 20
+    },
+    "stats": {
+      "range": 6,
+      "power": 280,
+      "initiative": 2,
+      "accuracy": 25
+    },
+    "tags": [
+      "capital_missile"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.torpedo.armageddon_missile",
+    "category": "torpedo",
+    "tech": {
+      "tech_field.weapons": 24,
+      "tech_field.propulsion": 10
+    },
+    "mass": 35,
+    "cost": {
+      "ironium": 67,
+      "boranium": 23,
+      "germanium": 16,
+      "resources": 24
+    },
+    "stats": {
+      "range": 6,
+      "power": 525,
+      "initiative": 3,
+      "accuracy": 30
+    },
+    "tags": [
+      "capital_missile"
+    ]
+  }
+]

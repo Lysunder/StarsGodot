@@ -1,0 +1,189 @@
+[
+  {
+    "type": "part",
+    "id": "part.shield.mole_skin_shield",
+    "category": "shield",
+    "mass": 1,
+    "cost": {
+      "ironium": 1,
+      "boranium": 0,
+      "germanium": 1,
+      "resources": 4
+    },
+    "stats": {
+      "shield": 25
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.cow_hide_shield",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 3
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 5
+    },
+    "stats": {
+      "shield": 40
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.wolverine_diffuse_shield",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 6
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 6
+    },
+    "stats": {
+      "shield": 60
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.croby_sharmor",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.construction": 4
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 7,
+      "boranium": 0,
+      "germanium": 4,
+      "resources": 15
+    },
+    "stats": {
+      "shield": 60,
+      "armor": 65
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.shadow_shield",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.electronics": 3
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 7
+    },
+    "stats": {
+      "shield": 75,
+      "cloak": 70
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.bear_neutrino_barrier",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 10
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 4,
+      "boranium": 0,
+      "germanium": 4,
+      "resources": 8
+    },
+    "stats": {
+      "shield": 100
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.langston_shell",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 12,
+      "tech_field.propulsion": 9,
+      "tech_field.electronics": 9
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 10,
+      "boranium": 2,
+      "germanium": 6,
+      "resources": 20
+    },
+    "stats": {
+      "shield": 125,
+      "armor": 65,
+      "cloak": 20,
+      "jamming": 5,
+      "scan_range": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.gorilla_delagator",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 14
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 11
+    },
+    "stats": {
+      "shield": 175
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.elephant_hide_fortress",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 18
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 10,
+      "resources": 15
+    },
+    "stats": {
+      "shield": 300
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.shield.complete_phase_shield",
+    "category": "shield",
+    "tech": {
+      "tech_field.energy": 22
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 12,
+      "boranium": 0,
+      "germanium": 15,
+      "resources": 20
+    },
+    "stats": {
+      "shield": 500
+    }
+  }
+]

@@ -5,7 +5,7 @@ extends RefCounted
 ##
 ## A field spec is a Dictionary with key "t" (kind) plus options:
 ##   int (min, max), string, bool, enum (values), id, ref (to: a definition type),
-##   list (of, min), object (fields, required), map (key, value).
+##   list (of, min, max), object (fields, required), map (key, value).
 ## Objects reject unknown fields, so typos are caught. Gameplay numbers must be JSON integers:
 ## a float anywhere is an error.
 
@@ -26,6 +26,7 @@ const PART_CATEGORIES: Array[String] = [
 	"planetary",
 	"electrical",
 	"mechanical",
+	"terraform",
 ]
 
 const _INT0 := {"t": "int", "min": 0}
@@ -78,6 +79,7 @@ const TYPES := {
 			"mass": _INT0,
 			"cost": _COST,
 			"stats": _INT_MAP,
+			"fuel_table": {"t": "list", "of": _INT0, "min": 11, "max": 11},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
 		},
@@ -95,6 +97,7 @@ const TYPES := {
 			"fuel": _INT0,
 			"cargo": _INT0,
 			"initiative": _INT0,
+			"dock": {"t": "int", "min": -1},
 			"slots": {"t": "list", "of": _SLOT, "min": 1},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
@@ -181,6 +184,8 @@ static func _check(value: Variant, spec: Dictionary, pointer: String, report: Re
 				return
 			if value.size() < spec.get("min", 0):
 				report.errors.append([pointer, "needs at least %d entries" % spec["min"]])
+			if spec.has("max") and value.size() > spec["max"]:
+				report.errors.append([pointer, "allows at most %d entries" % spec["max"]])
 			for i in value.size():
 				_check(value[i], spec["of"], "%s/%d" % [pointer, i], report)
 		"object":

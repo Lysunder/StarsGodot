@@ -1,0 +1,343 @@
+[
+  {
+    "type": "part",
+    "id": "part.bomb.lady_finger_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 2
+    },
+    "mass": 40,
+    "cost": {
+      "ironium": 1,
+      "boranium": 20,
+      "germanium": 0,
+      "resources": 5
+    },
+    "stats": {
+      "kill_rate": 6,
+      "installations": 2
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.black_cat_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 5
+    },
+    "mass": 45,
+    "cost": {
+      "ironium": 1,
+      "boranium": 22,
+      "germanium": 0,
+      "resources": 7
+    },
+    "stats": {
+      "kill_rate": 9,
+      "installations": 4
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.m_70_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 8
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 1,
+      "boranium": 24,
+      "germanium": 0,
+      "resources": 9
+    },
+    "stats": {
+      "kill_rate": 12,
+      "installations": 6
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.m_80_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 11
+    },
+    "mass": 55,
+    "cost": {
+      "ironium": 1,
+      "boranium": 25,
+      "germanium": 0,
+      "resources": 12
+    },
+    "stats": {
+      "kill_rate": 17,
+      "installations": 7
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.cherry_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 14
+    },
+    "mass": 52,
+    "cost": {
+      "ironium": 1,
+      "boranium": 25,
+      "germanium": 0,
+      "resources": 11
+    },
+    "stats": {
+      "kill_rate": 25,
+      "installations": 10
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.lbu_17_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 5,
+      "tech_field.electronics": 8
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 1,
+      "boranium": 15,
+      "germanium": 15,
+      "resources": 7
+    },
+    "stats": {
+      "kill_rate": 2,
+      "installations": 16
+    },
+    "tags": [
+      "lbu"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.lbu_32_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 10,
+      "tech_field.electronics": 10
+    },
+    "mass": 35,
+    "cost": {
+      "ironium": 1,
+      "boranium": 24,
+      "germanium": 15,
+      "resources": 10
+    },
+    "stats": {
+      "kill_rate": 3,
+      "installations": 28
+    },
+    "tags": [
+      "lbu"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.lbu_74_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 15,
+      "tech_field.electronics": 12
+    },
+    "mass": 45,
+    "cost": {
+      "ironium": 1,
+      "boranium": 33,
+      "germanium": 12,
+      "resources": 14
+    },
+    "stats": {
+      "kill_rate": 4,
+      "installations": 45
+    },
+    "tags": [
+      "lbu"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.hush_a_boom",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 12,
+      "tech_field.electronics": 12,
+      "tech_field.biotech": 12
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 1,
+      "boranium": 5,
+      "germanium": 0,
+      "resources": 5
+    },
+    "stats": {
+      "kill_rate": 30,
+      "installations": 2
+    },
+    "tags": [
+      "normal"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.retro_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 10,
+      "tech_field.biotech": 12
+    },
+    "mass": 45,
+    "cost": {
+      "ironium": 15,
+      "boranium": 15,
+      "germanium": 10,
+      "resources": 50
+    },
+    "stats": {
+      "kill_rate": 0,
+      "installations": 0
+    },
+    "tags": [
+      "retro"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.smart_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 5,
+      "tech_field.biotech": 7
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 1,
+      "boranium": 22,
+      "germanium": 0,
+      "resources": 27
+    },
+    "stats": {
+      "kill_rate": 13,
+      "installations": 0
+    },
+    "tags": [
+      "smart"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.neutron_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 10,
+      "tech_field.biotech": 10
+    },
+    "mass": 57,
+    "cost": {
+      "ironium": 1,
+      "boranium": 30,
+      "germanium": 0,
+      "resources": 30
+    },
+    "stats": {
+      "kill_rate": 22,
+      "installations": 0
+    },
+    "tags": [
+      "smart"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.enriched_neutron_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 15,
+      "tech_field.biotech": 12
+    },
+    "mass": 64,
+    "cost": {
+      "ironium": 1,
+      "boranium": 36,
+      "germanium": 0,
+      "resources": 25
+    },
+    "stats": {
+      "kill_rate": 35,
+      "installations": 0
+    },
+    "tags": [
+      "smart"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.peerless_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 22,
+      "tech_field.biotech": 15
+    },
+    "mass": 55,
+    "cost": {
+      "ironium": 1,
+      "boranium": 33,
+      "germanium": 0,
+      "resources": 32
+    },
+    "stats": {
+      "kill_rate": 50,
+      "installations": 0
+    },
+    "tags": [
+      "smart"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.bomb.annihilator_bomb",
+    "category": "bomb",
+    "tech": {
+      "tech_field.weapons": 26,
+      "tech_field.biotech": 17
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 1,
+      "boranium": 30,
+      "germanium": 0,
+      "resources": 28
+    },
+    "stats": {
+      "kill_rate": 70,
+      "installations": 0
+    },
+    "tags": [
+      "smart"
+    ]
+  }
+]

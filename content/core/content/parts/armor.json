@@ -1,0 +1,226 @@
+[
+  {
+    "type": "part",
+    "id": "part.armor.tritanium",
+    "category": "armor",
+    "mass": 60,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 10
+    },
+    "stats": {
+      "armor": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.crobmnium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 3
+    },
+    "mass": 56,
+    "cost": {
+      "ironium": 6,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 13
+    },
+    "stats": {
+      "armor": 75
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.carbonic_armor",
+    "category": "armor",
+    "tech": {
+      "tech_field.biotech": 4
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "armor": 100
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.strobnium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 6
+    },
+    "mass": 54,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 18
+    },
+    "stats": {
+      "armor": 120
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.organic_armor",
+    "category": "armor",
+    "tech": {
+      "tech_field.biotech": 7
+    },
+    "mass": 15,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 20
+    },
+    "stats": {
+      "armor": 175
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.kelarium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 9
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 9,
+      "boranium": 1,
+      "germanium": 0,
+      "resources": 25
+    },
+    "stats": {
+      "armor": 180
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.fielded_kelarium",
+    "category": "armor",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.construction": 10
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 28
+    },
+    "stats": {
+      "armor": 175,
+      "shield": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.depleted_neutronium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 10,
+      "tech_field.electronics": 3
+    },
+    "mass": 50,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 28
+    },
+    "stats": {
+      "armor": 200,
+      "cloak": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.neutronium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 12
+    },
+    "mass": 45,
+    "cost": {
+      "ironium": 11,
+      "boranium": 2,
+      "germanium": 1,
+      "resources": 30
+    },
+    "stats": {
+      "armor": 275
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.mega_poly_shell",
+    "category": "armor",
+    "tech": {
+      "tech_field.energy": 14,
+      "tech_field.construction": 14,
+      "tech_field.electronics": 14,
+      "tech_field.biotech": 6
+    },
+    "mass": 20,
+    "cost": {
+      "ironium": 18,
+      "boranium": 6,
+      "germanium": 6,
+      "resources": 65
+    },
+    "stats": {
+      "armor": 400,
+      "shield": 100,
+      "cloak": 40,
+      "jamming": 20,
+      "scan_range": 80
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.valanium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 16
+    },
+    "mass": 40,
+    "cost": {
+      "ironium": 15,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 50
+    },
+    "stats": {
+      "armor": 500
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.armor.superlatanium",
+    "category": "armor",
+    "tech": {
+      "tech_field.construction": 24
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 25,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 100
+    },
+    "stats": {
+      "armor": 1500
+    }
+  }
+]

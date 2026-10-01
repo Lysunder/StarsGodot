@@ -1,0 +1,207 @@
+[
+  {
+    "type": "part",
+    "id": "part.mechanical.colonization_module",
+    "category": "mechanical",
+    "mass": 32,
+    "cost": {
+      "ironium": 12,
+      "boranium": 10,
+      "germanium": 10,
+      "resources": 10
+    },
+    "tags": [
+      "colonizer"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.orbital_construction_module",
+    "category": "mechanical",
+    "mass": 50,
+    "cost": {
+      "ironium": 20,
+      "boranium": 15,
+      "germanium": 15,
+      "resources": 20
+    },
+    "tags": [
+      "colonizer",
+      "orbital_construction"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.cargo_pod",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.construction": 3
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 10
+    },
+    "stats": {
+      "cargo_capacity": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.super_cargo_pod",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.construction": 9
+    },
+    "mass": 7,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 15
+    },
+    "stats": {
+      "cargo_capacity": 100
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.multi_cargo_pod",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.construction": 11,
+      "tech_field.electronics": 5
+    },
+    "mass": 9,
+    "cost": {
+      "ironium": 12,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 25
+    },
+    "stats": {
+      "cargo_capacity": 250,
+      "armor": 50,
+      "cloak": 20
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.fuel_tank",
+    "category": "mechanical",
+    "mass": 3,
+    "cost": {
+      "ironium": 6,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 4
+    },
+    "stats": {
+      "fuel_capacity": 250
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.super_fuel_tank",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 6,
+      "tech_field.propulsion": 4,
+      "tech_field.construction": 14
+    },
+    "mass": 8,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 8
+    },
+    "stats": {
+      "fuel_capacity": 500
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.maneuvering_jet",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.propulsion": 3
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 10
+    },
+    "stats": {
+      "battle_move": 1
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.overthruster",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.propulsion": 12
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 20
+    },
+    "stats": {
+      "battle_move": 2
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.jump_gate",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 16,
+      "tech_field.propulsion": 20,
+      "tech_field.construction": 20,
+      "tech_field.electronics": 16
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 50,
+      "resources": 40
+    },
+    "tags": [
+      "jump_gate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.mechanical.beam_deflector",
+    "category": "mechanical",
+    "tech": {
+      "tech_field.energy": 6,
+      "tech_field.weapons": 6,
+      "tech_field.construction": 6,
+      "tech_field.electronics": 6
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 10,
+      "resources": 8
+    },
+    "stats": {
+      "beam_deflection": 10
+    }
+  }
+]

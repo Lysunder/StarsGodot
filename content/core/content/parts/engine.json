@@ -1,0 +1,457 @@
+[
+  {
+    "type": "part",
+    "id": "part.engine.settler_s_delight",
+    "category": "engine",
+    "mass": 2,
+    "cost": {
+      "ironium": 1,
+      "boranium": 0,
+      "germanium": 1,
+      "resources": 2
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      140,
+      275,
+      480,
+      576
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.quick_jump_5",
+    "category": "engine",
+    "mass": 4,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 1,
+      "resources": 3
+    },
+    "fuel_table": [
+      0,
+      0,
+      25,
+      100,
+      100,
+      100,
+      180,
+      500,
+      800,
+      900,
+      1080
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.fuel_mizer",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 2
+    },
+    "mass": 6,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 0,
+      "resources": 11
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      35,
+      120,
+      175,
+      235,
+      360,
+      420
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.long_hump_6",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 3
+    },
+    "mass": 9,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 1,
+      "resources": 6
+    },
+    "fuel_table": [
+      0,
+      0,
+      20,
+      60,
+      100,
+      100,
+      105,
+      450,
+      750,
+      900,
+      1080
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.daddy_long_legs_7",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 5
+    },
+    "mass": 13,
+    "cost": {
+      "ironium": 11,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 12
+    },
+    "fuel_table": [
+      0,
+      0,
+      20,
+      60,
+      70,
+      100,
+      100,
+      110,
+      600,
+      750,
+      900
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.alpha_drive_8",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 7
+    },
+    "mass": 17,
+    "cost": {
+      "ironium": 16,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 28
+    },
+    "fuel_table": [
+      0,
+      0,
+      15,
+      50,
+      60,
+      70,
+      100,
+      100,
+      115,
+      700,
+      840
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.trans_galactic_drive",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 9
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 20,
+      "boranium": 20,
+      "germanium": 9,
+      "resources": 50
+    },
+    "fuel_table": [
+      0,
+      0,
+      15,
+      35,
+      45,
+      55,
+      70,
+      80,
+      90,
+      100,
+      120
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.interspace_10",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 11
+    },
+    "mass": 25,
+    "cost": {
+      "ironium": 18,
+      "boranium": 25,
+      "germanium": 10,
+      "resources": 60
+    },
+    "fuel_table": [
+      0,
+      0,
+      10,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.enigma_pulsar",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.propulsion": 13,
+      "tech_field.construction": 5,
+      "tech_field.electronics": 9
+    },
+    "mass": 20,
+    "cost": {
+      "ironium": 12,
+      "boranium": 15,
+      "germanium": 11,
+      "resources": 40
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      65,
+      75,
+      85,
+      95,
+      105
+    ],
+    "stats": {
+      "cloak": 20,
+      "battle_move_halves": 1
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.engine.trans_star_10",
+    "category": "engine",
+    "tech": {
+      "tech_field.propulsion": 23
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 3,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 10
+    },
+    "fuel_table": [
+      0,
+      0,
+      5,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.radiating_hydro_ram_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.propulsion": 6
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 3,
+      "boranium": 2,
+      "germanium": 9,
+      "resources": 8
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      165,
+      375,
+      600,
+      720
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.sub_galactic_fuel_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.propulsion": 8
+    },
+    "mass": 20,
+    "cost": {
+      "ironium": 4,
+      "boranium": 4,
+      "germanium": 7,
+      "resources": 12
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      85,
+      105,
+      210,
+      380,
+      456
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.trans_galactic_fuel_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.propulsion": 9
+    },
+    "mass": 19,
+    "cost": {
+      "ironium": 5,
+      "boranium": 4,
+      "germanium": 12,
+      "resources": 18
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      88,
+      100,
+      145,
+      174
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.trans_galactic_super_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.propulsion": 12
+    },
+    "mass": 18,
+    "cost": {
+      "ironium": 6,
+      "boranium": 4,
+      "germanium": 16,
+      "resources": 24
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      65,
+      90,
+      108
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.trans_galactic_mizer_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.propulsion": 16
+    },
+    "mass": 11,
+    "cost": {
+      "ironium": 5,
+      "boranium": 2,
+      "germanium": 13,
+      "resources": 20
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      70,
+      84
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.engine.galaxy_scoop",
+    "category": "engine",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.propulsion": 20
+    },
+    "mass": 8,
+    "cost": {
+      "ironium": 4,
+      "boranium": 2,
+      "germanium": 9,
+      "resources": 12
+    },
+    "fuel_table": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      60
+    ]
+  }
+]

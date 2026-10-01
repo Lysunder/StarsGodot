@@ -1,0 +1,352 @@
+[
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_100_250",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 5,
+      "tech_field.construction": 5
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 400
+    },
+    "stats": {
+      "gate_mass": 100,
+      "gate_range": 250
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_any_300",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 6,
+      "tech_field.construction": 10
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 500
+    },
+    "stats": {
+      "gate_mass": -1,
+      "gate_range": 300
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_150_600",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 11,
+      "tech_field.construction": 7
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1000
+    },
+    "stats": {
+      "gate_mass": 150,
+      "gate_range": 600
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_300_500",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 9,
+      "tech_field.construction": 13
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1200
+    },
+    "stats": {
+      "gate_mass": 300,
+      "gate_range": 500
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_100_any",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 16,
+      "tech_field.construction": 12
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1400
+    },
+    "stats": {
+      "gate_mass": 100,
+      "gate_range": -1
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_any_800",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 12,
+      "tech_field.construction": 18
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1400
+    },
+    "stats": {
+      "gate_mass": -1,
+      "gate_range": 800
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.stargate_any_any",
+    "category": "orbital",
+    "tech": {
+      "tech_field.propulsion": 19,
+      "tech_field.construction": 24
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 100,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1600
+    },
+    "stats": {
+      "gate_mass": -1,
+      "gate_range": -1
+    },
+    "tags": [
+      "stargate"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.mass_driver_5",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 4
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 140
+    },
+    "stats": {
+      "driver_warp": 5
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.mass_driver_6",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 7
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 288
+    },
+    "stats": {
+      "driver_warp": 6
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.mass_driver_7",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 9
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 200,
+      "boranium": 200,
+      "germanium": 200,
+      "resources": 1024
+    },
+    "stats": {
+      "driver_warp": 7
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.super_driver_8",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 11
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 512
+    },
+    "stats": {
+      "driver_warp": 8
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.super_driver_9",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 13
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 648
+    },
+    "stats": {
+      "driver_warp": 9
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.ultra_driver_10",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 15
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 200,
+      "boranium": 200,
+      "germanium": 200,
+      "resources": 1936
+    },
+    "stats": {
+      "driver_warp": 10
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.ultra_driver_11",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 17
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 968
+    },
+    "stats": {
+      "driver_warp": 11
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.ultra_driver_12",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 20
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1152
+    },
+    "stats": {
+      "driver_warp": 12
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.orbital.ultra_driver_13",
+    "category": "orbital",
+    "tech": {
+      "tech_field.energy": 24
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 48,
+      "boranium": 40,
+      "germanium": 40,
+      "resources": 1352
+    },
+    "stats": {
+      "driver_warp": 13
+    },
+    "tags": [
+      "mass_driver"
+    ]
+  }
+]

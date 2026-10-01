@@ -1,0 +1,921 @@
+{
+  "part.engine.settler_s_delight": {
+    "kind": 1,
+    "item": 0
+  },
+  "part.engine.quick_jump_5": {
+    "kind": 1,
+    "item": 1
+  },
+  "part.engine.fuel_mizer": {
+    "kind": 1,
+    "item": 2
+  },
+  "part.engine.long_hump_6": {
+    "kind": 1,
+    "item": 3
+  },
+  "part.engine.daddy_long_legs_7": {
+    "kind": 1,
+    "item": 4
+  },
+  "part.engine.alpha_drive_8": {
+    "kind": 1,
+    "item": 5
+  },
+  "part.engine.trans_galactic_drive": {
+    "kind": 1,
+    "item": 6
+  },
+  "part.engine.interspace_10": {
+    "kind": 1,
+    "item": 7
+  },
+  "part.engine.enigma_pulsar": {
+    "kind": 1,
+    "item": 8
+  },
+  "part.engine.trans_star_10": {
+    "kind": 1,
+    "item": 9
+  },
+  "part.engine.radiating_hydro_ram_scoop": {
+    "kind": 1,
+    "item": 10
+  },
+  "part.engine.sub_galactic_fuel_scoop": {
+    "kind": 1,
+    "item": 11
+  },
+  "part.engine.trans_galactic_fuel_scoop": {
+    "kind": 1,
+    "item": 12
+  },
+  "part.engine.trans_galactic_super_scoop": {
+    "kind": 1,
+    "item": 13
+  },
+  "part.engine.trans_galactic_mizer_scoop": {
+    "kind": 1,
+    "item": 14
+  },
+  "part.engine.galaxy_scoop": {
+    "kind": 1,
+    "item": 15
+  },
+  "part.scanner.bat_scanner": {
+    "kind": 2,
+    "item": 0
+  },
+  "part.scanner.rhino_scanner": {
+    "kind": 2,
+    "item": 1
+  },
+  "part.scanner.mole_scanner": {
+    "kind": 2,
+    "item": 2
+  },
+  "part.scanner.dna_scanner": {
+    "kind": 2,
+    "item": 3
+  },
+  "part.scanner.possum_scanner": {
+    "kind": 2,
+    "item": 4
+  },
+  "part.scanner.pick_pocket_scanner": {
+    "kind": 2,
+    "item": 5
+  },
+  "part.scanner.chameleon_scanner": {
+    "kind": 2,
+    "item": 6
+  },
+  "part.scanner.ferret_scanner": {
+    "kind": 2,
+    "item": 7
+  },
+  "part.scanner.dolphin_scanner": {
+    "kind": 2,
+    "item": 8
+  },
+  "part.scanner.gazelle_scanner": {
+    "kind": 2,
+    "item": 9
+  },
+  "part.scanner.rna_scanner": {
+    "kind": 2,
+    "item": 10
+  },
+  "part.scanner.cheetah_scanner": {
+    "kind": 2,
+    "item": 11
+  },
+  "part.scanner.elephant_scanner": {
+    "kind": 2,
+    "item": 12
+  },
+  "part.scanner.eagle_eye_scanner": {
+    "kind": 2,
+    "item": 13
+  },
+  "part.scanner.robber_baron_scanner": {
+    "kind": 2,
+    "item": 14
+  },
+  "part.scanner.peerless_scanner": {
+    "kind": 2,
+    "item": 15
+  },
+  "part.shield.mole_skin_shield": {
+    "kind": 4,
+    "item": 0
+  },
+  "part.shield.cow_hide_shield": {
+    "kind": 4,
+    "item": 1
+  },
+  "part.shield.wolverine_diffuse_shield": {
+    "kind": 4,
+    "item": 2
+  },
+  "part.shield.croby_sharmor": {
+    "kind": 4,
+    "item": 3
+  },
+  "part.shield.shadow_shield": {
+    "kind": 4,
+    "item": 4
+  },
+  "part.shield.bear_neutrino_barrier": {
+    "kind": 4,
+    "item": 5
+  },
+  "part.shield.langston_shell": {
+    "kind": 4,
+    "item": 6
+  },
+  "part.shield.gorilla_delagator": {
+    "kind": 4,
+    "item": 7
+  },
+  "part.shield.elephant_hide_fortress": {
+    "kind": 4,
+    "item": 8
+  },
+  "part.shield.complete_phase_shield": {
+    "kind": 4,
+    "item": 9
+  },
+  "part.armor.tritanium": {
+    "kind": 8,
+    "item": 0
+  },
+  "part.armor.crobmnium": {
+    "kind": 8,
+    "item": 1
+  },
+  "part.armor.carbonic_armor": {
+    "kind": 8,
+    "item": 2
+  },
+  "part.armor.strobnium": {
+    "kind": 8,
+    "item": 3
+  },
+  "part.armor.organic_armor": {
+    "kind": 8,
+    "item": 4
+  },
+  "part.armor.kelarium": {
+    "kind": 8,
+    "item": 5
+  },
+  "part.armor.fielded_kelarium": {
+    "kind": 8,
+    "item": 6
+  },
+  "part.armor.depleted_neutronium": {
+    "kind": 8,
+    "item": 7
+  },
+  "part.armor.neutronium": {
+    "kind": 8,
+    "item": 8
+  },
+  "part.armor.mega_poly_shell": {
+    "kind": 8,
+    "item": 9
+  },
+  "part.armor.valanium": {
+    "kind": 8,
+    "item": 10
+  },
+  "part.armor.superlatanium": {
+    "kind": 8,
+    "item": 11
+  },
+  "part.beam.laser": {
+    "kind": 16,
+    "item": 0
+  },
+  "part.beam.x_ray_laser": {
+    "kind": 16,
+    "item": 1
+  },
+  "part.beam.mini_gun": {
+    "kind": 16,
+    "item": 2
+  },
+  "part.beam.yakimora_light_phaser": {
+    "kind": 16,
+    "item": 3
+  },
+  "part.beam.blackjack": {
+    "kind": 16,
+    "item": 4
+  },
+  "part.beam.phaser_bazooka": {
+    "kind": 16,
+    "item": 5
+  },
+  "part.beam.pulsed_sapper": {
+    "kind": 16,
+    "item": 6
+  },
+  "part.beam.colloidal_phaser": {
+    "kind": 16,
+    "item": 7
+  },
+  "part.beam.gatling_gun": {
+    "kind": 16,
+    "item": 8
+  },
+  "part.beam.mini_blaster": {
+    "kind": 16,
+    "item": 9
+  },
+  "part.beam.bludgeon": {
+    "kind": 16,
+    "item": 10
+  },
+  "part.beam.mark_iv_blaster": {
+    "kind": 16,
+    "item": 11
+  },
+  "part.beam.phased_sapper": {
+    "kind": 16,
+    "item": 12
+  },
+  "part.beam.heavy_blaster": {
+    "kind": 16,
+    "item": 13
+  },
+  "part.beam.gatling_neutrino_cannon": {
+    "kind": 16,
+    "item": 14
+  },
+  "part.beam.myopic_disruptor": {
+    "kind": 16,
+    "item": 15
+  },
+  "part.beam.blunderbuss": {
+    "kind": 16,
+    "item": 16
+  },
+  "part.beam.disruptor": {
+    "kind": 16,
+    "item": 17
+  },
+  "part.beam.multi_contained_munition": {
+    "kind": 16,
+    "item": 18
+  },
+  "part.beam.syncro_sapper": {
+    "kind": 16,
+    "item": 19
+  },
+  "part.beam.mega_disruptor": {
+    "kind": 16,
+    "item": 20
+  },
+  "part.beam.big_mutha_cannon": {
+    "kind": 16,
+    "item": 21
+  },
+  "part.beam.streaming_pulverizer": {
+    "kind": 16,
+    "item": 22
+  },
+  "part.beam.anti_matter_pulverizer": {
+    "kind": 16,
+    "item": 23
+  },
+  "part.torpedo.alpha_torpedo": {
+    "kind": 32,
+    "item": 0
+  },
+  "part.torpedo.beta_torpedo": {
+    "kind": 32,
+    "item": 1
+  },
+  "part.torpedo.delta_torpedo": {
+    "kind": 32,
+    "item": 2
+  },
+  "part.torpedo.epsilon_torpedo": {
+    "kind": 32,
+    "item": 3
+  },
+  "part.torpedo.rho_torpedo": {
+    "kind": 32,
+    "item": 4
+  },
+  "part.torpedo.upsilon_torpedo": {
+    "kind": 32,
+    "item": 5
+  },
+  "part.torpedo.omega_torpedo": {
+    "kind": 32,
+    "item": 6
+  },
+  "part.torpedo.anti_matter_torpedo": {
+    "kind": 32,
+    "item": 7
+  },
+  "part.torpedo.jihad_missile": {
+    "kind": 32,
+    "item": 8
+  },
+  "part.torpedo.juggernaut_missile": {
+    "kind": 32,
+    "item": 9
+  },
+  "part.torpedo.doomsday_missile": {
+    "kind": 32,
+    "item": 10
+  },
+  "part.torpedo.armageddon_missile": {
+    "kind": 32,
+    "item": 11
+  },
+  "part.bomb.lady_finger_bomb": {
+    "kind": 64,
+    "item": 0
+  },
+  "part.bomb.black_cat_bomb": {
+    "kind": 64,
+    "item": 1
+  },
+  "part.bomb.m_70_bomb": {
+    "kind": 64,
+    "item": 2
+  },
+  "part.bomb.m_80_bomb": {
+    "kind": 64,
+    "item": 3
+  },
+  "part.bomb.cherry_bomb": {
+    "kind": 64,
+    "item": 4
+  },
+  "part.bomb.lbu_17_bomb": {
+    "kind": 64,
+    "item": 5
+  },
+  "part.bomb.lbu_32_bomb": {
+    "kind": 64,
+    "item": 6
+  },
+  "part.bomb.lbu_74_bomb": {
+    "kind": 64,
+    "item": 7
+  },
+  "part.bomb.hush_a_boom": {
+    "kind": 64,
+    "item": 8
+  },
+  "part.bomb.retro_bomb": {
+    "kind": 64,
+    "item": 9
+  },
+  "part.bomb.smart_bomb": {
+    "kind": 64,
+    "item": 10
+  },
+  "part.bomb.neutron_bomb": {
+    "kind": 64,
+    "item": 11
+  },
+  "part.bomb.enriched_neutron_bomb": {
+    "kind": 64,
+    "item": 12
+  },
+  "part.bomb.peerless_bomb": {
+    "kind": 64,
+    "item": 13
+  },
+  "part.bomb.annihilator_bomb": {
+    "kind": 64,
+    "item": 14
+  },
+  "part.mining_robot.robo_midget_miner": {
+    "kind": 128,
+    "item": 0
+  },
+  "part.mining_robot.robo_mini_miner": {
+    "kind": 128,
+    "item": 1
+  },
+  "part.mining_robot.robo_miner": {
+    "kind": 128,
+    "item": 2
+  },
+  "part.mining_robot.robo_maxi_miner": {
+    "kind": 128,
+    "item": 3
+  },
+  "part.mining_robot.robo_super_miner": {
+    "kind": 128,
+    "item": 4
+  },
+  "part.mining_robot.robo_ultra_miner": {
+    "kind": 128,
+    "item": 5
+  },
+  "part.mining_robot.alien_miner": {
+    "kind": 128,
+    "item": 6
+  },
+  "part.mining_robot.orbital_adjuster": {
+    "kind": 128,
+    "item": 7
+  },
+  "part.mine_layer.mine_dispenser_40": {
+    "kind": 256,
+    "item": 0
+  },
+  "part.mine_layer.mine_dispenser_50": {
+    "kind": 256,
+    "item": 1
+  },
+  "part.mine_layer.mine_dispenser_80": {
+    "kind": 256,
+    "item": 2
+  },
+  "part.mine_layer.mine_dispenser_130": {
+    "kind": 256,
+    "item": 3
+  },
+  "part.mine_layer.heavy_dispenser_50": {
+    "kind": 256,
+    "item": 4
+  },
+  "part.mine_layer.heavy_dispenser_110": {
+    "kind": 256,
+    "item": 5
+  },
+  "part.mine_layer.heavy_dispenser_200": {
+    "kind": 256,
+    "item": 6
+  },
+  "part.mine_layer.speed_trap_20": {
+    "kind": 256,
+    "item": 7
+  },
+  "part.mine_layer.speed_trap_30": {
+    "kind": 256,
+    "item": 8
+  },
+  "part.mine_layer.speed_trap_50": {
+    "kind": 256,
+    "item": 9
+  },
+  "part.orbital.stargate_100_250": {
+    "kind": 512,
+    "item": 0
+  },
+  "part.orbital.stargate_any_300": {
+    "kind": 512,
+    "item": 1
+  },
+  "part.orbital.stargate_150_600": {
+    "kind": 512,
+    "item": 2
+  },
+  "part.orbital.stargate_300_500": {
+    "kind": 512,
+    "item": 3
+  },
+  "part.orbital.stargate_100_any": {
+    "kind": 512,
+    "item": 4
+  },
+  "part.orbital.stargate_any_800": {
+    "kind": 512,
+    "item": 5
+  },
+  "part.orbital.stargate_any_any": {
+    "kind": 512,
+    "item": 6
+  },
+  "part.orbital.mass_driver_5": {
+    "kind": 512,
+    "item": 7
+  },
+  "part.orbital.mass_driver_6": {
+    "kind": 512,
+    "item": 8
+  },
+  "part.orbital.mass_driver_7": {
+    "kind": 512,
+    "item": 9
+  },
+  "part.orbital.super_driver_8": {
+    "kind": 512,
+    "item": 10
+  },
+  "part.orbital.super_driver_9": {
+    "kind": 512,
+    "item": 11
+  },
+  "part.orbital.ultra_driver_10": {
+    "kind": 512,
+    "item": 12
+  },
+  "part.orbital.ultra_driver_11": {
+    "kind": 512,
+    "item": 13
+  },
+  "part.orbital.ultra_driver_12": {
+    "kind": 512,
+    "item": 14
+  },
+  "part.orbital.ultra_driver_13": {
+    "kind": 512,
+    "item": 15
+  },
+  "part.electrical.transport_cloaking": {
+    "kind": 2048,
+    "item": 0
+  },
+  "part.electrical.stealth_cloak": {
+    "kind": 2048,
+    "item": 1
+  },
+  "part.electrical.super_stealth_cloak": {
+    "kind": 2048,
+    "item": 2
+  },
+  "part.electrical.ultra_stealth_cloak": {
+    "kind": 2048,
+    "item": 3
+  },
+  "part.electrical.multi_function_pod": {
+    "kind": 2048,
+    "item": 4
+  },
+  "part.electrical.battle_computer": {
+    "kind": 2048,
+    "item": 5
+  },
+  "part.electrical.battle_super_computer": {
+    "kind": 2048,
+    "item": 6
+  },
+  "part.electrical.battle_nexus": {
+    "kind": 2048,
+    "item": 7
+  },
+  "part.electrical.jammer_10": {
+    "kind": 2048,
+    "item": 8
+  },
+  "part.electrical.jammer_20": {
+    "kind": 2048,
+    "item": 9
+  },
+  "part.electrical.jammer_30": {
+    "kind": 2048,
+    "item": 10
+  },
+  "part.electrical.jammer_50": {
+    "kind": 2048,
+    "item": 11
+  },
+  "part.electrical.energy_capacitor": {
+    "kind": 2048,
+    "item": 12
+  },
+  "part.electrical.flux_capacitor": {
+    "kind": 2048,
+    "item": 13
+  },
+  "part.electrical.energy_dampener": {
+    "kind": 2048,
+    "item": 14
+  },
+  "part.electrical.tachyon_detector": {
+    "kind": 2048,
+    "item": 15
+  },
+  "part.electrical.anti_matter_generator": {
+    "kind": 2048,
+    "item": 16
+  },
+  "part.mechanical.colonization_module": {
+    "kind": 4096,
+    "item": 0
+  },
+  "part.mechanical.orbital_construction_module": {
+    "kind": 4096,
+    "item": 1
+  },
+  "part.mechanical.cargo_pod": {
+    "kind": 4096,
+    "item": 2
+  },
+  "part.mechanical.super_cargo_pod": {
+    "kind": 4096,
+    "item": 3
+  },
+  "part.mechanical.multi_cargo_pod": {
+    "kind": 4096,
+    "item": 4
+  },
+  "part.mechanical.fuel_tank": {
+    "kind": 4096,
+    "item": 5
+  },
+  "part.mechanical.super_fuel_tank": {
+    "kind": 4096,
+    "item": 6
+  },
+  "part.mechanical.maneuvering_jet": {
+    "kind": 4096,
+    "item": 7
+  },
+  "part.mechanical.overthruster": {
+    "kind": 4096,
+    "item": 8
+  },
+  "part.mechanical.jump_gate": {
+    "kind": 4096,
+    "item": 9
+  },
+  "part.mechanical.beam_deflector": {
+    "kind": 4096,
+    "item": 10
+  },
+  "part.planetary.viewer_50": {
+    "kind": 1024,
+    "item": 0
+  },
+  "part.planetary.viewer_90": {
+    "kind": 1024,
+    "item": 1
+  },
+  "part.planetary.scoper_150": {
+    "kind": 1024,
+    "item": 2
+  },
+  "part.planetary.scoper_220": {
+    "kind": 1024,
+    "item": 3
+  },
+  "part.planetary.scoper_280": {
+    "kind": 1024,
+    "item": 4
+  },
+  "part.planetary.snooper_320x": {
+    "kind": 1024,
+    "item": 5
+  },
+  "part.planetary.snooper_400x": {
+    "kind": 1024,
+    "item": 6
+  },
+  "part.planetary.snooper_500x": {
+    "kind": 1024,
+    "item": 7
+  },
+  "part.planetary.snooper_620x": {
+    "kind": 1024,
+    "item": 8
+  },
+  "part.planetary.sdi": {
+    "kind": 1024,
+    "item": 9
+  },
+  "part.planetary.missile_battery": {
+    "kind": 1024,
+    "item": 10
+  },
+  "part.planetary.laser_battery": {
+    "kind": 1024,
+    "item": 11
+  },
+  "part.planetary.planetary_shield": {
+    "kind": 1024,
+    "item": 12
+  },
+  "part.planetary.neutron_shield": {
+    "kind": 1024,
+    "item": 13
+  },
+  "part.planetary.genesis_device": {
+    "kind": 1024,
+    "item": 14
+  },
+  "part.terraform.total_terraform_3": {
+    "kind": 8192,
+    "item": 0
+  },
+  "part.terraform.total_terraform_5": {
+    "kind": 8192,
+    "item": 1
+  },
+  "part.terraform.total_terraform_7": {
+    "kind": 8192,
+    "item": 2
+  },
+  "part.terraform.total_terraform_10": {
+    "kind": 8192,
+    "item": 3
+  },
+  "part.terraform.total_terraform_15": {
+    "kind": 8192,
+    "item": 4
+  },
+  "part.terraform.total_terraform_20": {
+    "kind": 8192,
+    "item": 5
+  },
+  "part.terraform.total_terraform_25": {
+    "kind": 8192,
+    "item": 6
+  },
+  "part.terraform.total_terraform_30": {
+    "kind": 8192,
+    "item": 7
+  },
+  "part.terraform.gravity_terraform_3": {
+    "kind": 8192,
+    "item": 8
+  },
+  "part.terraform.gravity_terraform_7": {
+    "kind": 8192,
+    "item": 9
+  },
+  "part.terraform.gravity_terraform_11": {
+    "kind": 8192,
+    "item": 10
+  },
+  "part.terraform.gravity_terraform_15": {
+    "kind": 8192,
+    "item": 11
+  },
+  "part.terraform.temp_terraform_3": {
+    "kind": 8192,
+    "item": 12
+  },
+  "part.terraform.temp_terraform_7": {
+    "kind": 8192,
+    "item": 13
+  },
+  "part.terraform.temp_terraform_11": {
+    "kind": 8192,
+    "item": 14
+  },
+  "part.terraform.temp_terraform_15": {
+    "kind": 8192,
+    "item": 15
+  },
+  "part.terraform.radiation_terraform_3": {
+    "kind": 8192,
+    "item": 16
+  },
+  "part.terraform.radiation_terraform_7": {
+    "kind": 8192,
+    "item": 17
+  },
+  "part.terraform.radiation_terraform_11": {
+    "kind": 8192,
+    "item": 18
+  },
+  "part.terraform.radiation_terraform_15": {
+    "kind": 8192,
+    "item": 19
+  },
+  "hull.small_freighter": {
+    "hull": 0
+  },
+  "hull.medium_freighter": {
+    "hull": 1
+  },
+  "hull.large_freighter": {
+    "hull": 2
+  },
+  "hull.super_freighter": {
+    "hull": 3
+  },
+  "hull.scout": {
+    "hull": 4
+  },
+  "hull.frigate": {
+    "hull": 5
+  },
+  "hull.destroyer": {
+    "hull": 6
+  },
+  "hull.cruiser": {
+    "hull": 7
+  },
+  "hull.battle_cruiser": {
+    "hull": 8
+  },
+  "hull.battleship": {
+    "hull": 9
+  },
+  "hull.dreadnought": {
+    "hull": 10
+  },
+  "hull.privateer": {
+    "hull": 11
+  },
+  "hull.rogue": {
+    "hull": 12
+  },
+  "hull.galleon": {
+    "hull": 13
+  },
+  "hull.mini_colony_ship": {
+    "hull": 14
+  },
+  "hull.colony_ship": {
+    "hull": 15
+  },
+  "hull.mini_bomber": {
+    "hull": 16
+  },
+  "hull.b_17_bomber": {
+    "hull": 17
+  },
+  "hull.stealth_bomber": {
+    "hull": 18
+  },
+  "hull.b_52_bomber": {
+    "hull": 19
+  },
+  "hull.midget_miner": {
+    "hull": 20
+  },
+  "hull.mini_miner": {
+    "hull": 21
+  },
+  "hull.miner": {
+    "hull": 22
+  },
+  "hull.maxi_miner": {
+    "hull": 23
+  },
+  "hull.ultra_miner": {
+    "hull": 24
+  },
+  "hull.fuel_transport": {
+    "hull": 25
+  },
+  "hull.super_fuel_xport": {
+    "hull": 26
+  },
+  "hull.mini_mine_layer": {
+    "hull": 27
+  },
+  "hull.super_mine_layer": {
+    "hull": 28
+  },
+  "hull.nubian": {
+    "hull": 29
+  },
+  "hull.mini_morph": {
+    "hull": 30
+  },
+  "hull.meta_morph": {
+    "hull": 31
+  },
+  "hull.orbital_fort": {
+    "hull": 32
+  },
+  "hull.space_dock": {
+    "hull": 33
+  },
+  "hull.space_station": {
+    "hull": 34
+  },
+  "hull.ultra_station": {
+    "hull": 35
+  },
+  "hull.death_star": {
+    "hull": 36
+  }
+}

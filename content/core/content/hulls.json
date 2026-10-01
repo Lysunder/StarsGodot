@@ -1,34 +1,2459 @@
 [
   {
     "type": "hull",
-    "id": "hull.scout",
-    "mass": 8,
-    "cost": { "ironium": 4, "boranium": 2, "germanium": 4, "resources": 10 },
-    "armor": 20,
-    "fuel": 50,
+    "id": "hull.small_freighter",
+    "mass": 25,
+    "cost": {
+      "ironium": 12,
+      "boranium": 0,
+      "germanium": 17,
+      "resources": 20
+    },
+    "armor": 25,
+    "cargo": 70,
+    "fuel": 130,
+    "initiative": 0,
     "slots": [
-      { "accepts": ["engine"], "max": 1, "required": true },
       {
-        "accepts": ["scanner", "shield", "armor", "beam", "torpedo", "bomb", "mining_robot", "mine_layer", "electrical", "mechanical"],
+        "accepts": [
+          "engine"
+        ],
         "max": 1
       },
-      { "accepts": ["scanner"], "max": 1 }
-    ],
-    "tags": ["provisional"]
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 1
+      }
+    ]
   },
   {
     "type": "hull",
-    "id": "hull.small_freighter",
-    "mass": 25,
-    "cost": { "ironium": 12, "boranium": 0, "germanium": 17, "resources": 20 },
-    "armor": 25,
-    "fuel": 130,
-    "cargo": 70,
+    "id": "hull.medium_freighter",
+    "tech": {
+      "tech_field.construction": 3
+    },
+    "mass": 60,
+    "cost": {
+      "ironium": 20,
+      "boranium": 0,
+      "germanium": 19,
+      "resources": 40
+    },
+    "armor": 50,
+    "cargo": 210,
+    "fuel": 450,
+    "initiative": 0,
     "slots": [
-      { "accepts": ["engine"], "max": 1, "required": true },
-      { "accepts": ["shield", "armor"], "max": 1 },
-      { "accepts": ["scanner", "electrical", "mechanical"], "max": 1 }
-    ],
-    "tags": ["provisional"]
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.large_freighter",
+    "tech": {
+      "tech_field.construction": 8
+    },
+    "mass": 125,
+    "cost": {
+      "ironium": 35,
+      "boranium": 0,
+      "germanium": 21,
+      "resources": 100
+    },
+    "armor": 150,
+    "cargo": 1200,
+    "fuel": 2600,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.super_freighter",
+    "tech": {
+      "tech_field.construction": 13
+    },
+    "mass": 175,
+    "cost": {
+      "ironium": 45,
+      "boranium": 0,
+      "germanium": 21,
+      "resources": 125
+    },
+    "armor": 400,
+    "cargo": 3000,
+    "fuel": 8000,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 5
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.scout",
+    "mass": 8,
+    "cost": {
+      "ironium": 4,
+      "boranium": 2,
+      "germanium": 4,
+      "resources": 10
+    },
+    "armor": 20,
+    "fuel": 50,
+    "initiative": 1,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.frigate",
+    "tech": {
+      "tech_field.construction": 6
+    },
+    "mass": 8,
+    "cost": {
+      "ironium": 4,
+      "boranium": 2,
+      "germanium": 4,
+      "resources": 12
+    },
+    "armor": 45,
+    "fuel": 125,
+    "initiative": 4,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.destroyer",
+    "tech": {
+      "tech_field.construction": 3
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 15,
+      "boranium": 3,
+      "germanium": 5,
+      "resources": 35
+    },
+    "armor": 200,
+    "fuel": 280,
+    "initiative": 3,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "armor"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.cruiser",
+    "tech": {
+      "tech_field.construction": 9
+    },
+    "mass": 90,
+    "cost": {
+      "ironium": 40,
+      "boranium": 5,
+      "germanium": 8,
+      "resources": 85
+    },
+    "armor": 700,
+    "fuel": 600,
+    "initiative": 5,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.battle_cruiser",
+    "tech": {
+      "tech_field.construction": 10
+    },
+    "mass": 120,
+    "cost": {
+      "ironium": 55,
+      "boranium": 8,
+      "germanium": 12,
+      "resources": 120
+    },
+    "armor": 1000,
+    "fuel": 1400,
+    "initiative": 5,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 4
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.battleship",
+    "tech": {
+      "tech_field.construction": 13
+    },
+    "mass": 222,
+    "cost": {
+      "ironium": 120,
+      "boranium": 25,
+      "germanium": 20,
+      "resources": 225
+    },
+    "armor": 2000,
+    "fuel": 2800,
+    "initiative": 10,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 6
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 6
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "armor"
+        ],
+        "max": 6
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.dreadnought",
+    "tech": {
+      "tech_field.construction": 16
+    },
+    "mass": 250,
+    "cost": {
+      "ironium": 140,
+      "boranium": 30,
+      "germanium": 25,
+      "resources": 275
+    },
+    "armor": 4500,
+    "fuel": 4500,
+    "initiative": 10,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 5
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 6
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 6
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "armor"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "shield",
+          "beam",
+          "torpedo"
+        ],
+        "max": 5
+      },
+      {
+        "accepts": [
+          "shield",
+          "beam",
+          "torpedo"
+        ],
+        "max": 5
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.privateer",
+    "tech": {
+      "tech_field.construction": 4
+    },
+    "mass": 65,
+    "cost": {
+      "ironium": 50,
+      "boranium": 3,
+      "germanium": 2,
+      "resources": 50
+    },
+    "armor": 150,
+    "cargo": 250,
+    "fuel": 650,
+    "initiative": 3,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.rogue",
+    "tech": {
+      "tech_field.construction": 8
+    },
+    "mass": 75,
+    "cost": {
+      "ironium": 80,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 60
+    },
+    "armor": 450,
+    "cargo": 500,
+    "fuel": 2250,
+    "initiative": 4,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.galleon",
+    "tech": {
+      "tech_field.construction": 11
+    },
+    "mass": 125,
+    "cost": {
+      "ironium": 70,
+      "boranium": 5,
+      "germanium": 5,
+      "resources": 105
+    },
+    "armor": 900,
+    "cargo": 1000,
+    "fuel": 2500,
+    "initiative": 4,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.mini_colony_ship",
+    "mass": 8,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 3
+    },
+    "armor": 10,
+    "cargo": 10,
+    "fuel": 150,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.colony_ship",
+    "mass": 20,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 15,
+      "resources": 20
+    },
+    "armor": 20,
+    "cargo": 25,
+    "fuel": 200,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.mini_bomber",
+    "tech": {
+      "tech_field.construction": 1
+    },
+    "mass": 28,
+    "cost": {
+      "ironium": 20,
+      "boranium": 5,
+      "germanium": 10,
+      "resources": 35
+    },
+    "armor": 50,
+    "fuel": 120,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.b_17_bomber",
+    "tech": {
+      "tech_field.construction": 6
+    },
+    "mass": 69,
+    "cost": {
+      "ironium": 55,
+      "boranium": 10,
+      "germanium": 10,
+      "resources": 150
+    },
+    "armor": 175,
+    "fuel": 400,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.stealth_bomber",
+    "tech": {
+      "tech_field.construction": 8
+    },
+    "mass": 70,
+    "cost": {
+      "ironium": 55,
+      "boranium": 10,
+      "germanium": 15,
+      "resources": 175
+    },
+    "armor": 225,
+    "fuel": 750,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.b_52_bomber",
+    "tech": {
+      "tech_field.construction": 15
+    },
+    "mass": 110,
+    "cost": {
+      "ironium": 90,
+      "boranium": 15,
+      "germanium": 10,
+      "resources": 280
+    },
+    "armor": 450,
+    "fuel": 750,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "bomb"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.midget_miner",
+    "mass": 10,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 3,
+      "resources": 20
+    },
+    "armor": 100,
+    "fuel": 210,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.mini_miner",
+    "tech": {
+      "tech_field.construction": 2
+    },
+    "mass": 80,
+    "cost": {
+      "ironium": 25,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 50
+    },
+    "armor": 130,
+    "fuel": 210,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.miner",
+    "tech": {
+      "tech_field.construction": 6
+    },
+    "mass": 110,
+    "cost": {
+      "ironium": 32,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 110
+    },
+    "armor": 475,
+    "fuel": 500,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "armor",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.maxi_miner",
+    "tech": {
+      "tech_field.construction": 11
+    },
+    "mass": 110,
+    "cost": {
+      "ironium": 32,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 140
+    },
+    "armor": 1400,
+    "fuel": 850,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "armor",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.ultra_miner",
+    "tech": {
+      "tech_field.construction": 14
+    },
+    "mass": 100,
+    "cost": {
+      "ironium": 30,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 130
+    },
+    "armor": 1500,
+    "fuel": 1300,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "armor",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "mining_robot"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.fuel_transport",
+    "tech": {
+      "tech_field.construction": 4
+    },
+    "mass": 12,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 50
+    },
+    "armor": 5,
+    "fuel": 750,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.super_fuel_xport",
+    "tech": {
+      "tech_field.construction": 7
+    },
+    "mass": 111,
+    "cost": {
+      "ironium": 20,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 70
+    },
+    "armor": 12,
+    "fuel": 2250,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.mini_mine_layer",
+    "mass": 10,
+    "cost": {
+      "ironium": 8,
+      "boranium": 2,
+      "germanium": 5,
+      "resources": 20
+    },
+    "armor": 60,
+    "fuel": 400,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "mine_layer"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "mine_layer"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.super_mine_layer",
+    "tech": {
+      "tech_field.construction": 15
+    },
+    "mass": 30,
+    "cost": {
+      "ironium": 20,
+      "boranium": 3,
+      "germanium": 9,
+      "resources": 30
+    },
+    "armor": 1200,
+    "fuel": 2200,
+    "initiative": 0,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "mine_layer"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "mine_layer"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.nubian",
+    "tech": {
+      "tech_field.construction": 26
+    },
+    "mass": 100,
+    "cost": {
+      "ironium": 75,
+      "boranium": 12,
+      "germanium": 12,
+      "resources": 150
+    },
+    "armor": 5000,
+    "fuel": 5000,
+    "initiative": 2,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.mini_morph",
+    "tech": {
+      "tech_field.construction": 8
+    },
+    "mass": 70,
+    "cost": {
+      "ironium": 30,
+      "boranium": 8,
+      "germanium": 8,
+      "resources": 100
+    },
+    "armor": 250,
+    "cargo": 150,
+    "fuel": 400,
+    "initiative": 2,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.meta_morph",
+    "tech": {
+      "tech_field.construction": 10
+    },
+    "mass": 85,
+    "cost": {
+      "ironium": 50,
+      "boranium": 12,
+      "germanium": 12,
+      "resources": 120
+    },
+    "armor": 500,
+    "cargo": 300,
+    "fuel": 700,
+    "initiative": 2,
+    "slots": [
+      {
+        "accepts": [
+          "engine"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 8
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 2
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.orbital_fort",
+    "starbase": true,
+    "mass": 0,
+    "cost": {
+      "ironium": 24,
+      "boranium": 0,
+      "germanium": 34,
+      "resources": 80
+    },
+    "armor": 100,
+    "initiative": 10,
+    "slots": [
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 12
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 12
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 12
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 12
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.space_dock",
+    "starbase": true,
+    "tech": {
+      "tech_field.construction": 4
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 40,
+      "boranium": 10,
+      "germanium": 50,
+      "resources": 200
+    },
+    "armor": 250,
+    "dock": 200,
+    "initiative": 12,
+    "slots": [
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 24
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 24
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 2
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.space_station",
+    "starbase": true,
+    "mass": 0,
+    "cost": {
+      "ironium": 240,
+      "boranium": 160,
+      "germanium": 500,
+      "resources": 1200
+    },
+    "armor": 500,
+    "dock": -1,
+    "initiative": 14,
+    "slots": [
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 16
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.ultra_station",
+    "starbase": true,
+    "tech": {
+      "tech_field.construction": 12
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 240,
+      "boranium": 160,
+      "germanium": 600,
+      "resources": 1200
+    },
+    "armor": 1000,
+    "dock": -1,
+    "initiative": 16,
+    "slots": [
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 3
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 16
+      }
+    ]
+  },
+  {
+    "type": "hull",
+    "id": "hull.death_star",
+    "starbase": true,
+    "tech": {
+      "tech_field.construction": 17
+    },
+    "mass": 0,
+    "cost": {
+      "ironium": 240,
+      "boranium": 160,
+      "germanium": 700,
+      "resources": 1500
+    },
+    "armor": 1500,
+    "dock": -1,
+    "initiative": 18,
+    "slots": [
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 32
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 30
+      },
+      {
+        "accepts": [
+          "shield"
+        ],
+        "max": 30
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 32
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 32
+      },
+      {
+        "accepts": [
+          "orbital",
+          "electrical"
+        ],
+        "max": 1
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "shield",
+          "armor"
+        ],
+        "max": 20
+      },
+      {
+        "accepts": [
+          "electrical"
+        ],
+        "max": 4
+      },
+      {
+        "accepts": [
+          "beam",
+          "torpedo"
+        ],
+        "max": 32
+      }
+    ]
   }
 ]

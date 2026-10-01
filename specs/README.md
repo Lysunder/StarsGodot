@@ -31,5 +31,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | Spec | Subsystem | Status |
 |---|---|---|
 | [S01](S01-rng.md) | Random number generator | draft |
+| [S04](S04-parts-and-hulls.md) | Parts and hulls | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).

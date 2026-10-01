@@ -1,0 +1,333 @@
+[
+  {
+    "type": "part",
+    "id": "part.electrical.transport_cloaking",
+    "category": "electrical",
+    "mass": 1,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 3
+    },
+    "stats": {
+      "cloak": 300
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.stealth_cloak",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.electronics": 5
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 5
+    },
+    "stats": {
+      "cloak": 70
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.super_stealth_cloak",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.electronics": 10
+    },
+    "mass": 3,
+    "cost": {
+      "ironium": 8,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 15
+    },
+    "stats": {
+      "cloak": 140
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.ultra_stealth_cloak",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 10,
+      "tech_field.electronics": 12
+    },
+    "mass": 5,
+    "cost": {
+      "ironium": 10,
+      "boranium": 0,
+      "germanium": 10,
+      "resources": 25
+    },
+    "stats": {
+      "cloak": 540
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.multi_function_pod",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 11,
+      "tech_field.propulsion": 11,
+      "tech_field.electronics": 11
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 5,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 15
+    },
+    "stats": {
+      "cloak": 60,
+      "jamming": 10,
+      "battle_move": 1
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.battle_computer",
+    "category": "electrical",
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 15,
+      "resources": 6
+    },
+    "stats": {
+      "initiative": 1,
+      "torpedo_accuracy": 20
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.battle_super_computer",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 5,
+      "tech_field.electronics": 11
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 25,
+      "resources": 14
+    },
+    "stats": {
+      "initiative": 2,
+      "torpedo_accuracy": 30
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.battle_nexus",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 10,
+      "tech_field.electronics": 19
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 30,
+      "resources": 15
+    },
+    "stats": {
+      "initiative": 3,
+      "torpedo_accuracy": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.jammer_10",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 2,
+      "tech_field.electronics": 6
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 2,
+      "resources": 6
+    },
+    "stats": {
+      "jamming": 10
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.jammer_20",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 4,
+      "tech_field.electronics": 10
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 1,
+      "boranium": 0,
+      "germanium": 5,
+      "resources": 20
+    },
+    "stats": {
+      "jamming": 20
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.jammer_30",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 8,
+      "tech_field.electronics": 16
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 1,
+      "boranium": 0,
+      "germanium": 6,
+      "resources": 20
+    },
+    "stats": {
+      "jamming": 30
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.jammer_50",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 16,
+      "tech_field.electronics": 22
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 2,
+      "boranium": 0,
+      "germanium": 7,
+      "resources": 20
+    },
+    "stats": {
+      "jamming": 50
+    }
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.energy_capacitor",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 7,
+      "tech_field.electronics": 4
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 5
+    },
+    "stats": {
+      "beam_damage_pct": 10
+    },
+    "tags": [
+      "capacitor"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.flux_capacitor",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 14,
+      "tech_field.electronics": 8
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 0,
+      "boranium": 0,
+      "germanium": 8,
+      "resources": 5
+    },
+    "stats": {
+      "beam_damage_pct": 20
+    },
+    "tags": [
+      "capacitor"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.energy_dampener",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 14,
+      "tech_field.propulsion": 8
+    },
+    "mass": 2,
+    "cost": {
+      "ironium": 5,
+      "boranium": 10,
+      "germanium": 0,
+      "resources": 50
+    },
+    "tags": [
+      "energy_dampener"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.tachyon_detector",
+    "category": "electrical",
+    "tech": {
+      "tech_field.energy": 8,
+      "tech_field.electronics": 14
+    },
+    "mass": 1,
+    "cost": {
+      "ironium": 1,
+      "boranium": 5,
+      "germanium": 0,
+      "resources": 70
+    },
+    "tags": [
+      "tachyon_detector"
+    ]
+  },
+  {
+    "type": "part",
+    "id": "part.electrical.anti_matter_generator",
+    "category": "electrical",
+    "tech": {
+      "tech_field.weapons": 12,
+      "tech_field.biotech": 7
+    },
+    "mass": 10,
+    "cost": {
+      "ironium": 8,
+      "boranium": 3,
+      "germanium": 3,
+      "resources": 10
+    },
+    "stats": {
+      "fuel_capacity": 200,
+      "fuel_generation": 50
+    },
+    "tags": [
+      "antimatter_generator"
+    ]
+  }
+]

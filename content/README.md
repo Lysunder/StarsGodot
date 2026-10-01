@@ -52,13 +52,14 @@ with `<mod_id>.<type>.` (e.g. `extra_hulls.hull.long_scout`), so mods can never 
 |---|---|
 | `tech_field` | **`order`** |
 | `trait` | **`kind`** (`primary`/`lesser`), **`cost`**, `params` (`{ "name": int }`), `excludes` (trait ids) |
-| `part` | **`category`**, **`mass`**, **`cost`**, `tech` (`{ tech_field id: level }`), `stats` (`{ "name": int }`), `required_traits`, `forbidden_traits` |
-| `hull` | **`mass`**, **`cost`**, **`armor`**, **`slots`**, `starbase`, `tech`, `fuel`, `cargo`, `initiative`, `required_traits`, `forbidden_traits` |
+| `part` | **`category`**, **`mass`**, **`cost`**, `tech` (`{ tech_field id: level }`), `stats` (`{ "name": int }`), `fuel_table` (engines: fuel use at warp 0–10, 11 integers), `required_traits`, `forbidden_traits` |
+| `hull` | **`mass`**, **`cost`**, **`armor`**, **`slots`**, `starbase`, `tech`, `fuel`, `cargo`, `dock` (starbases: largest ship the dock builds, −1 = any), `initiative`, `required_traits`, `forbidden_traits` |
 | `constant` | **`value`** |
 
 `cost` is `{ "ironium", "boranium", "germanium", "resources" }`, all required. A hull slot is
 `{ "accepts": [categories], "max": int, "required": bool }`. Part categories: engine, scanner, shield, armor, beam,
-torpedo, bomb, mining_robot, mine_layer, orbital, planetary, electrical, mechanical.
+torpedo, bomb, mining_robot, mine_layer, orbital, planetary, electrical, mechanical, terraform (the last three are
+also used for planet items that never go in a ship slot). Part stat names and their meanings are listed in spec S04.
 
 **Replacing** a definition from an earlier mod: define the same id and type with `"$replace": true`.
 
