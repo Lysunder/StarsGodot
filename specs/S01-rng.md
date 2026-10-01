@@ -1,7 +1,8 @@
 # S01 Random number generator
 
-Status: draft (2026-09-30). Generator, seeding and table checked against the disassembly; worked examples computed
-from this spec, not yet confirmed by harness runs.
+Status: implemented (2026-10-01, `core/rng/`). Generator, seeding and table checked against the disassembly; the
+generator and the seed table, including the entry-55 quirk, confirmed against real files from the original (see
+"Verification notes").
 References: `Random@1038:8730`, `SeedRandom@1038:86cc`, `SeedRandomFromGameSeed@1038:8672`,
 `PushRandomState@1038:0000`, `PopRandomState@1038:8654`, `GenerateTurn@10a8:0000`, `WinMain@1010:0000`,
 `NewGameFromDefFile@1070:39d4`. Algorithm: P. L'Ecuyer, "Efficient and portable combined random number
@@ -167,13 +168,16 @@ Harness experiments (2026-09-30) showed:
   off. Mining rounds fractional output up at random (`Planet_Mine@1020:3a72`), so every turn with a colony draws
   from the generator. No fixture avoids randomness.
 - Universe creation from a definition file with a seed is reproducible.
+- The original's file cipher uses this generator, seeded from the same table. A real host file whose cipher key
+  goes through table entry 55 decodes correctly with 279 and gives garbage with 269, which confirms the generator
+  and the quirk.
 - Option 4 works: in a harness-only copy of the original with the start-up seed fixed, two runs of the same turns
   (up to 20 turns, with random events and computer players) give identical game data. Only file ids and checksums
   differ, because the file salt mixes in the clock (see "Draws outside the rules").
 
 ## Worked examples
 
-Computed from this spec (status: not yet harness-verified).
+Computed from this spec by an independent script; they are the unit tests of `core/rng/`.
 
 | Game seed | `(s1, s2)` | First five raw values | First five `random(100)` |
 |---|---|---|---|
