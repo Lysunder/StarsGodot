@@ -109,6 +109,14 @@ depends on everything the hosting program did since it started.
 
 This spec defines the generator itself. Each rule spec lists its own calls, in order, with their ranges.
 
+## Draws outside the rules
+
+Writing a game file draws from the generator: each file header takes one `random(2000)`, mixed with the clock, for
+the file's cipher salt (`WriteFileHeader@1068:53f8`). Turn generation writes the host file and one file per
+player, so these draws sit in the classic sequence between one turn's rules and the next. Our engine writes no such
+files, so to stay aligned it must make the same draws (one per file the original would write, in the same order)
+on the `classic` stream at that point. The exact count and order belong to the turn-order spec (S02).
+
 ## Our design: streams
 
 - **Streams.** Gameplay code draws only from named streams passed in through its context: `classic` (the
@@ -153,8 +161,15 @@ Golden-turn tests need the `classic` state at the start of each original turn, w
 4. **Controlled clock.** If the harness can fix the tick count the original reads at start-up (for example, in the
    emulator), the start state is known directly.
 
-The harness spike (PLAN M0) should establish which of these works, and how many draws happen between start-up and
-turn generation in a host-mode run.
+Harness experiments (2026-09-30) showed:
+
+- Two runs of the same turn from identical files differ, even with no computer players and random events turned
+  off. Mining rounds fractional output up at random (`Planet_Mine@1020:3a72`), so every turn with a colony draws
+  from the generator. No fixture avoids randomness.
+- Universe creation from a definition file with a seed is reproducible.
+- Option 4 works: in a harness-only copy of the original with the start-up seed fixed, two runs of the same turns
+  (up to 20 turns, with random events and computer players) give identical game data. Only file ids and checksums
+  differ, because the file salt mixes in the clock (see "Draws outside the rules").
 
 ## Worked examples
 
