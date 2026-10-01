@@ -9,6 +9,8 @@ extends RefCounted
 const MAX_SEED := (1 << 53) - 1
 const MAX_INSTALLATIONS := 4095
 const MAX_DEFENSES := 255
+const MAX_STARBASE_DAMAGE := 4095
+const MAX_DRIVER_WARP := 19
 const MAX_STACK_DAMAGE := 499
 const MAX_WARP := 11
 
@@ -164,10 +166,10 @@ func _check_planet(pl: Planet, path: String) -> void:
 		elif _state.player(pl.owner) != null:
 			if _state.player(pl.owner).starbase_design(pl.starbase.design) == null:
 				_err(path + "/starbase/design", "the owner has no starbase design in that slot")
-		_damage(pl.starbase.damaged_percent, pl.starbase.damage, path + "/starbase")
+		_range(pl.starbase.damage, 0, MAX_STARBASE_DAMAGE, path + "/starbase/damage")
 	if pl.mass_driver_target != -1:
 		_planet_ref(pl.mass_driver_target, path + "/mass_driver_target")
-	_range(pl.mass_driver_warp, 0, MAX_WARP, path + "/mass_driver_warp")
+	_range(pl.mass_driver_warp, 0, MAX_DRIVER_WARP, path + "/mass_driver_warp")
 	if pl.route != -1:
 		_planet_ref(pl.route, path + "/route")
 

@@ -189,6 +189,7 @@ func test_validator_checks_limits() -> void:
 	state.rng = RngStreams.new(1 << 53, true)
 	f.stacks[0].damage = 500
 	state.planets[0].defenses = 256
+	state.planets[1].starbase.damage = 4096
 	(
 		assert_array(Array(StateValidator.validate(state, _content)))
 		. contains_exactly_in_any_order(
@@ -197,6 +198,7 @@ func test_validator_checks_limits() -> void:
 				"/fleets/1/waypoints: more than 87 waypoints",
 				"/fleets/1/stacks/0/damage: must be 0 .. 499, not 500",
 				"/planets/0/defenses: must be 0 .. 255, not 256",
+				"/planets/1/starbase/damage: must be 0 .. 4095, not 4096",
 			]
 		)
 	)

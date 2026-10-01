@@ -127,8 +127,9 @@ whole game. "Each planet" means in id order.
 | `mines`, `factories` | 0 … 4095 |
 | `defenses` | 0 … 255 (the planet's maximum is lower, S08) |
 | `homeworld` | flag |
-| `starbase` | none, or the design slot of the owner's starbase design plus its stack damage (below) |
-| `mass_driver` | destination planet and warp for packets (S09, S14) |
+| `has_scanner` | a planetary scanner has been built (S15) |
+| `starbase` | none, or the design slot of the owner's starbase design plus its damage in armor points (0 … 4095) |
+| `mass_driver_target`, `mass_driver_warp` | packet destination planet (−1 = none) and the driver's warp setting (S09, S14) |
 | `route` | route destination for new fleets (planet id or none) (S11) |
 | `queue` | production queue, list of items (S09) |
 | `artifact` | random-event artifact (S18) |
@@ -304,7 +305,6 @@ None. The order rules above decide which object receives which draw in every oth
 ## Open questions
 
 1. The exact highest number a (kind, owner) can use for space objects (the original's check allows 511 or 512).
-2. Starbase record: which bits hold the starbase damage, and the mass driver destination and warp (S09, S14).
-3. The production queue item's progress fields (S09).
-4. The meaning of the remaining planet installation bits (a scanner flag and others) (S08, S15).
-5. Wormhole and Mystery Trader fields beyond position (S12, S18).
+2. The production queue item's progress fields (S09).
+3. The meaning of installation byte 5 (S23) (S08, S15).
+4. Wormhole and Mystery Trader fields beyond position (S12, S18).

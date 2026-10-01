@@ -26,8 +26,10 @@ var mines: int = 0
 var factories: int = 0
 var defenses: int = 0
 var homeworld: bool = false
+## A planetary scanner has been built (S15).
+var has_scanner: bool = false
 var starbase: Starbase = null
-## Packet destination planet id (-1 = none) and warp (S09, S14).
+## Packet destination planet id (-1 = none) and the mass driver's warp setting (S09, S14).
 var mass_driver_target: int = -1
 var mass_driver_warp: int = 0
 ## Route destination for new fleets: planet id or -1 (S11).
@@ -57,6 +59,7 @@ func _schema() -> Array:
 		["factories", Kind.INT],
 		["defenses", Kind.INT],
 		["homeworld", Kind.BOOL],
+		["has_scanner", Kind.BOOL],
 		["starbase", Kind.OBJECT_OR_NULL, Starbase],
 		["mass_driver_target", Kind.INT],
 		["mass_driver_warp", Kind.INT],

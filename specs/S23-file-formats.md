@@ -1,10 +1,11 @@
 # S23 File formats (harness import only)
 
-Status: draft (2026-10-01), first pass: the container (framing, cipher, header, footer), the packed text encoding,
-and the blocks that hold the game state: settings with planet positions (7), players (6), planets (13, 14), fleets
-(16, 17) with waypoints (19, 20) and names (21), designs (26), and space objects (43). Production queues, battle
-plans, scores, events, messages, battles and order blocks follow in a second pass. Every layout below was checked
-by decoding real files from the harness (all blocks of two host files decode to exactly their length).
+Status: draft (2026-10-01), second pass. Covers the container (framing, cipher, header, footer), the packed text
+encoding, and every block the importer needs for the host state: settings with planet positions (7), players (6),
+planets (13, 14) with production queues (28), fleets (16, 17) with waypoints (19, 20) and names (21), designs (26),
+space objects (43) and battle plans (30). Checked by decoding real files from the harness: two small games and an
+80-turn game with five computer players (`runs/big1`). Scores, events, messages and battle records are listed but
+not imported; order files (`.x`) are a later pass (see "Order files").
 References: `ReadBlock@1068:305a`, `WriteBlock@1068:579a`, `WriteFileHeader@1068:53f8`,
 `ReadGameFileHeader@1068:54ea`, `InitFileCipher`, `CipherNext`, `CipherBlock` (1038:89aa..8ae6), `LoadGame@1068:0508`,
 `DecodePlayerBlock@1068:0370`, `DecodePlanetBlock@1068:1f0c`, `DecodeFleetBlock@1068:235e`,
@@ -103,7 +104,7 @@ Block types this spec decodes (first pass) or lists for the second pass:
 | 7 | settings and planet positions | `.xy` | 1 |
 | 8 | file header | all | 1 |
 | 9 | (registration data) | where present | never decoded |
-| 12 | events | `.m` | 2 |
+| 12 | events (turn messages) | `.m` | not imported |
 | 13 | planet (full) | `.hst`, `.m` | 1 |
 | 14 | planet (partial view) | `.m`, `.h` | 1 |
 | 16 | fleet (full) | `.hst`, `.m` | 1 |
@@ -113,17 +114,27 @@ Block types this spec decodes (first pass) or lists for the second pass:
 | 26 | design | `.hst`, `.m`, `.h` | 1 |
 | 28 | production queue (follows its planet) | `.hst`, `.m` | 2 |
 | 30 | battle plan | `.hst`, `.m` | 2 |
-| 31, 39 | battle record and continuation | `.m` | 2 |
-| 32, 33 | counters, message filter | `.h` | 2 |
-| 40 | message | `.m` | 2 |
-| 41 | computer player memory | to confirm | 2 (likely not imported) |
+| 31, 39 | battle record and continuation | `.m` | not imported |
+| 32, 33 | counters, message filter | `.h` | not imported |
+| 40 | player-to-player message | `.m` | not imported |
+| 41 | computer player memory | not seen yet | not imported |
 | 43 | space object, preceded by a 2-byte count block of the same type | `.hst`, `.m` (to confirm) | 1 |
-| 45 | player scores | `.m`, `.h` | 2 |
-| 1–5, 10, 23–25, 27, 29, 34–38, 42, 44, 46 | orders | `.x` | 2 |
+| 45 | player scores (24 bytes; fields belong to S20) | `.m`, `.h` | not imported |
+| 1–5, 10, 23–25, 27, 29, 34–38, 42, 44, 46 | orders | `.x` | later pass |
 
-Observed order in a `.hst` (3 players, turn 5): header, players, planets, designs, fleets (each followed by its
-waypoints), more designs, battle plans, footer. Production queues, fleet names and space objects did not occur in
-that file; where they go is confirmed in the second pass.
+Order in a `.hst`:
+
+1. header;
+2. players, by index;
+3. planets, by id, each followed by its production queue block when the queue is not empty;
+4. ship designs: for each player in order, as many design blocks as the player record's ship design count;
+5. fleets in (owner, number) order, each followed by its waypoints and, if named, its name block;
+6. starbase designs: for each player in order, as many as the player record's starbase design count;
+7. the space object count block, then the objects in id order;
+8. battle plans;
+9. footer.
+
+Design blocks carry no owner: the importer assigns them by these counts.
 
 ### Settings (type 7, 64 bytes, `.xy`)
 
@@ -178,8 +189,8 @@ name (packed text each). Otherwise the names follow byte 7 directly (another pla
 | 0x1A | 6 × 1 | tech levels, field order | `tech_levels` |
 | 0x20 | 6 × 4 | research points, field order | `research_points` |
 | 0x38 | 1 | research percentage | `research_percent` |
-| 0x39 | 1 | low nibble: field being researched; high nibble: next-field setting (to confirm) | `research_field`, `next_research_field` |
-| 0x3A | 4 | not imported | |
+| 0x39 | 1 | low nibble: field being researched; high nibble: next-field setting (0–5 a field, 6 same field, 7 lowest field) | `research_field`, `next_research_field` |
+| 0x3A | 4 | grows every year; probably resources spent on research (to confirm, S05/S09) | |
 | 0x3E | 1 | resources per colonist (in units of 100 colonists) | `race.resources_per_colonist` |
 | 0x3F … 0x44 | 6 × 1 | factory output, factory cost, factories operated, mine output, mine cost, mines operated | race economy settings |
 | 0x45 | 1 | leftover-points choice | `race.leftover_points` |
@@ -188,7 +199,7 @@ name (packed text each). Otherwise the names follow byte 7 directly (another pla
 | 0x4E | 4 | bits 0–13: lesser traits (S06 order); bit 29: techs start at 3; bit 31: cheap factories | `race.lesser_traits`, options |
 | 0x52 | 2 | Mystery Trader items (second pass, S18) | `trader_parts` |
 | 0x54 … 0x6F | | not imported | |
-| 0x70 | 1 + n | relations, one byte per player: 0 neutral, 1 friend, 2 enemy | `relations` |
+| 0x70 | 1 + n | relations, one byte per player: 0 neutral, 1 friend, 2 enemy; n can be smaller than the number of players (trailing neutral entries are left out) | `relations` |
 
 ### Planet (type 13 full, 14 partial)
 
@@ -215,11 +226,17 @@ Sections:
    colonists).
 3. **Installations** (flag 0x800, 8 bytes): byte 0 extra colonists (`extra_colonists`); bytes 1–3 mines (12 bits)
    and factories (12 bits); byte 4 defenses; byte 5 unknown; byte 6 bit 7 "contribute only leftover resources to
-   research" (S09), bit 0 set when the planet has **no** planetary scanner; byte 7 zero.
-4. **Starbase** (flag 0x200): full planets 4 bytes, low nibble of the first = starbase design slot (`starbase`);
-   the other bits hold the starbase damage and the mass driver settings (second pass). Partial planets: 1 byte, the
-   design slot.
-5. **Route** (flag 0x4000, full planets only): 2 bytes (`route`; encoding second pass).
+   research" (S09, kept with the queue), bit 0 set when the planet has **no** planetary scanner (`has_scanner`);
+   byte 7 zero.
+4. **Starbase** (flag 0x200), full planets 4 bytes as two words:
+   - word 0: bits 0–3 starbase design slot (`starbase.design`); bits 4–15 damage in armor points
+     (`starbase.damage`);
+   - word 1: bits 0–9 mass driver destination planet id + 1, 0 = none (`mass_driver_target`); bits 10–13 driver
+     warp − 4 (`mass_driver_warp`; new colonies start at 1, warp 5); bit 14 "fought this turn", cleared on load
+     (not imported); bit 15 unknown.
+
+   Partial planets: 1 byte, the design slot.
+5. **Route** (flag 0x4000, full planets only): 2 bytes, bits 0–9 route destination planet id + 1 (`route`).
 6. Partial planets in `.m` and `.h` files end with 2 bytes: the turn the data was seen (player knowledge, S15).
 
 ### Fleet (type 16 full, 17 partial)
@@ -251,7 +268,33 @@ Then, for kind 7 (always in `.hst`):
 Kinds 3 and 4 instead end with 1 byte dx, 1 byte dy (heading), 1 byte warp (low nibble), 1 zero byte, and 4
 bytes total mass (player knowledge, S15).
 
-### Waypoint (type 19 or 20, up to 18 bytes)
+### Production queue (type 28)
+
+Follows its planet. 4 bytes per item, in queue order:
+
+| Bits | Meaning |
+|---|---|
+| word 0, bits 0–9 | count |
+| word 0, bits 10–15 | item: a standard item number (S09) or a design slot |
+| word 1, bits 0–3 | kind: 2 standard item, 4 design |
+| word 1, bits 4–15 | progress on the first unit (units in S09) |
+
+The importer stores the items in `queue` in this raw form until S09 defines the queue.
+
+### Battle plan (type 30)
+
+4 bytes, then the plan name (packed text; length 0 means a plain zero-terminated string follows):
+
+| Byte | Meaning |
+|---|---|
+| 0 | low nibble owner, high nibble plan number |
+| 1 | low nibble tactic (S16) |
+| 2 | low nibble primary target, high nibble secondary target (S16) |
+| 3 | whom to attack: 0 nobody, 1 enemies, 2 enemies and neutrals, 3 everyone, 4 + n player n |
+
+Value meanings are defined in S16; the importer copies them into `battle_plans`.
+
+### Waypoint (type 19 with task data, 20 without)
 
 | Offset | Size | Meaning | Our model |
 |---|---|---|---|
@@ -259,9 +302,10 @@ bytes total mass (player knowledge, S15).
 | 4 | 2 | target id: planet id, fleet id (owner × 512 + number) or space object id | `target_owner`, `target_id` |
 | 6 | 1 | low nibble task (0 none, 1 transport, 2 colonize, 3 remote mine, 4 merge, 5 scrap, 6 lay mines, 7 patrol, 8 route, 9 transfer); high nibble warp | `task`, `warp` |
 | 7 | 1 | low nibble target kind: 1 planet, 2 fleet, 4 deep space, 8 space object; 0x10 UI bit; 0x20 frozen (cleared on load) | `target` |
-| 8 | up to 10 | task data (S11); transport: one 16-bit word per cargo type, action in bits 12–15, amount in bits 0–11 | `task_data` |
+| 8 | 10 | task data (S11), type 19 only; transport: one 16-bit word per cargo type, action in bits 12–15, amount in bits 0–11 | `task_data` |
 
-The first waypoint is the fleet's current position.
+Type 20 blocks are 8 bytes (no task data); type 19 blocks are 18. The first waypoint is the fleet's current
+position.
 
 ### Design (type 26)
 
@@ -277,13 +321,14 @@ designed, 4 bytes ships built, 4 bytes ships remaining, then k slots of 4 bytes 
 count; content ids via `legacy_ids.json`), then the name (packed text). Partial designs have 2 bytes mass and then
 the name.
 
-Designs appear in owner order; the owner is the player whose designs are being listed (the block itself has no
-owner field; second pass confirms how the importer tells owners apart).
+Ship design slots are 0–15 and starbase design slots 0–9; the owner comes from the block order (see "Blocks in the
+game-state files").
 
 ### Space objects (type 43)
 
 The objects are preceded by a 2-byte block of the same type holding their count. Each object block is 18 bytes,
-the original's in-memory record:
+the original's in-memory record; bytes 16–17 hold the last turn the object was updated (0 for objects created
+this turn):
 
 | Offset | Size | Meaning |
 |---|---|---|
@@ -293,11 +338,18 @@ the original's in-memory record:
 | Kind | Offsets 6–17 |
 |---|---|
 | Minefield | 6: mines (4 bytes); 12: type (0 standard, 1 heavy, 2 speed bump); 13: 1 = detonating; 14: players who have seen it (16-bit mask) |
-| Packet / salvage | 6: word, bits 0–9 destination planet (1023 = none, salvage), bits 10–13 warp, bit 14 salvage; 8, 10, 12: ironium, boranium, germanium (16-bit each); 14: bits 0–13 a mass counter (S14) |
-| Wormhole | 6: stability word (S12, S18); 8: players who have been through (mask); 10: players who can see it (mask); 12: the other end's id (low 12 bits) |
+| Packet / salvage | 6: word, bits 0–9 destination planet (1023 = none: salvage), bits 10–13 warp (0 for salvage), bits 14–15 status bits (S14); 8, 10, 12: ironium, boranium, germanium (16-bit each); 14: bits 0–13 mass in units of 10 kT (each mineral rounded up when created; S14) |
+| Wormhole | 6: stability word (S12, S18); 8: players who have been through (mask); 10: players who can see it (mask); 12: the other end's full object id |
 | Mystery Trader | 6, 8: destination x, y; 10: warp (low nibble); 12: players met (mask); 14: items carried (mask); 16: turn counter |
 
 Wormholes and the Mystery Trader are stored with owner 0; the importer maps them to "no owner" (S03).
+
+## Order files
+
+`.x` files carry one player's orders as blocks (waypoint changes, cargo transfers, production queue changes,
+research, relations, battle plans, fleet splits and merges). The harness does not need to read them, but writing
+them would let fixtures give orders to human players, so they can exercise rules the computer players never use
+(named fleets, mass drivers, minefields, specific transports). That is a later pass of this spec, when M4 needs it.
 
 ## Mapping to our save format
 
@@ -336,8 +388,9 @@ None: the harness is a dev tool.
 ## Open questions
 
 1. Header byte 15 and the options word bits 0x04 and 0x08.
-2. Player record byte 0x39 high nibble (next research field) and the remaining record bytes the importer may need.
-3. Starbase bytes (damage, mass driver destination and warp) and the route encoding: second pass, with fixtures
-   that have them.
-4. Design byte 1 bit 7, and how the importer assigns design blocks to owners in each file kind.
-5. The packet mass counter and wormhole stability bits (S14, S18).
+2. Player record dword 0x3A (probably research spending) and the remaining record bytes.
+3. Starbase word 1 bit 15, installation byte 5, and the packet status bits (S14).
+4. Design byte 1 bit 7.
+5. Wormhole stability bits (S12, S18); the minefield layout has no fixture yet (the computer players laid no mines
+   in 80 turns).
+6. Production queue progress units and the standard item numbers (S09).
