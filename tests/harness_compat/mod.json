@@ -1,0 +1,9 @@
+{
+  "id": "harness_compat",
+  "name": "Harness compatibility (test only)",
+  "version": "0.1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "depends": { "core": "*" },
+  "description": "Reproduces a few known bugs of the original so golden-turn runs can match it exactly. Test runs only (D12)."
+}

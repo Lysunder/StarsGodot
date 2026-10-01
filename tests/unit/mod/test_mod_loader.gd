@@ -126,6 +126,13 @@ func test_test_mods_refused_unless_allowed() -> void:
 	assert_bool(r2.ok()).override_failure_message(r2.error_text()).is_true()
 
 
+func test_compat_id_reserved_outside_tests() -> void:
+	var copy := _mod("harness_compat")  # not under res://tests/, e.g. copied to user://mods
+	for allow in [false, true]:
+		var r := _load([_core(), copy], ["harness_compat"], allow)
+		assert_str(r.error_text()).contains("reserved for the test-only compat mod")
+
+
 func test_cosmetic_mods_cannot_change_gameplay() -> void:
 	var cosmetic := _mod(
 		"pretty",

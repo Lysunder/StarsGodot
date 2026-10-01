@@ -12,6 +12,8 @@ extends RefCounted
 
 const API_VERSION := 1
 const CORE_ID := ContentRegistry.CORE_MOD_ID
+## Mod ids only test mods may use: a copy of the compat mod anywhere else is refused (D12).
+const RESERVED_TEST_IDS: Array[String] = ["harness_compat"]
 
 
 class LoadResult:
@@ -54,6 +56,13 @@ func load_mods(sources: Array[ModSource], enabled: PackedStringArray) -> LoadRes
 		if source.is_test_mod() and not allow_test_mods:
 			result.errors.append(
 				ContentError.new(manifest.id, "", 0, "test-only mod refused outside test runs")
+			)
+			continue
+		if RESERVED_TEST_IDS.has(manifest.id) and not source.is_test_mod():
+			result.errors.append(
+				ContentError.new(
+					manifest.id, "", 0, "this id is reserved for the test-only compat mod (D12)"
+				)
 			)
 			continue
 		if result.manifests.has(manifest.id):

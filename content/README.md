@@ -20,7 +20,7 @@ Built-in mods live in `res://content/<id>/`; player mods in `user://mods/<id>/`.
 
 | Field | Required | Meaning |
 |---|---|---|
-| `id` | yes | Lowercase letters, digits and `_`. Must be unique. |
+| `id` | yes | Lowercase letters, digits and `_`. Must be unique. `harness_compat` is reserved for a test-only mod. |
 | `name` | yes | Display name. |
 | `version` | yes | `major.minor.patch`. |
 | `api_version` | yes | Mod API version the mod was written for (currently 1). |

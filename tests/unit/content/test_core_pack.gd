@@ -44,3 +44,18 @@ func test_fixture_mod_adds_hull_and_overrides_stat() -> void:
 func test_fixture_mod_is_test_only() -> void:
 	var r := ModLoader.new().load_mods(_sources(true), PackedStringArray(["extra_hulls"]))
 	assert_str(r.error_text()).contains("test-only mod refused")
+
+
+func test_compat_mod_loads_only_in_test_runs() -> void:
+	var sources := FolderModSource.discover("res://content")
+	sources.append(FolderModSource.new("res://tests/harness_compat"))
+	var refused := ModLoader.new().load_mods(sources, PackedStringArray(["harness_compat"]))
+	assert_str(refused.error_text()).contains("test-only mod refused")
+	var loader := ModLoader.new()
+	loader.allow_test_mods = true
+	var r := loader.load_mods(sources, PackedStringArray(["harness_compat"]))
+	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
+	assert_array(Array(r.order)).is_equal(["core", "harness_compat"])
+	var core_only := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	# a different ruleset: compat runs never mix with saves made under the shipped rules
+	assert_str(r.registry.ruleset_hash).is_not_equal(core_only.registry.ruleset_hash)
