@@ -3,13 +3,13 @@
 Status: draft (2026-10-01), second pass; implemented in `core/universe/` (generator, starting setup), reproducing the
 original's complete turn-0 state (all but names) for the fixture games. Covers the setup draws, the universe, the
 players' starting tech, homeworlds, starting designs and fleets, the extra starting planet, wormholes and starting
-relations. Verified against 16 games created by the original (seeds 4242, 777 and 1001-1013; every universe size
+relations. Verified against 22 games created by the original (seeds 4242, 777 and 1001-1019; every universe size
 and density, every player-position setting, 2 to 8 players, 24 to 800 planets): the setup draws (count, names,
 logos), every position, planet name, environment value, concentration, homeworld, homeworld mineral amount,
 starting tech, starting fleet and wormhole match. The games cover galaxy clumping, maximum minerals, accelerated
 start, slower tech, random computer players, every built-in computer race, two different human races, and the
-extra planet of Packet Physics and Inter-stellar Traveler races. Not yet covered by a fixture: human random races,
-the tutorial, and games set up from the New Game dialog.
+extra planet of Packet Physics and Inter-stellar Traveler races, and random races (S06). Not yet covered by a
+fixture: the tutorial, and games set up from the New Game dialog.
 References: `CreateUniverse@1070:1334`, `NewGameFromDefFile@1070:39d4`, `CompareInts@1038:8b46`,
 `qsort@1108:069e`, `SeedRandomFromGameSeed@1038:8672`, `CreateStartingFleet@1070:38fe`,
 `GetDesignTemplates@1008:50be`, `GetStarbaseTemplates@1008:50c4`, `SpaceObject_ValidatePosition@1100:0456`,
@@ -346,8 +346,7 @@ From the harness (games created by the original, see `tests/fixtures/golden/READ
 ## Open questions
 
 1. Games created from the New Game dialog (setup draws may differ from the definition-file path).
-2. No fixture yet for human random races or the tutorial (a definition file cannot set the tutorial); confirm
-   each with the harness.
+2. No fixture yet for the tutorial (a definition file cannot set it).
 3. One more global setting raises the homeworld concentration minimum to 25 instead of 30 in the original's code;
    which setting that is remains open.
 4. The built-in computer races' data (S22).

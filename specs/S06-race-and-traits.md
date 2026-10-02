@@ -1,6 +1,8 @@
 # S06 Race and traits
 
-Status: draft (2026-09-30); advantage points implemented in `core/universe/race_math.gd` (2026-10-01).
+Status: draft (2026-09-30); advantage points implemented in `core/universe/race_math.gd` (2026-10-01); random
+races in `core/universe/random_race.gd` (2026-10-02), matching the original in 6 harness games (8 random races,
+seeds 1014-1019).
 Advantage-point algorithm read from the code, with its constant tables; checked by a
 reference implementation that gives the original's preset values (Humanoid: 25 points left, as the original's race
 wizard shows). Other presets computed, not yet confirmed against the original.
@@ -23,6 +25,7 @@ What each trait does during play is specified in the subsystem specs; the "Trait
 | Field | Range | Meaning |
 |---|---|---|
 | Name, plural name | text | |
+| Random | yes/no | rolled anew at game creation (see "Random races") |
 | Primary trait | one of 10 | see "Traits" |
 | Lesser traits | any of 14 | see "Traits" |
 | Habitability, per axis (gravity, temperature, radiation) | low, center, high in 0–100, or immune | the range of planet values the race lives in; the center is the ideal |
@@ -156,6 +159,62 @@ any integer input, so double precision reproduces it exactly.
 
 The race's effective growth rate is its chosen rate, doubled for Hyper-Expansion (`race.growth_rate_pct` 200).
 
+## Random races
+
+A race can carry the **random** setting (the original's race wizard has a "Random" preset that saves it). Such a race
+is rolled anew when the game is created, at the moment S07 step 9.5 reaches its player (right after that player's
+shuffle draw). The setting stays on the rolled race. All draws are on the classic stream, in this order.
+
+**Parameters.** "Param" k means: 0 resources per colonist, 1 factory output, 2 factory cost, 3 factories operated,
+4 mine output, 5 mine cost, 6 mines operated, 7 leftover points, 8-13 research cost per field, 14 primary trait.
+Setting a param clamps it to its limits:
+
+| Param | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8-13 | 14 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| min | 7 | 5 | 5 | 5 | 5 | 2 | 5 | 0 | 0 | 0 |
+| max | 25 | 15 | 25 | 25 | 25 | 15 | 25 | 6 | 2 | 9 |
+
+Leftover-point values 5 and 6 have no label; at game start they act as surface minerals (S07 step 10.6), so they
+are stored as surface minerals. Primary traits are numbered HE, SS, WM, CA, IS, SD, PP, IT, AR, JoaT (0-9) and lesser
+traits IFE … RS (0-13), as in the trait table. A "wide" axis is low 0, center 50, high 100; an "immune" axis has −1
+in all three.
+
+1. **Habitability and growth.** s = random(25).
+   - s < 4: all three axes immune; growth = 2 + random(4).
+   - s < 7: all three axes wide; growth = 3 + random(4).
+   - s < 9: for each axis i = 0, 1, 2: c = random(2); for i = 2 only, if the centers of axes 0 and 1 are equal,
+     c = 1 unless axis 0's center is 0. If c = 0 the axis becomes wide (otherwise it keeps the race's range), else
+     growth = 2 + random(4). Then growth = 2 + random(5) (the in-loop growth values are overwritten, but their
+     draws happen).
+   - s ≥ 9: for each axis: w = 2 × (10 + random(40)); o = random(101 − w); low = o, center = o + w div 2,
+     high = o + w. Then, if s < 12: one axis a = random(3) becomes immune; else if s < 14: axis random(3) becomes
+     wide; else if s < 17: a = random(3), r = random(81), axis a gets low r, center r + 10, high r + 20. Then
+     growth = 7 + random(9).
+2. **Research costs.** q = random(3); for each field (params 8-13): q = 0 → normal (1), else random(3).
+3. **Primary trait** = random(10) (param 14).
+4. **Lesser traits.** q = random(4); for each lesser trait 0-13 in order: q = 0 → off, else on when random(2) = 1.
+5. **Options.** Techs start at 3 = random(2) = 1; then cheap factories = random(2) = 1.
+6. **Economy.** If random(3) = 0: params 0-6 take the default economy (10, 10, 10, 10, 10, 5, 10) and leftover
+   points = random(5). Otherwise for params 0-7 in order: min + random(max − min + 1) (no clamp needed).
+7. **Name.** If the race's name is the preset's ("Random"; in our files an empty name), name = entry random(24) of
+   the race name list (S07).
+8. **Repair.** Let A be the advantage points left (this spec). While A is outside 0 … 50, with d = max(A − 50, −A),
+   the distance to the range: after 251 repair attempts the race becomes the default race (Humanoid) keeping its
+   name; otherwise one attempt, r = random(10). "Keep if better" means: recompute A; keep the change if the new
+   distance is less than d, otherwise undo it.
+   - r < 3: f = random(6), research cost of field f: if it is above 0, lower it by one, keep if better; if not
+     kept (or not lowered) and the original cost is below 2, raise it by one from the original, keep if better.
+   - r < 6: t = random(14); try lesser trait t off, then on; keep the first that is better; if neither, restore it.
+   - r < 9: k = random(7) (params 0-6); try the original value − 1, then + 1 (each clamped); keep the first that is
+     better; if neither, restore it.
+   - r = 9: if random(2) = 1: with g the growth rate, try g − 1 if g > 1, keep if better; otherwise try g + 1 if
+     g < 15, keep if better; otherwise restore g. If random(2) = 0: a = random(3); if axis a is immune: v =
+     random(31), the axis gets low v, center v + 35, high v + 70, keep if better (else immune again); if not immune:
+     make it immune, keep if better (else restore).
+
+Reference: `GenerateRandomRace@10d8:3b74` (called from `CreateUniverse` for races with trait bit 30),
+`Race_SetParam@10d8:2200` (clamp tables in its code segment at 0300/0310), preset race at DS:1262.
+
 ## Part availability by trait
 
 Some parts and hulls are only available to (or never available to) certain traits. The content records this as
@@ -264,6 +323,8 @@ Random 50/50/50.
    once at the end. A double-precision implementation should match except when the total sits within rounding
    distance of a .5 boundary; and H only matters through H div 2000. Verify against the original for a set of races
    (harness: the race wizard, or games whose invalid-race repair reveals the sign).
-2. Leftover-point choices 5 and 6 are allowed by the clamp table but have no label; check whether they mean anything.
+2. Leftover-point choices 5 and 6: answered, they act as surface minerals (see "Random races").
 3. The techs-start-at-3 option (S07 universe setup); the research cost factors are settled in S05.
 4. The race file format is our own (D6); nothing here depends on the original's race files.
+5. Random races: when the repair gives up (251 attempts), the original copies the whole default player record,
+   including its logo; we keep the player's logo. Not yet seen in a harness game.

@@ -3,6 +3,7 @@
     "type": "trait",
     "id": "trait.prt.HE",
     "kind": "primary",
+    "order": 0,
     "cost": 40,
     "params": {
       "race.growth_rate_pct": 200,
@@ -14,6 +15,7 @@
     "type": "trait",
     "id": "trait.prt.SS",
     "kind": "primary",
+    "order": 1,
     "cost": 95,
     "params": {
       "research.spy_pct": 50,
@@ -24,30 +26,35 @@
     "type": "trait",
     "id": "trait.prt.WM",
     "kind": "primary",
+    "order": 2,
     "cost": 45
   },
   {
     "type": "trait",
     "id": "trait.prt.CA",
     "kind": "primary",
+    "order": 3,
     "cost": 10
   },
   {
     "type": "trait",
     "id": "trait.prt.IS",
     "kind": "primary",
+    "order": 4,
     "cost": -100
   },
   {
     "type": "trait",
     "id": "trait.prt.SD",
     "kind": "primary",
+    "order": 5,
     "cost": -150
   },
   {
     "type": "trait",
     "id": "trait.prt.PP",
     "kind": "primary",
+    "order": 6,
     "cost": 120,
     "params": {
       "race.ap_nas_penalty": 280
@@ -57,12 +64,14 @@
     "type": "trait",
     "id": "trait.prt.IT",
     "kind": "primary",
+    "order": 7,
     "cost": 180
   },
   {
     "type": "trait",
     "id": "trait.prt.AR",
     "kind": "primary",
+    "order": 8,
     "cost": 90,
     "params": {
       "race.ap_cheap_energy_penalty": 100
@@ -72,6 +81,7 @@
     "type": "trait",
     "id": "trait.prt.JoaT",
     "kind": "primary",
+    "order": 9,
     "cost": -66,
     "params": {
       "planet.max_pop_pct": 120,
@@ -83,12 +93,14 @@
     "type": "trait",
     "id": "trait.lrt.IFE",
     "kind": "lesser",
+    "order": 0,
     "cost": 235
   },
   {
     "type": "trait",
     "id": "trait.lrt.TT",
     "kind": "lesser",
+    "order": 1,
     "cost": 25,
     "params": {
       "race.hab_terraform_reach_1": 8,
@@ -99,18 +111,21 @@
     "type": "trait",
     "id": "trait.lrt.ARM",
     "kind": "lesser",
+    "order": 2,
     "cost": 159
   },
   {
     "type": "trait",
     "id": "trait.lrt.ISB",
     "kind": "lesser",
+    "order": 3,
     "cost": 201
   },
   {
     "type": "trait",
     "id": "trait.lrt.GR",
     "kind": "lesser",
+    "order": 4,
     "cost": -40,
     "params": {
       "research.current_field_pct": 50,
@@ -121,30 +136,35 @@
     "type": "trait",
     "id": "trait.lrt.UR",
     "kind": "lesser",
+    "order": 5,
     "cost": 240
   },
   {
     "type": "trait",
     "id": "trait.lrt.MA",
     "kind": "lesser",
+    "order": 6,
     "cost": 155
   },
   {
     "type": "trait",
     "id": "trait.lrt.NRSE",
     "kind": "lesser",
+    "order": 7,
     "cost": -160
   },
   {
     "type": "trait",
     "id": "trait.lrt.CE",
     "kind": "lesser",
+    "order": 8,
     "cost": -240
   },
   {
     "type": "trait",
     "id": "trait.lrt.OBRM",
     "kind": "lesser",
+    "order": 9,
     "cost": -255,
     "params": {
       "planet.max_pop_extra_pct": 110
@@ -154,6 +174,7 @@
     "type": "trait",
     "id": "trait.lrt.NAS",
     "kind": "lesser",
+    "order": 10,
     "cost": -325,
     "params": {
       "race.ap_scanner_restriction": 1
@@ -163,6 +184,7 @@
     "type": "trait",
     "id": "trait.lrt.LSP",
     "kind": "lesser",
+    "order": 11,
     "cost": -180,
     "params": {
       "start.population": 175
@@ -172,12 +194,14 @@
     "type": "trait",
     "id": "trait.lrt.BET",
     "kind": "lesser",
+    "order": 12,
     "cost": -70
   },
   {
     "type": "trait",
     "id": "trait.lrt.RS",
     "kind": "lesser",
+    "order": 13,
     "cost": -30,
     "params": {
       "design.armor_part_pct": 50,

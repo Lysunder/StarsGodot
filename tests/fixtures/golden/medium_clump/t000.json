@@ -14358,6 +14358,7 @@
      "name": "Race 0",
      "plural_name": "Races 0",
      "primary_trait": "trait.prt.JoaT",
+     "random": false,
      "research_costs": [
       1,
       1,
@@ -14708,6 +14709,7 @@
      "name": "Race 1",
      "plural_name": "Races 1",
      "primary_trait": "trait.prt.PP",
+     "random": false,
      "research_costs": [
       1,
       1,
@@ -14973,6 +14975,7 @@
      "name": "Race 2",
      "plural_name": "Races 2",
      "primary_trait": "trait.prt.CA",
+     "random": false,
      "research_costs": [
       0,
       0,
@@ -15233,6 +15236,7 @@
      "name": "Race 3",
      "plural_name": "Races 3",
      "primary_trait": "trait.prt.SS",
+     "random": false,
      "research_costs": [
       1,
       1,

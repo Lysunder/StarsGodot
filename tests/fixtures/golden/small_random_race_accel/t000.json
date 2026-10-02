@@ -25,7 +25,7 @@
     "name": "",
     "number": 0,
     "owner": 0,
-    "planet": 68,
+    "planet": 116,
     "repeat": false,
     "stacks": [
      {
@@ -44,17 +44,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 68,
+      "target_id": 116,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1449,
-      "y": 1350
+      "x": 1595,
+      "y": 1271
      }
     ],
-    "x": 1449,
-    "y": 1350
+    "x": 1595,
+    "y": 1271
    },
    {
     "battle_plan": 0,
@@ -69,7 +69,7 @@
     "name": "",
     "number": 1,
     "owner": 0,
-    "planet": 68,
+    "planet": 116,
     "repeat": false,
     "stacks": [
      {
@@ -88,17 +88,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 68,
+      "target_id": 116,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1449,
-      "y": 1350
+      "x": 1595,
+      "y": 1271
      }
     ],
-    "x": 1449,
-    "y": 1350
+    "x": 1595,
+    "y": 1271
    },
    {
     "battle_plan": 0,
@@ -107,13 +107,13 @@
      0,
      0,
      0,
-     530
+     400
     ],
     "mod_data": {},
     "name": "",
     "number": 2,
     "owner": 0,
-    "planet": 68,
+    "planet": 116,
     "repeat": false,
     "stacks": [
      {
@@ -132,17 +132,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 68,
+      "target_id": 116,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1449,
-      "y": 1350
+      "x": 1595,
+      "y": 1271
      }
     ],
-    "x": 1449,
-    "y": 1350
+    "x": 1595,
+    "y": 1271
    },
    {
     "battle_plan": 0,
@@ -151,13 +151,13 @@
      0,
      0,
      0,
-     650
+     400
     ],
     "mod_data": {},
     "name": "",
     "number": 3,
     "owner": 0,
-    "planet": 68,
+    "planet": 116,
     "repeat": false,
     "stacks": [
      {
@@ -176,61 +176,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 68,
+      "target_id": 116,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1449,
-      "y": 1350
+      "x": 1595,
+      "y": 1271
      }
     ],
-    "x": 1449,
-    "y": 1350
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     300
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 4,
-    "owner": 0,
-    "planet": 87,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 0,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 87,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1533,
-      "y": 1246
-     }
-    ],
-    "x": 1533,
-    "y": 1246
+    "x": 1595,
+    "y": 1271
    },
    {
     "battle_plan": 0,
@@ -245,7 +201,7 @@
     "name": "",
     "number": 0,
     "owner": 1,
-    "planet": 30,
+    "planet": 41,
     "repeat": false,
     "stacks": [
      {
@@ -264,17 +220,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 30,
+      "target_id": 41,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1203,
-      "y": 1580
+      "x": 1236,
+      "y": 1495
      }
     ],
-    "x": 1203,
-    "y": 1580
+    "x": 1236,
+    "y": 1495
    },
    {
     "battle_plan": 0,
@@ -283,13 +239,13 @@
      0,
      0,
      0,
-     150
+     200
     ],
     "mod_data": {},
     "name": "",
     "number": 1,
     "owner": 1,
-    "planet": 30,
+    "planet": 41,
     "repeat": false,
     "stacks": [
      {
@@ -308,17 +264,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 30,
+      "target_id": 41,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1203,
-      "y": 1580
+      "x": 1236,
+      "y": 1495
      }
     ],
-    "x": 1203,
-    "y": 1580
+    "x": 1236,
+    "y": 1495
    },
    {
     "battle_plan": 0,
@@ -327,20 +283,108 @@
      0,
      0,
      0,
-     150
+     300
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 0,
+    "owner": 2,
+    "planet": 124,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 0,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 124,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1606,
+      "y": 1706
+     }
+    ],
+    "x": 1606,
+    "y": 1706
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     200
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 1,
+    "owner": 2,
+    "planet": 124,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 1,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 124,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1606,
+      "y": 1706
+     }
+    ],
+    "x": 1606,
+    "y": 1706
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     210
     ],
     "mod_data": {},
     "name": "",
     "number": 2,
-    "owner": 1,
-    "planet": 30,
+    "owner": 2,
+    "planet": 124,
     "repeat": false,
     "stacks": [
      {
       "count": 1,
       "damage": 0,
       "damaged_percent": 0,
-      "design": 1,
+      "design": 2,
       "paid": [
        0,
        0,
@@ -352,17 +396,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 30,
+      "target_id": 124,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1203,
-      "y": 1580
+      "x": 1606,
+      "y": 1706
      }
     ],
-    "x": 1203,
-    "y": 1580
+    "x": 1606,
+    "y": 1706
    },
    {
     "battle_plan": 0,
@@ -371,20 +415,20 @@
      0,
      0,
      0,
-     150
+     210
     ],
     "mod_data": {},
     "name": "",
     "number": 3,
-    "owner": 1,
-    "planet": 30,
+    "owner": 2,
+    "planet": 124,
     "repeat": false,
     "stacks": [
      {
       "count": 1,
       "damage": 0,
       "damaged_percent": 0,
-      "design": 1,
+      "design": 2,
       "paid": [
        0,
        0,
@@ -396,17 +440,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 30,
+      "target_id": 124,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1203,
-      "y": 1580
+      "x": 1606,
+      "y": 1706
      }
     ],
-    "x": 1203,
-    "y": 1580
+    "x": 1606,
+    "y": 1706
    }
   ],
   "history": [],
@@ -418,9 +462,9 @@
    {
     "artifact": true,
     "concentration": [
-     20,
-     66,
-     18
+     5,
+     63,
+     56
     ],
     "concentration_fraction": [
      0,
@@ -429,14 +473,14 @@
     ],
     "defenses": 0,
     "environment": [
-     76,
-     65,
-     24
+     9,
+     62,
+     45
     ],
     "environment_original": [
-     76,
-     65,
-     24
+     9,
+     62,
+     45
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -459,15 +503,15 @@
      0,
      0
     ],
-    "x": 1010,
-    "y": 1217
+    "x": 1012,
+    "y": 1755
    },
    {
     "artifact": null,
     "concentration": [
-     79,
-     65,
-     23
+     101,
+     12,
+     92
     ],
     "concentration_fraction": [
      0,
@@ -476,14 +520,14 @@
     ],
     "defenses": 0,
     "environment": [
-     71,
-     77,
-     15
+     49,
+     92,
+     74
     ],
     "environment_original": [
-     71,
-     77,
-     15
+     49,
+     92,
+     74
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -506,15 +550,15 @@
      0,
      0
     ],
-    "x": 1023,
-    "y": 1456
+    "x": 1013,
+    "y": 1306
    },
    {
     "artifact": null,
     "concentration": [
-     48,
-     75,
-     38
+     69,
+     74,
+     59
     ],
     "concentration_fraction": [
      0,
@@ -524,13 +568,13 @@
     "defenses": 0,
     "environment": [
      24,
-     21,
-     1
+     11,
+     7
     ],
     "environment_original": [
      24,
-     21,
-     1
+     11,
+     7
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -553,15 +597,15 @@
      0,
      0
     ],
-    "x": 1031,
-    "y": 1741
+    "x": 1019,
+    "y": 1569
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     106,
-     85,
-     71
+     47,
+     23,
+     13
     ],
     "concentration_fraction": [
      0,
@@ -570,14 +614,14 @@
     ],
     "defenses": 0,
     "environment": [
-     56,
-     30,
-     58
+     33,
+     8,
+     85
     ],
     "environment_original": [
-     56,
-     30,
-     58
+     33,
+     8,
+     85
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -600,15 +644,15 @@
      0,
      0
     ],
-    "x": 1031,
-    "y": 1292
+    "x": 1023,
+    "y": 1642
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
      52,
-     46,
-     95
+     18,
+     76
     ],
     "concentration_fraction": [
      0,
@@ -617,14 +661,14 @@
     ],
     "defenses": 0,
     "environment": [
-     73,
-     3,
-     83
+     39,
+     65,
+     35
     ],
     "environment_original": [
-     73,
-     3,
-     83
+     39,
+     65,
+     35
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -647,15 +691,15 @@
      0,
      0
     ],
-    "x": 1042,
-    "y": 1648
+    "x": 1036,
+    "y": 1158
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     82,
-     57,
-     42
+     10,
+     91,
+     113
     ],
     "concentration_fraction": [
      0,
@@ -664,14 +708,14 @@
     ],
     "defenses": 0,
     "environment": [
-     49,
-     72,
-     56
+     64,
+     76,
+     66
     ],
     "environment_original": [
-     49,
-     72,
-     56
+     64,
+     76,
+     66
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -695,14 +739,14 @@
      0
     ],
     "x": 1051,
-    "y": 1714
+    "y": 1596
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     69,
-     90,
-     28
+     7,
+     24,
+     24
     ],
     "concentration_fraction": [
      0,
@@ -711,14 +755,14 @@
     ],
     "defenses": 0,
     "environment": [
-     78,
-     22,
-     25
+     62,
+     45,
+     24
     ],
     "environment_original": [
-     78,
-     22,
-     25
+     62,
+     45,
+     24
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -742,14 +786,14 @@
      0
     ],
     "x": 1057,
-    "y": 1701
+    "y": 1458
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     74,
-     71,
-     43
+     47,
+     91,
+     22
     ],
     "concentration_fraction": [
      0,
@@ -758,14 +802,14 @@
     ],
     "defenses": 0,
     "environment": [
-     21,
-     70,
-     85
+     37,
+     88,
+     96
     ],
     "environment_original": [
-     21,
-     70,
-     85
+     37,
+     88,
+     96
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -788,15 +832,15 @@
      0,
      0
     ],
-    "x": 1057,
-    "y": 1098
+    "x": 1060,
+    "y": 1130
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     55,
-     43,
-     61
+     86,
+     44,
+     8
     ],
     "concentration_fraction": [
      0,
@@ -805,14 +849,14 @@
     ],
     "defenses": 0,
     "environment": [
-     80,
-     49,
-     54
+     76,
+     41,
+     95
     ],
     "environment_original": [
-     80,
-     49,
-     54
+     76,
+     41,
+     95
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -835,15 +879,15 @@
      0,
      0
     ],
-    "x": 1061,
-    "y": 1756
+    "x": 1063,
+    "y": 1104
    },
    {
     "artifact": true,
     "concentration": [
-     17,
-     58,
-     13
+     78,
+     110,
+     1
     ],
     "concentration_fraction": [
      0,
@@ -852,14 +896,14 @@
     ],
     "defenses": 0,
     "environment": [
-     18,
-     66,
-     11
+     45,
+     33,
+     67
     ],
     "environment_original": [
-     18,
-     66,
-     11
+     45,
+     33,
+     67
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -882,14 +926,14 @@
      0,
      0
     ],
-    "x": 1072,
-    "y": 1127
+    "x": 1075,
+    "y": 1587
    },
    {
     "artifact": null,
     "concentration": [
-     100,
-     14,
+     60,
+     96,
      13
     ],
     "concentration_fraction": [
@@ -899,14 +943,14 @@
     ],
     "defenses": 0,
     "environment": [
-     54,
-     57,
-     5
+     70,
+     42,
+     87
     ],
     "environment_original": [
-     54,
-     57,
-     5
+     70,
+     42,
+     87
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -929,15 +973,15 @@
      0,
      0
     ],
-    "x": 1078,
-    "y": 1210
+    "x": 1077,
+    "y": 1700
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     52,
-     74,
-     8
+     100,
+     118,
+     25
     ],
     "concentration_fraction": [
      0,
@@ -946,14 +990,14 @@
     ],
     "defenses": 0,
     "environment": [
-     65,
-     21,
-     19
+     57,
+     72,
+     88
     ],
     "environment_original": [
-     65,
-     21,
-     19
+     57,
+     72,
+     88
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -976,15 +1020,15 @@
      0,
      0
     ],
-    "x": 1082,
-    "y": 1288
+    "x": 1079,
+    "y": 1739
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     80,
-     30,
-     69
+     59,
+     58,
+     77
     ],
     "concentration_fraction": [
      0,
@@ -993,14 +1037,14 @@
     ],
     "defenses": 0,
     "environment": [
-     77,
-     19,
-     93
+     33,
+     35,
+     52
     ],
     "environment_original": [
-     77,
-     19,
-     93
+     33,
+     35,
+     52
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1023,15 +1067,15 @@
      0,
      0
     ],
-    "x": 1084,
-    "y": 1760
+    "x": 1085,
+    "y": 1116
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     37,
-     50,
-     6
+     94,
+     64,
+     15
     ],
     "concentration_fraction": [
      0,
@@ -1040,14 +1084,14 @@
     ],
     "defenses": 0,
     "environment": [
-     42,
-     67,
-     8
+     1,
+     58,
+     20
     ],
     "environment_original": [
-     42,
-     67,
-     8
+     1,
+     58,
+     20
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1070,15 +1114,15 @@
      0,
      0
     ],
-    "x": 1090,
-    "y": 1167
+    "x": 1088,
+    "y": 1624
    },
    {
     "artifact": true,
     "concentration": [
-     84,
-     3,
-     23
+     76,
+     67,
+     56
     ],
     "concentration_fraction": [
      0,
@@ -1087,14 +1131,14 @@
     ],
     "defenses": 0,
     "environment": [
-     22,
-     64,
-     87
+     68,
+     33,
+     5
     ],
     "environment_original": [
-     22,
-     64,
-     87
+     68,
+     33,
+     5
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1117,15 +1161,15 @@
      0,
      0
     ],
-    "x": 1096,
-    "y": 1416
+    "x": 1102,
+    "y": 1762
    },
    {
     "artifact": null,
     "concentration": [
-     66,
-     84,
-     71
+     96,
+     94,
+     76
     ],
     "concentration_fraction": [
      0,
@@ -1134,14 +1178,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     55,
-     92
+     83,
+     52,
+     87
     ],
     "environment_original": [
-     89,
-     55,
-     92
+     83,
+     52,
+     87
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1164,15 +1208,15 @@
      0,
      0
     ],
-    "x": 1105,
-    "y": 1055
+    "x": 1102,
+    "y": 1519
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     92,
-     16,
-     77
+     68,
+     74,
+     45
     ],
     "concentration_fraction": [
      0,
@@ -1181,14 +1225,14 @@
     ],
     "defenses": 0,
     "environment": [
-     10,
-     60,
-     93
+     73,
+     19,
+     66
     ],
     "environment_original": [
-     10,
-     60,
-     93
+     73,
+     19,
+     66
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1211,15 +1255,15 @@
      0,
      0
     ],
-    "x": 1129,
-    "y": 1757
+    "x": 1103,
+    "y": 1607
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     20,
-     90,
-     79
+     69,
+     75,
+     102
     ],
     "concentration_fraction": [
      0,
@@ -1228,14 +1272,14 @@
     ],
     "defenses": 0,
     "environment": [
-     54,
-     84,
-     81
+     52,
+     66,
+     92
     ],
     "environment_original": [
-     54,
-     84,
-     81
+     52,
+     66,
+     92
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1258,15 +1302,15 @@
      0,
      0
     ],
-    "x": 1130,
-    "y": 1091
+    "x": 1106,
+    "y": 1428
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     14,
-     62,
-     23
+     56,
+     48,
+     69
     ],
     "concentration_fraction": [
      0,
@@ -1275,14 +1319,14 @@
     ],
     "defenses": 0,
     "environment": [
-     12,
-     71,
-     99
+     40,
+     26,
+     8
     ],
     "environment_original": [
-     12,
-     71,
-     99
+     40,
+     26,
+     8
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1305,15 +1349,15 @@
      0,
      0
     ],
-    "x": 1142,
-    "y": 1424
+    "x": 1110,
+    "y": 1468
    },
    {
     "artifact": true,
     "concentration": [
-     104,
-     114,
-     71
+     59,
+     107,
+     8
     ],
     "concentration_fraction": [
      0,
@@ -1322,14 +1366,14 @@
     ],
     "defenses": 0,
     "environment": [
-     23,
-     71,
-     26
+     16,
+     95,
+     24
     ],
     "environment_original": [
-     23,
-     71,
-     26
+     16,
+     95,
+     24
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1352,15 +1396,15 @@
      0,
      0
     ],
-    "x": 1143,
-    "y": 1289
+    "x": 1114,
+    "y": 1272
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     78,
-     60,
-     88
+     43,
+     86,
+     63
     ],
     "concentration_fraction": [
      0,
@@ -1369,14 +1413,14 @@
     ],
     "defenses": 0,
     "environment": [
-     35,
-     47,
-     56
+     76,
+     82,
+     77
     ],
     "environment_original": [
-     35,
-     47,
-     56
+     76,
+     82,
+     77
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1399,15 +1443,15 @@
      0,
      0
     ],
-    "x": 1155,
-    "y": 1193
+    "x": 1124,
+    "y": 1094
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     49,
-     102,
-     102
+     28,
+     66,
+     8
     ],
     "concentration_fraction": [
      0,
@@ -1416,14 +1460,14 @@
     ],
     "defenses": 0,
     "environment": [
-     13,
-     76,
-     78
+     15,
+     45,
+     88
     ],
     "environment_original": [
-     13,
-     76,
-     78
+     15,
+     45,
+     88
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1446,15 +1490,15 @@
      0,
      0
     ],
-    "x": 1166,
-    "y": 1678
+    "x": 1127,
+    "y": 1419
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     92,
-     52,
-     76
+     15,
+     84,
+     89
     ],
     "concentration_fraction": [
      0,
@@ -1464,13 +1508,13 @@
     "defenses": 0,
     "environment": [
      37,
-     57,
-     31
+     62,
+     86
     ],
     "environment_original": [
      37,
-     57,
-     31
+     62,
+     86
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1493,15 +1537,15 @@
      0,
      0
     ],
-    "x": 1171,
-    "y": 1758
+    "x": 1127,
+    "y": 1126
    },
    {
     "artifact": null,
     "concentration": [
-     76,
-     71,
-     27
+     78,
+     59,
+     12
     ],
     "concentration_fraction": [
      0,
@@ -1510,14 +1554,14 @@
     ],
     "defenses": 0,
     "environment": [
-     26,
-     65,
-     70
+     61,
+     61,
+     22
     ],
     "environment_original": [
-     26,
-     65,
-     70
+     61,
+     61,
+     22
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1540,15 +1584,15 @@
      0,
      0
     ],
-    "x": 1172,
-    "y": 1134
+    "x": 1135,
+    "y": 1367
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     91,
-     89,
-     23
+     76,
+     85,
+     79
     ],
     "concentration_fraction": [
      0,
@@ -1557,14 +1601,14 @@
     ],
     "defenses": 0,
     "environment": [
-     13,
-     46,
-     25
+     87,
+     75,
+     1
     ],
     "environment_original": [
-     13,
-     46,
-     25
+     87,
+     75,
+     1
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1587,15 +1631,15 @@
      0,
      0
     ],
-    "x": 1174,
-    "y": 1015
+    "x": 1141,
+    "y": 1687
    },
    {
     "artifact": null,
     "concentration": [
-     66,
-     75,
-     110
+     70,
+     81,
+     23
     ],
     "concentration_fraction": [
      0,
@@ -1604,14 +1648,14 @@
     ],
     "defenses": 0,
     "environment": [
-     72,
-     14,
-     76
+     32,
+     34,
+     59
     ],
     "environment_original": [
-     72,
-     14,
-     76
+     32,
+     34,
+     59
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1634,15 +1678,15 @@
      0,
      0
     ],
-    "x": 1174,
-    "y": 1490
+    "x": 1147,
+    "y": 1514
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     53,
-     6,
-     50
+     76,
+     30,
+     76
     ],
     "concentration_fraction": [
      0,
@@ -1651,14 +1695,14 @@
     ],
     "defenses": 0,
     "environment": [
-     21,
-     29,
-     60
+     47,
+     94,
+     23
     ],
     "environment_original": [
-     21,
-     29,
-     60
+     47,
+     94,
+     23
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1681,15 +1725,15 @@
      0,
      0
     ],
-    "x": 1176,
-    "y": 1083
+    "x": 1147,
+    "y": 1181
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     42,
-     38,
-     21
+     48,
+     14,
+     16
     ],
     "concentration_fraction": [
      0,
@@ -1698,14 +1742,14 @@
     ],
     "defenses": 0,
     "environment": [
-     19,
-     56,
-     25
+     86,
+     32,
+     22
     ],
     "environment_original": [
-     19,
-     56,
-     25
+     86,
+     32,
+     22
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1728,15 +1772,15 @@
      0,
      0
     ],
-    "x": 1184,
-    "y": 1651
+    "x": 1148,
+    "y": 1459
    },
    {
     "artifact": null,
     "concentration": [
-     104,
-     54,
-     64
+     26,
+     61,
+     80
     ],
     "concentration_fraction": [
      0,
@@ -1745,14 +1789,14 @@
     ],
     "defenses": 0,
     "environment": [
-     28,
-     40,
-     50
+     36,
+     58,
+     68
     ],
     "environment_original": [
-     28,
-     40,
-     50
+     36,
+     58,
+     68
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1775,15 +1819,15 @@
      0,
      0
     ],
-    "x": 1187,
-    "y": 1063
+    "x": 1162,
+    "y": 1426
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     23,
-     18,
-     20
+     61,
+     40,
+     62
     ],
     "concentration_fraction": [
      0,
@@ -1792,14 +1836,14 @@
     ],
     "defenses": 0,
     "environment": [
-     55,
-     26,
-     88
+     19,
+     46,
+     56
     ],
     "environment_original": [
-     55,
-     26,
-     88
+     19,
+     46,
+     56
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1822,65 +1866,15 @@
      0,
      0
     ],
-    "x": 1191,
-    "y": 1721
+    "x": 1172,
+    "y": 1654
    },
    {
     "artifact": null,
     "concentration": [
-     30,
-     66,
-     30
-    ],
-    "concentration_fraction": [
-     0,
-     0,
-     0
-    ],
-    "defenses": 10,
-    "environment": [
-     34,
-     59,
-     38
-    ],
-    "environment_original": [
-     34,
-     59,
-     38
-    ],
-    "extra_colonists": 0,
-    "factories": 10,
-    "has_scanner": true,
-    "homeworld": true,
-    "id": 30,
-    "leftover_to_research": false,
-    "mass_driver_target": -1,
-    "mass_driver_warp": 4,
-    "mines": 10,
-    "mod_data": {},
-    "name": "Planet 30",
-    "owner": 1,
-    "population": 250,
-    "queue": [],
-    "route": -1,
-    "starbase": {
-     "damage": 0,
-     "design": 0
-    },
-    "surface": [
-     424,
-     476,
-     560
-    ],
-    "x": 1203,
-    "y": 1580
-   },
-   {
-    "artifact": null,
-    "concentration": [
-     75,
-     89,
-     103
+     46,
+     14,
+     71
     ],
     "concentration_fraction": [
      0,
@@ -1889,14 +1883,61 @@
     ],
     "defenses": 0,
     "environment": [
-     21,
-     21,
-     64
+     41,
+     54,
+     38
     ],
     "environment_original": [
-     21,
-     21,
-     64
+     41,
+     54,
+     38
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 30,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 30",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1179,
+    "y": 1384
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     61,
+     108,
+     81
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     45,
+     4,
+     99
+    ],
+    "environment_original": [
+     45,
+     4,
+     99
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1919,15 +1960,15 @@
      0,
      0
     ],
-    "x": 1217,
-    "y": 1118
+    "x": 1182,
+    "y": 1120
    },
    {
     "artifact": null,
     "concentration": [
-     30,
-     16,
-     15
+     29,
+     56,
+     11
     ],
     "concentration_fraction": [
      0,
@@ -1936,14 +1977,14 @@
     ],
     "defenses": 0,
     "environment": [
-     7,
-     50,
-     36
+     70,
+     47,
+     69
     ],
     "environment_original": [
-     7,
-     50,
-     36
+     70,
+     47,
+     69
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1966,15 +2007,15 @@
      0,
      0
     ],
-    "x": 1229,
-    "y": 1258
+    "x": 1201,
+    "y": 1622
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     97,
-     25,
-     63
+     3,
+     72,
+     50
     ],
     "concentration_fraction": [
      0,
@@ -1983,14 +2024,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     25,
-     45
+     55,
+     21,
+     47
     ],
     "environment_original": [
-     89,
-     25,
-     45
+     55,
+     21,
+     47
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2013,15 +2054,15 @@
      0,
      0
     ],
-    "x": 1229,
-    "y": 1669
+    "x": 1206,
+    "y": 1153
    },
    {
     "artifact": null,
     "concentration": [
-     25,
-     25,
-     17
+     87,
+     52,
+     12
     ],
     "concentration_fraction": [
      0,
@@ -2030,14 +2071,14 @@
     ],
     "defenses": 0,
     "environment": [
-     65,
-     37,
-     36
+     49,
+     39,
+     43
     ],
     "environment_original": [
-     65,
-     37,
-     36
+     49,
+     39,
+     43
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2060,15 +2101,15 @@
      0,
      0
     ],
-    "x": 1231,
-    "y": 1422
+    "x": 1208,
+    "y": 1402
    },
    {
     "artifact": null,
     "concentration": [
-     9,
-     67,
-     75
+     79,
+     79,
+     60
     ],
     "concentration_fraction": [
      0,
@@ -2077,14 +2118,14 @@
     ],
     "defenses": 0,
     "environment": [
-     62,
-     14,
-     1
+     89,
+     64,
+     64
     ],
     "environment_original": [
-     62,
-     14,
-     1
+     89,
+     64,
+     64
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2107,15 +2148,15 @@
      0,
      0
     ],
-    "x": 1241,
-    "y": 1512
+    "x": 1215,
+    "y": 1549
    },
    {
     "artifact": null,
     "concentration": [
-     10,
-     103,
-     62
+     104,
+     86,
+     115
     ],
     "concentration_fraction": [
      0,
@@ -2124,14 +2165,14 @@
     ],
     "defenses": 0,
     "environment": [
-     25,
-     60,
-     1
+     39,
+     45,
+     61
     ],
     "environment_original": [
-     25,
-     60,
-     1
+     39,
+     45,
+     61
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2154,15 +2195,15 @@
      0,
      0
     ],
-    "x": 1249,
-    "y": 1218
+    "x": 1215,
+    "y": 1238
    },
    {
     "artifact": true,
     "concentration": [
      82,
-     13,
-     72
+     84,
+     91
     ],
     "concentration_fraction": [
      0,
@@ -2171,14 +2212,14 @@
     ],
     "defenses": 0,
     "environment": [
-     3,
-     64,
-     18
+     61,
+     46,
+     43
     ],
     "environment_original": [
-     3,
-     64,
-     18
+     61,
+     46,
+     43
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2201,15 +2242,15 @@
      0,
      0
     ],
-    "x": 1249,
-    "y": 1555
+    "x": 1221,
+    "y": 1274
    },
    {
     "artifact": null,
     "concentration": [
-     14,
-     29,
-     78
+     10,
+     52,
+     90
     ],
     "concentration_fraction": [
      0,
@@ -2218,14 +2259,14 @@
     ],
     "defenses": 0,
     "environment": [
-     79,
-     21,
-     96
+     53,
+     74,
+     4
     ],
     "environment_original": [
-     79,
-     21,
-     96
+     53,
+     74,
+     4
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2248,15 +2289,15 @@
      0,
      0
     ],
-    "x": 1250,
-    "y": 1230
+    "x": 1228,
+    "y": 1614
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     73,
-     4,
-     57
+     60,
+     26,
+     24
     ],
     "concentration_fraction": [
      0,
@@ -2265,14 +2306,14 @@
     ],
     "defenses": 0,
     "environment": [
-     76,
-     72,
-     82
+     55,
+     70,
+     15
     ],
     "environment_original": [
-     76,
-     72,
-     82
+     55,
+     70,
+     15
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2295,15 +2336,15 @@
      0,
      0
     ],
-    "x": 1257,
-    "y": 1584
+    "x": 1231,
+    "y": 1309
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     67,
-     117,
-     63
+     10,
+     91,
+     62
     ],
     "concentration_fraction": [
      0,
@@ -2312,14 +2353,14 @@
     ],
     "defenses": 0,
     "environment": [
-     44,
-     36,
-     14
+     75,
+     9,
+     27
     ],
     "environment_original": [
-     44,
-     36,
-     14
+     75,
+     9,
+     27
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2342,62 +2383,65 @@
      0,
      0
     ],
-    "x": 1265,
-    "y": 1520
+    "x": 1235,
+    "y": 1057
    },
    {
     "artifact": null,
     "concentration": [
-     51,
-     90,
-     94
+     68,
+     76,
+     69
     ],
     "concentration_fraction": [
      0,
      0,
      0
     ],
-    "defenses": 0,
+    "defenses": 10,
     "environment": [
-     7,
-     32,
-     46
+     35,
+     60,
+     38
     ],
     "environment_original": [
-     7,
-     32,
-     46
+     35,
+     60,
+     38
     ],
     "extra_colonists": 0,
-    "factories": 0,
-    "has_scanner": false,
-    "homeworld": false,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
     "id": 41,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 0,
-    "mines": 0,
+    "mass_driver_warp": 4,
+    "mines": 10,
     "mod_data": {},
     "name": "Planet 41",
-    "owner": -1,
-    "population": 0,
+    "owner": 1,
+    "population": 700,
     "queue": [],
     "route": -1,
-    "starbase": null,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
     "surface": [
-     0,
-     0,
-     0
+     372,
+     757,
+     307
     ],
-    "x": 1269,
-    "y": 1736
+    "x": 1236,
+    "y": 1495
    },
    {
     "artifact": null,
     "concentration": [
-     77,
-     15,
-     20
+     95,
+     21,
+     84
     ],
     "concentration_fraction": [
      0,
@@ -2406,14 +2450,14 @@
     ],
     "defenses": 0,
     "environment": [
-     43,
-     66,
-     3
+     74,
+     37,
+     50
     ],
     "environment_original": [
-     43,
-     66,
-     3
+     74,
+     37,
+     50
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2436,15 +2480,15 @@
      0,
      0
     ],
-    "x": 1280,
-    "y": 1574
+    "x": 1242,
+    "y": 1379
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     84,
-     52,
-     22
+     82,
+     96,
+     13
     ],
     "concentration_fraction": [
      0,
@@ -2453,14 +2497,14 @@
     ],
     "defenses": 0,
     "environment": [
-     25,
-     42,
-     69
+     28,
+     48,
+     32
     ],
     "environment_original": [
-     25,
-     42,
-     69
+     28,
+     48,
+     32
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2483,15 +2527,15 @@
      0,
      0
     ],
-    "x": 1283,
-    "y": 1737
+    "x": 1247,
+    "y": 1591
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     66,
-     87,
-     77
+     69,
+     80,
+     76
     ],
     "concentration_fraction": [
      0,
@@ -2500,14 +2544,14 @@
     ],
     "defenses": 0,
     "environment": [
-     60,
-     7,
-     89
+     89,
+     28,
+     81
     ],
     "environment_original": [
-     60,
-     7,
-     89
+     89,
+     28,
+     81
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2530,15 +2574,15 @@
      0,
      0
     ],
-    "x": 1303,
-    "y": 1389
+    "x": 1250,
+    "y": 1073
    },
    {
     "artifact": null,
     "concentration": [
-     15,
-     84,
-     75
+     71,
+     75,
+     51
     ],
     "concentration_fraction": [
      0,
@@ -2547,14 +2591,14 @@
     ],
     "defenses": 0,
     "environment": [
-     29,
-     50,
-     97
+     77,
+     63,
+     18
     ],
     "environment_original": [
-     29,
-     50,
-     97
+     77,
+     63,
+     18
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2577,15 +2621,15 @@
      0,
      0
     ],
-    "x": 1305,
-    "y": 1523
+    "x": 1255,
+    "y": 1137
    },
    {
     "artifact": null,
     "concentration": [
-     78,
-     3,
-     76
+     17,
+     14,
+     21
     ],
     "concentration_fraction": [
      0,
@@ -2594,14 +2638,14 @@
     ],
     "defenses": 0,
     "environment": [
-     36,
-     82,
-     10
+     16,
+     49,
+     71
     ],
     "environment_original": [
-     36,
-     82,
-     10
+     16,
+     49,
+     71
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2624,15 +2668,15 @@
      0,
      0
     ],
-    "x": 1308,
-    "y": 1436
+    "x": 1257,
+    "y": 1149
    },
    {
     "artifact": true,
     "concentration": [
-     41,
-     91,
-     14
+     42,
+     92,
+     4
     ],
     "concentration_fraction": [
      0,
@@ -2641,14 +2685,14 @@
     ],
     "defenses": 0,
     "environment": [
-     56,
-     77,
-     15
+     7,
+     51,
+     66
     ],
     "environment_original": [
-     56,
-     77,
-     15
+     7,
+     51,
+     66
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2671,15 +2715,15 @@
      0,
      0
     ],
-    "x": 1316,
-    "y": 1687
+    "x": 1257,
+    "y": 1421
    },
    {
     "artifact": true,
     "concentration": [
-     79,
-     79,
-     90
+     72,
+     44,
+     59
     ],
     "concentration_fraction": [
      0,
@@ -2688,14 +2732,14 @@
     ],
     "defenses": 0,
     "environment": [
-     20,
-     36,
-     92
+     81,
+     12,
+     50
     ],
     "environment_original": [
-     20,
-     36,
-     92
+     81,
+     12,
+     50
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2718,15 +2762,15 @@
      0,
      0
     ],
-    "x": 1324,
-    "y": 1327
+    "x": 1264,
+    "y": 1062
    },
    {
     "artifact": null,
     "concentration": [
-     25,
+     88,
      81,
-     65
+     27
     ],
     "concentration_fraction": [
      0,
@@ -2735,14 +2779,14 @@
     ],
     "defenses": 0,
     "environment": [
-     47,
-     89,
-     12
+     96,
+     50,
+     4
     ],
     "environment_original": [
-     47,
-     89,
-     12
+     96,
+     50,
+     4
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2765,15 +2809,15 @@
      0,
      0
     ],
-    "x": 1335,
-    "y": 1688
+    "x": 1265,
+    "y": 1383
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     9,
-     110,
-     74
+     2,
+     15,
+     8
     ],
     "concentration_fraction": [
      0,
@@ -2782,14 +2826,14 @@
     ],
     "defenses": 0,
     "environment": [
-     82,
-     25,
-     43
+     46,
+     86,
+     87
     ],
     "environment_original": [
-     82,
-     25,
-     43
+     46,
+     86,
+     87
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2812,15 +2856,15 @@
      0,
      0
     ],
-    "x": 1336,
-    "y": 1348
+    "x": 1267,
+    "y": 1314
    },
    {
     "artifact": null,
     "concentration": [
-     24,
-     99,
-     19
+     101,
+     78,
+     4
     ],
     "concentration_fraction": [
      0,
@@ -2829,14 +2873,14 @@
     ],
     "defenses": 0,
     "environment": [
-     93,
-     57,
-     42
+     23,
+     47,
+     39
     ],
     "environment_original": [
-     93,
-     57,
-     42
+     23,
+     47,
+     39
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2859,15 +2903,15 @@
      0,
      0
     ],
-    "x": 1340,
-    "y": 1253
+    "x": 1275,
+    "y": 1501
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     53,
-     63,
-     110
+     74,
+     79,
+     41
     ],
     "concentration_fraction": [
      0,
@@ -2876,14 +2920,14 @@
     ],
     "defenses": 0,
     "environment": [
-     68,
-     48,
-     59
+     10,
+     24,
+     83
     ],
     "environment_original": [
-     68,
-     48,
-     59
+     10,
+     24,
+     83
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2906,15 +2950,15 @@
      0,
      0
     ],
-    "x": 1345,
-    "y": 1626
+    "x": 1280,
+    "y": 1019
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     14,
-     10,
-     56
+     113,
+     12,
+     77
     ],
     "concentration_fraction": [
      0,
@@ -2923,14 +2967,14 @@
     ],
     "defenses": 0,
     "environment": [
-     83,
-     50,
-     19
+     6,
+     28,
+     50
     ],
     "environment_original": [
-     83,
-     50,
-     19
+     6,
+     28,
+     50
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2953,15 +2997,15 @@
      0,
      0
     ],
-    "x": 1357,
-    "y": 1015
+    "x": 1285,
+    "y": 1426
    },
    {
     "artifact": null,
     "concentration": [
-     74,
-     79,
-     89
+     91,
+     45,
+     75
     ],
     "concentration_fraction": [
      0,
@@ -2970,14 +3014,14 @@
     ],
     "defenses": 0,
     "environment": [
-     87,
-     78,
-     19
+     50,
+     65,
+     84
     ],
     "environment_original": [
-     87,
-     78,
-     19
+     50,
+     65,
+     84
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3000,15 +3044,15 @@
      0,
      0
     ],
-    "x": 1371,
-    "y": 1077
+    "x": 1289,
+    "y": 1099
    },
    {
     "artifact": true,
     "concentration": [
-     77,
-     4,
-     3
+     75,
+     78,
+     16
     ],
     "concentration_fraction": [
      0,
@@ -3017,14 +3061,14 @@
     ],
     "defenses": 0,
     "environment": [
-     58,
-     95,
-     66
+     85,
+     22,
+     81
     ],
     "environment_original": [
-     58,
-     95,
-     66
+     85,
+     22,
+     81
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3047,15 +3091,15 @@
      0,
      0
     ],
-    "x": 1374,
-    "y": 1665
+    "x": 1290,
+    "y": 1367
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     21,
-     41,
-     3
+     64,
+     4,
+     21
     ],
     "concentration_fraction": [
      0,
@@ -3064,14 +3108,14 @@
     ],
     "defenses": 0,
     "environment": [
-     35,
-     74,
-     28
+     19,
+     71,
+     86
     ],
     "environment_original": [
-     35,
-     74,
-     28
+     19,
+     71,
+     86
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3094,15 +3138,15 @@
      0,
      0
     ],
-    "x": 1376,
-    "y": 1341
+    "x": 1290,
+    "y": 1443
    },
    {
     "artifact": null,
     "concentration": [
-     100,
-     37,
-     10
+     61,
+     16,
+     92
     ],
     "concentration_fraction": [
      0,
@@ -3111,14 +3155,14 @@
     ],
     "defenses": 0,
     "environment": [
-     81,
-     43,
-     8
+     67,
+     56,
+     3
     ],
     "environment_original": [
-     81,
-     43,
-     8
+     67,
+     56,
+     3
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3141,15 +3185,15 @@
      0,
      0
     ],
-    "x": 1380,
-    "y": 1195
+    "x": 1292,
+    "y": 1136
    },
    {
     "artifact": null,
     "concentration": [
-     65,
-     79,
-     57
+     3,
+     75,
+     30
     ],
     "concentration_fraction": [
      0,
@@ -3158,14 +3202,14 @@
     ],
     "defenses": 0,
     "environment": [
-     57,
-     27,
-     86
+     47,
+     39,
+     3
     ],
     "environment_original": [
-     57,
-     27,
-     86
+     47,
+     39,
+     3
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3188,15 +3232,15 @@
      0,
      0
     ],
-    "x": 1381,
-    "y": 1437
+    "x": 1317,
+    "y": 1211
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     48,
-     14,
-     76
+     16,
+     4,
+     60
     ],
     "concentration_fraction": [
      0,
@@ -3205,14 +3249,14 @@
     ],
     "defenses": 0,
     "environment": [
-     61,
-     15,
-     25
+     26,
+     22,
+     71
     ],
     "environment_original": [
-     61,
-     15,
-     25
+     26,
+     22,
+     71
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3235,15 +3279,15 @@
      0,
      0
     ],
-    "x": 1388,
-    "y": 1027
+    "x": 1318,
+    "y": 1115
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     81,
-     51,
-     63
+     92,
+     109,
+     59
     ],
     "concentration_fraction": [
      0,
@@ -3252,14 +3296,14 @@
     ],
     "defenses": 0,
     "environment": [
-     28,
-     7,
-     12
+     33,
+     87,
+     26
     ],
     "environment_original": [
-     28,
-     7,
-     12
+     33,
+     87,
+     26
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3282,15 +3326,15 @@
      0,
      0
     ],
-    "x": 1408,
-    "y": 1757
+    "x": 1323,
+    "y": 1656
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     95,
-     41,
-     61
+     81,
+     86,
+     83
     ],
     "concentration_fraction": [
      0,
@@ -3299,14 +3343,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     6,
-     9
+     36,
+     24,
+     40
     ],
     "environment_original": [
-     89,
-     6,
-     9
+     36,
+     24,
+     40
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3329,15 +3373,15 @@
      0,
      0
     ],
-    "x": 1408,
-    "y": 1687
+    "x": 1325,
+    "y": 1063
    },
    {
     "artifact": null,
     "concentration": [
-     14,
-     82,
-     93
+     26,
+     69,
+     47
     ],
     "concentration_fraction": [
      0,
@@ -3346,14 +3390,14 @@
     ],
     "defenses": 0,
     "environment": [
-     84,
-     75,
-     38
+     97,
+     2,
+     37
     ],
     "environment_original": [
-     84,
-     75,
-     38
+     97,
+     2,
+     37
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3376,15 +3420,15 @@
      0,
      0
     ],
-    "x": 1409,
-    "y": 1373
+    "x": 1327,
+    "y": 1517
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     61,
-     29,
-     36
+     13,
+     80,
+     61
     ],
     "concentration_fraction": [
      0,
@@ -3393,14 +3437,14 @@
     ],
     "defenses": 0,
     "environment": [
-     78,
-     45,
-     89
+     84,
+     24,
+     70
     ],
     "environment_original": [
-     78,
-     45,
-     89
+     84,
+     24,
+     70
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3423,15 +3467,15 @@
      0,
      0
     ],
-    "x": 1420,
-    "y": 1222
+    "x": 1332,
+    "y": 1753
    },
    {
     "artifact": null,
     "concentration": [
+     44,
      56,
-     5,
-     101
+     9
     ],
     "concentration_fraction": [
      0,
@@ -3440,14 +3484,14 @@
     ],
     "defenses": 0,
     "environment": [
-     56,
-     47,
-     15
+     91,
+     65,
+     37
     ],
     "environment_original": [
-     56,
-     47,
-     15
+     91,
+     65,
+     37
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3470,15 +3514,15 @@
      0,
      0
     ],
-    "x": 1426,
-    "y": 1436
+    "x": 1332,
+    "y": 1720
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     64,
-     65,
-     29
+     82,
+     22,
+     76
     ],
     "concentration_fraction": [
      0,
@@ -3487,14 +3531,14 @@
     ],
     "defenses": 0,
     "environment": [
-     19,
-     59,
-     34
+     75,
+     72,
+     66
     ],
     "environment_original": [
-     19,
-     59,
-     34
+     75,
+     72,
+     66
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3517,15 +3561,15 @@
      0,
      0
     ],
-    "x": 1435,
-    "y": 1561
+    "x": 1333,
+    "y": 1410
    },
    {
     "artifact": null,
     "concentration": [
-     61,
-     45,
-     7
+     47,
+     103,
+     10
     ],
     "concentration_fraction": [
      0,
@@ -3534,14 +3578,14 @@
     ],
     "defenses": 0,
     "environment": [
-     51,
-     65,
-     94
+     26,
+     50,
+     35
     ],
     "environment_original": [
-     51,
-     65,
-     94
+     26,
+     50,
+     35
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3564,15 +3608,15 @@
      0,
      0
     ],
-    "x": 1441,
-    "y": 1476
+    "x": 1337,
+    "y": 1385
    },
    {
     "artifact": null,
     "concentration": [
-     17,
+     47,
      4,
-     109
+     87
     ],
     "concentration_fraction": [
      0,
@@ -3581,13 +3625,13 @@
     ],
     "defenses": 0,
     "environment": [
-     36,
-     44,
+     82,
+     18,
      80
     ],
     "environment_original": [
-     36,
-     44,
+     82,
+     18,
      80
     ],
     "extra_colonists": 0,
@@ -3611,64 +3655,61 @@
      0,
      0
     ],
-    "x": 1444,
-    "y": 1230
+    "x": 1340,
+    "y": 1163
    },
    {
     "artifact": null,
     "concentration": [
-     30,
-     66,
-     30
+     4,
+     11,
+     21
     ],
     "concentration_fraction": [
      0,
      0,
      0
     ],
-    "defenses": 10,
+    "defenses": 0,
     "environment": [
-     50,
-     50,
-     50
+     21,
+     75,
+     77
     ],
     "environment_original": [
-     50,
-     50,
-     50
+     21,
+     75,
+     77
     ],
     "extra_colonists": 0,
-    "factories": 10,
-    "has_scanner": true,
-    "homeworld": true,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
     "id": 68,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 4,
-    "mines": 10,
+    "mass_driver_warp": 0,
+    "mines": 0,
     "mod_data": {},
     "name": "Planet 68",
-    "owner": 0,
-    "population": 200,
+    "owner": -1,
+    "population": 0,
     "queue": [],
     "route": -1,
-    "starbase": {
-     "damage": 0,
-     "design": 0
-    },
+    "starbase": null,
     "surface": [
-     284,
-     406,
-     490
+     0,
+     0,
+     0
     ],
-    "x": 1449,
-    "y": 1350
+    "x": 1344,
+    "y": 1123
    },
    {
     "artifact": null,
     "concentration": [
-     75,
-     19,
+     60,
+     23,
      74
     ],
     "concentration_fraction": [
@@ -3678,14 +3719,14 @@
     ],
     "defenses": 0,
     "environment": [
-     72,
-     66,
-     10
+     31,
+     56,
+     16
     ],
     "environment_original": [
-     72,
-     66,
-     10
+     31,
+     56,
+     16
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3708,15 +3749,15 @@
      0,
      0
     ],
-    "x": 1449,
-    "y": 1389
+    "x": 1344,
+    "y": 1093
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     6,
-     56,
-     69
+     68,
+     99,
+     98
     ],
     "concentration_fraction": [
      0,
@@ -3725,14 +3766,14 @@
     ],
     "defenses": 0,
     "environment": [
-     30,
-     52,
-     29
+     42,
+     83,
+     25
     ],
     "environment_original": [
-     30,
-     52,
-     29
+     42,
+     83,
+     25
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3755,15 +3796,15 @@
      0,
      0
     ],
-    "x": 1454,
-    "y": 1376
+    "x": 1350,
+    "y": 1379
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     88,
-     11,
-     78
+     57,
+     70,
+     68
     ],
     "concentration_fraction": [
      0,
@@ -3772,14 +3813,14 @@
     ],
     "defenses": 0,
     "environment": [
-     52,
-     26,
-     23
+     32,
+     7,
+     85
     ],
     "environment_original": [
-     52,
-     26,
-     23
+     32,
+     7,
+     85
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3802,15 +3843,15 @@
      0,
      0
     ],
-    "x": 1455,
-    "y": 1660
+    "x": 1354,
+    "y": 1263
    },
    {
     "artifact": null,
     "concentration": [
-     63,
-     94,
-     60
+     72,
+     69,
+     41
     ],
     "concentration_fraction": [
      0,
@@ -3819,14 +3860,14 @@
     ],
     "defenses": 0,
     "environment": [
-     23,
-     38,
-     91
+     63,
+     56,
+     22
     ],
     "environment_original": [
-     23,
-     38,
-     91
+     63,
+     56,
+     22
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3849,15 +3890,15 @@
      0,
      0
     ],
-    "x": 1466,
-    "y": 1466
+    "x": 1357,
+    "y": 1665
    },
    {
     "artifact": null,
     "concentration": [
-     18,
-     2,
-     47
+     96,
+     103,
+     1
     ],
     "concentration_fraction": [
      0,
@@ -3866,14 +3907,14 @@
     ],
     "defenses": 0,
     "environment": [
-     81,
-     46,
-     97
+     82,
+     55,
+     64
     ],
     "environment_original": [
-     81,
-     46,
-     97
+     82,
+     55,
+     64
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3896,15 +3937,15 @@
      0,
      0
     ],
-    "x": 1466,
-    "y": 1390
+    "x": 1359,
+    "y": 1617
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     68,
-     80,
-     97
+     69,
+     99,
+     75
     ],
     "concentration_fraction": [
      0,
@@ -3913,14 +3954,14 @@
     ],
     "defenses": 0,
     "environment": [
-     55,
-     21,
-     65
+     61,
+     87,
+     67
     ],
     "environment_original": [
-     55,
-     21,
-     65
+     61,
+     87,
+     67
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3943,15 +3984,15 @@
      0,
      0
     ],
-    "x": 1471,
-    "y": 1100
+    "x": 1359,
+    "y": 1484
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     107,
-     90,
-     95
+     13,
+     1,
+     25
     ],
     "concentration_fraction": [
      0,
@@ -3960,14 +4001,14 @@
     ],
     "defenses": 0,
     "environment": [
-     64,
-     47,
-     90
+     73,
+     82,
+     44
     ],
     "environment_original": [
-     64,
-     47,
-     90
+     73,
+     82,
+     44
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -3990,15 +4031,15 @@
      0,
      0
     ],
-    "x": 1478,
-    "y": 1119
+    "x": 1366,
+    "y": 1457
    },
    {
     "artifact": true,
     "concentration": [
-     35,
-     76,
-     7
+     75,
+     96,
+     90
     ],
     "concentration_fraction": [
      0,
@@ -4007,14 +4048,14 @@
     ],
     "defenses": 0,
     "environment": [
-     88,
-     62,
-     9
+     38,
+     25,
+     61
     ],
     "environment_original": [
-     88,
-     62,
-     9
+     38,
+     25,
+     61
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4037,15 +4078,15 @@
      0,
      0
     ],
-    "x": 1487,
-    "y": 1478
+    "x": 1367,
+    "y": 1347
    },
    {
     "artifact": true,
     "concentration": [
      16,
-     25,
-     18
+     1,
+     93
     ],
     "concentration_fraction": [
      0,
@@ -4054,14 +4095,14 @@
     ],
     "defenses": 0,
     "environment": [
-     47,
-     54,
-     96
+     41,
+     10,
+     8
     ],
     "environment_original": [
-     47,
-     54,
-     96
+     41,
+     10,
+     8
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4084,15 +4125,15 @@
      0,
      0
     ],
-    "x": 1490,
-    "y": 1714
+    "x": 1371,
+    "y": 1164
    },
    {
     "artifact": null,
     "concentration": [
-     13,
-     91,
-     49
+     114,
+     73,
+     18
     ],
     "concentration_fraction": [
      0,
@@ -4101,14 +4142,14 @@
     ],
     "defenses": 0,
     "environment": [
-     61,
-     18,
-     44
+     25,
+     85,
+     78
     ],
     "environment_original": [
-     61,
-     18,
-     44
+     25,
+     85,
+     78
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4131,15 +4172,15 @@
      0,
      0
     ],
-    "x": 1502,
-    "y": 1159
+    "x": 1375,
+    "y": 1384
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     65,
-     110,
-     72
+     57,
+     101,
+     106
     ],
     "concentration_fraction": [
      0,
@@ -4148,14 +4189,14 @@
     ],
     "defenses": 0,
     "environment": [
-     31,
-     20,
-     15
+     66,
+     85,
+     13
     ],
     "environment_original": [
-     31,
-     20,
-     15
+     66,
+     85,
+     13
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4178,15 +4219,15 @@
      0,
      0
     ],
-    "x": 1503,
-    "y": 1249
+    "x": 1376,
+    "y": 1497
    },
    {
     "artifact": null,
     "concentration": [
-     58,
-     56,
-     41
+     81,
+     41,
+     73
     ],
     "concentration_fraction": [
      0,
@@ -4195,14 +4236,14 @@
     ],
     "defenses": 0,
     "environment": [
-     96,
-     33,
-     29
+     82,
+     66,
+     10
     ],
     "environment_original": [
-     96,
-     33,
-     29
+     82,
+     66,
+     10
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4225,15 +4266,15 @@
      0,
      0
     ],
-    "x": 1510,
-    "y": 1753
+    "x": 1378,
+    "y": 1113
    },
    {
     "artifact": null,
     "concentration": [
-     68,
-     71,
-     16
+     54,
+     80,
+     66
     ],
     "concentration_fraction": [
      0,
@@ -4242,14 +4283,14 @@
     ],
     "defenses": 0,
     "environment": [
-     2,
-     51,
-     18
+     49,
+     85,
+     36
     ],
     "environment_original": [
-     2,
-     51,
-     18
+     49,
+     85,
+     36
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4272,15 +4313,15 @@
      0,
      0
     ],
-    "x": 1515,
-    "y": 1724
+    "x": 1381,
+    "y": 1088
    },
    {
     "artifact": true,
     "concentration": [
-     98,
-     77,
-     6
+     51,
+     55,
+     11
     ],
     "concentration_fraction": [
      0,
@@ -4289,14 +4330,14 @@
     ],
     "defenses": 0,
     "environment": [
-     46,
-     59,
-     1
+     92,
+     12,
+     66
     ],
     "environment_original": [
-     46,
-     59,
-     1
+     92,
+     12,
+     66
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4319,15 +4360,15 @@
      0,
      0
     ],
-    "x": 1522,
-    "y": 1700
+    "x": 1384,
+    "y": 1529
    },
    {
     "artifact": true,
     "concentration": [
-     80,
-     96,
-     85
+     20,
+     76,
+     91
     ],
     "concentration_fraction": [
      0,
@@ -4336,14 +4377,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     35,
-     64
+     27,
+     46,
+     49
     ],
     "environment_original": [
-     89,
-     35,
-     64
+     27,
+     46,
+     49
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4366,15 +4407,15 @@
      0,
      0
     ],
-    "x": 1523,
-    "y": 1623
+    "x": 1387,
+    "y": 1357
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     94,
-     68,
-     90
+     1,
+     28,
+     3
     ],
     "concentration_fraction": [
      0,
@@ -4383,14 +4424,14 @@
     ],
     "defenses": 0,
     "environment": [
-     72,
-     17,
-     90
+     21,
+     47,
+     88
     ],
     "environment_original": [
-     72,
-     17,
-     90
+     21,
+     47,
+     88
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4413,15 +4454,15 @@
      0,
      0
     ],
-    "x": 1524,
-    "y": 1134
+    "x": 1397,
+    "y": 1753
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     95,
-     80,
-     76
+     97,
+     61,
+     104
     ],
     "concentration_fraction": [
      0,
@@ -4430,14 +4471,14 @@
     ],
     "defenses": 0,
     "environment": [
-     56,
-     20,
-     78
+     46,
+     74,
+     52
     ],
     "environment_original": [
-     56,
-     20,
-     78
+     46,
+     74,
+     52
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4460,15 +4501,15 @@
      0,
      0
     ],
-    "x": 1526,
-    "y": 1579
+    "x": 1407,
+    "y": 1764
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     29,
-     82,
-     93
+     51,
+     112,
+     49
     ],
     "concentration_fraction": [
      0,
@@ -4477,14 +4518,14 @@
     ],
     "defenses": 0,
     "environment": [
-     35,
-     48,
-     98
+     66,
+     21,
+     38
     ],
     "environment_original": [
-     35,
-     48,
-     98
+     66,
+     21,
+     38
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4507,15 +4548,15 @@
      0,
      0
     ],
-    "x": 1533,
-    "y": 1647
+    "x": 1415,
+    "y": 1533
    },
    {
     "artifact": null,
     "concentration": [
-     101,
-     26,
-     86
+     23,
+     102,
+     24
     ],
     "concentration_fraction": [
      0,
@@ -4524,48 +4565,45 @@
     ],
     "defenses": 0,
     "environment": [
-     65,
-     31,
-     51
+     57,
+     29,
+     42
     ],
     "environment_original": [
-     65,
-     31,
-     51
+     57,
+     29,
+     42
     ],
     "extra_colonists": 0,
-    "factories": 4,
-    "has_scanner": true,
+    "factories": 0,
+    "has_scanner": false,
     "homeworld": false,
     "id": 87,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 5,
-    "mines": 10,
+    "mass_driver_warp": 0,
+    "mines": 0,
     "mod_data": {},
     "name": "Planet 87",
-    "owner": 0,
-    "population": 100,
+    "owner": -1,
+    "population": 0,
     "queue": [],
     "route": -1,
-    "starbase": {
-     "damage": 0,
-     "design": 1
-    },
+    "starbase": null,
     "surface": [
-     165,
-     253,
-     220
+     0,
+     0,
+     0
     ],
-    "x": 1533,
-    "y": 1246
+    "x": 1426,
+    "y": 1725
    },
    {
     "artifact": null,
     "concentration": [
-     94,
-     56,
-     17
+     110,
+     85,
+     64
     ],
     "concentration_fraction": [
      0,
@@ -4574,14 +4612,14 @@
     ],
     "defenses": 0,
     "environment": [
-     67,
-     96,
-     29
+     43,
+     27,
+     95
     ],
     "environment_original": [
-     67,
-     96,
-     29
+     43,
+     27,
+     95
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4604,15 +4642,15 @@
      0,
      0
     ],
-    "x": 1542,
-    "y": 1128
+    "x": 1437,
+    "y": 1747
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     34,
-     75,
-     13
+     63,
+     60,
+     71
     ],
     "concentration_fraction": [
      0,
@@ -4621,14 +4659,14 @@
     ],
     "defenses": 0,
     "environment": [
-     59,
-     52,
-     42
+     7,
+     5,
+     14
     ],
     "environment_original": [
-     59,
-     52,
-     42
+     7,
+     5,
+     14
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4651,15 +4689,15 @@
      0,
      0
     ],
-    "x": 1545,
-    "y": 1779
+    "x": 1439,
+    "y": 1416
    },
    {
     "artifact": null,
     "concentration": [
-     37,
-     89,
-     5
+     6,
+     80,
+     44
     ],
     "concentration_fraction": [
      0,
@@ -4668,14 +4706,14 @@
     ],
     "defenses": 0,
     "environment": [
-     50,
-     21,
-     69
+     62,
+     32,
+     64
     ],
     "environment_original": [
-     50,
-     21,
-     69
+     62,
+     32,
+     64
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4698,15 +4736,15 @@
      0,
      0
     ],
-    "x": 1551,
-    "y": 1305
+    "x": 1439,
+    "y": 1077
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     74,
-     3,
-     95
+     97,
+     85,
+     19
     ],
     "concentration_fraction": [
      0,
@@ -4715,14 +4753,14 @@
     ],
     "defenses": 0,
     "environment": [
-     13,
-     44,
-     63
+     73,
+     63,
+     70
     ],
     "environment_original": [
-     13,
-     44,
-     63
+     73,
+     63,
+     70
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4745,15 +4783,15 @@
      0,
      0
     ],
-    "x": 1553,
-    "y": 1267
+    "x": 1439,
+    "y": 1180
    },
    {
     "artifact": true,
     "concentration": [
-     11,
-     16,
-     23
+     86,
+     21,
+     26
     ],
     "concentration_fraction": [
      0,
@@ -4762,14 +4800,14 @@
     ],
     "defenses": 0,
     "environment": [
-     68,
-     36,
-     61
+     70,
+     78,
+     82
     ],
     "environment_original": [
-     68,
-     36,
-     61
+     70,
+     78,
+     82
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4792,15 +4830,15 @@
      0,
      0
     ],
-    "x": 1558,
-    "y": 1025
+    "x": 1440,
+    "y": 1555
    },
    {
     "artifact": null,
     "concentration": [
-     77,
-     87,
-     57
+     19,
+     71,
+     66
     ],
     "concentration_fraction": [
      0,
@@ -4809,14 +4847,14 @@
     ],
     "defenses": 0,
     "environment": [
-     19,
-     34,
-     66
+     47,
+     76,
+     88
     ],
     "environment_original": [
-     19,
-     34,
-     66
+     47,
+     76,
+     88
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4839,15 +4877,15 @@
      0,
      0
     ],
-    "x": 1560,
-    "y": 1189
+    "x": 1442,
+    "y": 1224
    },
    {
     "artifact": null,
     "concentration": [
-     89,
-     62,
-     11
+     77,
+     90,
+     71
     ],
     "concentration_fraction": [
      0,
@@ -4857,13 +4895,13 @@
     "defenses": 0,
     "environment": [
      50,
-     79,
-     44
+     20,
+     21
     ],
     "environment_original": [
      50,
-     79,
-     44
+     20,
+     21
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4886,15 +4924,15 @@
      0,
      0
     ],
-    "x": 1561,
-    "y": 1456
+    "x": 1452,
+    "y": 1309
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     82,
-     82,
-     11
+     26,
+     96,
+     57
     ],
     "concentration_fraction": [
      0,
@@ -4903,14 +4941,14 @@
     ],
     "defenses": 0,
     "environment": [
-     60,
-     34,
-     12
+     38,
+     61,
+     16
     ],
     "environment_original": [
-     60,
-     34,
-     12
+     38,
+     61,
+     16
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4933,15 +4971,15 @@
      0,
      0
     ],
-    "x": 1562,
-    "y": 1697
+    "x": 1464,
+    "y": 1559
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     8,
-     7,
-     20
+     73,
+     86,
+     16
     ],
     "concentration_fraction": [
      0,
@@ -4950,14 +4988,14 @@
     ],
     "defenses": 0,
     "environment": [
-     12,
-     76,
-     53
+     77,
+     88,
+     86
     ],
     "environment_original": [
-     12,
-     76,
-     53
+     77,
+     88,
+     86
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -4980,15 +5018,15 @@
      0,
      0
     ],
-    "x": 1573,
-    "y": 1380
+    "x": 1464,
+    "y": 1713
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     48,
-     84,
-     20
+     86,
+     78,
+     57
     ],
     "concentration_fraction": [
      0,
@@ -4997,14 +5035,14 @@
     ],
     "defenses": 0,
     "environment": [
-     41,
-     43,
-     20
+     63,
+     92,
+     79
     ],
     "environment_original": [
-     41,
-     43,
-     20
+     63,
+     92,
+     79
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5027,15 +5065,15 @@
      0,
      0
     ],
-    "x": 1592,
-    "y": 1315
+    "x": 1464,
+    "y": 1153
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     71,
-     29,
-     19
+     98,
+     79,
+     66
     ],
     "concentration_fraction": [
      0,
@@ -5044,14 +5082,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     74,
-     73
+     28,
+     16,
+     90
     ],
     "environment_original": [
-     89,
-     74,
-     73
+     28,
+     16,
+     90
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5074,15 +5112,15 @@
      0,
      0
     ],
-    "x": 1593,
-    "y": 1028
+    "x": 1475,
+    "y": 1504
    },
    {
     "artifact": null,
     "concentration": [
-     102,
-     34,
-     50
+     109,
+     95,
+     22
     ],
     "concentration_fraction": [
      0,
@@ -5091,14 +5129,14 @@
     ],
     "defenses": 0,
     "environment": [
-     94,
-     46,
-     37
+     74,
+     90,
+     99
     ],
     "environment_original": [
-     94,
-     46,
-     37
+     74,
+     90,
+     99
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5121,15 +5159,15 @@
      0,
      0
     ],
-    "x": 1600,
-    "y": 1753
+    "x": 1476,
+    "y": 1218
    },
    {
     "artifact": null,
     "concentration": [
-     54,
-     51,
-     80
+     100,
+     20,
+     28
     ],
     "concentration_fraction": [
      0,
@@ -5138,14 +5176,14 @@
     ],
     "defenses": 0,
     "environment": [
-     33,
-     80,
-     68
+     37,
+     55,
+     29
     ],
     "environment_original": [
-     33,
-     80,
-     68
+     37,
+     55,
+     29
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5168,15 +5206,15 @@
      0,
      0
     ],
-    "x": 1610,
-    "y": 1145
+    "x": 1482,
+    "y": 1165
    },
    {
     "artifact": true,
     "concentration": [
-     93,
-     29,
-     8
+     69,
+     68,
+     59
     ],
     "concentration_fraction": [
      0,
@@ -5185,14 +5223,14 @@
     ],
     "defenses": 0,
     "environment": [
-     91,
-     18,
-     94
+     63,
+     76,
+     8
     ],
     "environment_original": [
-     91,
-     18,
-     94
+     63,
+     76,
+     8
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5215,15 +5253,15 @@
      0,
      0
     ],
-    "x": 1638,
-    "y": 1531
+    "x": 1494,
+    "y": 1092
    },
    {
     "artifact": null,
     "concentration": [
-     81,
-     98,
-     82
+     79,
+     74,
+     23
     ],
     "concentration_fraction": [
      0,
@@ -5232,14 +5270,14 @@
     ],
     "defenses": 0,
     "environment": [
-     64,
-     73,
-     24
+     6,
+     23,
+     17
     ],
     "environment_original": [
-     64,
-     73,
-     24
+     6,
+     23,
+     17
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5262,15 +5300,15 @@
      0,
      0
     ],
-    "x": 1638,
-    "y": 1632
+    "x": 1512,
+    "y": 1155
    },
    {
     "artifact": null,
     "concentration": [
-     90,
-     78,
-     16
+     25,
+     28,
+     1
     ],
     "concentration_fraction": [
      0,
@@ -5279,14 +5317,14 @@
     ],
     "defenses": 0,
     "environment": [
-     43,
-     46,
-     10
+     13,
+     27,
+     59
     ],
     "environment_original": [
-     43,
-     46,
-     10
+     13,
+     27,
+     59
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5309,15 +5347,15 @@
      0,
      0
     ],
-    "x": 1642,
-    "y": 1514
+    "x": 1515,
+    "y": 1640
    },
    {
     "artifact": null,
     "concentration": [
-     82,
-     63,
-     28
+     78,
+     6,
+     23
     ],
     "concentration_fraction": [
      0,
@@ -5326,14 +5364,14 @@
     ],
     "defenses": 0,
     "environment": [
-     17,
-     58,
-     42
+     75,
+     49,
+     53
     ],
     "environment_original": [
-     17,
-     58,
-     42
+     75,
+     49,
+     53
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5356,15 +5394,15 @@
      0,
      0
     ],
-    "x": 1649,
-    "y": 1135
+    "x": 1533,
+    "y": 1696
    },
    {
     "artifact": null,
     "concentration": [
-     58,
-     85,
-     27
+     49,
+     79,
+     40
     ],
     "concentration_fraction": [
      0,
@@ -5373,14 +5411,14 @@
     ],
     "defenses": 0,
     "environment": [
-     24,
-     27,
-     82
+     16,
+     92,
+     89
     ],
     "environment_original": [
-     24,
-     27,
-     82
+     16,
+     92,
+     89
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5403,15 +5441,15 @@
      0,
      0
     ],
-    "x": 1651,
-    "y": 1419
+    "x": 1537,
+    "y": 1415
    },
    {
     "artifact": null,
     "concentration": [
-     24,
-     105,
-     63
+     101,
+     56,
+     77
     ],
     "concentration_fraction": [
      0,
@@ -5420,14 +5458,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     68,
-     57
+     93,
+     24,
+     59
     ],
     "environment_original": [
-     89,
-     68,
-     57
+     93,
+     24,
+     59
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5450,15 +5488,15 @@
      0,
      0
     ],
-    "x": 1654,
-    "y": 1700
+    "x": 1539,
+    "y": 1151
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     89,
-     15,
-     89
+     45,
+     94,
+     73
     ],
     "concentration_fraction": [
      0,
@@ -5467,14 +5505,14 @@
     ],
     "defenses": 0,
     "environment": [
-     55,
-     71,
-     91
+     38,
+     22,
+     19
     ],
     "environment_original": [
-     55,
-     71,
-     91
+     38,
+     22,
+     19
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5497,15 +5535,15 @@
      0,
      0
     ],
-    "x": 1673,
-    "y": 1202
+    "x": 1544,
+    "y": 1673
    },
    {
     "artifact": true,
     "concentration": [
-     9,
-     83,
-     9
+     61,
+     103,
+     67
     ],
     "concentration_fraction": [
      0,
@@ -5515,13 +5553,13 @@
     "defenses": 0,
     "environment": [
      70,
-     21,
-     50
+     73,
+     79
     ],
     "environment_original": [
      70,
-     21,
-     50
+     73,
+     79
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5544,15 +5582,15 @@
      0,
      0
     ],
-    "x": 1688,
-    "y": 1084
+    "x": 1546,
+    "y": 1335
    },
    {
     "artifact": null,
     "concentration": [
-     67,
-     69,
-     36
+     92,
+     19,
+     65
     ],
     "concentration_fraction": [
      0,
@@ -5561,14 +5599,14 @@
     ],
     "defenses": 0,
     "environment": [
-     91,
-     51,
-     46
+     56,
+     76,
+     99
     ],
     "environment_original": [
-     91,
-     51,
-     46
+     56,
+     76,
+     99
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5591,15 +5629,15 @@
      0,
      0
     ],
-    "x": 1701,
-    "y": 1752
+    "x": 1548,
+    "y": 1252
    },
    {
     "artifact": null,
     "concentration": [
-     112,
-     107,
-     98
+     72,
+     67,
+     42
     ],
     "concentration_fraction": [
      0,
@@ -5608,14 +5646,14 @@
     ],
     "defenses": 0,
     "environment": [
-     97,
-     23,
-     60
+     66,
+     83,
+     69
     ],
     "environment_original": [
-     97,
-     23,
-     60
+     66,
+     83,
+     69
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5638,15 +5676,15 @@
      0,
      0
     ],
-    "x": 1704,
-    "y": 1070
+    "x": 1559,
+    "y": 1370
    },
    {
     "artifact": true,
     "concentration": [
-     89,
-     90,
-     41
+     27,
+     12,
+     44
     ],
     "concentration_fraction": [
      0,
@@ -5655,14 +5693,14 @@
     ],
     "defenses": 0,
     "environment": [
-     13,
-     15,
-     46
+     84,
+     43,
+     10
     ],
     "environment_original": [
-     13,
-     15,
-     46
+     84,
+     43,
+     10
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5685,15 +5723,15 @@
      0,
      0
     ],
-    "x": 1706,
-    "y": 1504
+    "x": 1563,
+    "y": 1026
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     87,
-     89,
-     7
+     84,
+     8,
+     46
     ],
     "concentration_fraction": [
      0,
@@ -5702,14 +5740,14 @@
     ],
     "defenses": 0,
     "environment": [
-     26,
-     72,
-     97
+     54,
+     36,
+     44
     ],
     "environment_original": [
-     26,
-     72,
-     97
+     54,
+     36,
+     44
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5732,15 +5770,15 @@
      0,
      0
     ],
-    "x": 1713,
-    "y": 1737
+    "x": 1571,
+    "y": 1539
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     47,
-     23,
-     45
+     17,
+     69,
+     6
     ],
     "concentration_fraction": [
      0,
@@ -5749,14 +5787,14 @@
     ],
     "defenses": 0,
     "environment": [
-     29,
      51,
-     15
+     85,
+     81
     ],
     "environment_original": [
-     29,
      51,
-     15
+     85,
+     81
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5779,15 +5817,15 @@
      0,
      0
     ],
-    "x": 1716,
-    "y": 1273
+    "x": 1577,
+    "y": 1111
    },
    {
     "artifact": null,
     "concentration": [
-     6,
-     5,
-     91
+     83,
+     89,
+     29
     ],
     "concentration_fraction": [
      0,
@@ -5796,14 +5834,14 @@
     ],
     "defenses": 0,
     "environment": [
-     14,
-     54,
-     33
+     13,
+     55,
+     92
     ],
     "environment_original": [
-     14,
-     54,
-     33
+     13,
+     55,
+     92
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5826,15 +5864,15 @@
      0,
      0
     ],
-    "x": 1725,
-    "y": 1786
+    "x": 1581,
+    "y": 1433
    },
    {
     "artifact": true,
     "concentration": [
-     76,
-     21,
-     64
+     56,
+     70,
+     11
     ],
     "concentration_fraction": [
      0,
@@ -5843,14 +5881,14 @@
     ],
     "defenses": 0,
     "environment": [
+     96,
      16,
-     88,
-     33
+     4
     ],
     "environment_original": [
+     96,
      16,
-     88,
-     33
+     4
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5873,62 +5911,65 @@
      0,
      0
     ],
-    "x": 1726,
-    "y": 1014
+    "x": 1585,
+    "y": 1122
    },
    {
     "artifact": null,
     "concentration": [
-     46,
-     60,
-     101
+     35,
+     65,
+     58
     ],
     "concentration_fraction": [
      0,
      0,
      0
     ],
-    "defenses": 0,
+    "defenses": 10,
     "environment": [
-     80,
-     60,
-     80
+     55,
+     66,
+     68
     ],
     "environment_original": [
-     80,
-     60,
-     80
+     55,
+     66,
+     68
     ],
     "extra_colonists": 0,
-    "factories": 0,
-    "has_scanner": false,
-    "homeworld": false,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
     "id": 116,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 0,
-    "mines": 0,
+    "mass_driver_warp": 4,
+    "mines": 10,
     "mod_data": {},
     "name": "Planet 116",
-    "owner": -1,
-    "population": 0,
+    "owner": 0,
+    "population": 700,
     "queue": [],
     "route": -1,
-    "starbase": null,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
     "surface": [
-     0,
-     0,
-     0
+     372,
+     757,
+     307
     ],
-    "x": 1736,
-    "y": 1044
+    "x": 1595,
+    "y": 1271
    },
    {
     "artifact": null,
     "concentration": [
-     79,
-     7,
-     47
+     41,
+     47,
+     84
     ],
     "concentration_fraction": [
      0,
@@ -5937,14 +5978,14 @@
     ],
     "defenses": 0,
     "environment": [
-     63,
-     48,
-     39
+     46,
+     64,
+     37
     ],
     "environment_original": [
-     63,
-     48,
-     39
+     46,
+     64,
+     37
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -5967,15 +6008,15 @@
      0,
      0
     ],
-    "x": 1751,
-    "y": 1010
+    "x": 1596,
+    "y": 1722
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     9,
-     75,
-     30
+     23,
+     101,
+     95
     ],
     "concentration_fraction": [
      0,
@@ -5984,14 +6025,14 @@
     ],
     "defenses": 0,
     "environment": [
-     59,
-     26,
-     28
+     40,
+     29,
+     42
     ],
     "environment_original": [
-     59,
-     26,
-     28
+     40,
+     29,
+     42
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6014,15 +6055,15 @@
      0,
      0
     ],
-    "x": 1751,
-    "y": 1135
+    "x": 1597,
+    "y": 1770
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     81,
-     11,
-     115
+     95,
+     8,
+     88
     ],
     "concentration_fraction": [
      0,
@@ -6031,14 +6072,14 @@
     ],
     "defenses": 0,
     "environment": [
-     71,
-     50,
-     10
+     14,
+     48,
+     21
     ],
     "environment_original": [
-     71,
-     50,
-     10
+     14,
+     48,
+     21
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6061,15 +6102,15 @@
      0,
      0
     ],
-    "x": 1752,
-    "y": 1555
+    "x": 1597,
+    "y": 1448
    },
    {
-    "artifact": true,
+    "artifact": null,
     "concentration": [
-     81,
-     45,
-     87
+     104,
+     92,
+     68
     ],
     "concentration_fraction": [
      0,
@@ -6078,14 +6119,14 @@
     ],
     "defenses": 0,
     "environment": [
-     70,
-     92,
-     79
+     17,
+     46,
+     98
     ],
     "environment_original": [
-     70,
-     92,
-     79
+     17,
+     46,
+     98
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6108,15 +6149,15 @@
      0,
      0
     ],
-    "x": 1761,
-    "y": 1729
+    "x": 1597,
+    "y": 1257
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     79,
-     73,
-     76
+     114,
+     20,
+     13
     ],
     "concentration_fraction": [
      0,
@@ -6125,14 +6166,14 @@
     ],
     "defenses": 0,
     "environment": [
-     32,
-     11,
-     73
+     43,
+     31,
+     81
     ],
     "environment_original": [
-     32,
-     11,
-     73
+     43,
+     31,
+     81
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6155,15 +6196,15 @@
      0,
      0
     ],
-    "x": 1763,
-    "y": 1580
+    "x": 1604,
+    "y": 1470
    },
    {
     "artifact": null,
     "concentration": [
-     89,
-     18,
-     71
+     30,
+     69,
+     65
     ],
     "concentration_fraction": [
      0,
@@ -6172,14 +6213,14 @@
     ],
     "defenses": 0,
     "environment": [
-     60,
-     87,
-     8
+     79,
+     91,
+     60
     ],
     "environment_original": [
-     60,
-     87,
-     8
+     79,
+     91,
+     60
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6202,15 +6243,15 @@
      0,
      0
     ],
-    "x": 1765,
-    "y": 1254
+    "x": 1604,
+    "y": 1519
    },
    {
     "artifact": null,
     "concentration": [
-     62,
-     7,
-     102
+     84,
+     113,
+     59
     ],
     "concentration_fraction": [
      0,
@@ -6219,14 +6260,14 @@
     ],
     "defenses": 0,
     "environment": [
-     67,
-     91,
-     89
+     28,
+     56,
+     30
     ],
     "environment_original": [
-     67,
-     91,
-     89
+     28,
+     56,
+     30
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6249,62 +6290,65 @@
      0,
      0
     ],
-    "x": 1772,
-    "y": 1090
+    "x": 1604,
+    "y": 1370
    },
    {
     "artifact": null,
     "concentration": [
-     8,
-     72,
-     92
+     68,
+     76,
+     69
     ],
     "concentration_fraction": [
      0,
      0,
      0
     ],
-    "defenses": 0,
+    "defenses": 10,
     "environment": [
-     88,
-     35,
-     93
+     63,
+     28,
+     62
     ],
     "environment_original": [
-     88,
-     35,
-     93
+     63,
+     28,
+     62
     ],
     "extra_colonists": 0,
-    "factories": 0,
-    "has_scanner": false,
-    "homeworld": false,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
     "id": 124,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 0,
-    "mines": 0,
+    "mass_driver_warp": 4,
+    "mines": 10,
     "mod_data": {},
     "name": "Planet 124",
-    "owner": -1,
-    "population": 0,
+    "owner": 2,
+    "population": 950,
     "queue": [],
     "route": -1,
-    "starbase": null,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
     "surface": [
-     0,
-     0,
-     0
+     497,
+     882,
+     557
     ],
-    "x": 1782,
-    "y": 1374
+    "x": 1606,
+    "y": 1706
    },
    {
     "artifact": null,
     "concentration": [
-     3,
-     91,
-     74
+     78,
+     20,
+     18
     ],
     "concentration_fraction": [
      0,
@@ -6313,14 +6357,14 @@
     ],
     "defenses": 0,
     "environment": [
-     17,
-     26,
-     2
+     47,
+     69,
+     62
     ],
     "environment_original": [
-     17,
-     26,
-     2
+     47,
+     69,
+     62
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6343,15 +6387,15 @@
      0,
      0
     ],
-    "x": 1783,
-    "y": 1261
+    "x": 1613,
+    "y": 1687
    },
    {
     "artifact": null,
     "concentration": [
-     83,
-     83,
-     74
+     40,
+     84,
+     29
     ],
     "concentration_fraction": [
      0,
@@ -6360,14 +6404,14 @@
     ],
     "defenses": 0,
     "environment": [
-     67,
-     71,
-     90
+     35,
+     75,
+     17
     ],
     "environment_original": [
-     67,
-     71,
-     90
+     35,
+     75,
+     17
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6390,15 +6434,15 @@
      0,
      0
     ],
-    "x": 1785,
-    "y": 1620
+    "x": 1644,
+    "y": 1373
    },
    {
-    "artifact": null,
+    "artifact": true,
     "concentration": [
-     68,
-     29,
-     79
+     38,
+     26,
+     58
     ],
     "concentration_fraction": [
      0,
@@ -6407,14 +6451,14 @@
     ],
     "defenses": 0,
     "environment": [
-     59,
-     34,
-     19
+     90,
+     40,
+     62
     ],
     "environment_original": [
-     59,
-     34,
-     19
+     90,
+     40,
+     62
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -6437,8 +6481,1512 @@
      0,
      0
     ],
-    "x": 1789,
-    "y": 1670
+    "x": 1647,
+    "y": 1324
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     98,
+     86,
+     12
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     16,
+     57,
+     3
+    ],
+    "environment_original": [
+     16,
+     57,
+     3
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 128,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 128",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1647,
+    "y": 1694
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     95,
+     52,
+     14
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     17,
+     60,
+     65
+    ],
+    "environment_original": [
+     17,
+     60,
+     65
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 129,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 129",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1650,
+    "y": 1656
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     68,
+     88,
+     68
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     8,
+     42,
+     49
+    ],
+    "environment_original": [
+     8,
+     42,
+     49
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 130,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 130",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1650,
+    "y": 1638
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     20,
+     23,
+     19
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     72,
+     79,
+     30
+    ],
+    "environment_original": [
+     72,
+     79,
+     30
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 131,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 131",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1654,
+    "y": 1015
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     73,
+     6,
+     86
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     30,
+     48,
+     55
+    ],
+    "environment_original": [
+     30,
+     48,
+     55
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 132,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 132",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1665,
+    "y": 1616
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     89,
+     29,
+     71
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     47,
+     20,
+     64
+    ],
+    "environment_original": [
+     47,
+     20,
+     64
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 133,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 133",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1666,
+    "y": 1581
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     86,
+     42,
+     96
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     84,
+     37,
+     82
+    ],
+    "environment_original": [
+     84,
+     37,
+     82
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 134,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 134",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1666,
+    "y": 1744
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     108,
+     79,
+     64
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     74,
+     58,
+     19
+    ],
+    "environment_original": [
+     74,
+     58,
+     19
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 135,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 135",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1685,
+    "y": 1476
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     98,
+     79,
+     3
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     54,
+     46,
+     74
+    ],
+    "environment_original": [
+     54,
+     46,
+     74
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 136,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 136",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1686,
+    "y": 1247
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     7,
+     65,
+     11
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     82,
+     90,
+     64
+    ],
+    "environment_original": [
+     82,
+     90,
+     64
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 137,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 137",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1692,
+    "y": 1569
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     102,
+     68,
+     9
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     63,
+     40,
+     79
+    ],
+    "environment_original": [
+     63,
+     40,
+     79
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 138,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 138",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1700,
+    "y": 1147
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     92,
+     5,
+     84
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     64,
+     78,
+     95
+    ],
+    "environment_original": [
+     64,
+     78,
+     95
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 139,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 139",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1702,
+    "y": 1439
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     5,
+     55,
+     50
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     54,
+     29,
+     95
+    ],
+    "environment_original": [
+     54,
+     29,
+     95
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 140,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 140",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1709,
+    "y": 1011
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     12,
+     5,
+     109
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     61,
+     21,
+     95
+    ],
+    "environment_original": [
+     61,
+     21,
+     95
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 141,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 141",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1712,
+    "y": 1575
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     76,
+     72,
+     71
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     71,
+     82,
+     68
+    ],
+    "environment_original": [
+     71,
+     82,
+     68
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 142,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 142",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1715,
+    "y": 1348
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     61,
+     28,
+     93
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     34,
+     47,
+     47
+    ],
+    "environment_original": [
+     34,
+     47,
+     47
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 143,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 143",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1720,
+    "y": 1733
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     72,
+     14,
+     70
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     70,
+     94,
+     4
+    ],
+    "environment_original": [
+     70,
+     94,
+     4
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 144,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 144",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1723,
+    "y": 1560
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     21,
+     80,
+     13
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     23,
+     63,
+     59
+    ],
+    "environment_original": [
+     23,
+     63,
+     59
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 145,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 145",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1725,
+    "y": 1526
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     43,
+     9,
+     60
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     40,
+     68,
+     14
+    ],
+    "environment_original": [
+     40,
+     68,
+     14
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 146,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 146",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1726,
+    "y": 1106
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     23,
+     8,
+     12
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     96,
+     30,
+     82
+    ],
+    "environment_original": [
+     96,
+     30,
+     82
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 147,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 147",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1730,
+    "y": 1328
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     59,
+     56,
+     103
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     32,
+     94,
+     44
+    ],
+    "environment_original": [
+     32,
+     94,
+     44
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 148,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 148",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1736,
+    "y": 1233
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     7,
+     75,
+     74
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     3,
+     19,
+     96
+    ],
+    "environment_original": [
+     3,
+     19,
+     96
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 149,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 149",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1741,
+    "y": 1046
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     79,
+     83,
+     70
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     88,
+     92,
+     72
+    ],
+    "environment_original": [
+     88,
+     92,
+     72
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 150,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 150",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1754,
+    "y": 1342
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     3,
+     63,
+     15
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     27,
+     40,
+     15
+    ],
+    "environment_original": [
+     27,
+     40,
+     15
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 151,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 151",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1757,
+    "y": 1472
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     9,
+     74,
+     95
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     7,
+     53,
+     47
+    ],
+    "environment_original": [
+     7,
+     53,
+     47
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 152,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 152",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1758,
+    "y": 1197
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     83,
+     49,
+     4
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     53,
+     89,
+     35
+    ],
+    "environment_original": [
+     53,
+     89,
+     35
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 153,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 153",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1761,
+    "y": 1682
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     60,
+     77,
+     92
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     22,
+     51,
+     76
+    ],
+    "environment_original": [
+     22,
+     51,
+     76
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 154,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 154",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1771,
+    "y": 1655
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     65,
+     23,
+     25
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     44,
+     4,
+     85
+    ],
+    "environment_original": [
+     44,
+     4,
+     85
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 155,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 155",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1773,
+    "y": 1440
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     64,
+     89,
+     74
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     45,
+     78,
+     9
+    ],
+    "environment_original": [
+     45,
+     78,
+     9
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 156,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 156",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1775,
+    "y": 1512
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     41,
+     3,
+     74
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     59,
+     10,
+     67
+    ],
+    "environment_original": [
+     59,
+     10,
+     67
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 157,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 157",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1780,
+    "y": 1555
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     107,
+     47,
+     29
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     24,
+     12,
+     36
+    ],
+    "environment_original": [
+     24,
+     12,
+     36
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 158,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 158",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1787,
+    "y": 1247
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     2,
+     7,
+     72
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     9,
+     79,
+     2
+    ],
+    "environment_original": [
+     9,
+     79,
+     2
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 159,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 159",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1790,
+    "y": 1116
    }
   ],
   "players": [
@@ -6488,7 +8036,7 @@
       "tactic": 0
      }
     ],
-    "homeworld": 68,
+    "homeworld": 116,
     "index": 0,
     "knowledge": {},
     "mod_data": {},
@@ -6496,48 +8044,52 @@
     "race": {
      "cheap_factories": false,
      "factories_operated": 10,
-     "factory_cost": 10,
-     "factory_output": 10,
-     "growth_rate": 15,
+     "factory_cost": 19,
+     "factory_output": 8,
+     "growth_rate": 9,
      "hab_center": [
-      50,
-      50,
-      50
+      55,
+      66,
+      68
      ],
      "hab_high": [
-      78,
-      85,
-      85
+      98,
+      89,
+      97
      ],
      "hab_low": [
-      22,
-      15,
-      15
+      12,
+      43,
+      39
      ],
-     "leftover_points": "surface_minerals",
-     "lesser_traits": [],
-     "logo": 1,
-     "mine_cost": 5,
-     "mine_output": 10,
-     "mines_operated": 10,
+     "leftover_points": "concentrations",
+     "lesser_traits": [
+      "trait.lrt.GR",
+      "trait.lrt.TT"
+     ],
+     "logo": 31,
+     "mine_cost": 4,
+     "mine_output": 17,
+     "mines_operated": 23,
      "mod_data": {},
      "name": "Race 0",
      "plural_name": "Races 0",
-     "primary_trait": "trait.prt.IT",
-     "random": false,
+     "primary_trait": "trait.prt.SD",
+     "random": true,
      "research_costs": [
+      2,
+      2,
+      0,
+      2,
       1,
-      1,
-      1,
-      1,
-      1,
-      1
+      2
      ],
-     "resources_per_colonist": 10,
+     "resources_per_colonist": 15,
      "techs_start_at_3": false
     },
     "relations": [
      "neutral",
+     "enemy",
      "enemy"
     ],
     "research_field": 0,
@@ -6552,14 +8104,14 @@
     ],
     "ship_designs": [
      {
-      "built": 2,
+      "built": 1,
       "hull": "hull.scout",
       "mod_data": {},
       "name": "Design 0",
       "parts": [
        {
         "count": 1,
-        "part": "part.engine.daddy_long_legs_7"
+        "part": "part.engine.quick_jump_5"
        },
        {
         "count": 1,
@@ -6571,7 +8123,7 @@
        }
       ],
       "picture": 16,
-      "remaining": 2,
+      "remaining": 1,
       "slot": 0,
       "turn_designed": 1
      },
@@ -6583,352 +8135,72 @@
       "parts": [
        {
         "count": 1,
-        "part": "part.engine.daddy_long_legs_7"
+        "part": "part.engine.quick_jump_5"
        },
        {
         "count": 1,
         "part": "part.mechanical.colonization_module"
        }
       ],
-      "picture": 62,
+      "picture": 60,
       "remaining": 1,
       "slot": 1,
       "turn_designed": 1
      },
      {
       "built": 1,
-      "hull": "hull.destroyer",
+      "hull": "hull.mini_mine_layer",
       "mod_data": {},
       "name": "Design 2",
       "parts": [
        {
         "count": 1,
-        "part": "part.engine.daddy_long_legs_7"
+        "part": "part.engine.quick_jump_5"
        },
        {
-        "count": 1,
-        "part": "part.beam.laser"
+        "count": 2,
+        "part": "part.mine_layer.mine_dispenser_40"
        },
        {
-        "count": 1,
-        "part": "part.torpedo.alpha_torpedo"
+        "count": 2,
+        "part": "part.mine_layer.mine_dispenser_40"
        },
        {
         "count": 1,
         "part": "part.scanner.bat_scanner"
-       },
-       {
-        "count": 2,
-        "part": "part.armor.crobmnium"
-       },
-       {
-        "count": 1,
-        "part": "part.mechanical.fuel_tank"
-       },
-       {
-        "count": 1,
-        "part": "part.electrical.battle_computer"
        }
       ],
-      "picture": 24,
+      "picture": 108,
       "remaining": 1,
       "slot": 2,
       "turn_designed": 1
      },
      {
       "built": 1,
-      "hull": "hull.privateer",
+      "hull": "hull.mini_mine_layer",
       "mod_data": {},
       "name": "Design 3",
       "parts": [
        {
         "count": 1,
-        "part": "part.engine.daddy_long_legs_7"
+        "part": "part.engine.quick_jump_5"
        },
        {
         "count": 2,
-        "part": "part.armor.crobmnium"
+        "part": "part.mine_layer.speed_trap_20"
+       },
+       {
+        "count": 2,
+        "part": "part.mine_layer.speed_trap_20"
        },
        {
         "count": 1,
         "part": "part.scanner.bat_scanner"
-       },
-       {
-        "count": 1,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 1,
-        "part": "part.torpedo.alpha_torpedo"
        }
       ],
-      "picture": 44,
+      "picture": 108,
       "remaining": 1,
       "slot": 3,
-      "turn_designed": 1
-     }
-    ],
-    "starbase_designs": [
-     {
-      "built": 1,
-      "hull": "hull.space_station",
-      "mod_data": {},
-      "name": "Design 0",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.orbital.stargate_100_250"
-       },
-       {
-        "count": 8,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 8,
-        "part": "part.shield.mole_skin_shield"
-       },
-       {
-        "count": 8,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 8,
-        "part": "part.shield.mole_skin_shield"
-       },
-       {
-        "count": 8,
-        "part": "part.shield.mole_skin_shield"
-       },
-       {
-        "count": 0,
-        "part": ""
-       },
-       {
-        "count": 8,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 0,
-        "part": ""
-       },
-       {
-        "count": 8,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 0,
-        "part": ""
-       },
-       {
-        "count": 8,
-        "part": "part.shield.mole_skin_shield"
-       }
-      ],
-      "picture": 8,
-      "remaining": 1,
-      "slot": 0,
-      "turn_designed": 1
-     },
-     {
-      "built": 1,
-      "hull": "hull.orbital_fort",
-      "mod_data": {},
-      "name": "Design 1",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.orbital.stargate_100_250"
-       },
-       {
-        "count": 6,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 6,
-        "part": "part.shield.mole_skin_shield"
-       },
-       {
-        "count": 6,
-        "part": "part.beam.laser"
-       },
-       {
-        "count": 6,
-        "part": "part.shield.mole_skin_shield"
-       }
-      ],
-      "picture": 1,
-      "remaining": 1,
-      "slot": 1,
-      "turn_designed": 1
-     }
-    ],
-    "tech_levels": [
-     0,
-     0,
-     5,
-     5,
-     0,
-     0
-    ],
-    "trader_parts": []
-   },
-   {
-    "active": true,
-    "ai": "robotoids",
-    "ai_level": 0,
-    "battle_plans": [
-     {
-      "attack": 2,
-      "name": "Plan 0",
-      "number": 0,
-      "primary_target": 3,
-      "secondary_target": 1,
-      "tactic": 4
-     },
-     {
-      "attack": 2,
-      "name": "Plan 1",
-      "number": 1,
-      "primary_target": 2,
-      "secondary_target": 3,
-      "tactic": 4
-     },
-     {
-      "attack": 2,
-      "name": "Plan 2",
-      "number": 2,
-      "primary_target": 3,
-      "secondary_target": 4,
-      "tactic": 3
-     },
-     {
-      "attack": 2,
-      "name": "Plan 3",
-      "number": 3,
-      "primary_target": 5,
-      "secondary_target": 0,
-      "tactic": 1
-     },
-     {
-      "attack": 2,
-      "name": "Plan 4",
-      "number": 4,
-      "primary_target": 1,
-      "secondary_target": 0,
-      "tactic": 0
-     }
-    ],
-    "homeworld": 30,
-    "index": 1,
-    "knowledge": {},
-    "mod_data": {},
-    "next_research_field": 6,
-    "race": {
-     "cheap_factories": false,
-     "factories_operated": 16,
-     "factory_cost": 10,
-     "factory_output": 12,
-     "growth_rate": 5,
-     "hab_center": [
-      -1,
-      -1,
-      -1
-     ],
-     "hab_high": [
-      -1,
-      -1,
-      -1
-     ],
-     "hab_low": [
-      -1,
-      -1,
-      -1
-     ],
-     "leftover_points": "surface_minerals",
-     "lesser_traits": [
-      "trait.lrt.BET",
-      "trait.lrt.CE",
-      "trait.lrt.IFE",
-      "trait.lrt.MA",
-      "trait.lrt.OBRM"
-     ],
-     "logo": 0,
-     "mine_cost": 5,
-     "mine_output": 10,
-     "mines_operated": 10,
-     "mod_data": {},
-     "name": "Race 1",
-     "plural_name": "Races 1",
-     "primary_trait": "trait.prt.HE",
-     "random": false,
-     "research_costs": [
-      1,
-      1,
-      2,
-      1,
-      1,
-      0
-     ],
-     "resources_per_colonist": 10,
-     "techs_start_at_3": false
-    },
-    "relations": [
-     "enemy",
-     "neutral"
-    ],
-    "research_field": 0,
-    "research_percent": 15,
-    "research_points": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "ship_designs": [
-     {
-      "built": 1,
-      "hull": "hull.scout",
-      "mod_data": {},
-      "name": "Design 0",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.engine.fuel_mizer"
-       },
-       {
-        "count": 1,
-        "part": "part.scanner.bat_scanner"
-       },
-       {
-        "count": 1,
-        "part": "part.mechanical.fuel_tank"
-       }
-      ],
-      "picture": 16,
-      "remaining": 1,
-      "slot": 0,
-      "turn_designed": 1
-     },
-     {
-      "built": 3,
-      "hull": "hull.mini_colony_ship",
-      "mod_data": {},
-      "name": "Design 1",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.engine.settler_s_delight"
-       },
-       {
-        "count": 1,
-        "part": "part.mechanical.colonization_module"
-       }
-      ],
-      "picture": 56,
-      "remaining": 3,
-      "slot": 1,
       "turn_designed": 1
      }
     ],
@@ -7000,6 +8272,491 @@
      2,
      0,
      0,
+     2
+    ],
+    "trader_parts": []
+   },
+   {
+    "active": true,
+    "ai": "automitrons",
+    "ai_level": 1,
+    "battle_plans": [
+     {
+      "attack": 2,
+      "name": "Plan 0",
+      "number": 0,
+      "primary_target": 3,
+      "secondary_target": 1,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 1",
+      "number": 1,
+      "primary_target": 2,
+      "secondary_target": 3,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 2",
+      "number": 2,
+      "primary_target": 3,
+      "secondary_target": 4,
+      "tactic": 3
+     },
+     {
+      "attack": 2,
+      "name": "Plan 3",
+      "number": 3,
+      "primary_target": 5,
+      "secondary_target": 0,
+      "tactic": 1
+     },
+     {
+      "attack": 2,
+      "name": "Plan 4",
+      "number": 4,
+      "primary_target": 1,
+      "secondary_target": 0,
+      "tactic": 0
+     }
+    ],
+    "homeworld": 41,
+    "index": 1,
+    "knowledge": {},
+    "mod_data": {},
+    "next_research_field": 6,
+    "race": {
+     "cheap_factories": true,
+     "factories_operated": 14,
+     "factory_cost": 9,
+     "factory_output": 13,
+     "growth_rate": 15,
+     "hab_center": [
+      35,
+      60,
+      38
+     ],
+     "hab_high": [
+      63,
+      94,
+      71
+     ],
+     "hab_low": [
+      7,
+      26,
+      5
+     ],
+     "leftover_points": "concentrations",
+     "lesser_traits": [
+      "trait.lrt.CE",
+      "trait.lrt.GR",
+      "trait.lrt.LSP",
+      "trait.lrt.NAS",
+      "trait.lrt.OBRM"
+     ],
+     "logo": 0,
+     "mine_cost": 6,
+     "mine_output": 10,
+     "mines_operated": 14,
+     "mod_data": {},
+     "name": "Race 1",
+     "plural_name": "Races 1",
+     "primary_trait": "trait.prt.IS",
+     "random": false,
+     "research_costs": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "resources_per_colonist": 8,
+     "techs_start_at_3": true
+    },
+    "relations": [
+     "enemy",
+     "neutral",
+     "enemy"
+    ],
+    "research_field": 0,
+    "research_percent": 15,
+    "research_points": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "ship_designs": [
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 16,
+      "remaining": 1,
+      "slot": 0,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.colony_ship",
+      "mod_data": {},
+      "name": "Design 1",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.colonization_module"
+       }
+      ],
+      "picture": 60,
+      "remaining": 1,
+      "slot": 1,
+      "turn_designed": 1
+     }
+    ],
+    "starbase_designs": [
+     {
+      "built": 1,
+      "hull": "hull.space_station",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       }
+      ],
+      "picture": 8,
+      "remaining": 1,
+      "slot": 0,
+      "turn_designed": 1
+     }
+    ],
+    "tech_levels": [
+     3,
+     3,
+     4,
+     3,
+     3,
+     3
+    ],
+    "trader_parts": []
+   },
+   {
+    "active": true,
+    "ai": "turindrones",
+    "ai_level": 2,
+    "battle_plans": [
+     {
+      "attack": 2,
+      "name": "Plan 0",
+      "number": 0,
+      "primary_target": 3,
+      "secondary_target": 1,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 1",
+      "number": 1,
+      "primary_target": 2,
+      "secondary_target": 3,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 2",
+      "number": 2,
+      "primary_target": 3,
+      "secondary_target": 4,
+      "tactic": 3
+     },
+     {
+      "attack": 2,
+      "name": "Plan 3",
+      "number": 3,
+      "primary_target": 5,
+      "secondary_target": 0,
+      "tactic": 1
+     },
+     {
+      "attack": 2,
+      "name": "Plan 4",
+      "number": 4,
+      "primary_target": 1,
+      "secondary_target": 0,
+      "tactic": 0
+     }
+    ],
+    "homeworld": 124,
+    "index": 2,
+    "knowledge": {},
+    "mod_data": {},
+    "next_research_field": 6,
+    "race": {
+     "cheap_factories": true,
+     "factories_operated": 10,
+     "factory_cost": 10,
+     "factory_output": 11,
+     "growth_rate": 14,
+     "hab_center": [
+      63,
+      28,
+      62
+     ],
+     "hab_high": [
+      95,
+      52,
+      94
+     ],
+     "hab_low": [
+      31,
+      4,
+      30
+     ],
+     "leftover_points": "surface_minerals",
+     "lesser_traits": [
+      "trait.lrt.ARM",
+      "trait.lrt.IFE",
+      "trait.lrt.MA",
+      "trait.lrt.RS"
+     ],
+     "logo": 7,
+     "mine_cost": 5,
+     "mine_output": 10,
+     "mines_operated": 9,
+     "mod_data": {},
+     "name": "Race 2",
+     "plural_name": "Races 2",
+     "primary_trait": "trait.prt.SS",
+     "random": false,
+     "research_costs": [
+      0,
+      1,
+      0,
+      1,
+      1,
+      1
+     ],
+     "resources_per_colonist": 9,
+     "techs_start_at_3": false
+    },
+    "relations": [
+     "enemy",
+     "enemy",
+     "neutral"
+    ],
+    "research_field": 0,
+    "research_percent": 15,
+    "research_points": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "ship_designs": [
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.possum_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 16,
+      "remaining": 1,
+      "slot": 0,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.colony_ship",
+      "mod_data": {},
+      "name": "Design 1",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.colonization_module"
+       }
+      ],
+      "picture": 60,
+      "remaining": 1,
+      "slot": 1,
+      "turn_designed": 1
+     },
+     {
+      "built": 2,
+      "hull": "hull.midget_miner",
+      "mod_data": {},
+      "name": "Design 2",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 2,
+        "part": "part.mining_robot.robo_midget_miner"
+       }
+      ],
+      "picture": 82,
+      "remaining": 2,
+      "slot": 2,
+      "turn_designed": 1
+     }
+    ],
+    "starbase_designs": [
+     {
+      "built": 1,
+      "hull": "hull.space_station",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       }
+      ],
+      "picture": 8,
+      "remaining": 1,
+      "slot": 0,
+      "turn_designed": 1
+     }
+    ],
+    "tech_levels": [
+     0,
+     0,
+     1,
+     0,
+     5,
      0
     ],
     "trader_parts": []
@@ -7015,9 +8772,9 @@
    }
   },
   "settings": {
-   "accelerated_start": false,
+   "accelerated_start": true,
    "computer_alliances": false,
-   "density": "normal",
+   "density": "dense",
    "galaxy_clumping": false,
    "max_minerals": false,
    "mods": [
@@ -7027,7 +8784,7 @@
     }
    ],
    "no_random_events": false,
-   "player_positions": "moderate",
+   "player_positions": "distant",
    "public_scores": false,
    "ruleset_hash": "",
    "slow_tech": false,
@@ -7059,9 +8816,9 @@
     "number": 0,
     "other_end": 1,
     "seen_by": [],
-    "stability": 2,
-    "x": 1621,
-    "y": 1309
+    "stability": 0,
+    "x": 1651,
+    "y": 1209
    },
    {
     "age": 0,
@@ -7069,49 +8826,9 @@
     "number": 1,
     "other_end": 0,
     "seen_by": [],
-    "stability": 0,
-    "x": 1583,
-    "y": 1102
-   },
-   {
-    "age": 0,
-    "mod_data": {},
-    "number": 2,
-    "other_end": 3,
-    "seen_by": [],
-    "stability": 0,
-    "x": 1404,
-    "y": 1653
-   },
-   {
-    "age": 0,
-    "mod_data": {},
-    "number": 3,
-    "other_end": 2,
-    "seen_by": [],
-    "stability": 0,
-    "x": 1738,
-    "y": 1711
-   },
-   {
-    "age": 0,
-    "mod_data": {},
-    "number": 4,
-    "other_end": 5,
-    "seen_by": [],
-    "stability": 0,
-    "x": 1313,
-    "y": 1790
-   },
-   {
-    "age": 0,
-    "mod_data": {},
-    "number": 5,
-    "other_end": 4,
-    "seen_by": [],
-    "stability": 0,
-    "x": 1696,
-    "y": 1569
+    "stability": 1,
+    "x": 1636,
+    "y": 1284
    }
   ]
  }

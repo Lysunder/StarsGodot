@@ -6,7 +6,8 @@ extends RefCounted
 ## Input: settings (size from universe_width, density, positions, options) and one Player per
 ## slot, with its race filled in. Computer players set `ai` to a personality id, or to AI_RANDOM
 ## (and ai_level -1 for a random level); built-in computer races have no name and logo 0.
-## Human races whose advantage points are negative are replaced by `default_race`.
+## Human races whose advantage points are negative are replaced by `default_race`. Races with
+## the random setting are rolled after their shuffle draw (S06); an empty name is drawn then.
 ##
 ## generate() runs everything. Steps 0-9 (setup draws, planets, homeworld choice) are here;
 ## steps 9.5-12 (starting tech, homeworlds, designs, fleets, wormholes) are in StartingSetup.
@@ -113,7 +114,7 @@ func _setup_draws() -> void:
 		if p.ai.is_empty() and default_race != null:
 			if RaceMath.advantage_points(p.race, content) < 0:
 				p.race = default_race.copy() as Race
-		if p.race.name.is_empty():
+		if p.race.name.is_empty() and not p.race.random:
 			p.race.name = race_names[_rng.random(race_names.size())]
 	for i in range(1, players.size()):
 		if not _name_used(players[i].race.name, i, false):
@@ -411,11 +412,16 @@ func _choose_homeworlds() -> void:
 			break
 		min_d2 -= base / 35
 		near_d2 += base / 35
+	var random_race: RandomRace = null
 	for i in count:
 		var r := i + _rng.random(count - i)
 		var t := chosen[i]
 		chosen[i] = chosen[r]
 		chosen[r] = t
+		if players[i].race.random:
+			if random_race == null:
+				random_race = RandomRace.new(content, _rng, default_race)
+			random_race.roll(players[i].race)
 	homeworlds = chosen
 
 

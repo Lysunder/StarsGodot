@@ -2141,6 +2141,7 @@
      "name": "Race 0",
      "plural_name": "Races 0",
      "primary_trait": "trait.prt.JoaT",
+     "random": false,
      "research_costs": [
       1,
       1,
@@ -2482,6 +2483,7 @@
      "name": "Race 1",
      "plural_name": "Races 1",
      "primary_trait": "trait.prt.JoaT",
+     "random": false,
      "research_costs": [
       1,
       1,

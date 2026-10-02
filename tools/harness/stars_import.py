@@ -42,6 +42,8 @@ OPTION_BITS = {
     "galaxy_clumping": 0x100,
 }
 LEFTOVER = ["surface_minerals", "concentrations", "mines", "factories", "defenses"]
+# Leftover-point values 5 and 6 (possible in random races) act as surface minerals (S06).
+LEFTOVER_FALLBACK = "surface_minerals"
 RELATIONS = ["neutral", "friend", "enemy"]
 AI_PERSONALITIES = ["robotoids", "turindrones", "automitrons", "rototills", "cybertrons", "macinti"]
 AI_INACTIVE = 7
@@ -248,9 +250,10 @@ class Importer:
                 "mine_cost": d[0x43],
                 "mines_operated": d[0x44],
                 "research_costs": list(d[0x46:0x4C]),
-                "leftover_points": LEFTOVER[d[0x45]],
+                "leftover_points": LEFTOVER[d[0x45]] if d[0x45] < len(LEFTOVER) else LEFTOVER_FALLBACK,
                 "techs_start_at_3": bool(traits >> 29 & 1),
                 "cheap_factories": bool(traits >> 31 & 1),
+                "random": bool(traits >> 30 & 1),
                 "logo": d[6] >> 3,
                 "mod_data": {},
             },

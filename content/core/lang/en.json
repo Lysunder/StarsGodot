@@ -344,5 +344,19 @@
   "constant.universe.wormholes_random_3.name": "Random extra wormhole pairs, universe size 3",
   "constant.universe.wormholes_base_3.name": "Fixed wormhole pairs, universe size 3",
   "constant.universe.wormholes_random_4.name": "Random extra wormhole pairs, universe size 4",
-  "constant.universe.wormholes_base_4.name": "Fixed wormhole pairs, universe size 4"
+  "constant.universe.wormholes_base_4.name": "Fixed wormhole pairs, universe size 4",
+  "constant.race.resources_per_colonist_min.name": "Race: minimum colonists per resource",
+  "constant.race.resources_per_colonist_max.name": "Race: maximum colonists per resource",
+  "constant.race.factory_output_min.name": "Race: minimum factory output",
+  "constant.race.factory_output_max.name": "Race: maximum factory output",
+  "constant.race.factory_cost_min.name": "Race: minimum factory cost",
+  "constant.race.factory_cost_max.name": "Race: maximum factory cost",
+  "constant.race.factories_operated_min.name": "Race: minimum factories operated",
+  "constant.race.factories_operated_max.name": "Race: maximum factories operated",
+  "constant.race.mine_output_min.name": "Race: minimum mine output",
+  "constant.race.mine_output_max.name": "Race: maximum mine output",
+  "constant.race.mine_cost_min.name": "Race: minimum mine cost",
+  "constant.race.mine_cost_max.name": "Race: maximum mine cost",
+  "constant.race.mines_operated_min.name": "Race: minimum mines operated",
+  "constant.race.mines_operated_max.name": "Race: maximum mines operated"
 }

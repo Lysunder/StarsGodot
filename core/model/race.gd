@@ -1,14 +1,15 @@
 class_name Race
 extends ModelObject
 ## A race definition (spec S06). Habitability per axis (gravity, temperature, radiation): low,
-## center and high in 0..100; an immune axis has -1 in all three.
+## center and high in 0..100; an immune axis has -1 in all three. A new Race is the Humanoid
+## preset (without a name).
 
 const LEFTOVER := ["surface_minerals", "concentrations", "mines", "factories", "defenses"]
 
 var name: String = ""
 var plural_name: String = ""
-## Primary trait content id, e.g. "trait.prt.joat".
-var primary_trait: String = ""
+## Primary trait content id, e.g. "trait.prt.JoaT".
+var primary_trait: String = "trait.prt.JoaT"
 ## Lesser trait content ids, sorted.
 var lesser_traits: Array[String] = []
 var hab_low: Array[int] = [15, 15, 15]
@@ -31,6 +32,8 @@ var techs_start_at_3: bool = false
 ## Logo number 0..31, or -1 for none (one is drawn at game creation, S07).
 var logo: int = -1
 var cheap_factories: bool = false
+## Rolled anew when a game is created (S06 "Random races"); stays set on the rolled race.
+var random: bool = false
 var mod_data: Dictionary = {}
 
 
@@ -56,6 +59,7 @@ func _schema() -> Array:
 		["techs_start_at_3", Kind.BOOL],
 		["logo", Kind.INT],
 		["cheap_factories", Kind.BOOL],
+		["random", Kind.BOOL],
 		["mod_data", Kind.JSON],
 	]
 

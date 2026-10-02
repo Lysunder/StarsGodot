@@ -14,7 +14,15 @@ const GAMES := {
 	"small_it": [1011, []],
 	"medium_it_two_humans": [1012, [2]],
 	"tiny_it": [1013, []],
+	"tiny_random_race": [1014, []],
+	"small_two_random_races": [1015, []],
+	"tiny_random_races_only": [1017, []],
+	"small_random_race_accel": [1018, []],
+	"tiny_random_race_packed": [1019, []],
 }
+
+## The race file of the race wizard's "Random" preset uses this logo.
+const RANDOM_PRESET_LOGO := 31
 
 ## Everything except names (the fixtures have neutral ones) and the random streams (a fixture
 ## holds the state at the start of the next turn's generation, S01).
@@ -47,7 +55,8 @@ func _fixture(game: String) -> GameState:
 ## The players as the definition file gave them: the fixture's races, with the name and logo
 ## each race had before the setup draws. Human race files: logo 1 and one name per file (the
 ## fixtures use one race file per primary trait). Built-in computer races: no name, logo 0.
-## Random computer players get their level and personality drawn again.
+## Random computer players get their level and personality drawn again. A random race (S06) was
+## the "Random" preset before the game was created (its name is drawn, so ours is empty).
 func _input_players(game: String, state: GameState) -> Array[Player]:
 	var randoms: Array = GAMES[game][1]
 	var out: Array[Player] = []
@@ -57,7 +66,9 @@ func _input_players(game: String, state: GameState) -> Array[Player]:
 		p.race = original.race.copy() as Race
 		p.ai = original.ai
 		p.ai_level = original.ai_level
-		if p.is_human():
+		if p.race.random:
+			p.race = _random_preset()
+		elif p.is_human():
 			p.race.name = "Testers " + p.race.primary_trait
 			p.race.logo = 1
 		else:
@@ -68,6 +79,17 @@ func _input_players(game: String, state: GameState) -> Array[Player]:
 				p.ai_level = -1
 		out.append(p)
 	return out
+
+
+static func _random_preset() -> Race:
+	var race := Race.new()
+	race.primary_trait = "trait.prt.HE"
+	race.hab_low.assign([17, 17, 17])
+	race.hab_high.assign([83, 83, 83])
+	race.mine_cost = 3
+	race.random = true
+	race.logo = RANDOM_PRESET_LOGO
+	return race
 
 
 func _generate(game: String) -> Array:
@@ -169,48 +191,27 @@ func _check_whole_game(game: String) -> void:
 		assert_array(Array(errors)).override_failure_message("\n".join(errors)).is_empty()
 
 
-func test_two_humans_whole_game() -> void:
-	_check_whole_game("tiny2")
-
-
-func test_human_and_computers_whole_game() -> void:
-	_check_whole_game("tiny3ai")
-
-
-## Galaxy clumping, three random computer players, a PP race's extra planet (medium universe).
-func test_clumping_whole_game() -> void:
-	_check_whole_game("medium_clump")
-
-
-func test_maximum_minerals_whole_game() -> void:
-	_check_whole_game("small_maxmin")
-
-
-## Accelerated start, packed density, distant positions.
-func test_accelerated_start_whole_game() -> void:
-	_check_whole_game("tiny_accel")
-
-
-## Sparse density, slower tech, computer alliances, public scores, two humans.
-func test_sparse_two_humans_whole_game() -> void:
-	_check_whole_game("small_sparse")
-
-
-## One random computer player in a tiny sparse universe (a PP race: no extra planet in tiny).
-func test_random_computer_whole_game() -> void:
-	_check_whole_game("tiny_random_ai")
-
-
-## An Inter-stellar Traveler race: gate starbases and the extra planet (small universe).
-func test_inter_stellar_traveler_whole_game() -> void:
-	_check_whole_game("small_it")
-
-
-## The IT race and a second human race with the same logo, a random computer player, clumping.
-func test_inter_stellar_traveler_two_humans_whole_game() -> void:
-	_check_whole_game("medium_it_two_humans")
-
-
-## The IT race in a tiny universe: no extra planet, no second starbase.
-func test_inter_stellar_traveler_tiny_whole_game() -> void:
-	_check_whole_game("tiny_it")
+## Every fixture game: the whole turn-0 state must match the original's. (gdUnit4 reads
+## `test_parameters` itself.)
+func test_whole_game(
+	game: String,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		["tiny2"],
+		["tiny3ai"],
+		["medium_clump"],
+		["small_maxmin"],
+		["tiny_accel"],
+		["small_sparse"],
+		["tiny_random_ai"],
+		["small_it"],
+		["medium_it_two_humans"],
+		["tiny_it"],
+		["tiny_random_race"],
+		["small_two_random_races"],
+		["tiny_random_races_only"],
+		["small_random_race_accel"],
+		["tiny_random_race_packed"],
+	]
+) -> void:
+	_check_whole_game(game)

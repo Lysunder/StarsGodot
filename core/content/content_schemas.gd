@@ -109,6 +109,7 @@ const TYPES := {
 		"fields":
 		{
 			"kind": {"t": "enum", "values": ["primary", "lesser"]},
+			"order": _INT0,
 			"cost": {"t": "int"},
 			"params": _INT_MAP,
 			"excludes": _TRAIT_LIST,

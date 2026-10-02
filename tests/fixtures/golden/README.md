@@ -16,6 +16,11 @@ material from the original. Golden-turn tests compare our engine's turn N → N+
 | `small_it/` | small, normal density, moderate positions, an Inter-stellar Traveler human race (extra planet) and `#1 1`, seed 1011 | `t000` |
 | `medium_it_two_humans/` | medium, dense, farther positions, galaxy clumping, the IT race, the first human race and 1 random computer player, seed 1012 | `t000` |
 | `tiny_it/` | tiny, normal density, close positions, the IT race and `#2 2`, seed 1013 | `t000` |
+| `tiny_random_race/` | tiny, normal density, a random race (the race wizard's "Random" preset, S06) and `#1 1`, seed 1014 | `t000` |
+| `small_two_random_races/` | small, normal density, two copies of the random race and the first human race, seed 1015 | `t000` |
+| `tiny_random_races_only/` | tiny, sparse, close positions, two copies of the random race, seed 1017 | `t000` |
+| `small_random_race_accel/` | small, dense, distant positions, accelerated start, the random race, `#3 2` and `#2 3`, seed 1018 | `t000` |
+| `tiny_random_race_packed/` | tiny, packed, the random race and the IT race, seed 1019 | `t000` |
 
 Every `t000` also checks the universe generator (S07); the later turns are for golden-turn tests.
 
