@@ -19,6 +19,27 @@ const RESEARCH_CHEAP := 2
 const ENERGY := 0
 
 
+## Why a race is not a valid wizard race (S06 "Race files and presets"); empty when it is.
+## Paths are relative to the race.
+static func wizard_problems(race: Race, content: ContentRegistry) -> PackedStringArray:
+	var out := StateValidator.validate_race(race, content)
+	var fields: Array = ["growth_rate"]
+	fields.append_array(Race.ECONOMY)
+	for field: String in fields:
+		var low := content.constant("constant.race.%s_min" % field)
+		var high := content.constant("constant.race.%s_max" % field)
+		var value: int = race.get(field)
+		if value < low or value > high:
+			out.append("/%s: must be %d .. %d" % [field, low, high])
+	if race.name.strip_edges().is_empty() and not race.random:
+		out.append("/name: must not be empty")
+	if out.is_empty():
+		var points := advantage_points(race, content)
+		if points < 0:
+			out.append("advantage points left: %d (must not be negative)" % points)
+	return out
+
+
 ## Advantage points left (S06). Negative means the race is not valid.
 static func advantage_points(race: Race, content: ContentRegistry) -> int:
 	var g := clampi(race.growth_rate, 1, 20)

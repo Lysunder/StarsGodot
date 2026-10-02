@@ -7,11 +7,16 @@ const TEMP_SUFFIX := ".tmp"
 
 
 static func write(path: String, state: GameState, game_version: String) -> Error:
+	return write_text(path, SaveFile.encode(state, game_version))
+
+
+## Writes text to a temporary file, then replaces `path` with it.
+static func write_text(path: String, text: String) -> Error:
 	var temp := path + TEMP_SUFFIX
 	var file := FileAccess.open(temp, FileAccess.WRITE)
 	if file == null:
 		return FileAccess.get_open_error()
-	file.store_string(SaveFile.encode(state, game_version))
+	file.store_string(text)
 	var err := file.get_error()
 	file.close()
 	if err != OK:

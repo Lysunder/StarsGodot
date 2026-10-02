@@ -11,15 +11,9 @@ func before() -> void:
 	_content = r.registry
 
 
-## The race wizard's "Random" preset: HE, 17-83 on every axis, mine cost 3, random setting.
-static func _preset() -> Race:
-	var race := Race.new()
-	race.primary_trait = "trait.prt.HE"
-	race.hab_low.assign([17, 17, 17])
-	race.hab_high.assign([83, 83, 83])
-	race.mine_cost = 3
-	race.random = true
-	return race
+## The race wizard's "Random" preset (content).
+func _preset() -> Race:
+	return RacePresets.make(_content, "race_preset.random")
 
 
 func _roll(game_seed: int) -> Race:

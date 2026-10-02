@@ -81,13 +81,8 @@ func _input_players(game: String, state: GameState) -> Array[Player]:
 	return out
 
 
-static func _random_preset() -> Race:
-	var race := Race.new()
-	race.primary_trait = "trait.prt.HE"
-	race.hab_low.assign([17, 17, 17])
-	race.hab_high.assign([83, 83, 83])
-	race.mine_cost = 3
-	race.random = true
+func _random_preset() -> Race:
+	var race := RacePresets.make(_content, "race_preset.random")
 	race.logo = RANDOM_PRESET_LOGO
 	return race
 

@@ -13,6 +13,8 @@
   { "type": "constant", "id": "constant.start.population", "value": 250 },
   { "type": "constant", "id": "constant.start.tech_floor", "value": 3 },
   { "type": "constant", "id": "constant.start.leftover_cap", "value": 50 },
+  { "type": "constant", "id": "constant.race.growth_rate_min", "value": 1 },
+  { "type": "constant", "id": "constant.race.growth_rate_max", "value": 20 },
   { "type": "constant", "id": "constant.race.resources_per_colonist_min", "value": 7 },
   { "type": "constant", "id": "constant.race.resources_per_colonist_max", "value": 25 },
   { "type": "constant", "id": "constant.race.factory_output_min", "value": 5 },

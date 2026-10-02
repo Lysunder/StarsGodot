@@ -1,0 +1,233 @@
+[
+  {
+    "type": "race_preset",
+    "id": "race_preset.default",
+    "order": 0,
+    "primary_trait": "trait.prt.JoaT"
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.traveler",
+    "order": 1,
+    "primary_trait": "trait.prt.IT",
+    "lesser_traits": [
+      "trait.lrt.CE",
+      "trait.lrt.IFE",
+      "trait.lrt.NAS",
+      "trait.lrt.TT"
+    ],
+    "hab_low": [
+      10,
+      35,
+      13
+    ],
+    "hab_center": [
+      33,
+      58,
+      33
+    ],
+    "hab_high": [
+      56,
+      81,
+      53
+    ],
+    "growth_rate": 20,
+    "factory_cost": 9,
+    "factories_operated": 17,
+    "mine_cost": 9,
+    "research_costs": [
+      0,
+      0,
+      2,
+      1,
+      1,
+      2
+    ],
+    "leftover_points": "defenses",
+    "cheap_factories": true
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.warrior",
+    "order": 2,
+    "primary_trait": "trait.prt.WM",
+    "lesser_traits": [
+      "trait.lrt.CE",
+      "trait.lrt.ISB",
+      "trait.lrt.RS"
+    ],
+    "hab_low": [
+      -1,
+      0,
+      70
+    ],
+    "hab_center": [
+      -1,
+      50,
+      85
+    ],
+    "hab_high": [
+      -1,
+      100,
+      100
+    ],
+    "growth_rate": 10,
+    "mine_output": 9,
+    "mine_cost": 10,
+    "mines_operated": 6,
+    "research_costs": [
+      2,
+      2,
+      2,
+      2,
+      1,
+      0
+    ],
+    "leftover_points": "concentrations"
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.shadow",
+    "order": 3,
+    "primary_trait": "trait.prt.SS",
+    "lesser_traits": [
+      "trait.lrt.ARM",
+      "trait.lrt.ISB"
+    ],
+    "hab_low": [
+      -1,
+      12,
+      0
+    ],
+    "hab_center": [
+      -1,
+      50,
+      50
+    ],
+    "hab_high": [
+      -1,
+      88,
+      100
+    ],
+    "growth_rate": 10,
+    "resources_per_colonist": 9,
+    "mine_cost": 15,
+    "mines_operated": 5,
+    "research_costs": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "leftover_points": "factories",
+    "techs_start_at_3": true
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.expander",
+    "order": 4,
+    "primary_trait": "trait.prt.HE",
+    "lesser_traits": [
+      "trait.lrt.BET",
+      "trait.lrt.IFE",
+      "trait.lrt.OBRM",
+      "trait.lrt.UR"
+    ],
+    "hab_low": [
+      -1,
+      -1,
+      -1
+    ],
+    "hab_center": [
+      -1,
+      -1,
+      -1
+    ],
+    "hab_high": [
+      -1,
+      -1,
+      -1
+    ],
+    "growth_rate": 6,
+    "resources_per_colonist": 8,
+    "factory_output": 12,
+    "factory_cost": 12,
+    "factories_operated": 15,
+    "mine_cost": 9,
+    "research_costs": [
+      1,
+      1,
+      2,
+      2,
+      1,
+      0
+    ],
+    "leftover_points": "factories"
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.demolisher",
+    "order": 5,
+    "primary_trait": "trait.prt.SD",
+    "lesser_traits": [
+      "trait.lrt.ARM",
+      "trait.lrt.CE",
+      "trait.lrt.MA",
+      "trait.lrt.NAS",
+      "trait.lrt.NRSE"
+    ],
+    "hab_low": [
+      0,
+      0,
+      70
+    ],
+    "hab_center": [
+      15,
+      50,
+      85
+    ],
+    "hab_high": [
+      30,
+      100,
+      100
+    ],
+    "growth_rate": 7,
+    "resources_per_colonist": 7,
+    "factory_output": 11,
+    "factories_operated": 18,
+    "mine_cost": 10,
+    "research_costs": [
+      2,
+      0,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  {
+    "type": "race_preset",
+    "id": "race_preset.random",
+    "order": 6,
+    "primary_trait": "trait.prt.HE",
+    "hab_low": [
+      17,
+      17,
+      17
+    ],
+    "hab_center": [
+      50,
+      50,
+      50
+    ],
+    "hab_high": [
+      83,
+      83,
+      83
+    ],
+    "mine_cost": 3,
+    "random": true
+  }
+]

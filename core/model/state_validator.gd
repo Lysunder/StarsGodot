@@ -28,6 +28,15 @@ static func validate(state: GameState, content: ContentRegistry) -> PackedString
 	return v._errors
 
 
+## The race's own checks (traits, habitability, ranges), with paths relative to the race.
+static func validate_race(race: Race, content: ContentRegistry) -> PackedStringArray:
+	var v := StateValidator.new()
+	v._content = content
+	v._tech_fields = content.ids("tech_field").size()
+	v._check_race(race, "")
+	return v._errors
+
+
 func _run() -> void:
 	if _state.turn < 0:
 		_err("/turn", "must not be negative")

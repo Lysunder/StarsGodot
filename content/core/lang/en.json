@@ -358,5 +358,14 @@
   "constant.race.mine_cost_min.name": "Race: minimum mine cost",
   "constant.race.mine_cost_max.name": "Race: maximum mine cost",
   "constant.race.mines_operated_min.name": "Race: minimum mines operated",
-  "constant.race.mines_operated_max.name": "Race: maximum mines operated"
+  "constant.race.mines_operated_max.name": "Race: maximum mines operated",
+  "race_preset.default.name": "Settlers",
+  "race_preset.traveler.name": "Wayfarers",
+  "race_preset.warrior.name": "Warhosts",
+  "race_preset.shadow.name": "Veiled",
+  "race_preset.expander.name": "Swarmers",
+  "race_preset.demolisher.name": "Wreckers",
+  "race_preset.random.name": "Random",
+  "constant.race.growth_rate_min.name": "Race: minimum growth rate",
+  "constant.race.growth_rate_max.name": "Race: maximum growth rate"
 }

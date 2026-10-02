@@ -7,16 +7,6 @@ extends RefCounted
 const TARGET_MAX := 50
 ## Repair attempts before the race falls back to the default race.
 const MAX_REPAIRS := 251
-## Economy params 0..6, in the original's param order.
-const ECONOMY := [
-	"resources_per_colonist",
-	"factory_output",
-	"factory_cost",
-	"factories_operated",
-	"mine_output",
-	"mine_cost",
-	"mines_operated",
-]
 ## Leftover-point values are drawn from 0..6; 5 and 6 act as surface minerals.
 const LEFTOVER_DRAW := 7
 const WIDE := [0, 50, 100]
@@ -100,11 +90,11 @@ func _roll_habitability(race: Race) -> void:
 func _roll_economy(race: Race) -> void:
 	if _rng.random(3) == 0:
 		var defaults := Race.new()
-		for field: String in ECONOMY:
+		for field: String in Race.ECONOMY:
 			race.set(field, defaults.get(field))
 		race.leftover_points = Race.LEFTOVER[_rng.random(Race.LEFTOVER.size())]
 		return
-	for field: String in ECONOMY:
+	for field: String in Race.ECONOMY:
 		var low := _limit(field, "min")
 		race.set(field, low + _rng.random(_limit(field, "max") - low + 1))
 	var v := _rng.random(LEFTOVER_DRAW)
@@ -173,7 +163,7 @@ func _repair_lesser(race: Race, d: int) -> void:
 
 
 func _repair_economy(race: Race, d: int) -> void:
-	var field: String = ECONOMY[_rng.random(ECONOMY.size())]
+	var field: String = Race.ECONOMY[_rng.random(Race.ECONOMY.size())]
 	var old: int = race.get(field)
 	for delta: int in [-1, 1]:
 		race.set(field, clampi(old + delta, _limit(field, "min"), _limit(field, "max")))

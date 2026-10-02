@@ -5,6 +5,16 @@ extends ModelObject
 ## preset (without a name).
 
 const LEFTOVER := ["surface_minerals", "concentrations", "mines", "factories", "defenses"]
+## The seven economy settings, in the original's parameter order (S06).
+const ECONOMY := [
+	"resources_per_colonist",
+	"factory_output",
+	"factory_cost",
+	"factories_operated",
+	"mine_output",
+	"mine_cost",
+	"mines_operated",
+]
 
 var name: String = ""
 var plural_name: String = ""

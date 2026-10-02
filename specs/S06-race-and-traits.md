@@ -2,7 +2,8 @@
 
 Status: draft (2026-09-30); advantage points implemented in `core/universe/race_math.gd` (2026-10-01); random
 races in `core/universe/random_race.gd` (2026-10-02), matching the original in 6 harness games (8 random races,
-seeds 1014-1019).
+seeds 1014-1019); race files and presets in
+`core/io/race_file.gd` and `core/universe/race_presets.gd` (2026-10-02).
 Advantage-point algorithm read from the code, with its constant tables; checked by a
 reference implementation that gives the original's preset values (Humanoid: 25 points left, as the original's race
 wizard shows). Other presets computed, not yet confirmed against the original.
@@ -214,6 +215,35 @@ in all three.
 
 Reference: `GenerateRandomRace@10d8:3b74` (called from `CreateUniverse` for races with trait bit 30),
 `Race_SetParam@10d8:2200` (clamp tables in its code segment at 0300/0310), preset race at DS:1262.
+
+## Race files and presets (our format)
+
+The original's race files are not supported (D6). Our race file is a JSON object, written in canonical form (keys
+sorted, no whitespace, one trailing newline):
+
+| Key | Content |
+|---|---|
+| `format` | `"starsgodot-race"` |
+| `format_version` | 1; increases whenever the saved form changes (older versions are converted on load) |
+| `game_version` | the game version that wrote it |
+| `race` | the race, in the saved form of S03 (`Race`) |
+
+A race file loads only when the race is a **valid wizard race** for the running game's content:
+
+1. The race's own checks from the saved form (S03): trait references and kinds, sorted lesser traits, habitability
+   axes (0 ≤ low ≤ center ≤ high ≤ 100, or immune), research costs 0–2, logo −1 … 31.
+2. Growth rate and the seven economy settings within their limits (content constants `constant.race.<field>_min` /
+   `_max`; the original's wizard limits: growth 1–20, resources per colonist 7–25, factory output 5–15, factory cost
+   5–25, factories operated 5–25, mine output 5–25, mine cost 2–15, mines operated 5–25).
+3. A name, unless the race is random (a random race with no name gets one at game creation).
+4. Advantage points left ≥ 0.
+
+Every problem is reported; a race with problems is not loaded. Mods' traits are referenced by id, so a race using a
+mod's trait loads only with that mod enabled.
+
+**Presets** are content (`race_preset`): the race wizard's seven starting points, with our own names. Their points
+left: default (the Humanoid values) 25, traveler (IT) 32, warrior (WM) 43, shadow (SS) 11, expander (HE) 9,
+demolisher (SD) 7, random 12 (see "Worked examples" for their values).
 
 ## Part availability by trait
 

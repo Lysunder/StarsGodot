@@ -95,6 +95,8 @@ const _UPGRADE_CANDIDATE := {
 	"required": ["part"],
 }
 
+const _HAB_AXES := {"t": "list", "of": {"t": "int", "min": -1, "max": 100}, "min": 3, "max": 3}
+
 ## Fields every definition has, merged into each type's own fields.
 const _COMMON := {"type": {"t": "string"}, "id": {"t": "id"}, "tags": _TAGS}
 
@@ -208,6 +210,32 @@ const TYPES := {
 			"attack": _INT0,
 		},
 		"required": ["order", "tactic", "primary_target", "secondary_target", "attack"],
+	},
+	"race_preset":
+	{
+		"fields":
+		{
+			"order": _INT0,
+			"primary_trait": {"t": "ref", "to": "trait"},
+			"lesser_traits": _TRAIT_LIST,
+			"hab_low": _HAB_AXES,
+			"hab_center": _HAB_AXES,
+			"hab_high": _HAB_AXES,
+			"growth_rate": _INT0,
+			"resources_per_colonist": _INT0,
+			"factory_output": _INT0,
+			"factory_cost": _INT0,
+			"factories_operated": _INT0,
+			"mine_output": _INT0,
+			"mine_cost": _INT0,
+			"mines_operated": _INT0,
+			"research_costs": {"t": "list", "of": {"t": "int", "min": 0, "max": 2}, "min": 1},
+			"leftover_points": {"t": "enum", "values": Race.LEFTOVER},
+			"techs_start_at_3": {"t": "bool"},
+			"cheap_factories": {"t": "bool"},
+			"random": {"t": "bool"},
+		},
+		"required": ["order", "primary_trait"],
 	},
 }
 

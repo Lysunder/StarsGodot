@@ -52,6 +52,7 @@ with `<mod_id>.<type>.` (e.g. `extra_hulls.hull.long_scout`), so mods can never 
 |---|---|
 | `tech_field` | **`order`** |
 | `trait` | **`kind`** (`primary`/`lesser`), **`cost`**, `order` (position among its kind; random races index traits by it, S06), `params` (`{ "name": int }`), `excludes` (trait ids) |
+| `race_preset` | **`order`**, **`primary_trait`**, and any race field (`lesser_traits`, `hab_low`/`hab_center`/`hab_high`, `growth_rate`, the economy settings, `research_costs`, `leftover_points`, `techs_start_at_3`, `cheap_factories`, `random`); fields left out keep the default race's values (S06) |
 | `part` | **`category`**, **`mass`**, **`cost`**, `tech` (`{ tech_field id: level }`), `stats` (`{ "name": int }`), `fuel_table` (engines: fuel use at warp 0–10, 11 integers), `required_traits`, `forbidden_traits` |
 | `hull` | **`mass`**, **`cost`**, **`armor`**, **`slots`**, `starbase`, `tech`, `fuel`, `cargo`, `dock` (starbases: largest ship the dock builds, −1 = any), `initiative`, `required_traits`, `forbidden_traits` |
 | `constant` | **`value`** |
