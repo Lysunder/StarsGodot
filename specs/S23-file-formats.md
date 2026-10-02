@@ -155,8 +155,8 @@ Design blocks carry no owner: the importer assigns them by these counts.
 
 Options word, with the order the definition file uses (line 3) in brackets: 0x01 maximum minerals [1], 0x02 slower
 tech advances [2], 0x20 accelerated start [3], 0x80 no random events [4], 0x10 computer players form alliances [5],
-0x40 public player scores [6], 0x100 galaxy clumping [7]. 0x04 is set in games with computer players; 0x08 is
-still to be identified.
+0x40 public player scores [6], 0x100 galaxy clumping [7]. Set by the game itself: 0x04 when there is at most one
+human player (every player then starts as every other's enemy, S07), 0x08 for the tutorial (S07).
 
 **Planet data** (after the block, 4 bytes per planet in planet id order), as a 32-bit value v:
 
@@ -397,7 +397,7 @@ None: the harness is a dev tool.
 
 ## Open questions
 
-1. Header byte 15 and the options word bits 0x04 and 0x08.
+1. Header byte 15.
 2. Player record dword 0x3A (probably research spending) and the remaining record bytes.
 3. Starbase word 1 bit 15, installation byte 5, and the packet status bits (S14).
 4. Design byte 1 bit 7.

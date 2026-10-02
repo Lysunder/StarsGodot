@@ -36,6 +36,7 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S04](S04-parts-and-hulls.md) | Parts and hulls | draft |
 | [S05](S05-research.md) | Research | draft |
 | [S06](S06-race-and-traits.md) | Race, traits and advantage points | draft |
+| [S07](S07-universe-generation.md) | Universe generation | draft |
 | [S08](S08-planet-economy.md) | Planet economy | draft |
 | [S11](S11-orders-and-waypoint-tasks.md) | Orders and waypoint tasks | draft |
 | [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
