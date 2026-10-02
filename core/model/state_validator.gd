@@ -104,6 +104,7 @@ func _check_race(r: Race, path: String) -> void:
 	]:
 		_range(r.get(field), 1, 100, "%s/%s" % [path, field])
 	_list_range(r.research_costs, _tech_fields, 0, 2, path + "/research_costs")
+	_range(r.logo, -1, 31, path + "/logo")
 
 
 func _check_hab_axis(r: Race, axis: int, path: String) -> void:

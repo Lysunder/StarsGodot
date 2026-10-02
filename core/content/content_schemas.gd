@@ -110,6 +110,11 @@ const TYPES := {
 		"fields": {"value": {"t": "int"}},
 		"required": ["value"],
 	},
+	"name_list":
+	{
+		"fields": {"names": {"t": "list", "of": {"t": "string"}, "min": 1}},
+		"required": ["names"],
+	},
 }
 
 

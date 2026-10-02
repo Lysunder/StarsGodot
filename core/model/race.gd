@@ -28,6 +28,8 @@ var mines_operated: int = 10
 var research_costs: Array[int] = [1, 1, 1, 1, 1, 1]
 var leftover_points: String = "surface_minerals"
 var techs_start_at_3: bool = false
+## Logo number 0..31, or -1 for none (one is drawn at game creation, S07).
+var logo: int = -1
 var cheap_factories: bool = false
 var mod_data: Dictionary = {}
 
@@ -52,6 +54,7 @@ func _schema() -> Array:
 		["research_costs", Kind.INT_LIST],
 		["leftover_points", Kind.ENUM, LEFTOVER],
 		["techs_start_at_3", Kind.BOOL],
+		["logo", Kind.INT],
 		["cheap_factories", Kind.BOOL],
 		["mod_data", Kind.JSON],
 	]

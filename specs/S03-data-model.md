@@ -78,7 +78,7 @@ files are read only by the dev harness (S23).
 | Field | Meaning |
 |---|---|
 | `index` | 0 … 15 by default (limit `limits.players`) |
-| `race` | the race definition (S06): names, primary and lesser traits, habitability, growth rate, economy settings, research costs, leftover-points choice, options |
+| `race` | the race definition (S06): names, logo, primary and lesser traits, habitability, growth rate, economy settings, research costs, leftover-points choice, options |
 | `ai` | none (human) or a personality and level (S22) |
 | `active` | still in the game |
 | `homeworld` | planet id |

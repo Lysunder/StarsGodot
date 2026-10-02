@@ -7,6 +7,8 @@
   "tech_field.biotech.name": "Biotechnology",
   "constant.battle.max_rounds.name": "Battle rounds",
   "constant.research.max_level.name": "Highest tech level",
+  "name_list.planets.name": "Planet names",
+  "name_list.races.name": "Race names",
   "constant.limits.players.name": "Players",
   "constant.limits.fleets_per_player.name": "Fleets per player",
   "constant.limits.ship_designs.name": "Ship designs per player",

@@ -179,7 +179,7 @@ name (packed text each). Otherwise the names follow byte 7 directly (another pla
 | 1 | 1 | number of ship designs | (check) |
 | 2 | 2 | number of planets (low 10 bits) | (check) |
 | 4 | 2 | number of fleets (low 12 bits); starbase designs (high 4 bits) | (check) |
-| 6 | 1 | bits 3–7: logo; bits 0–2: 7 when the full record follows | |
+| 6 | 1 | bits 3–7: logo; bits 0–2: 7 when the full record follows | `race.logo` |
 | 7 | 1 | bit 1: computer player; bits 2–4: AI level; bits 5–7: AI personality (7 = inactive human) | `ai`, `ai_level` |
 | 8 | 2 | homeworld planet id | `homeworld` |
 | 0x0A | 6 | not imported | |

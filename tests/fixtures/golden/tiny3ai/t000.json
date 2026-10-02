@@ -2224,6 +2224,7 @@
      ],
      "leftover_points": "surface_minerals",
      "lesser_traits": [],
+     "logo": 1,
      "mine_cost": 5,
      "mine_output": 10,
      "mines_operated": 10,
@@ -2571,6 +2572,7 @@
       "trait.lrt.MA",
       "trait.lrt.OBRM"
      ],
+     "logo": 3,
      "mine_cost": 5,
      "mine_output": 10,
      "mines_operated": 10,
@@ -2802,6 +2804,7 @@
       "trait.lrt.MA",
       "trait.lrt.OBRM"
      ],
+     "logo": 0,
      "mine_cost": 5,
      "mine_output": 10,
      "mines_operated": 10,

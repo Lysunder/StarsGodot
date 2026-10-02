@@ -70,6 +70,11 @@ func tech_field(id: String) -> Dictionary:
 	return get_def("tech_field", id)
 
 
+## The names of a name_list definition (S07: planet and race names).
+func name_list(id: String) -> Array:
+	return get_def("name_list", id).get("names", [])
+
+
 func constant(id: String) -> int:
 	return get_def("constant", id).get("value", 0)
 

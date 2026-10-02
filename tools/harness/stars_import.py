@@ -251,6 +251,7 @@ class Importer:
                 "leftover_points": LEFTOVER[d[0x45]],
                 "techs_start_at_3": bool(traits >> 29 & 1),
                 "cheap_factories": bool(traits >> 31 & 1),
+                "logo": d[6] >> 3,
                 "mod_data": {},
             },
             "ai": AI_PERSONALITIES[personality] if computer else "",
