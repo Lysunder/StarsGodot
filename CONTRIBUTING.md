@@ -89,3 +89,8 @@ them back to LF if you want a clean working copy.
 
 - One logical change per commit, with a message that says why.
 - Every rule change comes with tests; every spec change says what changed in its status line.
+
+## License
+
+The project is licensed under the [GNU General Public License v3.0](LICENSE). By contributing, you agree that your
+contribution is licensed under the same terms.
