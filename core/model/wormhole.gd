@@ -7,7 +7,10 @@ var x: int = 0
 var y: int = 0
 ## Number of the wormhole at the other end.
 var other_end: int = -1
+## Stability roll 0..3, set when the wormhole is created (S07); how likely it is to move (S18).
 var stability: int = 0
+## Years since the wormhole last moved (S18).
+var age: int = 0
 ## Player indices that have seen it, sorted.
 var seen_by: Array[int] = []
 var mod_data: Dictionary = {}
@@ -20,6 +23,7 @@ func _schema() -> Array:
 		["y", Kind.INT],
 		["other_end", Kind.INT],
 		["stability", Kind.INT],
+		["age", Kind.INT],
 		["seen_by", Kind.INT_LIST],
 		["mod_data", Kind.JSON],
 	]

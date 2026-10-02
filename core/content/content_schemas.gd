@@ -50,6 +50,51 @@ const _SLOT := {
 	"required": ["accepts", "max"],
 }
 
+## A slot of a starting design: a part and how many, or {} for an empty slot.
+const _DESIGN_SLOT := {
+	"t": "object",
+	"fields": {"part": {"t": "ref", "to": "part"}, "count": {"t": "int", "min": 1}},
+}
+const _STARTING_STARBASE := {
+	"t": "object",
+	"fields":
+	{
+		"slot": _INT0,
+		"design": {"t": "ref", "to": "starting_design"},
+		"built": {"t": "bool"},
+		"min_universe_size": _INT0,
+		"outside_tutorial": {"t": "bool"},
+		"tutorial_only": {"t": "bool"},
+	},
+	"required": ["slot", "design"],
+}
+const _STARTING_FLEET := {
+	"t": "object",
+	"fields":
+	{
+		"design": {"t": "ref", "to": "starting_design"},
+		"count": {"t": "int", "min": 1},
+		"extra_planet": {"t": "bool"},
+		"min_tech": _TECH_REQ,
+		"below_tech": _TECH_REQ,
+		"human_only": {"t": "bool"},
+		"forbidden_traits": _TRAIT_LIST,
+		"min_universe_size": _INT0,
+		"outside_tutorial": {"t": "bool"},
+		"tutorial_only": {"t": "bool"},
+	},
+}
+const _UPGRADE_CANDIDATE := {
+	"t": "object",
+	"fields":
+	{
+		"part": {"t": "ref", "to": "part"},
+		"skip_on_hull": {"t": "ref", "to": "hull"},
+		"unless_radiation_center_above": {"t": "int"},
+	},
+	"required": ["part"],
+}
+
 ## Fields every definition has, merged into each type's own fields.
 const _COMMON := {"type": {"t": "string"}, "id": {"t": "id"}, "tags": _TAGS}
 
@@ -114,6 +159,54 @@ const TYPES := {
 	{
 		"fields": {"names": {"t": "list", "of": {"t": "string"}, "min": 1}},
 		"required": ["names"],
+	},
+	"starting_design":
+	{
+		"fields":
+		{
+			"hull": {"t": "ref", "to": "hull"},
+			"slots": {"t": "list", "of": _DESIGN_SLOT},
+			"picture": _INT0,
+		},
+		"required": ["hull", "slots"],
+	},
+	"starting_setup":
+	{
+		"fields":
+		{
+			"trait": {"t": "ref", "to": "trait"},
+			"tech": _TECH_REQ,
+			"tech_bonus": _TECH_REQ,
+			"tech_bonus_outside_tutorial": _TECH_REQ,
+			"starbases": {"t": "list", "of": _STARTING_STARBASE},
+			"homeworld_starbase": _INT0,
+			"homeworld_mass_driver_warp": _INT0,
+			"homeworld_installations": {"t": "bool"},
+			"homeworld_scanner": {"t": "bool"},
+			"fleets": {"t": "list", "of": _STARTING_FLEET},
+		},
+		"required": ["trait"],
+	},
+	"part_upgrade":
+	{
+		"fields":
+		{
+			"from": {"t": "list", "of": {"t": "ref", "to": "part"}, "min": 1},
+			"candidates": {"t": "list", "of": _UPGRADE_CANDIDATE, "min": 1},
+		},
+		"required": ["from", "candidates"],
+	},
+	"battle_plan_default":
+	{
+		"fields":
+		{
+			"order": _INT0,
+			"tactic": _INT0,
+			"primary_target": _INT0,
+			"secondary_target": _INT0,
+			"attack": _INT0,
+		},
+		"required": ["order", "tactic", "primary_target", "secondary_target", "attack"],
 	},
 }
 

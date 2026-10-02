@@ -4,6 +4,18 @@ extends GdUnitTestSuite
 
 const SEED := 4242
 
+## Everything except names (the fixtures have neutral ones) and the random streams (a fixture
+## holds the state at the start of the next turn's generation, S01).
+const IGNORE := [
+	"/rng",
+	"/planets/*/name",
+	"/players/*/race/name",
+	"/players/*/race/plural_name",
+	"/players/*/ship_designs*/name",
+	"/players/*/starbase_designs*/name",
+	"/players/*/battle_plans/*/name",
+]
+
 var _content: ContentRegistry
 
 
@@ -117,3 +129,27 @@ func test_sort_keeps_the_originals_order_of_equal_x() -> void:
 ## (computed with the harness reference implementation of the same routine).
 static func _reference_order() -> Array:
 	return [2, 1, 3]
+
+
+func _check_whole_game(game: String) -> void:
+	var real := _fixture(game)
+	var gen := UniverseGenerator.new(_content, real.settings, _input_players(real), SEED)
+	var state := gen.generate()
+	var diffs := StateDiff.compare(real, state, PackedStringArray(IGNORE))
+	(
+		assert_array(diffs)
+		. override_failure_message(
+			"%s: %d differences\n%s" % [game, diffs.size(), StateDiff.format(diffs, 60)]
+		)
+		. is_empty()
+	)
+	var errors := StateValidator.validate(state, _content)
+	assert_array(Array(errors)).override_failure_message("\n".join(errors)).is_empty()
+
+
+func test_two_humans_whole_game() -> void:
+	_check_whole_game("tiny2")
+
+
+func test_human_and_computers_whole_game() -> void:
+	_check_whole_game("tiny3ai")

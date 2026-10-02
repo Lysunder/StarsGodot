@@ -1,11 +1,13 @@
 # S07 Universe generation
 
-Status: draft (2026-10-01), second pass. Covers the setup draws, the universe, the players' starting tech,
-homeworlds, starting designs and fleets, the extra starting planet, wormholes and starting relations. Verified
-against three games created by the original (seeds 4242 and 777; 32 and 128 planets; 2, 3 and 6 players): the setup
-draws (count, names, logos), every position, planet name, environment value, concentration, homeworld, homeworld
-mineral amount, starting tech and starting fleet match. Not yet covered by a fixture: galaxy clumping, the extra
-planet (Packet Physics, Inter-stellar Traveler), random races, and games set up from the New Game dialog.
+Status: draft (2026-10-01), second pass; implemented in `core/universe/` (generator, starting setup), reproducing the
+original's complete turn-0 state (all but names) for the fixture games. Covers the setup draws, the universe, the
+players' starting tech, homeworlds, starting designs and fleets, the extra starting planet, wormholes and starting
+relations. Verified against three games created by the original (seeds 4242 and 777; 32 and 128 planets; 2, 3 and 6
+players): the setup draws (count, names, logos), every position, planet name, environment value, concentration,
+homeworld, homeworld mineral amount, starting tech and starting fleet match. Not yet covered by a fixture: galaxy
+clumping, the extra planet (Packet Physics, Inter-stellar Traveler), random races, and games set up from the New Game
+dialog.
 References: `CreateUniverse@1070:1334`, `NewGameFromDefFile@1070:39d4`, `CompareInts@1038:8b46`,
 `qsort@1108:069e`, `SeedRandomFromGameSeed@1038:8672`, `CreateStartingFleet@1070:38fe`,
 `GetDesignTemplates@1008:50be`, `GetStarbaseTemplates@1008:50c4`, `SpaceObject_ValidatePosition@1100:0456`,

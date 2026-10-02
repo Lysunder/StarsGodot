@@ -527,7 +527,8 @@ class Importer:
                 {
                     "number": number, "x": x, "y": y,
                     "other_end": struct.unpack_from("<H", d, 12)[0] & 0x1FF,
-                    "stability": struct.unpack_from("<H", d, 6)[0],
+                    "stability": struct.unpack_from("<H", d, 6)[0] & 3,
+                    "age": (struct.unpack_from("<H", d, 6)[0] >> 2) & 0x3FF,
                     "seen_by": mask_bits(struct.unpack_from("<H", d, 10)[0]), "mod_data": {},
                 }
             )

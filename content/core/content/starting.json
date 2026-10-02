@@ -1,0 +1,1133 @@
+[
+  {
+    "type": "starting_design",
+    "id": "starting_design.courier",
+    "hull": "hull.small_freighter",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 1
+      }
+    ],
+    "picture": 0
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.shadow_courier",
+    "hull": "hull.small_freighter",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.electrical.transport_cloaking",
+        "count": 1
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 1
+      }
+    ],
+    "picture": 2
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.pathfinder",
+    "hull": "hull.scout",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.fuel_tank",
+        "count": 1
+      }
+    ],
+    "picture": 16
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.picket",
+    "hull": "hull.scout",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.beam.x_ray_laser",
+        "count": 1
+      }
+    ],
+    "picture": 17
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.wayfarer",
+    "hull": "hull.scout",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.fuel_tank",
+        "count": 1
+      }
+    ],
+    "picture": 18
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.shade",
+    "hull": "hull.scout",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.electrical.stealth_cloak",
+        "count": 1
+      }
+    ],
+    "picture": 19
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.hauler",
+    "hull": "hull.medium_freighter",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.armor.tritanium",
+        "count": 1
+      }
+    ],
+    "picture": 4
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.warden",
+    "hull": "hull.destroyer",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 1
+      },
+      {
+        "part": "part.torpedo.alpha_torpedo",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.armor.tritanium",
+        "count": 2
+      },
+      {
+        "part": "part.mechanical.fuel_tank",
+        "count": 1
+      },
+      {
+        "part": "part.electrical.battle_computer",
+        "count": 1
+      }
+    ],
+    "picture": 24
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.corsair",
+    "hull": "hull.privateer",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.armor.crobmnium",
+        "count": 2
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 1
+      },
+      {
+        "part": "part.torpedo.alpha_torpedo",
+        "count": 1
+      }
+    ],
+    "picture": 44
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.settler",
+    "hull": "hull.colony_ship",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.colonization_module",
+        "count": 1
+      }
+    ],
+    "picture": 60
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.anchor",
+    "hull": "hull.colony_ship",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.orbital_construction_module",
+        "count": 1
+      }
+    ],
+    "picture": 61
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.pioneer",
+    "hull": "hull.colony_ship",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.colonization_module",
+        "count": 1
+      }
+    ],
+    "picture": 62
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.seedling",
+    "hull": "hull.mini_colony_ship",
+    "slots": [
+      {
+        "part": "part.engine.settler_s_delight",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.colonization_module",
+        "count": 1
+      }
+    ],
+    "picture": 56
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.hornet",
+    "hull": "hull.mini_bomber",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.bomb.lady_finger_bomb",
+        "count": 2
+      }
+    ],
+    "picture": 65
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.prospector",
+    "hull": "hull.mini_miner",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.mining_robot.robo_mini_miner",
+        "count": 1
+      },
+      {
+        "part": "part.mining_robot.robo_mini_miner",
+        "count": 1
+      }
+    ],
+    "picture": 85
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.burrower",
+    "hull": "hull.midget_miner",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mining_robot.robo_midget_miner",
+        "count": 2
+      }
+    ],
+    "picture": 82
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.minelayer",
+    "hull": "hull.mini_mine_layer",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mine_layer.mine_dispenser_40",
+        "count": 2
+      },
+      {
+        "part": "part.mine_layer.mine_dispenser_40",
+        "count": 2
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      }
+    ],
+    "picture": 108
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.shaper",
+    "hull": "hull.mini_miner",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      },
+      {
+        "part": "part.mining_robot.orbital_adjuster",
+        "count": 1
+      },
+      {
+        "part": "part.mining_robot.orbital_adjuster",
+        "count": 1
+      }
+    ],
+    "picture": 86
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.snare",
+    "hull": "hull.mini_mine_layer",
+    "slots": [
+      {
+        "part": "part.engine.quick_jump_5",
+        "count": 1
+      },
+      {
+        "part": "part.mine_layer.speed_trap_20",
+        "count": 2
+      },
+      {
+        "part": "part.mine_layer.speed_trap_20",
+        "count": 2
+      },
+      {
+        "part": "part.scanner.bat_scanner",
+        "count": 1
+      }
+    ],
+    "picture": 108
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.citadel",
+    "hull": "hull.space_station",
+    "slots": [
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      }
+    ],
+    "picture": 8
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.launch_fort",
+    "hull": "hull.orbital_fort",
+    "slots": [
+      {
+        "part": "part.orbital.mass_driver_5",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 6
+      },
+      {
+        "part": "part.shield.cow_hide_shield",
+        "count": 6
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 6
+      },
+      {
+        "part": "part.shield.cow_hide_shield",
+        "count": 6
+      }
+    ],
+    "picture": 0
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.gate_fort",
+    "hull": "hull.orbital_fort",
+    "slots": [
+      {
+        "part": "part.orbital.stargate_100_250",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 6
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 6
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 6
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 6
+      }
+    ],
+    "picture": 1
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.haven",
+    "hull": "hull.orbital_fort",
+    "slots": [
+      {},
+      {},
+      {},
+      {},
+      {}
+    ],
+    "picture": 1
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.launch_citadel",
+    "hull": "hull.space_station",
+    "slots": [
+      {
+        "part": "part.orbital.mass_driver_5",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      }
+    ],
+    "picture": 8
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.gate_citadel",
+    "hull": "hull.space_station",
+    "slots": [
+      {
+        "part": "part.orbital.stargate_100_250",
+        "count": 1
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.beam.laser",
+        "count": 8
+      },
+      {},
+      {
+        "part": "part.shield.mole_skin_shield",
+        "count": 8
+      }
+    ],
+    "picture": 8
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.HE",
+    "trait": "trait.prt.HE",
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.seedling",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.SS",
+    "trait": "trait.prt.SS",
+    "tech": {
+      "tech_field.electronics": 5
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder",
+        "below_tech": {
+          "tech_field.energy": 2
+        }
+      },
+      {
+        "design": "starting_design.shade",
+        "min_tech": {
+          "tech_field.energy": 2
+        }
+      },
+      {
+        "design": "starting_design.shadow_courier",
+        "human_only": true
+      },
+      {
+        "design": "starting_design.settler"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.WM",
+    "trait": "trait.prt.WM",
+    "tech": {
+      "tech_field.weapons": 6,
+      "tech_field.propulsion": 1,
+      "tech_field.energy": 1
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.picket"
+      },
+      {
+        "design": "starting_design.warden",
+        "min_tech": {
+          "tech_field.construction": 3
+        }
+      },
+      {
+        "design": "starting_design.hornet",
+        "min_tech": {
+          "tech_field.construction": 3
+        }
+      },
+      {
+        "design": "starting_design.settler"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.CA",
+    "trait": "trait.prt.CA",
+    "tech": {
+      "tech_field.biotech": 6,
+      "tech_field.construction": 2,
+      "tech_field.energy": 1,
+      "tech_field.weapons": 1,
+      "tech_field.propulsion": 1
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.settler"
+      },
+      {
+        "design": "starting_design.shaper"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.IS",
+    "trait": "trait.prt.IS",
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.settler"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.SD",
+    "trait": "trait.prt.SD",
+    "tech": {
+      "tech_field.propulsion": 2,
+      "tech_field.biotech": 2
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.settler"
+      },
+      {
+        "design": "starting_design.minelayer"
+      },
+      {
+        "design": "starting_design.snare"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.PP",
+    "trait": "trait.prt.PP",
+    "tech": {
+      "tech_field.energy": 4
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.launch_citadel"
+      },
+      {
+        "slot": 1,
+        "design": "starting_design.launch_fort",
+        "min_universe_size": 1
+      }
+    ],
+    "homeworld_mass_driver_warp": 5,
+    "fleets": [
+      {
+        "design": "starting_design.wayfarer"
+      },
+      {
+        "design": "starting_design.settler"
+      },
+      {
+        "extra_planet": true,
+        "min_universe_size": 1
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.IT",
+    "trait": "trait.prt.IT",
+    "tech": {
+      "tech_field.propulsion": 5,
+      "tech_field.construction": 5
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.gate_citadel",
+        "outside_tutorial": true
+      },
+      {
+        "slot": 0,
+        "design": "starting_design.citadel",
+        "tutorial_only": true
+      },
+      {
+        "slot": 1,
+        "design": "starting_design.gate_fort",
+        "min_universe_size": 1,
+        "outside_tutorial": true
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.pioneer"
+      },
+      {
+        "design": "starting_design.warden"
+      },
+      {
+        "design": "starting_design.corsair"
+      },
+      {
+        "extra_planet": true,
+        "min_universe_size": 1
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.AR",
+    "trait": "trait.prt.AR",
+    "tech": {
+      "tech_field.energy": 1
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.haven",
+        "built": false
+      },
+      {
+        "slot": 1,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "homeworld_starbase": 1,
+    "homeworld_installations": false,
+    "homeworld_scanner": false,
+    "fleets": [
+      {
+        "design": "starting_design.pathfinder"
+      },
+      {
+        "design": "starting_design.anchor"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.prt.JoaT",
+    "trait": "trait.prt.JoaT",
+    "tech": {
+      "tech_field.energy": 3,
+      "tech_field.weapons": 3,
+      "tech_field.propulsion": 3,
+      "tech_field.construction": 3,
+      "tech_field.electronics": 3,
+      "tech_field.biotech": 3
+    },
+    "starbases": [
+      {
+        "slot": 0,
+        "design": "starting_design.citadel"
+      }
+    ],
+    "fleets": [
+      {
+        "design": "starting_design.picket"
+      },
+      {
+        "design": "starting_design.wayfarer"
+      },
+      {
+        "design": "starting_design.settler"
+      },
+      {
+        "design": "starting_design.hauler",
+        "below_tech": {
+          "tech_field.construction": 4
+        }
+      },
+      {
+        "design": "starting_design.corsair",
+        "min_tech": {
+          "tech_field.construction": 4
+        }
+      },
+      {
+        "design": "starting_design.warden"
+      },
+      {
+        "design": "starting_design.prospector"
+      }
+    ]
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.lrt.CE",
+    "trait": "trait.lrt.CE",
+    "tech_bonus": {
+      "tech_field.propulsion": 1
+    }
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.lrt.IFE",
+    "trait": "trait.lrt.IFE",
+    "tech_bonus_outside_tutorial": {
+      "tech_field.propulsion": 1
+    }
+  },
+  {
+    "type": "starting_setup",
+    "id": "starting_setup.lrt.ARM",
+    "trait": "trait.lrt.ARM",
+    "fleets": [
+      {
+        "design": "starting_design.burrower",
+        "count": 2,
+        "forbidden_traits": [
+          "trait.lrt.OBRM"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.engine",
+    "from": [
+      "part.engine.quick_jump_5"
+    ],
+    "candidates": [
+      {
+        "part": "part.engine.radiating_hydro_ram_scoop",
+        "skip_on_hull": "hull.colony_ship",
+        "unless_radiation_center_above": 84
+      },
+      {
+        "part": "part.engine.daddy_long_legs_7"
+      },
+      {
+        "part": "part.engine.fuel_mizer"
+      },
+      {
+        "part": "part.engine.long_hump_6"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.scanner",
+    "from": [
+      "part.scanner.bat_scanner",
+      "part.scanner.rhino_scanner"
+    ],
+    "candidates": [
+      {
+        "part": "part.scanner.possum_scanner"
+      },
+      {
+        "part": "part.scanner.mole_scanner"
+      },
+      {
+        "part": "part.scanner.rhino_scanner"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.shield",
+    "from": [
+      "part.shield.mole_skin_shield",
+      "part.shield.cow_hide_shield"
+    ],
+    "candidates": [
+      {
+        "part": "part.shield.wolverine_diffuse_shield"
+      },
+      {
+        "part": "part.shield.cow_hide_shield"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.armor",
+    "from": [
+      "part.armor.tritanium",
+      "part.armor.crobmnium"
+    ],
+    "candidates": [
+      {
+        "part": "part.armor.carbonic_armor"
+      },
+      {
+        "part": "part.armor.crobmnium"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.beam",
+    "from": [
+      "part.beam.laser",
+      "part.beam.x_ray_laser"
+    ],
+    "candidates": [
+      {
+        "part": "part.beam.yakimora_light_phaser"
+      },
+      {
+        "part": "part.beam.x_ray_laser"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.mining_robot",
+    "from": [
+      "part.mining_robot.robo_midget_miner",
+      "part.mining_robot.robo_mini_miner"
+    ],
+    "candidates": [
+      {
+        "part": "part.mining_robot.robo_miner"
+      },
+      {
+        "part": "part.mining_robot.robo_midget_miner"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.torpedo",
+    "from": [
+      "part.torpedo.alpha_torpedo"
+    ],
+    "candidates": [
+      {
+        "part": "part.torpedo.beta_torpedo"
+      }
+    ]
+  },
+  {
+    "type": "part_upgrade",
+    "id": "part_upgrade.bomb",
+    "from": [
+      "part.bomb.lady_finger_bomb"
+    ],
+    "candidates": [
+      {
+        "part": "part.bomb.black_cat_bomb"
+      }
+    ]
+  },
+  {
+    "type": "battle_plan_default",
+    "id": "battle_plan_default.standard",
+    "order": 0,
+    "tactic": 4,
+    "primary_target": 3,
+    "secondary_target": 1,
+    "attack": 2
+  },
+  {
+    "type": "battle_plan_default",
+    "id": "battle_plan_default.hunter",
+    "order": 1,
+    "tactic": 4,
+    "primary_target": 2,
+    "secondary_target": 3,
+    "attack": 2
+  },
+  {
+    "type": "battle_plan_default",
+    "id": "battle_plan_default.sniper",
+    "order": 2,
+    "tactic": 3,
+    "primary_target": 3,
+    "secondary_target": 4,
+    "attack": 2
+  },
+  {
+    "type": "battle_plan_default",
+    "id": "battle_plan_default.wary",
+    "order": 3,
+    "tactic": 1,
+    "primary_target": 5,
+    "secondary_target": 0,
+    "attack": 2
+  },
+  {
+    "type": "battle_plan_default",
+    "id": "battle_plan_default.withdraw",
+    "order": 4,
+    "tactic": 0,
+    "primary_target": 1,
+    "secondary_target": 0,
+    "attack": 2
+  }
+]

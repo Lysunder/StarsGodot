@@ -341,7 +341,7 @@ this turn):
 |---|---|
 | Minefield | 6: mines (4 bytes); 12: type (0 standard, 1 heavy, 2 speed bump); 13: 1 = detonating; 14: players who have seen it (16-bit mask) |
 | Packet / salvage | 6: word, bits 0–9 destination planet (1023 = none: salvage), bits 10–13 warp (0 for salvage), bits 14–15 status bits (S14); 8, 10, 12: ironium, boranium, germanium (16-bit each); 14: bits 0–13 mass in units of 10 kT (each mineral rounded up when created; S14) |
-| Wormhole | 6: stability word (S12, S18); 8: players who have been through (mask); 10: players who can see it (mask); 12: the other end's full object id |
+| Wormhole | 6: word, bits 0–1 stability (`stability`), bits 2–11 years since it last moved (`age`), bits 12–15 not imported (bit 13 is set in every file seen; meaning open); 8: players who have been through (mask); 10: players who can see it (mask); 12: the other end's full object id |
 | Mystery Trader | 6, 8: destination x, y; 10: warp (low nibble); 12: players met (mask); 14: items carried (mask); 16: turn counter |
 
 Wormholes and the Mystery Trader are stored with owner 0; the importer maps them to "no owner" (S03).
@@ -402,6 +402,6 @@ None: the harness is a dev tool.
 2. Player record dword 0x3A (probably research spending) and the remaining record bytes.
 3. Starbase word 1 bit 15, installation byte 5, and the packet status bits (S14).
 4. Design byte 1 bit 7.
-5. Wormhole stability bits (S12, S18); the minefield layout has no fixture yet (the computer players laid no mines
+5. Wormhole word bits 12–15 (S18); the minefield layout has no fixture yet (the computer players laid no mines
    in 80 turns).
 6. Production queue progress units and the standard item numbers (S09).

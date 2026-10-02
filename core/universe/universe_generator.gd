@@ -8,8 +8,8 @@ extends RefCounted
 ## (and ai_level -1 for a random level); built-in computer races have no name and logo 0.
 ## Human races whose advantage points are negative are replaced by `default_race`.
 ##
-## This file covers S07 steps 0-9 (setup draws, planets, homeworld choice). The player setup and
-## starting fleets (steps 10-12) come next.
+## generate() runs everything. Steps 0-9 (setup draws, planets, homeworld choice) are here;
+## steps 9.5-12 (starting tech, homeworlds, designs, fleets, wormholes) are in StartingSetup.
 
 const AI_PERSONALITIES := [
 	"robotoids", "turindrones", "automitrons", "rototills", "cybertrons", "macinti"
@@ -59,6 +59,28 @@ func _init(
 	width = settings.universe_width
 	_streams = RngStreams.new(game_seed, true)
 	_rng = _streams.get_stream(RngStreams.CLASSIC)
+
+
+## The whole new game (S07).
+func generate() -> GameState:
+	generate_universe()
+	var state := GameState.new()
+	state.settings = settings.copy() as GameSettings
+	state.rng = _streams
+	state.players.assign(players)
+	state.planets.assign(planets)
+	StartingSetup.new(self, state).run()
+	return state
+
+
+## The classic stream, for StartingSetup.
+func rng() -> StarsRandom:
+	return _rng
+
+
+## Universe size index 0 (tiny) .. 4 (huge).
+func size_index() -> int:
+	return width / 400 - 1
 
 
 ## Steps 0-9: setup draws, planets and homeworld choice.

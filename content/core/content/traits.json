@@ -75,7 +75,8 @@
     "cost": -66,
     "params": {
       "planet.max_pop_pct": 120,
-      "race.ap_nas_penalty": 40
+      "race.ap_nas_penalty": 40,
+      "start.tech_floor": 4
     }
   },
   {
@@ -162,7 +163,10 @@
     "type": "trait",
     "id": "trait.lrt.LSP",
     "kind": "lesser",
-    "cost": -180
+    "cost": -180,
+    "params": {
+      "start.population": 175
+    }
   },
   {
     "type": "trait",

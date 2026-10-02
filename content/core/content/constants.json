@@ -9,5 +9,18 @@
   { "type": "constant", "id": "constant.limits.ships_per_stack", "value": 32767 },
   { "type": "constant", "id": "constant.limits.space_objects", "value": 4050 },
   { "type": "constant", "id": "constant.limits.space_object_numbers", "value": 512 },
-  { "type": "constant", "id": "constant.limits.battle_tokens", "value": 256 }
+  { "type": "constant", "id": "constant.limits.battle_tokens", "value": 256 },
+  { "type": "constant", "id": "constant.start.population", "value": 250 },
+  { "type": "constant", "id": "constant.start.tech_floor", "value": 3 },
+  { "type": "constant", "id": "constant.start.leftover_cap", "value": 50 },
+  { "type": "constant", "id": "constant.universe.wormholes_random_0", "value": 3 },
+  { "type": "constant", "id": "constant.universe.wormholes_base_0", "value": 0 },
+  { "type": "constant", "id": "constant.universe.wormholes_random_1", "value": 3 },
+  { "type": "constant", "id": "constant.universe.wormholes_base_1", "value": 1 },
+  { "type": "constant", "id": "constant.universe.wormholes_random_2", "value": 5 },
+  { "type": "constant", "id": "constant.universe.wormholes_base_2", "value": 1 },
+  { "type": "constant", "id": "constant.universe.wormholes_random_3", "value": 4 },
+  { "type": "constant", "id": "constant.universe.wormholes_base_3", "value": 3 },
+  { "type": "constant", "id": "constant.universe.wormholes_random_4", "value": 5 },
+  { "type": "constant", "id": "constant.universe.wormholes_base_4", "value": 4 }
 ]
