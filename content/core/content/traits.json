@@ -6,7 +6,8 @@
     "cost": 40,
     "params": {
       "race.growth_rate_pct": 200,
-      "planet.max_pop_pct": 50
+      "planet.max_pop_pct": 50,
+      "race.ap_factory_growth_factor": 3
     }
   },
   {
@@ -15,7 +16,8 @@
     "kind": "primary",
     "cost": 95,
     "params": {
-      "research.spy_pct": 50
+      "research.spy_pct": 50,
+      "race.ap_nas_penalty": 200
     }
   },
   {
@@ -46,7 +48,10 @@
     "type": "trait",
     "id": "trait.prt.PP",
     "kind": "primary",
-    "cost": 120
+    "cost": 120,
+    "params": {
+      "race.ap_nas_penalty": 280
+    }
   },
   {
     "type": "trait",
@@ -58,7 +63,10 @@
     "type": "trait",
     "id": "trait.prt.AR",
     "kind": "primary",
-    "cost": 90
+    "cost": 90,
+    "params": {
+      "race.ap_cheap_energy_penalty": 100
+    }
   },
   {
     "type": "trait",
@@ -66,7 +74,8 @@
     "kind": "primary",
     "cost": -66,
     "params": {
-      "planet.max_pop_pct": 120
+      "planet.max_pop_pct": 120,
+      "race.ap_nas_penalty": 40
     }
   },
   {
@@ -79,7 +88,11 @@
     "type": "trait",
     "id": "trait.lrt.TT",
     "kind": "lesser",
-    "cost": 25
+    "cost": 25,
+    "params": {
+      "race.hab_terraform_reach_1": 8,
+      "race.hab_terraform_reach_2": 17
+    }
   },
   {
     "type": "trait",
@@ -140,7 +153,10 @@
     "type": "trait",
     "id": "trait.lrt.NAS",
     "kind": "lesser",
-    "cost": -325
+    "cost": -325,
+    "params": {
+      "race.ap_scanner_restriction": 1
+    }
   },
   {
     "type": "trait",

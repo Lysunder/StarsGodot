@@ -1,6 +1,7 @@
 # S06 Race and traits
 
-Status: draft (2026-09-30). Advantage-point algorithm read from the code, with its constant tables; checked by a
+Status: draft (2026-09-30); advantage points implemented in `core/universe/race_math.gd` (2026-10-01).
+Advantage-point algorithm read from the code, with its constant tables; checked by a
 reference implementation that gives the original's preset values (Humanoid: 25 points left, as the original's race
 wizard shows). Other presets computed, not yet confirmed against the original.
 References: `Race_ComputeAdvantagePoints@10d8:2d30`, `Race_HabPoints@10d8:3278`, `Planet_HabValue@1040:474c`,
@@ -125,8 +126,10 @@ computes it in floating point (x87 doubles); see "Open questions".
    [max(low − T, 0), min(high + T, 100)], with width W = (upper − lower), 11 samples
    v_k = lower + (k × W) div 10 for k = 0 … 10, and span multiplier W / 100.
 3. For every combination of samples (gravity, temperature, radiation): if p > 0, move each non-immune sample toward
-   the race's center by up to T, and let r be the total distance still left over after that move (summed over the
-   axes). Take the planet value h of that point (below); if r > T, h = max(h − (r − T), 0). Add w × h².
+   the race's center by up to T. For each axis the leftover is center − (moved value): positive when the sample was
+   below the center, negative when above. Let r be the sum of the three leftovers **with their signs** (the original
+   does not take absolute values, so leftovers on opposite sides cancel). Take the planet value h of the moved point
+   (below); if r > T, h = max(h − (r − T), 0). Add w × h².
 4. Sum the innermost axis (radiation) as integers, then multiply by its span multiplier: × 11 if immune, else
    (W × sum) div 100. Sum over temperature samples, multiply by the temperature span multiplier (as a real number);
    then sum over gravity samples and multiply by the gravity span multiplier.
@@ -250,8 +253,10 @@ Random 50/50/50.
   hulls. New traits from mods take part in the advantage-point calculation through their `cost` only (steps 10–11).
 - Formulas (M5): `race.advantage_points`, `race.hab_points`, `planet.hab_value` (shared with S08).
 - Trait parameters so far: `race.growth_rate_pct` (HE 200), `design.armor_part_pct` (RS 50), `design.shield_pct`
-  (RS 140), `planet.max_pop_pct` (HE 50, JoaT 120), `planet.max_pop_extra_pct` (OBRM 110, applied last; S08). The step-specific rules for HE, PP, SS, JoaT and AR in steps 5, 11 and 14 are parameters of the Standard
-  `race.advantage_points` formula, listed by primary trait.
+  (RS 140), `planet.max_pop_pct` (HE 50, JoaT 120), `planet.max_pop_extra_pct` (OBRM 110, applied last; S08). The trait-specific steps of the advantage points are trait parameters:
+  `race.ap_factory_growth_factor` (step 5; HE 3, default 2), `race.ap_scanner_restriction` (NAS) with
+  `race.ap_nas_penalty` (step 11; PP 280, SS 200, JoaT 40), `race.ap_cheap_energy_penalty` (step 14; AR 100), and
+  `race.hab_terraform_reach_1` / `race.hab_terraform_reach_2` (habitability points; TT 8 and 17, default 5 and 15).
 
 ## Open questions
 
