@@ -226,7 +226,8 @@ Sections:
    0–1, 2–3, 4–5, 6–7; code 0/1/2/3 = 0/1/2/4 bytes), then the four values (`surface`, `population` in units of 100
    colonists).
 3. **Installations** (flag 0x800, 8 bytes): byte 0 extra colonists (`extra_colonists`); bytes 1–3 mines (12 bits)
-   and factories (12 bits); byte 4 defenses; byte 5 unknown; byte 6 bit 7 "contribute only leftover resources to
+   and factories (12 bits); byte 4 and the low nibble of byte 5 defenses (12 bits); the high nibble of byte 5
+   unknown; byte 6 bit 7 "contribute only leftover resources to
    research" (S09; `leftover_to_research`), bit 0 set when the planet has **no** planetary scanner (`has_scanner`);
    byte 7 zero.
 4. **Starbase** (flag 0x200), full planets 4 bytes as two words:

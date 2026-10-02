@@ -8,7 +8,6 @@ extends RefCounted
 
 const MAX_SEED := (1 << 53) - 1
 const MAX_INSTALLATIONS := 4095
-const MAX_DEFENSES := 255
 const MAX_STARBASE_DAMAGE := 4095
 const MAX_DRIVER_WARP := 19
 const MAX_STACK_DAMAGE := 499
@@ -159,7 +158,7 @@ func _check_planet(pl: Planet, path: String) -> void:
 	_range(pl.extra_colonists, 0, 99, path + "/extra_colonists")
 	_range(pl.mines, 0, MAX_INSTALLATIONS, path + "/mines")
 	_range(pl.factories, 0, MAX_INSTALLATIONS, path + "/factories")
-	_range(pl.defenses, 0, MAX_DEFENSES, path + "/defenses")
+	_range(pl.defenses, 0, MAX_INSTALLATIONS, path + "/defenses")
 	if pl.starbase != null:
 		if pl.owner < 0:
 			_err(path + "/starbase", "an unowned planet has no starbase")

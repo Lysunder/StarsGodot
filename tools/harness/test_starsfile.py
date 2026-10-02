@@ -138,7 +138,7 @@ def planet_block(pid, owner):
     out += bytes([0b000001, 99]) + bytes([40, 60, 80]) + bytes([50, 51, 52]) + b"\x00\x00"
     out += bytes([0b10_01_10_11]) + struct.pack("<I", 70000) + struct.pack("<H", 500) + bytes([7])
     out += struct.pack("<H", 250)
-    out += bytes([12, 0x2C, 0x21, 0x03, 40, 0, 0x80, 0])
+    out += bytes([12, 0x2C, 0x21, 0x03, 40, 0x31, 0x80, 0])
     out += struct.pack("<HH", 2 | 100 << 4, (1 + 1) | 3 << 10)
     out += struct.pack("<H", 0 + 1)
     return out
@@ -227,7 +227,7 @@ class TestImporter(unittest.TestCase):
         self.assertEqual(pl["environment_original"], [50, 51, 52])
         self.assertEqual(pl["surface"], [70000, 500, 7])
         self.assertEqual(pl["population"], 250)
-        self.assertEqual((pl["extra_colonists"], pl["mines"], pl["factories"], pl["defenses"]), (12, 300, 50, 40))
+        self.assertEqual((pl["extra_colonists"], pl["mines"], pl["factories"], pl["defenses"]), (12, 300, 50, 296))
         self.assertTrue(pl["leftover_to_research"])
         self.assertTrue(pl["has_scanner"])
         self.assertEqual(pl["starbase"], {"design": 2, "damage": 100})

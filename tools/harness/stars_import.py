@@ -392,7 +392,7 @@ class Importer:
             p["extra_colonists"] = inst[0]
             p["mines"] = inst[1] | (inst[2] & 15) << 8
             p["factories"] = inst[2] >> 4 | inst[3] << 4
-            p["defenses"] = inst[4]
+            p["defenses"] = inst[4] | (inst[5] & 15) << 8
             p["leftover_to_research"] = bool(inst[6] & 0x80)
             p["has_scanner"] = not inst[6] & 1
         if flags & 0x200:

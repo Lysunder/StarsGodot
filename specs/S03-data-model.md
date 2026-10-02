@@ -125,7 +125,7 @@ whole game. "Each planet" means in id order.
 | `population` | units of 100 colonists |
 | `extra_colonists` | 0 … 99 single colonists (S08) |
 | `mines`, `factories` | 0 … 4095 |
-| `defenses` | 0 … 255 (the planet's maximum is lower, S08) |
+| `defenses` | 0 … 4095 (the planet's maximum is lower, S08) |
 | `homeworld` | flag |
 | `has_scanner` | a planetary scanner has been built (S15) |
 | `starbase` | none, or the design slot of the owner's starbase design plus its damage in armor points (0 … 4095) |

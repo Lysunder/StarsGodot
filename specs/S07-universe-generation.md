@@ -1,13 +1,15 @@
 # S07 Universe generation
 
-Status: draft (2026-10-01), first pass: planet count, positions, the original's sort, spacing, clumping, planet
-names, environment, mineral concentrations, the homeworld mineral template, homeworld choice and the player
-shuffle. Verified against three games created by the original (seeds 4242 and 777; 32 and 128 planets; 2, 3 and 6
-players): every position, name, environment value, concentration and homeworld matches. Player setup (homeworld
-values, starting population, installations, tech, fleets, designs, the extra planet, battle plans), wormholes and
-the draws made while reading the game definition follow in the second pass.
+Status: draft (2026-10-01), second pass. Covers the setup draws, the universe, the players' starting tech,
+homeworlds, starting designs and fleets, the extra starting planet, wormholes and starting relations. Verified
+against three games created by the original (seeds 4242 and 777; 32 and 128 planets; 2, 3 and 6 players): the setup
+draws (count, names, logos), every position, planet name, environment value, concentration, homeworld, homeworld
+mineral amount, starting tech and starting fleet match. Not yet covered by a fixture: galaxy clumping, the extra
+planet (Packet Physics, Inter-stellar Traveler), random races, and games set up from the New Game dialog.
 References: `CreateUniverse@1070:1334`, `NewGameFromDefFile@1070:39d4`, `CompareInts@1038:8b46`,
-`qsort@1108:069e`, `SeedRandomFromGameSeed@1038:8672`.
+`qsort@1108:069e`, `SeedRandomFromGameSeed@1038:8672`, `CreateStartingFleet@1070:38fe`,
+`GetDesignTemplates@1008:50be`, `GetStarbaseTemplates@1008:50c4`, `SpaceObject_ValidatePosition@1100:0456`,
+`InitDefaultBattlePlan@1070:0000`.
 
 ## Summary
 
@@ -33,6 +35,26 @@ generator must produce the same universe as the original.
 All arithmetic is on integers; "div" truncates toward zero.
 
 ## Algorithm
+
+### 0. Seeding and setup draws
+
+When a game is created from a definition file with a seed, the classic stream is seeded with the game-seed method
+(S01) while the file is read. The following draws come before the universe, in this order:
+
+1. **Computer players** given as `#a b`: if b is 0, draw random(4) for it; then, if a is 0, draw random(6) (the
+   meaning of a and b, a personality and a level, is pinned down in S22). The race is a built-in computer race (S22 content);
+   built-in computer races have **no name** and **logo 0**.
+2. **Races:** a human race whose advantage points are negative is replaced by the default race. Then, for each player
+   in order whose race has no name: name = entry random(24) of the built-in race name list (our own list of 24).
+3. **Duplicate names:** for each player i from 1 on, if its name equals an earlier player's: r = random(24); while
+   name r is used by any player, r = (r + 1) mod 24; the player takes name r.
+4. **Duplicate logos:** for each player i from 1 on whose logo is set, if an earlier player j (the first such) has
+   the same logo: draw random(2); if it is not 0, player i's logo is cleared, otherwise player j's.
+5. **Logos:** for each player in order whose logo is cleared (or was out of range): v = random(32); while another
+   player has logo v, v = (v + 1) mod 32.
+
+Examples: two players with the same race file make 3 draws (a name, a coin, a logo); one human and two built-in
+computer races make 4 (two names, a coin, a logo); one human and five computer races made 14.
 
 ### 1. Planet count
 
@@ -143,15 +165,146 @@ Squared distances throughout; P = number of players.
      acceptable. If the scan comes back to where it started, the attempt fails.
 4. **On failure:** m = m − Base div 35, n = n + Base div 35, and start again from step 2 (all homeworlds are chosen
    again, with new draws).
-5. **Shuffle:** for player i = 0 … P − 1 in turn: r = i + random(P − i); swap the homeworlds of i and r. Player i
-   gets homeworld i.
+5. **Shuffle and starting tech,** for player i = 0 … P − 1 in turn:
+   1. r = i + random(P − i); swap the homeworlds of i and r. Player i gets homeworld i.
+   2. A race with the "random race" setting is generated now (S06, `GenerateRandomRace`; its draws come here).
+   3. Starting tech (all fields start at 0), by primary trait: SS electronics 5; WM weapons 6, propulsion 1,
+      energy 1; CA biotech 6, construction 2, energy 1, weapons 1, propulsion 1; SD propulsion 2, biotech 2; PP
+      energy 4; IT propulsion 5, construction 5; AR energy 1; JoaT all fields 3; HE and IS none.
+   4. With "techs start at 3": every field below 3 (4 for JoaT) whose research cost is expensive is raised to 3
+      (4 for JoaT).
+   5. Cheap Engines: propulsion + 1. Improved Fuel Efficiency: propulsion + 1, except in the tutorial.
+
+### 10. Homeworlds and starting planets
+
+For each player in index order, on its homeworld:
+
+1. Owner = the player; a starbase of design slot 0; no artifact; homeworld; a planetary scanner.
+2. 10 mines, 10 factories, 10 defenses. Population 250 (25,000 colonists), or 175 with Low Starting Population.
+3. Surface minerals = the template (step 8). Concentrations = planet 0's, each at least 30.
+4. **Leftover points** L = min(advantage points, 50) (S06). A computer player always gets L = 50, and at level 3 or
+   above also 10% more population (population + population div 10).
+5. With accelerated start: population = population × 2 × (growth rate + 5) div 10, with the race's growth rate
+   (S06).
+6. L is spent according to the race's leftover-points choice:
+   - surface minerals: e = 10L div 4, q = 10L mod 4. The mineral with the least surface (the last one on ties)
+     gets e + q, then every mineral gets e. A computer player of level 2 or above also gets the concentration
+     bonus below;
+   - concentrations: b = 1 if L is 1 or 2, else L div 2. The lowest concentration (the first one on ties) gets b;
+     then every concentration gets (b + 1) div 2;
+   - mines: + L div 2; factories: + L div 5; defenses: + (L + 5) div 10.
+7. Alternate Reality: no mines, factories or defenses.
+8. Environment: for gravity, temperature and radiation in turn, the middle of the race's range,
+   low + (high − low) div 2, or 1 + random(99) for an immune axis. The original environment is the same.
+9. Human players research at 15%. Every player researches energy next, with "same field" after it (S05), has no
+   research points, and is neutral to everyone.
+10. **Starbase designs:** slot 0 is template B0 (below), counted as 1 built and 1 existing; the other slots are empty.
+    - Packet Physics: B0's first slot gets one Mass Driver 5. Outside tiny universes, slot 1 is B1 (1 built).
+    - Inter-stellar Traveler (not in the tutorial): B0's first slot gets one Stargate 100/250. Outside tiny
+      universes, slot 1 is a copy of B2 (1 built).
+    - Alternate Reality: slot 1 is B0 (1 built) and slot 0 is B3 (none built); the homeworld's starbase is design 1.
+11. Packet Physics: the homeworld's mass driver is set to warp 5 with no destination.
+
+### 11. Starting fleets
+
+The ship design templates T0 … T18 and starbase templates B0 … B3 are content (data below; our own names). "Fleet T"
+means: copy template T into the player's next free design slot (counted as built and existing), and create a new
+fleet (lowest free number, S03) of one such ship at the homeworld with full fuel. "Again" means one more fleet of the
+same design, without a new design. For each player in index order, by primary trait:
+
+1. Packet Physics: fleet T4. Warmonger: fleet T3; then, if construction tech is at least 3, fleets T7 and T13.
+   JoaT: fleets T3 and T4. Super-Stealth: fleet T2 if energy tech is below 2, else T5; then, for a human player,
+   fleet T1. Every other trait: fleet T2.
+2. Hyper-Expansion: fleet T12, again, again. Inter-stellar Traveler: fleet T11. Alternate Reality: fleet T10.
+   Otherwise: fleet T9.
+3. Space Demolition: fleets T16 and T18. Claim Adjuster: fleet T17. Inter-stellar Traveler: fleets T7 and T8, then
+   the extra planet outside tiny universes. Packet Physics outside tiny universes: the extra planet. JoaT: fleet T6
+   if construction tech is below 4, else T8; then fleets T7 and T14.
+4. Advanced Remote Mining without Only Basic Remote Mining: fleet T15, again.
+5. **Part upgrades:** in every design the player now has, each slot whose part has a better version the player can
+   use (S04: tech level and race restrictions) is upgraded to the first available entry of its list, in order:
+
+   | Slot holds | Candidates, best first |
+   |---|---|
+   | Quick Jump 5 | Radiating Hydro-Ram Scoop (only if the race is immune to radiation, or its radiation center is above 84, or the design is not a Colony Ship), Daddy Long Legs 7, Fuel Mizer, Long Hump 6 |
+   | Bat Scanner, Rhino Scanner | Possum, Mole, Rhino |
+   | Mole-skin, Cow-hide Shield | Wolverine Diffuse, Cow-hide |
+   | Tritanium, Crobmnium | Carbonic Armor, Crobmnium |
+   | Laser, X-Ray Laser | Yakimora Light Phaser, X-Ray Laser |
+   | Robo-Midget, Robo-Mini-Miner | Robo-Miner, Robo-Midget-Miner |
+   | Alpha Torpedo | Beta Torpedo |
+   | Lady Finger Bomb | Black Cat Bomb |
+
+   A slot keeps its part when no candidate is available.
+6. Alternate Reality: the homeworld has no planetary scanner.
+
+**The extra planet** (Packet Physics and Inter-stellar Traveler outside tiny universes):
+
+1. Among unowned planets in id order, with d² the squared distance to the homeworld and the band
+   (15W div 100)² ≤ d² ≤ (23W div 100)²: each planet in the band is chosen with probability 1/k, k counting the
+   planets in the band so far (draw random(k) per such planet; 0 means chosen). Outside the band, while nothing is
+   chosen yet, remember the nearest planet (strictly nearer replaces). If no planet in the band was chosen, take the
+   remembered one.
+2. Its mass driver is set to warp 5 with no destination.
+3. While the planet's habitability for the race (S08) is below 10, at most 100 times: each environment axis
+   = 2 + random(97) (original = new). If 100 rerolls were made, the homeworld's environment is copied, even when
+   the last reroll reached 10.
+4. The player owns it, with a starbase of design 1, no artifact, 10 mines, 4 factories, a planetary scanner,
+   population = homeworld population × 2 div 5, and surface minerals 100 + random(200) each. Then the homeworld's
+   population = homeworld population × 4 div 5.
+5. Fleet of design 0 (no new design) at the extra planet.
+
+**Templates** (slot lists in hull slot order; "–" an empty slot):
+
+| Template | Hull | Slots |
+|---|---|---|
+| T0 | `hull.small_freighter` | Quick Jump 5, Bat Scanner, Mole-skin Shield |
+| T1 | `hull.small_freighter` | Quick Jump 5, Transport Cloaking, Mole-skin Shield |
+| T2, T4 | `hull.scout` | Quick Jump 5, Bat Scanner, Fuel Tank |
+| T3 | `hull.scout` | Quick Jump 5, Bat Scanner, X-Ray Laser |
+| T5 | `hull.scout` | Quick Jump 5, Bat Scanner, Stealth Cloak |
+| T6 | `hull.medium_freighter` | Quick Jump 5, Bat Scanner, Tritanium |
+| T7 | `hull.destroyer` | Quick Jump 5, Laser, Alpha Torpedo, Bat Scanner, Tritanium ×2, Fuel Tank, Battle Computer |
+| T8 | `hull.privateer` | Quick Jump 5, Crobmnium ×2, Bat Scanner, Laser, Alpha Torpedo |
+| T9, T11 | `hull.colony_ship` | Quick Jump 5, Colonization Module |
+| T10 | `hull.colony_ship` | Quick Jump 5, Orbital Construction Module |
+| T12 | `hull.mini_colony_ship` | Settler's Delight, Colonization Module |
+| T13 | `hull.mini_bomber` | Quick Jump 5, Lady Finger Bomb ×2 |
+| T14 | `hull.mini_miner` | Quick Jump 5, Bat Scanner, Robo-Mini-Miner, Robo-Mini-Miner |
+| T15 | `hull.midget_miner` | Quick Jump 5, Robo-Midget-Miner ×2 |
+| T16 | `hull.mini_mine_layer` | Quick Jump 5, Mine Dispenser 40 ×2, Mine Dispenser 40 ×2, Bat Scanner |
+| T17 | `hull.mini_miner` | Quick Jump 5, Bat Scanner, Orbital Adjuster, Orbital Adjuster |
+| T18 | `hull.mini_mine_layer` | Quick Jump 5, Speed Trap 20 ×2, Speed Trap 20 ×2, Bat Scanner |
+| B0 | `hull.space_station` | –, Laser ×8, Mole-skin ×8, Laser ×8, Mole-skin ×8, Mole-skin ×8, –, Laser ×8, –, Laser ×8, –, Mole-skin ×8 |
+| B1 | `hull.orbital_fort` | Mass Driver 5, Laser ×6, Cow-hide ×6, Laser ×6, Cow-hide ×6 |
+| B2 | `hull.orbital_fort` | Stargate 100/250, Laser ×6, Mole-skin ×6, Laser ×6, Mole-skin ×6 |
+| B3 | `hull.orbital_fort` | –, –, –, –, – |
+
+### 12. Finishing
+
+1. If planet 0 is unowned, its surface minerals are cleared (the template was built there).
+2. Every player gets the five default battle plans (S16).
+3. **Wormholes:** pairs = random(r) + b, with (r, b) = (3, 0), (3, 1), (5, 1), (4, 3), (5, 4) for tiny … huge.
+   For each pair, for each of its two ends in turn: create the wormhole (S03 numbering), stability = random(3);
+   the second end and the first point at each other. Then place it: up to 100 times, x = 1000 + random(W),
+   y = 1000 + random(W), and score the spot (below); stop at score 0; otherwise keep the first spot with the lowest
+   score. If no try scored 0, use the kept spot.
+
+   Score (lower is better): a spot outside 1000 … W + 1000, or exactly on a planet, a fleet or another object, is 15.
+   Otherwise it starts at 0 and adds (bitwise or): 4 if outside 1010 … W + 990; against its partner, with d² the
+   squared distance: 8 below 25, 4 below 100, 2 below 900, 1 below 4900; against every other wormhole: 8 below 16, 4
+   below 64, 2 below 225, 1 below 900; against every planet: 8 below 25, 4 below 100, 2 below 400, 1 below 784.
+4. **Relations:** if exactly one player is human (an inactive player counts as human), every player starts as every
+   other player's enemy, and the game records that setting (S23 option 0x04). Otherwise all stay neutral.
 
 ## Randomness
 
-All draws are on the classic stream, in the order of the steps: setup draws while reading the game definition
-(second pass), scatter (2M), spacing removals (step 4.2), clumping (step 5), names (N'), per planet: artifact,
-gravity (2), temperature (2), radiation, three minerals (2 or 3 each), scarcity (1 + 2 per cut); the template (3 to
-6); homeworld choice (variable); the shuffle (P).
+All draws are on the classic stream, in the order of the steps: setup draws (step 0), scatter (2M), spacing
+removals (step 4.2), clumping (step 5), names (N'), per planet: artifact, gravity (2), temperature (2), radiation,
+three minerals (2 or 3 each), scarcity (1 + 2 per cut); the template (3 to 6); homeworld choice (variable); per
+player the shuffle draw and any random race; per player the homeworld environment (one draw per immune axis); per
+player the extra planet (one draw per planet in the band, then 3 per environment reroll, then 3 for minerals);
+wormholes (count, then per end: stability and up to 100 positions of 2 draws).
 
 ## Edge cases
 
@@ -178,14 +331,17 @@ From the harness (games created by the original, see `tests/fixtures/golden/READ
 - Formulas: `universe.planet_count`, `universe.planet_environment`, `universe.planet_minerals`,
   `universe.homeworld_spacing`. A replaced formula must keep its draw count for the classic sequence, or the rest of
   generation changes (which is fine for a mod: only Standard must match the original).
-- Hook: `on_universe_generated` (after the whole universe, second pass).
+- Content: the starting design templates (T0 … T18, B0 … B3), the decision table of starting fleets per trait,
+  the upgrade candidate lists, the built-in race names (24) and the wormhole count table.
+- Hook: `on_universe_generated` (after the whole universe).
 
 ## Open questions
 
-1. The setup draws while reading the game definition (3, 4 and 14 in the examples), and for games created from the
-   New Game dialog.
-2. Galaxy clumping has no fixture yet; confirm with the harness.
-3. Homeworld values, starting population, installations, tech, fleets, designs, the extra planet, battle plans and
-   wormholes (second pass). Homeworlds lose any artifact (seen in the 6-player game).
-4. The universe's y extent (the original keeps a height of W + 2000 for drawing; positions stay within
+1. Games created from the New Game dialog (setup draws may differ from the definition-file path).
+2. No fixture yet for galaxy clumping, the extra planet, random races, maximum minerals, accelerated start or the
+   tutorial; confirm each with the harness.
+3. One more global setting raises the homeworld concentration minimum to 25 instead of 30 in the original's code;
+   which setting that is remains open.
+4. The meaning of the two numbers of a `#a b` computer player line, and the built-in computer races (S22).
+5. The universe's y extent (the original keeps a height of W + 2000 for drawing; positions stay within
    1010 … W + 990).
