@@ -2,7 +2,9 @@
 
 Status: draft (2026-09-30). Top-level order read from `GenerateTurn` and its direct callees (with the disassembly
 for arguments the decompiler lost). Order inside each phase is specified by the phase's own spec; this spec records
-what is confirmed so far. Compared with the community "Order of Events" list.
+what is confirmed so far. Compared with the community "Order of Events" list. Implemented as a pipeline in
+`core/turn/` (2026-10-02): every id below exists; mining, planet production (empty queues only), growth, the tech
+update and the end-of-turn phases run, and the rest are placeholders. Golden turns: `tiny2` turns 0-5 match.
 References: `GenerateTurn@10a8:0000`, `DoWaypointTasks@10a8:0e92`, `DoWaypointTaskPass@10a8:3ec6`,
 `MoveSpaceObjects@10a8:0f6e`, `MoveFleets@10a8:1f18`, `DoProduction@10b0:0000`, `RunBattles@10e8:24aa`,
 `UpdateTechLevels@10b0:4c50`, `UpdateScoresAndVictory@10b0:3b78`, `RunComputerPlayers@1018:39f8`,
@@ -35,7 +37,7 @@ Phase ids are ours (MODDING §7). "Order inside" lists what is confirmed so far;
 | 7 | `minefields.reset` | `ResetMinefieldTurnState` | Clears per-turn minefield state. |
 | 8 | `space.move_before_fleets` | `MoveSpaceObjects(0)` | Mystery Trader moves; packets in space move, decay and hit (S14, S18). |
 | 9 | `fleets.move` | `MoveFleets` | Movement, fuel, stargates, wormholes, minefield checks during movement (S12, S13). |
-| 10 | (planet and player loop) | loop in `GenerateTurn` | Per-planet and per-player bookkeeping after movement; to identify (open). |
+| 10 | `planets.after_movement` | loop in `GenerateTurn` | Per-planet and per-player bookkeeping after movement; to identify (open). |
 | 11 | `space.decay_and_detonate` | `ProcessMinefieldHits` (misnamed) | Salvage decays (10% of each mineral, at least 10), packets decay (S14), Space Demolition fields detonate, minefields decay (S13). Hits during movement are handled in phase 9. |
 | 12 | `fleets.is_growth` | `GrowColonistsInFleets` | Inner-Strength colonists grow in cargo holds (S19). |
 | 13 | `production` | `DoProduction` | 13a mining for every planet (`MinePlanets`, S08) → 13b per planet: resources, research, construction, packet launches (S09) → 13c population growth for every planet (`GrowPopulations`, S08) → 13d tech levels (`UpdateTechLevels` with the Super-Stealth spy bonus, S05) → 13e random events (`DoRandomEvents`, S18). |
@@ -87,8 +89,10 @@ The community list agrees with most of the above. Differences found in the code:
 ## Mod hooks
 
 - Every row above is a `Phase` with the given id in the `TurnPipeline`. Mods can insert phases before or after any
-  id, replace a phase, or disable it (MODDING §7). Sub-steps (5a–5f, 13a–13e, 16a–16f) are separate phases with ids
-  like `wp0.unload`, `production.mining`, `wp1.battles`, so they can be targeted individually.
+  id, replace a phase, or disable it (MODDING §7). Production is split into its steps, each a phase:
+  `production.mining` (13a), `production.planets` (13b), `production.growth` (13c), `production.research` (13d),
+  `production.random_events` (13e); the `production` row has no phase of its own. The other sub-steps (5a–5f,
+  16a–16f) get their own ids the same way when they are built.
 - Hooks: `on_turn_start` before phase 2, `on_turn_end` after phase 24.
 
 ## Open questions

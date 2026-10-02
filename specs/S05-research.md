@@ -1,7 +1,9 @@
 # S05 Research
 
-Status: draft (2026-09-30). Read from the code; the base cost table is the original's (it matches the community
-"Research Costs" table exactly). Field switching after a level is gained is marked for harness confirmation.
+Status: draft (2026-09-30), second pass (2026-10-02): the tech update re-read from `UpdateTechLevels`; implemented
+in `core/rules/research_rules.gd`. The base cost table is the original's (it matches the community "Research Costs"
+table exactly; content constants `constant.research.base_cost_<level>`). Golden turns confirm the yearly points;
+level gains and field switching still need a harness game that reaches them.
 References: `Tech_LevelCost@10d0:1546`, `UpdateTechLevels@10b0:4c50`, `Research_ResourcesThisYear@10d0:492e`,
 `DoProduction@10b0:0000`. Community page "Research Costs" used as oracle.
 
@@ -59,10 +61,21 @@ Called once per turn from production (S02 13d), with the year's research spendin
 
 ### Gaining levels
 
+The update runs in passes over the six fields in order; each field is handled in turn as below, and the year's
+points are added when the pass reaches the current field (with Generalized Research the other fields get their
+share at that moment, so fields before the current one are checked again in the next pass). Another pass follows
+whenever a pass added split points or switched fields; passes after a switch add no new points.
+
+With slow tech advances, a field's stored points are doubled for the comparison, the cost is doubled, and the
+points are stored back as (points + 1) div 2. The Generalized Research share of the other fields is added
+directly, halved and truncated (v div 2); the spying totals count the unhalved shares.
+
 For each player in player order, for each field:
 
 1. While the field is below 26 and its points reach the cost of the next level: subtract the cost, raise the level,
-   and tell the player (new level; parts and hulls newly available).
+   and tell the player (new level; parts and hulls newly available). A field already at 26 keeps the points it had
+   stored; points added to it this year are dropped (and a field that reaches 26 without switching keeps its
+   stored points from before this year, dropping the rest).
 2. When the current field gains a level and the next-field setting isn't "same field": the points left over move to
    the new field, chosen as the set field, or for "lowest field" the field with the lowest level (the first such
    field in field order). The next-field setting then becomes "same field", except "lowest field", which stays.

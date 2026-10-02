@@ -138,6 +138,7 @@ func test_validator_reports_ranges_and_references() -> void:
 			[
 				"/players/0/race/primary_trait: is not a primary trait",
 				"/players/0/ship_designs/0/hull: is a starbase hull",
+				"/players/0/ship_designs/0/picture: must be one of the hull's four pictures",
 				"/players/0/ship_designs/0/parts: must have one entry per hull slot (12)",
 				"/players/1/race/lesser_traits/1: lesser traits must be sorted and unique",
 				(

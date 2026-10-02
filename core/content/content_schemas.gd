@@ -145,6 +145,7 @@ const TYPES := {
 			"fuel": _INT0,
 			"cargo": _INT0,
 			"initiative": _INT0,
+			"pictures": _INT0,
 			"dock": {"t": "int", "min": -1},
 			"stats": _INT_MAP,
 			"slots": {"t": "list", "of": _SLOT, "min": 1},

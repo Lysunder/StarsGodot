@@ -34,7 +34,10 @@
     "id": "trait.prt.CA",
     "kind": "primary",
     "order": 3,
-    "cost": 10
+    "cost": 10,
+    "params": {
+      "planet.revert_terraform_on_loss": 1
+    }
   },
   {
     "type": "trait",

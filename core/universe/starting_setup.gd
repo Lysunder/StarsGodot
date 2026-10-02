@@ -450,7 +450,7 @@ func _design_from(template_id: String, slot: int) -> Design:
 	design.slot = slot
 	design.name = _content.display_name(template_id)
 	design.hull = def["hull"]
-	design.picture = def.get("picture", 0)
+	design.picture = PartRules.design_picture(def.get("picture", 0), _content.hull(design.hull))
 	design.turn_designed = STARTING_DESIGN_TURN
 	for s: Dictionary in def["slots"]:
 		design.parts.append(DesignSlot.new(s.get("part", ""), s.get("count", 0)))

@@ -132,6 +132,8 @@ func _check_design(d: Design, starbase: bool, path: String) -> void:
 	if not _content_ref(d.hull, "hull", path + "/hull"):
 		return
 	var hull := _content.hull(d.hull)
+	if PartRules.design_picture(d.picture, hull) != d.picture:
+		_err(path + "/picture", "must be one of the hull's four pictures")
 	if bool(hull.get("starbase", false)) != starbase:
 		_err(path + "/hull", "is a starbase hull" if not starbase else "is not a starbase hull")
 	var slots: Array = hull["slots"]

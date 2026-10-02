@@ -1,7 +1,8 @@
 # S08 Planet economy
 
 Status: draft (2026-09-30). Read from the code (decompiled C, with the floating-point parts taken from the
-disassembly). Worked examples computed by a reference implementation of this spec; not yet harness-verified.
+disassembly). Implemented in `core/rules/planet_economy.gd` (2026-10-02) except Alternate Reality; mining,
+concentration wear, growth and resources match the original in golden turns (`tiny2`, homeworlds).
 References: `Planet_HabValue@1040:474c`, `Planet_MaxPop@1040:48cc`, `Planet_PopGrowth@1030:46fc`,
 `Planet_CapacityPct@1040:45aa`, `Planet_MaxMines@1040:49ea`, `Planet_OperableMines@1040:4a62`,
 `Planet_EffectiveMines@1040:4b0c`, `Planet_MaxFactories@1040:4bec`, `Planet_OperableFactories@1040:4c64`,
@@ -26,7 +27,7 @@ defenses in combat (S17) are separate specs.
 | Mineral concentrations | 0–255 per mineral, plus a fractional byte per mineral (0 = none) |
 | Surface minerals | kT per mineral (32-bit) |
 | Mines, factories | built counts (0–4095 each) |
-| Defenses | built count (0–255) |
+| Defenses | built count (0–4095) |
 | Race settings | S06: habitability, growth rate, resources per colonist (pe), factory output (fp), factories operated (fo), mine output (mp), mines operated (mo) |
 
 ## Algorithm
@@ -114,6 +115,19 @@ For each mineral, in the order ironium, boranium, germanium:
    - else: C decreases by 1, the fraction resets to 0, E decreases by k, and the loop continues.
 
 For Alternate Reality, mining a planet also includes the race's own remote-mining fleets in orbit (rules in S11).
+
+### 7. Turn steps and depopulation
+
+During turn generation (S02 13a, 13c), in planet order:
+
+- **Mining:** every planet with an owner and population is mined by its owner (step 6).
+- **Growth:** every planet with an owner and population grows (step 3). Then a planet with an owner but no
+  population left is **depopulated**, and so is every planet without an owner (which changes nothing unless it
+  still has a queue, a starbase, defenses or a scanner).
+- **Depopulation:** for a Claim Adjuster owner the environment returns to the original values (trait parameter
+  `planet.revert_terraform_on_loss`); the planet loses its owner, population, production queue, the "only leftover
+  to research" setting, its starbase (and with it the mass driver setting), its defenses and its planetary scanner.
+  Mines, factories and the single extra colonists stay. (`Planet_Depopulate@1040:553a`)
 
 ## Randomness
 

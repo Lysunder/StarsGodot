@@ -6794,7 +6794,7 @@
         "part": "part.shield.mole_skin_shield"
        }
       ],
-      "picture": 8,
+      "picture": 136,
       "remaining": 1,
       "slot": 0,
       "turn_designed": 1
@@ -7021,7 +7021,7 @@
         "part": ""
        }
       ],
-      "picture": 1,
+      "picture": 129,
       "remaining": 0,
       "slot": 0,
       "turn_designed": 1
@@ -7081,7 +7081,7 @@
         "part": "part.shield.mole_skin_shield"
        }
       ],
-      "picture": 8,
+      "picture": 136,
       "remaining": 1,
       "slot": 1,
       "turn_designed": 1
@@ -7424,7 +7424,7 @@
         "part": "part.shield.mole_skin_shield"
        }
       ],
-      "picture": 8,
+      "picture": 136,
       "remaining": 1,
       "slot": 0,
       "turn_designed": 1

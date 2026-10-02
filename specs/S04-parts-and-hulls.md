@@ -186,6 +186,11 @@ All other costs, masses and tech levels of the 191 items Posey lists agree.
 
 - A starbase's "cargo" field is its dock limit; −1 means the dock builds any ship. Starbases have no fuel.
 - Stargate limits use −1 for "any".
+- **Design pictures** (cosmetic): each hull owns four consecutive pictures starting at its picture number (content
+  `pictures`: ship hull i at 4i, except hulls 29–31 at 124, 120, 116; starbase hull i at 128 + 4i). A design's
+  picture outside its hull's four becomes the hull's first picture plus the value's last two bits (the original
+  does this when it loads a design, `DecodeDesignBlock@1068:0000`; so a starting starbase stored as 8 reads back
+  as 136).
 - The shield cap (65535) comes from the original's 16-bit totals; our engine keeps it as a rule constant (S25 limits
   policy). Armor totals use wide integers, so the Space Dock armor overflow (S25 B21) cannot happen.
 

@@ -2,6 +2,8 @@ class_name PartRules
 extends RefCounted
 ## Which parts and hulls a player can use, and simple design totals (spec S04, S06).
 
+const PICTURES_PER_HULL := 4
+
 
 ## True when the player's tech levels meet the item's requirements and the race's traits allow it
 ## (`required_traits`: at least one; `forbidden_traits`: none). `tech_order` maps tech field ids to
@@ -45,3 +47,12 @@ static func tech_order(content: ContentRegistry) -> Dictionary:
 	for id in content.ids("tech_field"):
 		out[id] = int(content.tech_field(id)["order"])
 	return out
+
+
+## A design picture within its hull's four (S04): a value outside them becomes the hull's first
+## picture plus the value's last two bits.
+static func design_picture(picture: int, hull: Dictionary) -> int:
+	var first: int = hull.get("pictures", 0)
+	if picture >= first and picture < first + PICTURES_PER_HULL:
+		return picture
+	return first + (picture & (PICTURES_PER_HULL - 1))

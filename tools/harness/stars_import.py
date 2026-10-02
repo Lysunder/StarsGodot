@@ -23,6 +23,7 @@ import starsfile  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LEGACY_IDS = os.path.join(ROOT, "content", "core", "legacy_ids.json")
+HULLS = os.path.join(ROOT, "content", "core", "content", "hulls.json")
 
 FORMAT = "starsgodot-save"
 FORMAT_VERSION = 1
@@ -65,9 +66,11 @@ class StarsImportError(Exception):
 class Legacy:
     """Original numbers to content ids, from content/core/legacy_ids.json."""
 
-    def __init__(self, path=LEGACY_IDS):
+    def __init__(self, path=LEGACY_IDS, hulls=HULLS):
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
+        with open(hulls, encoding="utf-8") as f:
+            self.pictures = {h["id"]: h["pictures"] for h in json.load(f)}
         self.parts, self.hulls, self.prts, self.lrts = {}, {}, {}, {}
         for cid, v in data.items():
             if "hull" in v:
@@ -83,6 +86,11 @@ class Legacy:
         if (kind, item) not in self.parts:
             raise StarsImportError("unknown part kind %d item %d" % (kind, item))
         return self.parts[(kind, item)]
+
+
+def design_picture(picture, first):
+    """The original's loader keeps a design picture within its hull's four (S04)."""
+    return picture if first <= picture < first + 4 else (picture & 3) | first
 
 
 def signed8(b):
@@ -322,7 +330,7 @@ class Importer:
             "turn_designed": turn_designed,
             "built": built,
             "remaining": remaining,
-            "picture": d[3],
+            "picture": design_picture(d[3], self.legacy.pictures[hull]),
             "mod_data": {},
         }
 

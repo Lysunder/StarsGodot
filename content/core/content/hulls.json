@@ -2,6 +2,7 @@
   {
     "type": "hull",
     "id": "hull.small_freighter",
+    "pictures": 0,
     "mass": 25,
     "cost": {
       "ironium": 12,
@@ -40,6 +41,7 @@
   {
     "type": "hull",
     "id": "hull.medium_freighter",
+    "pictures": 4,
     "tech": {
       "tech_field.construction": 3
     },
@@ -81,6 +83,7 @@
   {
     "type": "hull",
     "id": "hull.large_freighter",
+    "pictures": 8,
     "tech": {
       "tech_field.construction": 8
     },
@@ -122,6 +125,7 @@
   {
     "type": "hull",
     "id": "hull.super_freighter",
+    "pictures": 12,
     "tech": {
       "tech_field.construction": 13
     },
@@ -172,6 +176,7 @@
   {
     "type": "hull",
     "id": "hull.scout",
+    "pictures": 16,
     "mass": 8,
     "cost": {
       "ironium": 4,
@@ -213,6 +218,7 @@
   {
     "type": "hull",
     "id": "hull.frigate",
+    "pictures": 20,
     "tech": {
       "tech_field.construction": 6
     },
@@ -264,6 +270,7 @@
   {
     "type": "hull",
     "id": "hull.destroyer",
+    "pictures": 24,
     "tech": {
       "tech_field.construction": 3
     },
@@ -334,6 +341,7 @@
   {
     "type": "hull",
     "id": "hull.cruiser",
+    "pictures": 28,
     "tech": {
       "tech_field.construction": 9
     },
@@ -409,6 +417,7 @@
   {
     "type": "hull",
     "id": "hull.battle_cruiser",
+    "pictures": 32,
     "tech": {
       "tech_field.construction": 10
     },
@@ -487,6 +496,7 @@
   {
     "type": "hull",
     "id": "hull.battleship",
+    "pictures": 36,
     "tech": {
       "tech_field.construction": 13
     },
@@ -579,6 +589,7 @@
   {
     "type": "hull",
     "id": "hull.dreadnought",
+    "pictures": 40,
     "tech": {
       "tech_field.construction": 16
     },
@@ -696,6 +707,7 @@
   {
     "type": "hull",
     "id": "hull.privateer",
+    "pictures": 44,
     "tech": {
       "tech_field.construction": 4
     },
@@ -763,6 +775,7 @@
   {
     "type": "hull",
     "id": "hull.rogue",
+    "pictures": 48,
     "tech": {
       "tech_field.construction": 8
     },
@@ -859,6 +872,7 @@
   {
     "type": "hull",
     "id": "hull.galleon",
+    "pictures": 52,
     "tech": {
       "tech_field.construction": 11
     },
@@ -946,6 +960,7 @@
   {
     "type": "hull",
     "id": "hull.mini_colony_ship",
+    "pictures": 56,
     "mass": 8,
     "cost": {
       "ironium": 2,
@@ -978,6 +993,7 @@
   {
     "type": "hull",
     "id": "hull.colony_ship",
+    "pictures": 60,
     "mass": 20,
     "cost": {
       "ironium": 10,
@@ -1007,6 +1023,7 @@
   {
     "type": "hull",
     "id": "hull.mini_bomber",
+    "pictures": 64,
     "tech": {
       "tech_field.construction": 1
     },
@@ -1038,6 +1055,7 @@
   {
     "type": "hull",
     "id": "hull.b_17_bomber",
+    "pictures": 68,
     "tech": {
       "tech_field.construction": 6
     },
@@ -1083,6 +1101,7 @@
   {
     "type": "hull",
     "id": "hull.stealth_bomber",
+    "pictures": 72,
     "tech": {
       "tech_field.construction": 8
     },
@@ -1137,6 +1156,7 @@
   {
     "type": "hull",
     "id": "hull.b_52_bomber",
+    "pictures": 76,
     "tech": {
       "tech_field.construction": 15
     },
@@ -1200,6 +1220,7 @@
   {
     "type": "hull",
     "id": "hull.midget_miner",
+    "pictures": 80,
     "mass": 10,
     "cost": {
       "ironium": 10,
@@ -1234,6 +1255,7 @@
   {
     "type": "hull",
     "id": "hull.mini_miner",
+    "pictures": 84,
     "tech": {
       "tech_field.construction": 2
     },
@@ -1279,6 +1301,7 @@
   {
     "type": "hull",
     "id": "hull.miner",
+    "pictures": 88,
     "tech": {
       "tech_field.construction": 6
     },
@@ -1343,6 +1366,7 @@
   {
     "type": "hull",
     "id": "hull.maxi_miner",
+    "pictures": 92,
     "tech": {
       "tech_field.construction": 11
     },
@@ -1404,6 +1428,7 @@
   {
     "type": "hull",
     "id": "hull.ultra_miner",
+    "pictures": 96,
     "tech": {
       "tech_field.construction": 14
     },
@@ -1468,6 +1493,7 @@
   {
     "type": "hull",
     "id": "hull.fuel_transport",
+    "pictures": 100,
     "tech": {
       "tech_field.construction": 4
     },
@@ -1502,6 +1528,7 @@
   {
     "type": "hull",
     "id": "hull.super_fuel_xport",
+    "pictures": 104,
     "tech": {
       "tech_field.construction": 7
     },
@@ -1539,6 +1566,7 @@
   {
     "type": "hull",
     "id": "hull.mini_mine_layer",
+    "pictures": 108,
     "mass": 10,
     "cost": {
       "ironium": 8,
@@ -1587,6 +1615,7 @@
   {
     "type": "hull",
     "id": "hull.super_mine_layer",
+    "pictures": 112,
     "tech": {
       "tech_field.construction": 15
     },
@@ -1653,6 +1682,7 @@
   {
     "type": "hull",
     "id": "hull.nubian",
+    "pictures": 124,
     "tech": {
       "tech_field.construction": 26
     },
@@ -1834,6 +1864,7 @@
   {
     "type": "hull",
     "id": "hull.mini_morph",
+    "pictures": 120,
     "tech": {
       "tech_field.construction": 8
     },
@@ -1938,6 +1969,7 @@
   {
     "type": "hull",
     "id": "hull.meta_morph",
+    "pictures": 116,
     "tech": {
       "tech_field.construction": 10
     },
@@ -2045,6 +2077,7 @@
   {
     "type": "hull",
     "id": "hull.orbital_fort",
+    "pictures": 128,
     "starbase": true,
     "mass": 0,
     "cost": {
@@ -2096,6 +2129,7 @@
   {
     "type": "hull",
     "id": "hull.space_dock",
+    "pictures": 132,
     "starbase": true,
     "tech": {
       "tech_field.construction": 4
@@ -2172,6 +2206,7 @@
   {
     "type": "hull",
     "id": "hull.space_station",
+    "pictures": 136,
     "starbase": true,
     "mass": 0,
     "cost": {
@@ -2269,6 +2304,7 @@
   {
     "type": "hull",
     "id": "hull.ultra_station",
+    "pictures": 140,
     "starbase": true,
     "tech": {
       "tech_field.construction": 12
@@ -2398,6 +2434,7 @@
   {
     "type": "hull",
     "id": "hull.death_star",
+    "pictures": 144,
     "starbase": true,
     "tech": {
       "tech_field.construction": 17

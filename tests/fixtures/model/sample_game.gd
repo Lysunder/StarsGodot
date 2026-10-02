@@ -74,6 +74,7 @@ static func _player(i: int) -> Player:
 	d.slot = 3
 	d.name = "Scout"
 	d.hull = "hull.scout"
+	d.picture = 17
 	var parts: Array[DesignSlot] = [
 		DesignSlot.new("part.engine.quick_jump_5", 1),
 		DesignSlot.new("part.scanner.bat_scanner", 1),
@@ -85,6 +86,7 @@ static func _player(i: int) -> Player:
 	base.slot = 0
 	base.name = "Station"
 	base.hull = "hull.space_station"
+	base.picture = 136
 	for n in 12:
 		base.parts.append(DesignSlot.new())
 	p.set_design(base, true)
