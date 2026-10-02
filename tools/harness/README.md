@@ -51,7 +51,7 @@ harness folder, not here.
    | 2 | universe size (0 tiny … 4 huge), density (0–3), player positions (0–3), random seed (optional) |
    | 3 | seven option flags, 0 or 1: maximum minerals, slower tech, accelerated start, no random events, computer alliances, public scores, galaxy clumping |
    | 4 | number of players |
-   | then | one line per player: a race file name (the first player must be one), or `#1 1` for a computer player |
+   | then | one line per player: a race file name (the first player must be one), or `#a b` for a computer player: personality a and skill level b, 0 = random (S07) |
    | then | eight victory-condition lines: `0` (off) or `1 <value>` |
    | last | the universe file name (`<name>.xy`) |
 

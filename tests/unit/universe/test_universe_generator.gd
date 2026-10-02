@@ -1,8 +1,20 @@
 extends GdUnitTestSuite
-## Spec S07 against the original: universes generated from seed 4242 must match the turn-0 files
-## the original wrote for the same definition (tests/fixtures/golden).
+## Spec S07 against the original: universes generated from each fixture's seed must match the
+## turn-0 files the original wrote for the same definition (tests/fixtures/golden).
 
-const SEED := 4242
+## Fixture -> [game seed, players given as random computer players (`#0 0`)].
+const GAMES := {
+	"tiny2": [4242, []],
+	"tiny3ai": [4242, []],
+	"medium_clump": [1002, [1, 2, 3]],
+	"small_maxmin": [1003, []],
+	"tiny_accel": [1004, []],
+	"small_sparse": [1005, []],
+	"tiny_random_ai": [1009, [1]],
+	"small_it": [1011, []],
+	"medium_it_two_humans": [1012, [2]],
+	"tiny_it": [1013, []],
+}
 
 ## Everything except names (the fixtures have neutral ones) and the random streams (a fixture
 ## holds the state at the start of the next turn's generation, S01).
@@ -33,9 +45,11 @@ func _fixture(game: String) -> GameState:
 
 
 ## The players as the definition file gave them: the fixture's races, with the name and logo
-## each race had before the setup draws (human race files: one name, logo 1; built-in computer
-## races: no name, logo 0).
-func _input_players(state: GameState) -> Array[Player]:
+## each race had before the setup draws. Human race files: logo 1 and one name per file (the
+## fixtures use one race file per primary trait). Built-in computer races: no name, logo 0.
+## Random computer players get their level and personality drawn again.
+func _input_players(game: String, state: GameState) -> Array[Player]:
+	var randoms: Array = GAMES[game][1]
 	var out: Array[Player] = []
 	for original in state.players:
 		var p := Player.new()
@@ -44,18 +58,23 @@ func _input_players(state: GameState) -> Array[Player]:
 		p.ai = original.ai
 		p.ai_level = original.ai_level
 		if p.is_human():
-			p.race.name = "Testers"
+			p.race.name = "Testers " + p.race.primary_trait
 			p.race.logo = 1
 		else:
 			p.race.name = ""
 			p.race.logo = 0
+			if p.index in randoms:
+				p.ai = UniverseGenerator.AI_RANDOM
+				p.ai_level = -1
 		out.append(p)
 	return out
 
 
 func _generate(game: String) -> Array:
 	var state := _fixture(game)
-	var gen := UniverseGenerator.new(_content, state.settings, _input_players(state), SEED)
+	var gen := UniverseGenerator.new(
+		_content, state.settings, _input_players(game, state), GAMES[game][0]
+	)
 	gen.generate_universe()
 	return [gen, state]
 
@@ -133,7 +152,9 @@ static func _reference_order() -> Array:
 
 func _check_whole_game(game: String) -> void:
 	var real := _fixture(game)
-	var gen := UniverseGenerator.new(_content, real.settings, _input_players(real), SEED)
+	var gen := UniverseGenerator.new(
+		_content, real.settings, _input_players(game, real), GAMES[game][0]
+	)
 	var state := gen.generate()
 	var diffs := StateDiff.compare(real, state, PackedStringArray(IGNORE))
 	(
@@ -143,8 +164,9 @@ func _check_whole_game(game: String) -> void:
 		)
 		. is_empty()
 	)
-	var errors := StateValidator.validate(state, _content)
-	assert_array(Array(errors)).override_failure_message("\n".join(errors)).is_empty()
+	for checked in [real, state]:
+		var errors := StateValidator.validate(checked, _content)
+		assert_array(Array(errors)).override_failure_message("\n".join(errors)).is_empty()
 
 
 func test_two_humans_whole_game() -> void:
@@ -153,3 +175,42 @@ func test_two_humans_whole_game() -> void:
 
 func test_human_and_computers_whole_game() -> void:
 	_check_whole_game("tiny3ai")
+
+
+## Galaxy clumping, three random computer players, a PP race's extra planet (medium universe).
+func test_clumping_whole_game() -> void:
+	_check_whole_game("medium_clump")
+
+
+func test_maximum_minerals_whole_game() -> void:
+	_check_whole_game("small_maxmin")
+
+
+## Accelerated start, packed density, distant positions.
+func test_accelerated_start_whole_game() -> void:
+	_check_whole_game("tiny_accel")
+
+
+## Sparse density, slower tech, computer alliances, public scores, two humans.
+func test_sparse_two_humans_whole_game() -> void:
+	_check_whole_game("small_sparse")
+
+
+## One random computer player in a tiny sparse universe (a PP race: no extra planet in tiny).
+func test_random_computer_whole_game() -> void:
+	_check_whole_game("tiny_random_ai")
+
+
+## An Inter-stellar Traveler race: gate starbases and the extra planet (small universe).
+func test_inter_stellar_traveler_whole_game() -> void:
+	_check_whole_game("small_it")
+
+
+## The IT race and a second human race with the same logo, a random computer player, clumping.
+func test_inter_stellar_traveler_two_humans_whole_game() -> void:
+	_check_whole_game("medium_it_two_humans")
+
+
+## The IT race in a tiny universe: no extra planet, no second starbase.
+func test_inter_stellar_traveler_tiny_whole_game() -> void:
+	_check_whole_game("tiny_it")
