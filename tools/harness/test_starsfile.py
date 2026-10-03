@@ -243,7 +243,9 @@ class TestImporter(unittest.TestCase):
         self.assertEqual(len(f["waypoints"]), 2)
         self.assertEqual(f["waypoints"][1]["task"], "transport")
         self.assertEqual(f["waypoints"][1]["warp"], 5)
-        self.assertEqual(f["waypoints"][1]["task_data"], {"raw": [0, 0, 0, 0, 0]})
+        self.assertEqual(
+            f["waypoints"][1]["task_data"], {"cargo": [{"action": "none", "amount": 0}] * 5}
+        )
         pk = s["packets"][0]
         self.assertEqual((pk["salvage"], pk["minerals"], pk["destination"]), (True, [5, 0, 7], -1))
         self.assertEqual(s["rng"]["streams"]["classic"], {"s1": 5, "s2": 673})

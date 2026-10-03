@@ -3,7 +3,9 @@
 Status: draft (2026-09-30), second pass. Structure, colonize, scrap, remote mining, mine laying and task completion
 read from the code; transport amounts partly (see "Open questions"). Order application started (2026-10-03): the
 production queue, research and planet orders are implemented (`core/turn/order_rules.gd`) and match the original in
-a harness game with orders given in the client.
+a harness game with orders given in the client. Waypoint orders, transport at the owner's planet, colonize and
+colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), matching the original in terra1 turns
+0-2.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -77,7 +79,21 @@ against the state when the turn is generated.
   must be the player's; destinations are planet ids or −1. The mass driver settings are kept only on a planet with
   a starbase (the original stores them with the starbase); the route and the leftover setting always.
 
-References for these: `ApplyOrderBlock@1040:651e` (blocks 29, 34, 35).
+- **`waypoint_add`** `{owner, fleet, index, waypoint}`: inserts the waypoint at index (0 … count).
+  **`waypoint_change`** `{owner, fleet, index, waypoint}`: replaces the waypoint at index (below count).
+  **`waypoint_delete`** `{owner, fleet, index, count}`: removes 1 or 2 waypoints from index. The fleet must be the
+  player's (the original does not check this). An added or changed waypoint is never frozen. A waypoint with a task
+  but without task data gets the task's empty data (the original fills missing words with zero).
+
+References for these: `ApplyOrderBlock@1040:651e` (blocks 3, 4, 5, 29, 34, 35).
+
+### Task data
+
+Only waypoints with a task carry task data. Transport: `cargo`, five entries (ironium, boranium, germanium,
+colonists, fuel), each `{action, amount}` with action `none`, `load_all`, `unload_all`, `load`, `unload`,
+`fill_percent`, `wait_percent`, `load_optimal`, `set_amount` or `set_waypoint` (the original's numbers 0–9) and amount
+0–4095. Other tasks keep the original's five words as `raw` until their rules are specified. When a task is done its
+task data is cleared with it.
 
 ## Waypoint tasks
 
@@ -126,6 +142,10 @@ Rules visible in the code (amounts to be confirmed, see "Open questions"):
   loaded from a planet the fleet's owner doesn't own.)
 - Unloading colonists onto another player's planet is an invasion (resolved in ground combat, S17).
 - Unloading onto deep space jettisons the cargo (salvage, S14).
+- Built so far: the four basic actions at the owner's own planet, for minerals and colonists (colonists move between
+  the fleet's cargo and the planet's population units, 1 kT = 1 unit = 100 colonists). The load pass ends the task.
+  Loading takes what the planet has, up to the fleet's free cargo space (its designs' cargo capacity minus minerals
+  and colonists carried).
 
 ### Colonize
 
@@ -137,9 +157,24 @@ player a message and the task stays):
 3. The fleet carries colonists.
 4. At least one ship type in the fleet has a Colonization Module or an Orbital Construction Module in its design.
 
-The fleet is then dismantled: 3/4 of the ships' mineral cost (per mineral, rounded down) plus all minerals in the
-cargo go to the planet's surface, and the colonization is recorded and resolved together with ground combat (S17),
-so several players colonizing the same planet in one turn are resolved there.
+The fleet is then dismantled: 3/4 of the ships' mineral cost (per mineral, rounded down; the design cost as
+stored, recomputed at current tech for Bleeding Edge) plus all minerals in the cargo go to the planet's surface,
+each design's existing count drops by its ships, the fleet is gone, and the colonization (player, planet,
+colonists) is recorded and resolved together with ground combat (S02 5c, 16d), so several players colonizing the
+same planet in one turn are resolved there.
+
+**Colonizing an empty planet** (the part of `ResolveGroundCombat@10b0:1e82` for unowned planets):
+
+1. Per player, colonists = the sum of its records for the planet; strength = colonists × troops percentage div
+   100 (trait parameter `invasion.troops_pct`: 110, War Monger 165, Alternate Reality 0).
+2. The player with the greatest strength wins; an exact tie for the greatest means nobody colonizes (the colonists
+   are lost). "Second" is the greatest strength before the winner's in player order.
+3. Population = the winner's colonists, times (top − second) div top when a second player had strength; at least 1.
+4. The planet becomes the winner's with that population. Its queue becomes a copy of the player's default
+   production template (S09; not modelled yet, empty for human players by default) and its "only leftover to
+   research" setting the player's default.
+5. An artifact on the planet is removed; with random events on, the winner gains 100 + random(301) research
+   points (scaled by population div 10 below 10 units) in field random(6) (draws in that order).
 
 **Fix B16:** the original checks the *current* design of each ship type, so a design changed after the ships were
 built gives the wrong answer. We check the ships actually in the fleet (each ship keeps the design it was built

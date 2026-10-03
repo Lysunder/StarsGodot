@@ -357,6 +357,9 @@ conversion.
 
 | Block | Layout |
 |---|---|
+| 3 waypoint delete | 2 bytes fleet id (number, owner × 512); 2 bytes index, bit 15 set: delete two |
+| 4 waypoint add | fleet id; 2 bytes index; the waypoint as in type 19/20 (8 bytes, or with 2 to 10 bytes of task data; missing words are zero) |
+| 5 waypoint change | as 4; replaces the waypoint at index |
 | 29 production queue change | 2 bytes planet id (11 bits), then the whole queue as 4-byte items (as type 28) |
 | 34 research change | 1 byte research percent; 1 byte: current field in the low nibble, next field setting in the high nibble |
 | 35 planet change | 2 bytes planet id; 4 bytes v: bit 0 only leftover to research, bits 1–10 mass driver destination + 1 (0 none), bits 11–14 mass driver warp − 4, bits 15–24 route destination + 1 (0 none) |

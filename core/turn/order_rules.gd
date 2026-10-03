@@ -4,7 +4,14 @@ extends RefCounted
 ## player's orders in list order, each checked against the state at that moment. A rejected order
 ## changes nothing.
 
-const TYPES := ["production_queue", "research", "planet_settings"]
+const TYPES := [
+	"production_queue",
+	"research",
+	"planet_settings",
+	"waypoint_add",
+	"waypoint_change",
+	"waypoint_delete",
+]
 
 
 ## Applies every order set; returns one "player P order I: reason" line per rejected order.
@@ -35,6 +42,8 @@ static func apply(
 			return _research(state, player, order)
 		"planet_settings":
 			return _planet_settings(state, player, order)
+		"waypoint_add", "waypoint_change", "waypoint_delete":
+			return _waypoint(state, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -129,6 +138,43 @@ static func _planet_settings(state: GameState, player: int, order: Dictionary) -
 		planet.mass_driver_target = target
 		planet.mass_driver_warp = warp
 	planet.route = route
+	return ""
+
+
+## Edits a fleet's waypoint list (S11): add inserts at index (0..count), change replaces the
+## waypoint at index, delete removes `count` (1 or 2) waypoints from index.
+static func _waypoint(state: GameState, player: int, order: Dictionary) -> String:
+	var owner: Variant = order.get("owner", player)
+	var number: Variant = order.get("fleet")
+	var index: Variant = order.get("index")
+	if not owner is int or owner != player or not number is int:
+		return "not the player's fleet"
+	var fleet := state.fleet(player, number)
+	if fleet == null:
+		return "not the player's fleet"
+	if not index is int or index < 0:
+		return "bad waypoint index"
+	var waypoints := fleet.waypoints
+	if order["type"] == "waypoint_delete":
+		var count: Variant = order.get("count", 1)
+		if not count is int or count < 1 or count > 2 or index + count > waypoints.size():
+			return "bad waypoint index"
+		for k in count:
+			waypoints.remove_at(index)
+		return ""
+	var errors := PackedStringArray()
+	var wp := ModelObject.object_from(Waypoint, order.get("waypoint"), "", errors) as Waypoint
+	if not errors.is_empty():
+		return "bad waypoint: %s" % errors[0]
+	wp.frozen = false
+	if order["type"] == "waypoint_add":
+		if index > waypoints.size():
+			return "bad waypoint index"
+		waypoints.insert(index, wp)
+	else:
+		if index >= waypoints.size():
+			return "bad waypoint index"
+		waypoints[index] = wp
 	return ""
 
 

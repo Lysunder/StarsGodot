@@ -5,7 +5,8 @@ for arguments the decompiler lost). Order inside each phase is specified by the 
 what is confirmed so far. Compared with the community "Order of Events" list. Implemented as a pipeline in
 `core/turn/` (2026-10-02): every id below exists; mining, planet production (empty queues only), growth, the tech
 update, the end-of-turn phases, the order phase (production queue, research and planet orders) the wormhole
-shift and terraforming (S10: Claim Adjuster and remote) run, and the rest are placeholders. Golden turns: `tiny2` turns 0-5 match.
+shift, terraforming (S10: Claim Adjuster and remote), the waypoint task passes (transport at own planets,
+colonize), fleet movement and refueling run, and the rest are placeholders. Golden turns: `tiny2` turns 0-5 match.
 References: `GenerateTurn@10a8:0000`, `DoWaypointTasks@10a8:0e92`, `DoWaypointTaskPass@10a8:3ec6`,
 `MoveSpaceObjects@10a8:0f6e`, `MoveFleets@10a8:1f18`, `DoProduction@10b0:0000`, `RunBattles@10e8:24aa`,
 `UpdateTechLevels@10b0:4c50`, `UpdateScoresAndVictory@10b0:3b78`, `RunComputerPlayers@1018:39f8`,

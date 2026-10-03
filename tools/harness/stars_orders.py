@@ -2,8 +2,8 @@
 
 Usage: python tools/harness/stars_orders.py <name>.x1 out.orders.json
 
-Order blocks converted so far: production queue change (29), research change (34) and planet
-change (35). Any other order block stops the conversion with its type, so a fixture never silently
+Order blocks converted so far: waypoint delete, add and change (3, 4, 5), production queue change
+(29), research change (34) and planet change (35). Any other order block stops the conversion with its type, so a fixture never silently
 loses orders. Registration data (block type 9) is dropped unread by the file reader.
 """
 
@@ -19,6 +19,9 @@ import stars_import  # noqa: E402
 
 FORMAT = "starsgodot-orders"
 FORMAT_VERSION = 1
+WAYPOINT_DELETE = 3
+WAYPOINT_ADD = 4
+WAYPOINT_CHANGE = 5
 QUEUE_CHANGE = 29
 RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
@@ -56,6 +59,15 @@ def convert(raw, legacy=None):
 
 def convert_block(importer, b):
     d = b.data
+    if b.type in (WAYPOINT_DELETE, WAYPOINT_ADD, WAYPOINT_CHANGE):
+        fleet_id, index = struct.unpack_from("<HH", d, 0)
+        out = {"fleet": fleet_id & 0x1FF, "owner": (fleet_id >> 9) & 15}
+        if b.type == WAYPOINT_DELETE:
+            out.update(type="waypoint_delete", index=index & 0x7FFF, count=2 if index & 0x8000 else 1)
+            return out
+        out.update(index=index, waypoint=importer.waypoint(d[4:]))
+        out["type"] = "waypoint_add" if b.type == WAYPOINT_ADD else "waypoint_change"
+        return out
     if b.type == QUEUE_CHANGE:
         planet = struct.unpack_from("<H", d, 0)[0] & 0x7FF
         items = [importer.queue_item(planet, w) for w in struct.iter_unpack("<HH", d[2:])]

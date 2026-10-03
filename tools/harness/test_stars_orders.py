@@ -43,7 +43,7 @@ class TestOrders(unittest.TestCase):
 
     def test_unknown_blocks_and_wrong_files_stop(self):
         with self.assertRaises(stars_orders.StarsOrdersError):
-            stars_orders.convert(self.x_file([(4, b"\0" * 8)]))
+            stars_orders.convert(self.x_file([(24, b"\0" * 8)]))
         with self.assertRaises(stars_orders.StarsOrdersError):
             stars_orders.convert(self.x_file([], kind=2))
 

@@ -42,6 +42,11 @@ OPTION_BITS = {
     "public_scores": 0x40,
     "galaxy_clumping": 0x100,
 }
+TRANSPORT_ACTIONS = [
+    "none", "load_all", "unload_all", "load", "unload", "fill_percent", "wait_percent", "load_optimal",
+    "set_amount", "set_waypoint", "unknown_10", "unknown_11", "unknown_12", "unknown_13", "unknown_14",
+    "unknown_15",
+]
 QUEUE_STANDARD = 2
 QUEUE_DESIGN = 4
 SHIP_DESIGN_SLOTS = 16
@@ -92,6 +97,13 @@ class Legacy:
         if (kind, item) not in self.parts:
             raise StarsImportError("unknown part kind %d item %d" % (kind, item))
         return self.parts[(kind, item)]
+
+
+def task_data(task, words):
+    """A waypoint's task data (S11): transport gets one action and amount per cargo type."""
+    if task != "transport":
+        return {"raw": words}
+    return {"cargo": [{"action": TRANSPORT_ACTIONS[w >> 12], "amount": w & 0xFFF} for w in words]}
 
 
 def design_picture(picture, first):
@@ -519,8 +531,10 @@ class Importer:
             kind = OBJECT_KINDS[target_id >> 13]
             wp["target"], wp["target_id"] = kind, target_id & 0x1FF
             wp["target_owner"] = (target_id >> 9) & 15 if kind in ("minefield", "packet") else -1
-        if len(d) > 8:
-            wp["task_data"] = {"raw": list(struct.unpack_from("<5H", d, 8))}
+        if wp["task"] != "none":
+            # Missing task data words are zero, as the original fills them (order blocks 4, 5).
+            words = list(struct.unpack("<%dH" % ((len(d) - 8) // 2), d[8:])) + [0] * 5
+            wp["task_data"] = task_data(wp["task"], words[:5])
         return wp
 
     # --- space objects ---

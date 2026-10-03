@@ -31,7 +31,8 @@
     "params": {
       "cost.beam_adjust_pct": 75,
       "cost.torpedo_adjust_pct": 75,
-      "cost.bomb_adjust_pct": 75
+      "cost.bomb_adjust_pct": 75,
+      "invasion.troops_pct": 165
     }
   },
   {
@@ -103,7 +104,8 @@
     "params": {
       "race.ap_cheap_energy_penalty": 100,
       "production.starbase_adjust_pct": 80,
-      "production.genesis_keeps_installations": 1
+      "production.genesis_keeps_installations": 1,
+      "invasion.troops_pct": 0
     }
   },
   {
@@ -123,7 +125,10 @@
     "id": "trait.lrt.IFE",
     "kind": "lesser",
     "order": 0,
-    "cost": 235
+    "cost": 235,
+    "params": {
+      "movement.fuel_usage_pct": 85
+    }
   },
   {
     "type": "trait",
@@ -196,7 +201,8 @@
     "order": 8,
     "cost": -240,
     "params": {
-      "cost.engine_adjust_pct": 50
+      "cost.engine_adjust_pct": 50,
+      "movement.engine_failure": 1
     }
   },
   {

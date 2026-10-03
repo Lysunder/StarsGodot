@@ -41,6 +41,37 @@ static func fuel_capacity(design: Design, content: ContentRegistry) -> int:
 	return total
 
 
+## A design's mass in kT (S04): hull plus each slot's parts.
+static func mass(design: Design, content: ContentRegistry) -> int:
+	var total: int = content.hull(design.hull).get("mass", 0)
+	for slot in design.parts:
+		if not slot.part.is_empty():
+			total += slot.count * int(content.part(slot.part).get("mass", 0))
+	return total
+
+
+## A design's cargo capacity in kT (S04): the hull's plus each part's `cargo_capacity`.
+static func cargo_capacity(design: Design, content: ContentRegistry) -> int:
+	var total: int = content.hull(design.hull).get("cargo", 0)
+	for slot in design.parts:
+		if not slot.part.is_empty():
+			total += (
+				slot.count * int(content.part(slot.part).get("stats", {}).get("cargo_capacity", 0))
+			)
+	return total
+
+
+## A design's engine part (the part in its first engine slot) and whether that slot is full;
+## ["", false] without one.
+static func engine(design: Design, content: ContentRegistry) -> Array:
+	var slots: Array = content.hull(design.hull)["slots"]
+	for i in slots.size():
+		if (slots[i]["accepts"] as Array).has("engine"):
+			var s := design.parts[i] if i < design.parts.size() else DesignSlot.new()
+			return [s.part, s.count >= int(slots[i].get("max", 1)) and not s.part.is_empty()]
+	return ["", false]
+
+
 ## A design's armor (S04): the hull's plus each slot's `armor` stat times its count, armor parts
 ## scaled by the owner's `design.armor_part_pct` (Regenerating Shields: 50).
 static func armor(design: Design, content: ContentRegistry, race: Race = null) -> int:

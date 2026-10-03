@@ -3,7 +3,9 @@
 Status: draft (2026-09-30), second pass. Movement, fuel, ram scoops, warp-10 damage, stargates with overgating,
 wormholes, arrival, waypoint advancing with repeat orders, and refueling read from the code. Intercept retargeting
 details remain open. The wormhole shift (added 2026-10-03) is implemented in `core/rules/wormholes.gd` and matches
-the original's drift in golden turns (no jump seen yet).
+the original's drift in golden turns (no jump seen yet). Movement, fuel use, ram scoops, waypoints after movement
+and refueling implemented in `core/rules/movement.gd` (2026-10-04), matching the original in terra1 turns 0-2;
+following fleets, stargates, wormhole jumps, minefields and warp-10 damage not yet.
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
@@ -73,7 +75,8 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 
 ### Moving
 
-1. The move budget is w² light years; a fleet following another fleet uses the target's current position.
+1. The move budget is w² light years; a fleet following another fleet uses the target's current position. The
+   move m = min(budget, distance to the target truncated to an integer); the fuel use is computed for m.
 2. If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
    allows and ends with 0 fuel; then its next waypoint's warp is lowered to the highest warp at which it uses no
    fuel (if that is warp 1 or less the fleet is stuck), with a message.
@@ -99,7 +102,8 @@ After all movement passes:
 1. Waypoints that target a fleet are moved to that fleet's position (unless frozen because the target jumped through
    a gate); if the target no longer exists the waypoint becomes a deep-space waypoint.
 2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
-   the planet or deep space the fleet is at), then the reached waypoint is removed from the list.
+   the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
+   only part of the way gets a new current waypoint in deep space at its position (warp 0, no task).
 3. **Repeat orders:** with repeat on, the removed waypoint is appended at the end of the list, so the route loops.
 
 ### Refueling (S02 phase 15)

@@ -43,6 +43,10 @@ static func pipeline() -> TurnPipeline:
 	var built := {}
 	for p: Phase in [
 		OrderPhases.Apply.new(),
+		FleetPhases.Waypoint0Tasks.new(),
+		FleetPhases.Move.new(),
+		FleetPhases.Refuel.new(),
+		FleetPhases.Waypoint1Tasks.new(),
 		EconomyPhases.Mining.new(),
 		EconomyPhases.Planets.new(),
 		EconomyPhases.Growth.new(),
