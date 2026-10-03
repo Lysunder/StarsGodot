@@ -35,7 +35,7 @@ var mass_driver_warp: int = 0
 ## Route destination for new fleets: planet id or -1 (S11).
 var route: int = -1
 ## Production queue (S09).
-var queue: Array = []
+var queue: Array[QueueItem] = []
 ## Only resources left over after the queue go to research (S09).
 var leftover_to_research: bool = false
 ## Random-event artifact (S18).
@@ -66,7 +66,7 @@ func _schema() -> Array:
 		["mass_driver_target", Kind.INT],
 		["mass_driver_warp", Kind.INT],
 		["route", Kind.INT],
-		["queue", Kind.JSON],
+		["queue", Kind.OBJECT_LIST, QueueItem],
 		["leftover_to_research", Kind.BOOL],
 		["artifact", Kind.JSON],
 		["mod_data", Kind.JSON],

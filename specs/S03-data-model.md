@@ -131,7 +131,7 @@ whole game. "Each planet" means in id order.
 | `starbase` | none, or the design slot of the owner's starbase design plus its damage in armor points (0 … 4095) |
 | `mass_driver_target`, `mass_driver_warp` | packet destination planet (−1 = none) and the driver's warp setting (S09, S14) |
 | `route` | route destination for new fleets (planet id or none) (S11) |
-| `queue` | production queue, list of items (S09) |
+| `queue` | production queue (S09): items with `item` (content id of a `production_item`, or "" for a design), `design` (slot, −1 for a standard item), `starbase`, `count` (0–1023), `progress` (0–100% of one unit) |
 | `leftover_to_research` | only resources left after the queue go to research (S09) |
 | `artifact` | random-event artifact (S18) |
 | `mod_data` | per mod |

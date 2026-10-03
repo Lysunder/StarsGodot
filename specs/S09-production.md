@@ -4,6 +4,9 @@ Status: draft (2026-10-02), second pass. Read from the decompiled code, with the
 (`DoProduction`), whose control flow the decompiler garbles. Not yet harness-verified: no fixture has a production
 queue yet (computer players' queues are made and spent inside the original's turn run, so they never appear in the
 files; human queues need order files, S23). Packet launching is summarized here and specified with S14.
+Implemented in `core/rules/production.gd` and `production_costs.gd` (2026-10-02), except terraforming items (S10),
+packets (S14), route following for new fleets (S11) and Alternate Reality default orders; those items are dropped
+from the queue with a warning until their specs are done.
 References: `DoProduction@10b0:0000`, `Production_SpendOnItem@10b0:0756`, `Production_CompleteItem@10b0:0e68`,
 `GetProductionItemCost@10c8:21e4`, `Design_ComputeCost@1048:7a92`, `Planet_FreeQueue@10b0:36d6`,
 `Queue_RemoveShipItems@10c0:4900`, `Queue_RemovePacketItems@10c0:47ea`, `BestPlanetaryScanner`,
@@ -174,7 +177,8 @@ Then, while units remain:
    and resources − (q × r) div 100.
 
 After the loop: completed mineral alchemy units (3, 11) add 1 kT of every mineral each to available. An auto item
-that ended with progress gets a carry-over item: the same item with count 1 and that progress. A normal item's
+that ended with progress gets a carry-over item: its counterpart (auto mines become mines, auto factories
+factories, and so on; confirmed in a harness game) with count 1 and that progress. A normal item's
 queue entry is updated (count and progress).
 
 ### 6. Completing units (`Production_CompleteItem`)
@@ -185,7 +189,7 @@ queue entry is updated (count and progress).
 | alchemy | nothing more (step 5 added the minerals) |
 | terraform | per unit, one terraforming step (S10): one axis moves 1 toward the race's ideal, kept within 1–99 |
 | packets | needs the mass driver (else nothing); launched toward the destination (S14) |
-| Genesis Device (13) | every player is told; unless the owner is Alternate Reality the planet loses its mines, factories, defenses and scanner; surface minerals become 0; for each axis in turn: environment (and original environment) = random(50) + random(50) + 1 (the first draw is the first term); then each concentration = random(40) + random(40) + 25 |
+| Genesis Device (13) | every player is told; unless the owner is Alternate Reality the planet loses its mines, factories, defenses and scanner; for i = 0, 1, 2 in turn: surface mineral i becomes 0, environment axis i (and its original value) = a + b + 1 with a = random(50) then b = random(50), and concentration i = c + d + 25 with c = random(40) then d = random(40) |
 | scanners (18–26) | the planet's scanner becomes planetary part (item − 18) |
 | scanner (27) | the best planetary scanner the owner can build |
 | ship designs | step 6a |
@@ -235,7 +239,8 @@ destination at the same speed absorbs the new minerals; otherwise a new packet i
 
 ## Randomness
 
-Only the Genesis Device draws (12 draws per device: 6 for the environment, 6 for the concentrations). Building
+Only the Genesis Device draws: 12 draws per device, 4 per index (two for the environment axis, then two for the
+concentration). Building
 ships and route following (S11) do not draw.
 
 ## Edge cases

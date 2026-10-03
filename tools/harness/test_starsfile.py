@@ -233,7 +233,9 @@ class TestImporter(unittest.TestCase):
         self.assertEqual(pl["starbase"], {"design": 2, "damage": 100})
         self.assertEqual((pl["mass_driver_target"], pl["mass_driver_warp"]), (1, 7))
         self.assertEqual(pl["route"], 0)
-        self.assertEqual(pl["queue"], [{"count": 1, "item": 21, "kind": 4, "progress": 29}])
+        self.assertEqual(
+            pl["queue"], [{"item": "", "design": 5, "starbase": True, "count": 1, "progress": 29}]
+        )
         self.assertEqual(s["planets"][1]["owner"], -1)
         f = s["fleets"][0]
         self.assertEqual(f["stacks"], [{"design": 3, "count": 2, "damaged_percent": 50, "damage": 20, "paid": [0, 0, 0, 0]}])

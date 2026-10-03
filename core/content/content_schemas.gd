@@ -128,6 +128,7 @@ const TYPES := {
 			"cost": _COST,
 			"stats": _INT_MAP,
 			"fuel_table": {"t": "list", "of": _INT0, "min": 11, "max": 11},
+			"miniaturize": {"t": "bool"},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
 		},
@@ -146,6 +147,7 @@ const TYPES := {
 			"cargo": _INT0,
 			"initiative": _INT0,
 			"pictures": _INT0,
+			"rank": _INT0,
 			"dock": {"t": "int", "min": -1},
 			"stats": _INT_MAP,
 			"slots": {"t": "list", "of": _SLOT, "min": 1},
@@ -211,6 +213,35 @@ const TYPES := {
 			"attack": _INT0,
 		},
 		"required": ["order", "tactic", "primary_target", "secondary_target", "attack"],
+	},
+	"production_item":
+	{
+		"fields":
+		{
+			"order": _INT0,
+			"effect":
+			{
+				"t": "enum",
+				"values":
+				[
+					"mines",
+					"factories",
+					"defenses",
+					"alchemy",
+					"terraform",
+					"packet",
+					"genesis",
+					"scanner",
+				],
+			},
+			"auto": {"t": "bool"},
+			"builds": {"t": "ref", "to": "production_item"},
+			"minimum": {"t": "bool"},
+			"best": {"t": "bool"},
+			"part": {"t": "ref", "to": "part"},
+			"mineral": {"t": "enum", "values": ["ironium", "boranium", "germanium", "mixed"]},
+		},
+		"required": ["order", "effect"],
 	},
 	"race_preset":
 	{

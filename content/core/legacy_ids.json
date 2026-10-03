@@ -989,5 +989,86 @@
   },
   "trait.lrt.RS": {
     "lrt_bit": 13
+  },
+  "production_item.auto_mines": {
+    "production_item": 0
+  },
+  "production_item.auto_factories": {
+    "production_item": 1
+  },
+  "production_item.auto_defenses": {
+    "production_item": 2
+  },
+  "production_item.auto_alchemy": {
+    "production_item": 3
+  },
+  "production_item.auto_min_terraform": {
+    "production_item": 4
+  },
+  "production_item.auto_max_terraform": {
+    "production_item": 5
+  },
+  "production_item.auto_packets": {
+    "production_item": 6
+  },
+  "production_item.factories": {
+    "production_item": 7
+  },
+  "production_item.mines": {
+    "production_item": 8
+  },
+  "production_item.defenses": {
+    "production_item": 9
+  },
+  "production_item.alchemy": {
+    "production_item": 11
+  },
+  "production_item.terraform": {
+    "production_item": 12
+  },
+  "production_item.genesis": {
+    "production_item": 13
+  },
+  "production_item.ironium_packet": {
+    "production_item": 14
+  },
+  "production_item.boranium_packet": {
+    "production_item": 15
+  },
+  "production_item.germanium_packet": {
+    "production_item": 16
+  },
+  "production_item.mixed_packet": {
+    "production_item": 17
+  },
+  "production_item.scanner_viewer_50": {
+    "production_item": 18
+  },
+  "production_item.scanner_viewer_90": {
+    "production_item": 19
+  },
+  "production_item.scanner_scoper_150": {
+    "production_item": 20
+  },
+  "production_item.scanner_scoper_220": {
+    "production_item": 21
+  },
+  "production_item.scanner_scoper_280": {
+    "production_item": 22
+  },
+  "production_item.scanner_snooper_320x": {
+    "production_item": 23
+  },
+  "production_item.scanner_snooper_400x": {
+    "production_item": 24
+  },
+  "production_item.scanner_snooper_500x": {
+    "production_item": 25
+  },
+  "production_item.scanner_snooper_620x": {
+    "production_item": 26
+  },
+  "production_item.planetary_scanner": {
+    "production_item": 27
   }
 }

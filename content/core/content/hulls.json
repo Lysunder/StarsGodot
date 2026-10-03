@@ -2077,6 +2077,7 @@
   {
     "type": "hull",
     "id": "hull.orbital_fort",
+    "rank": 0,
     "pictures": 128,
     "starbase": true,
     "mass": 0,
@@ -2129,6 +2130,7 @@
   {
     "type": "hull",
     "id": "hull.space_dock",
+    "rank": 1,
     "pictures": 132,
     "starbase": true,
     "tech": {
@@ -2206,6 +2208,7 @@
   {
     "type": "hull",
     "id": "hull.space_station",
+    "rank": 2,
     "pictures": 136,
     "starbase": true,
     "mass": 0,
@@ -2304,6 +2307,7 @@
   {
     "type": "hull",
     "id": "hull.ultra_station",
+    "rank": 3,
     "pictures": 140,
     "starbase": true,
     "tech": {
@@ -2434,6 +2438,7 @@
   {
     "type": "hull",
     "id": "hull.death_star",
+    "rank": 4,
     "pictures": 144,
     "starbase": true,
     "tech": {

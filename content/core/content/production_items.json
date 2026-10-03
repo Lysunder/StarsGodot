@@ -1,0 +1,198 @@
+[
+  {
+    "type": "production_item",
+    "id": "production_item.auto_mines",
+    "order": 0,
+    "effect": "mines",
+    "auto": true,
+    "builds": "production_item.mines"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_factories",
+    "order": 1,
+    "effect": "factories",
+    "auto": true,
+    "builds": "production_item.factories"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_defenses",
+    "order": 2,
+    "effect": "defenses",
+    "auto": true,
+    "part": "part.planetary.sdi",
+    "builds": "production_item.defenses"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_alchemy",
+    "order": 3,
+    "effect": "alchemy",
+    "auto": true,
+    "builds": "production_item.alchemy"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_min_terraform",
+    "order": 4,
+    "effect": "terraform",
+    "auto": true,
+    "minimum": true,
+    "builds": "production_item.terraform"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_max_terraform",
+    "order": 5,
+    "effect": "terraform",
+    "auto": true,
+    "builds": "production_item.terraform"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.auto_packets",
+    "order": 6,
+    "effect": "packet",
+    "auto": true,
+    "mineral": "mixed",
+    "builds": "production_item.mixed_packet"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.factories",
+    "order": 7,
+    "effect": "factories"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.mines",
+    "order": 8,
+    "effect": "mines"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.defenses",
+    "order": 9,
+    "effect": "defenses",
+    "part": "part.planetary.sdi"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.alchemy",
+    "order": 11,
+    "effect": "alchemy"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.terraform",
+    "order": 12,
+    "effect": "terraform"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.genesis",
+    "order": 13,
+    "effect": "genesis",
+    "part": "part.planetary.genesis_device"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.ironium_packet",
+    "order": 14,
+    "effect": "packet",
+    "mineral": "ironium"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.boranium_packet",
+    "order": 15,
+    "effect": "packet",
+    "mineral": "boranium"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.germanium_packet",
+    "order": 16,
+    "effect": "packet",
+    "mineral": "germanium"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.mixed_packet",
+    "order": 17,
+    "effect": "packet",
+    "mineral": "mixed"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_viewer_50",
+    "order": 18,
+    "effect": "scanner",
+    "part": "part.planetary.viewer_50"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_viewer_90",
+    "order": 19,
+    "effect": "scanner",
+    "part": "part.planetary.viewer_90"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_scoper_150",
+    "order": 20,
+    "effect": "scanner",
+    "part": "part.planetary.scoper_150"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_scoper_220",
+    "order": 21,
+    "effect": "scanner",
+    "part": "part.planetary.scoper_220"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_scoper_280",
+    "order": 22,
+    "effect": "scanner",
+    "part": "part.planetary.scoper_280"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_snooper_320x",
+    "order": 23,
+    "effect": "scanner",
+    "part": "part.planetary.snooper_320x"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_snooper_400x",
+    "order": 24,
+    "effect": "scanner",
+    "part": "part.planetary.snooper_400x"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_snooper_500x",
+    "order": 25,
+    "effect": "scanner",
+    "part": "part.planetary.snooper_500x"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.scanner_snooper_620x",
+    "order": 26,
+    "effect": "scanner",
+    "part": "part.planetary.snooper_620x"
+  },
+  {
+    "type": "production_item",
+    "id": "production_item.planetary_scanner",
+    "order": 27,
+    "effect": "scanner",
+    "part": "part.planetary.viewer_50",
+    "best": true
+  }
+]

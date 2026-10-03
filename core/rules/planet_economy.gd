@@ -12,6 +12,9 @@ const COLONISTS_PER_UNIT := 100
 const MIN_MAX_POP := 500
 const LOW_HAB := 5
 const MIN_INSTALLATIONS := 10
+const MIN_DEFENSES := 10
+const MAX_DEFENSES := 100
+const DEFENSE_POPULATION_CAP := 1000
 const CROWD_DIVISOR := 562500
 const STEADY_BAND := 10
 const MAX_DEATH := -300
@@ -76,8 +79,12 @@ static func max_factories(planet: Planet, race: Race, content: ContentRegistry) 
 	return maxi(max_pop(planet, race, content) * race.factories_operated / 100, MIN_INSTALLATIONS)
 
 
-static func operable_factories(planet: Planet, race: Race, content: ContentRegistry) -> int:
-	var n := planet.population * race.factories_operated / 100
+## `population` < 0: the planet's; the production checks pass next year's (next_population).
+static func operable_factories(
+	planet: Planet, race: Race, content: ContentRegistry, population := -1
+) -> int:
+	var p := planet.population if population < 0 else population
+	var n := p * race.factories_operated / 100
 	return maxi(mini(n, max_factories(planet, race, content)), 1)
 
 
@@ -85,9 +92,29 @@ static func max_mines(planet: Planet, race: Race, content: ContentRegistry) -> i
 	return maxi(max_pop(planet, race, content) * race.mines_operated / 100, MIN_INSTALLATIONS)
 
 
-static func operable_mines(planet: Planet, race: Race, content: ContentRegistry) -> int:
-	var n := planet.population * race.mines_operated / 100
+static func operable_mines(
+	planet: Planet, race: Race, content: ContentRegistry, population := -1
+) -> int:
+	var p := planet.population if population < 0 else population
+	var n := p * race.mines_operated / 100
 	return maxi(mini(n, max_mines(planet, race, content)), 1)
+
+
+## Maximum defenses: habitability x 4, kept within 10..100.
+static func max_defenses(planet: Planet, race: Race) -> int:
+	return clampi(hab_value(planet, race) * 4, MIN_DEFENSES, MAX_DEFENSES)
+
+
+static func operable_defenses(planet: Planet, race: Race, population := -1) -> int:
+	var p := planet.population if population < 0 else population
+	return mini(mini((p + 24) / 25, DEFENSE_POPULATION_CAP), max_defenses(planet, race))
+
+
+## The population after this year's growth (S08 "next year" values), in units of 100.
+static func next_population(planet: Planet, race: Race, content: ContentRegistry) -> int:
+	var total := planet.population * COLONISTS_PER_UNIT + planet.extra_colonists
+	total += grow(planet, race, content, false)
+	return maxi(total, 0) / COLONISTS_PER_UNIT
 
 
 static func effective_mines(planet: Planet, race: Race, content: ContentRegistry) -> int:

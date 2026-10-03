@@ -15,7 +15,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -36,7 +37,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -57,7 +59,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -78,7 +81,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -99,7 +103,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -126,7 +131,8 @@
     "forbidden_traits": [
       "trait.lrt.NAS",
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -153,7 +159,8 @@
     "forbidden_traits": [
       "trait.lrt.NAS",
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -180,7 +187,8 @@
     "forbidden_traits": [
       "trait.lrt.NAS",
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -207,7 +215,8 @@
     "forbidden_traits": [
       "trait.lrt.NAS",
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -225,7 +234,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -246,7 +256,8 @@
     },
     "forbidden_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -268,7 +279,8 @@
     "forbidden_traits": [
       "trait.prt.AR",
       "trait.prt.WM"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -290,7 +302,8 @@
     "forbidden_traits": [
       "trait.prt.AR",
       "trait.prt.WM"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -312,7 +325,8 @@
     "forbidden_traits": [
       "trait.prt.AR",
       "trait.prt.WM"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",

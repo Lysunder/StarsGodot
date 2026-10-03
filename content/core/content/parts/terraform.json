@@ -18,7 +18,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -42,7 +43,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -66,7 +68,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -90,7 +93,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -114,7 +118,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -138,7 +143,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -162,7 +168,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -186,7 +193,8 @@
     ],
     "required_traits": [
       "trait.lrt.TT"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -208,7 +216,8 @@
     },
     "tags": [
       "terraform_gravity"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -230,7 +239,8 @@
     },
     "tags": [
       "terraform_gravity"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -252,7 +262,8 @@
     },
     "tags": [
       "terraform_gravity"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -274,7 +285,8 @@
     },
     "tags": [
       "terraform_gravity"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -296,7 +308,8 @@
     },
     "tags": [
       "terraform_temperature"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -318,7 +331,8 @@
     },
     "tags": [
       "terraform_temperature"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -340,7 +354,8 @@
     },
     "tags": [
       "terraform_temperature"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -362,7 +377,8 @@
     },
     "tags": [
       "terraform_temperature"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -384,7 +400,8 @@
     },
     "tags": [
       "terraform_radiation"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -406,7 +423,8 @@
     },
     "tags": [
       "terraform_radiation"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -428,7 +446,8 @@
     },
     "tags": [
       "terraform_radiation"
-    ]
+    ],
+    "miniaturize": false
   },
   {
     "type": "part",
@@ -450,6 +469,7 @@
     },
     "tags": [
       "terraform_radiation"
-    ]
+    ],
+    "miniaturize": false
   }
 ]

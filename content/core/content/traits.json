@@ -27,7 +27,12 @@
     "id": "trait.prt.WM",
     "kind": "primary",
     "order": 2,
-    "cost": 45
+    "cost": 45,
+    "params": {
+      "cost.beam_adjust_pct": 75,
+      "cost.torpedo_adjust_pct": 75,
+      "cost.bomb_adjust_pct": 75
+    }
   },
   {
     "type": "trait",
@@ -36,7 +41,9 @@
     "order": 3,
     "cost": 10,
     "params": {
-      "planet.revert_terraform_on_loss": 1
+      "planet.revert_terraform_on_loss": 1,
+      "production.terraform_cost_pct": 50,
+      "cost.terraform_resources_pct": 50
     }
   },
   {
@@ -44,7 +51,13 @@
     "id": "trait.prt.IS",
     "kind": "primary",
     "order": 4,
-    "cost": -100
+    "cost": -100,
+    "params": {
+      "production.defense_cost_pct": 60,
+      "cost.beam_adjust_pct": 125,
+      "cost.torpedo_adjust_pct": 125,
+      "cost.bomb_adjust_pct": 125
+    }
   },
   {
     "type": "trait",
@@ -60,7 +73,12 @@
     "order": 6,
     "cost": 120,
     "params": {
-      "race.ap_nas_penalty": 280
+      "race.ap_nas_penalty": 280,
+      "production.packet_mineral_cost": 70,
+      "production.mixed_packet_mineral_cost": 25,
+      "production.packet_resource_cost": 5,
+      "production.packet_minerals": 70,
+      "production.mixed_packet_minerals": 25
     }
   },
   {
@@ -68,7 +86,12 @@
     "id": "trait.prt.IT",
     "kind": "primary",
     "order": 7,
-    "cost": 180
+    "cost": 180,
+    "params": {
+      "production.packet_mineral_cost": 120,
+      "production.mixed_packet_mineral_cost": 48,
+      "cost.tag.stargate_adjust_pct": 75
+    }
   },
   {
     "type": "trait",
@@ -77,7 +100,9 @@
     "order": 8,
     "cost": 90,
     "params": {
-      "race.ap_cheap_energy_penalty": 100
+      "race.ap_cheap_energy_penalty": 100,
+      "production.starbase_adjust_pct": 80,
+      "production.genesis_keeps_installations": 1
     }
   },
   {
@@ -107,7 +132,8 @@
     "cost": 25,
     "params": {
       "race.hab_terraform_reach_1": 8,
-      "race.hab_terraform_reach_2": 17
+      "race.hab_terraform_reach_2": 17,
+      "production.terraform_cost": 70
     }
   },
   {
@@ -122,7 +148,10 @@
     "id": "trait.lrt.ISB",
     "kind": "lesser",
     "order": 3,
-    "cost": 201
+    "cost": 201,
+    "params": {
+      "production.starbase_adjust_pct": 80
+    }
   },
   {
     "type": "trait",
@@ -147,7 +176,10 @@
     "id": "trait.lrt.MA",
     "kind": "lesser",
     "order": 6,
-    "cost": 155
+    "cost": 155,
+    "params": {
+      "production.alchemy_cost": 25
+    }
   },
   {
     "type": "trait",
@@ -161,7 +193,10 @@
     "id": "trait.lrt.CE",
     "kind": "lesser",
     "order": 8,
-    "cost": -240
+    "cost": -240,
+    "params": {
+      "cost.engine_adjust_pct": 50
+    }
   },
   {
     "type": "trait",
@@ -198,7 +233,12 @@
     "id": "trait.lrt.BET",
     "kind": "lesser",
     "order": 12,
-    "cost": -70
+    "cost": -70,
+    "params": {
+      "production.miniaturization_per_level": 5,
+      "production.miniaturization_max": 80,
+      "production.cost_at_tech_level_pct": 200
+    }
   },
   {
     "type": "trait",

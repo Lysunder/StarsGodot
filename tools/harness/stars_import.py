@@ -42,6 +42,9 @@ OPTION_BITS = {
     "public_scores": 0x40,
     "galaxy_clumping": 0x100,
 }
+QUEUE_STANDARD = 2
+QUEUE_DESIGN = 4
+SHIP_DESIGN_SLOTS = 16
 LEFTOVER = ["surface_minerals", "concentrations", "mines", "factories", "defenses"]
 # Leftover-point values 5 and 6 (possible in random races) act as surface minerals (S06).
 LEFTOVER_FALLBACK = "surface_minerals"
@@ -72,8 +75,11 @@ class Legacy:
         with open(hulls, encoding="utf-8") as f:
             self.pictures = {h["id"]: h["pictures"] for h in json.load(f)}
         self.parts, self.hulls, self.prts, self.lrts = {}, {}, {}, {}
+        self.production_items = {}
         for cid, v in data.items():
-            if "hull" in v:
+            if "production_item" in v:
+                self.production_items[v["production_item"]] = cid
+            elif "hull" in v:
                 self.hulls[v["hull"]] = cid
             elif "prt" in v:
                 self.prts[v["prt"]] = cid
@@ -418,14 +424,24 @@ class Importer:
             pos += 2
         if pos != len(d):
             raise StarsImportError("planet %d: %d bytes left over" % (pid, len(d) - pos))
-        items = []
-        for k in range(0, len(queue), 4):
-            w0, w1 = struct.unpack_from("<HH", queue, k)
-            items.append(
-                {"count": w0 & 0x3FF, "item": w0 >> 10, "kind": w1 & 15, "progress": w1 >> 4}
-            )
-        p["queue"] = items
+        p["queue"] = [self.queue_item(pid, q) for q in struct.iter_unpack("<HH", queue)]
         return p
+
+    def queue_item(self, pid, words):
+        """One production queue item (S09): standard item or design, count, progress."""
+        w0, w1 = words
+        number, kind = w0 >> 10, w1 & 15
+        item = {"item": "", "design": -1, "starbase": False, "count": w0 & 0x3FF, "progress": w1 >> 4}
+        if kind == QUEUE_STANDARD:
+            if number not in self.legacy.production_items:
+                raise StarsImportError("planet %d: unknown production item %d" % (pid, number))
+            item["item"] = self.legacy.production_items[number]
+        elif kind == QUEUE_DESIGN:
+            item["starbase"] = number >= SHIP_DESIGN_SLOTS
+            item["design"] = number - SHIP_DESIGN_SLOTS if item["starbase"] else number
+        else:
+            raise StarsImportError("planet %d: unknown queue item kind %d" % (pid, kind))
+        return item
 
     # --- fleets ---
 

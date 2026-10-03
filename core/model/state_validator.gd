@@ -183,6 +183,24 @@ func _check_planet(pl: Planet, path: String) -> void:
 	_range(pl.mass_driver_warp, 0, MAX_DRIVER_WARP, path + "/mass_driver_warp")
 	if pl.route != -1:
 		_planet_ref(pl.route, path + "/route")
+	if not pl.queue.is_empty() and pl.owner < 0:
+		_err(path + "/queue", "an unowned planet has no queue")
+	for i in pl.queue.size():
+		_check_queue_item(pl, pl.queue[i], "%s/queue/%d" % [path, i])
+
+
+func _check_queue_item(pl: Planet, q: QueueItem, path: String) -> void:
+	_range(q.count, 0, _limit("queue_count"), path + "/count")
+	_range(q.progress, 0, 100, path + "/progress")
+	if not q.is_design():
+		_content_ref(q.item, "production_item", path + "/item")
+		return
+	var owner := _state.player(pl.owner) if pl.owner >= 0 else null
+	if owner == null:
+		return
+	var design := owner.starbase_design(q.design) if q.starbase else owner.ship_design(q.design)
+	if design == null:
+		_err(path + "/design", "the owner has no design in that slot")
 
 
 # --- Fleets ----------------------------------------------------------------------------------

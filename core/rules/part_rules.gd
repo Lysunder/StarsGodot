@@ -41,6 +41,24 @@ static func fuel_capacity(design: Design, content: ContentRegistry) -> int:
 	return total
 
 
+## A design's armor (S04): the hull's plus each slot's `armor` stat times its count, armor parts
+## scaled by the owner's `design.armor_part_pct` (Regenerating Shields: 50).
+static func armor(design: Design, content: ContentRegistry, race: Race = null) -> int:
+	var total: int = content.hull(design.hull).get("armor", 0)
+	var pct := 100
+	if race != null:
+		pct = RaceMath.trait_param(race, content, "design.armor_part_pct", 100)
+	for slot in design.parts:
+		if slot.part.is_empty():
+			continue
+		var part := content.part(slot.part)
+		var each: int = part.get("stats", {}).get("armor", 0)
+		if part.get("category", "") == "armor":
+			each = each * pct / 100
+		total += slot.count * each
+	return total
+
+
 ## Tech field id -> index in tech level arrays (the fields' `order`).
 static func tech_order(content: ContentRegistry) -> Dictionary:
 	var out := {}

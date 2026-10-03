@@ -18,8 +18,7 @@ class Mining:
 				PlanetEconomy.mine(planet, ctx.player(planet.owner).race, ctx.content, rng)
 
 
-## 13b: per planet, resources go to the production queue and research (S09). A planet with an
-## empty queue puts all its resources into research.
+## 13b: per planet, resources go to research and the production queue (S09).
 class Planets:
 	extends Phase
 
@@ -29,17 +28,10 @@ class Planets:
 	func run(ctx: TurnContext) -> void:
 		for i in ctx.research_spent.size():
 			ctx.research_spent[i] = 0
+		var production := Production.new(ctx.state, ctx.content, ctx.rng())
 		for planet in ctx.state.planets:
-			if planet.owner < 0:
-				continue
-			var race := ctx.player(planet.owner).race
-			var resources := PlanetEconomy.resources(planet, race, ctx.content)
-			if planet.queue.is_empty():
-				ctx.research_spent[planet.owner] += resources
-			else:
-				push_warning(
-					"planet %d: production queues are not implemented yet (S09)" % planet.id
-				)
+			if planet.owner >= 0:
+				production.run_planet(planet, ctx.research_spent)
 
 
 ## 13c: owned, populated planets grow or shrink (S08); a planet whose population dies out is

@@ -65,5 +65,18 @@
   { "type": "constant", "id": "constant.universe.wormholes_random_3", "value": 4 },
   { "type": "constant", "id": "constant.universe.wormholes_base_3", "value": 3 },
   { "type": "constant", "id": "constant.universe.wormholes_random_4", "value": 5 },
-  { "type": "constant", "id": "constant.universe.wormholes_base_4", "value": 4 }
+  { "type": "constant", "id": "constant.universe.wormholes_base_4", "value": 4 },
+  { "type": "constant", "id": "constant.production.factory_germanium", "value": 4 },
+  { "type": "constant", "id": "constant.production.alchemy_cost", "value": 100 },
+  { "type": "constant", "id": "constant.production.terraform_cost", "value": 100 },
+  { "type": "constant", "id": "constant.production.packet_mineral_cost", "value": 110 },
+  { "type": "constant", "id": "constant.production.mixed_packet_mineral_cost", "value": 44 },
+  { "type": "constant", "id": "constant.production.packet_resource_cost", "value": 10 },
+  { "type": "constant", "id": "constant.production.packet_minerals", "value": 100 },
+  { "type": "constant", "id": "constant.production.mixed_packet_minerals", "value": 40 },
+  { "type": "constant", "id": "constant.production.miniaturization_per_level", "value": 4 },
+  { "type": "constant", "id": "constant.production.miniaturization_max", "value": 75 },
+  { "type": "constant", "id": "constant.production.miniaturization_levels", "value": 19 },
+  { "type": "constant", "id": "constant.production.starbase_price_pct", "value": 50 },
+  { "type": "constant", "id": "constant.limits.queue_count", "value": 1023 }
 ]

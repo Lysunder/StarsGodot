@@ -281,7 +281,8 @@ Follows its planet. 4 bytes per item, in queue order:
 | word 1, bits 0–3 | kind: 2 standard item, 4 design |
 | word 1, bits 4–15 | progress on the first unit (units in S09) |
 
-The importer stores the items in `queue` in this raw form until S09 defines the queue.
+The importer maps them to S03 queue items: kind 2 items through `legacy_ids.json` (`production_item` numbers),
+kind 4 items below 16 to ship design slots and from 16 to starbase slots (number − 16).
 
 ### Battle plan (type 30)
 
@@ -367,8 +368,8 @@ them would let fixtures give orders to human players, so they can exercise rules
   option keeps race, design, plan and fleet names for local use.
 - Relations shorter than the player count are padded with neutral entries.
 - Values the importer cannot know yet are written as defaults and marked here: `paid` on stacks (0), `repeat` on
-  fleets (false; the flag is not located yet), `trader_parts` and the trader's `item` (S18), task data and
-  queue items in raw form (S11, S09).
+  fleets (false; the flag is not located yet), `trader_parts` and the trader's `item` (S18), and task data in
+  raw form (S11).
 - Implementation: `tools/harness/starsfile.py` (container, cipher, packed text) and `stars_import.py` (mapping);
   `tools/check_save.gd` loads converted files with `SaveFile` and `StateValidator`.
 
