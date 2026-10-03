@@ -1,7 +1,9 @@
 # S11 Orders and waypoint tasks
 
 Status: draft (2026-09-30), second pass. Structure, colonize, scrap, remote mining, mine laying and task completion
-read from the code; transport amounts partly (see "Open questions").
+read from the code; transport amounts partly (see "Open questions"). Order application started (2026-10-03): the
+production queue, research and planet orders are implemented (`core/turn/order_rules.gd`) and match the original in
+a harness game with orders given in the client.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -54,6 +56,28 @@ and has no effect (the original trusted its client more; see "Validation").
 
 The original also had order blocks for passwords and for "save and submit"; they are file mechanics, not game
 rules.
+
+### Order files (our format)
+
+One file per player and turn: a JSON object in canonical form with `format` `"starsgodot-orders"`,
+`format_version` 1, `game_version`, `player`, `turn` (the turn the orders were given in) and `orders`, a list of
+objects each with a `type` and that type's fields. The file is checked for shape when read; each order is checked
+against the state when the turn is generated.
+
+### Orders implemented so far
+
+- **`production_queue`** `{planet, items}`: the planet must be the player's; every item must be a known production
+  item or one of the player's designs, with count 0–1023 and progress 0–100, or the whole order is rejected. The
+  list replaces the planet's queue (an empty list clears it). Progress: an item with progress keeps it only if the
+  old queue has an item of the same kind (same production item, or same design slot and starbase flag) with
+  progress; that old item's progress is then used up (cleared), so each old item matches once; otherwise the new
+  item's progress becomes 0. (The original keeps the progress value the order carries when it matches.)
+- **`research`** `{percent, field, next}`: percent 0–100, field 0–5, next 0–7 (S05: 6 same field, 7 lowest field).
+- **`planet_settings`** `{planet, leftover_to_research, mass_driver_target, mass_driver_warp, route}`: the planet
+  must be the player's; destinations are planet ids or −1. The mass driver settings are kept only on a planet with
+  a starbase (the original stores them with the starbase); the route and the leftover setting always.
+
+References for these: `ApplyOrderBlock@1040:651e` (blocks 29, 34, 35).
 
 ## Waypoint tasks
 

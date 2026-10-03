@@ -1,9 +1,12 @@
 extends GdUnitTestSuite
-## Golden turns (plan M4/M6): from each fixture turn, our turn generation must give the
-## original's next turn exactly. Only the random streams are ignored (a fixture holds the state
-## at the start of the next turn's generation, S01).
+## Golden turns (plan M4/M6): from each fixture turn and the players' orders for it
+## (tNNN.pP.orders.json), our turn generation must give the original's next turn exactly. Only the
+## random streams are ignored (a fixture holds the state at the start of the next turn's
+## generation, S01), plus what a game's phases not built yet would change (GAME_IGNORE).
 
 const IGNORE := ["/rng"]
+## Wormholes shift every turn (S12, not built yet).
+const GAME_IGNORE := {"prod1": ["/wormholes*"]}
 
 var _content: ContentRegistry
 
@@ -21,11 +24,28 @@ func _load(game: String, turn: int) -> GameState:
 	return result.state
 
 
+func _orders(game: String, turn: int, players: int) -> Array[OrderSet]:
+	var out: Array[OrderSet] = []
+	for p in players:
+		var path := "res://tests/fixtures/golden/%s/t%03d.p%d.orders.json" % [game, turn, p]
+		if not FileAccess.file_exists(path):
+			continue
+		var result := OrderFile.read(path)
+		assert_bool(result.ok()).override_failure_message("\n".join(result.errors)).is_true()
+		out.append(result.order_set)
+	return out
+
+
 func _check_turn(game: String, turn: int) -> void:
 	var state := _load(game, turn)
-	StandardTurn.generate(state, _content)
+	var rejected := StandardTurn.generate(
+		state, _content, _orders(game, turn, state.players.size())
+	)
+	assert_array(Array(rejected)).override_failure_message("\n".join(rejected)).is_empty()
 	var expected := _load(game, turn + 1)
-	var diffs := StateDiff.compare(expected, state, PackedStringArray(IGNORE))
+	var ignore := PackedStringArray(IGNORE)
+	ignore.append_array(GAME_IGNORE.get(game, []))
+	var diffs := StateDiff.compare(expected, state, ignore)
 	(
 		assert_array(diffs)
 		. override_failure_message(
@@ -42,3 +62,10 @@ func _check_turn(game: String, turn: int) -> void:
 # gdlint: ignore=unused-argument
 func test_tiny2(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void:
 	_check_turn("tiny2", turn)
+
+
+## A human player's production orders, given in the original client: factories with partial
+## progress, a ship, auto items and their carry-over, "only leftover to research" (S09, S11).
+# gdlint: ignore=unused-argument
+func test_prod1(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void:
+	_check_turn("prod1", turn)

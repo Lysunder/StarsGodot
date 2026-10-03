@@ -42,6 +42,7 @@ const PHASE_IDS := [
 static func pipeline() -> TurnPipeline:
 	var built := {}
 	for p: Phase in [
+		OrderPhases.Apply.new(),
 		EconomyPhases.Mining.new(),
 		EconomyPhases.Planets.new(),
 		EconomyPhases.Growth.new(),
@@ -57,6 +58,10 @@ static func pipeline() -> TurnPipeline:
 	return out
 
 
-## Generates one turn: `state` becomes the next year's state.
-static func generate(state: GameState, content: ContentRegistry) -> void:
-	pipeline().run(TurnContext.new(state, content))
+## Generates one turn: `state` becomes the next year's state. Returns the rejected orders.
+static func generate(
+	state: GameState, content: ContentRegistry, orders: Array[OrderSet] = []
+) -> PackedStringArray:
+	var ctx := TurnContext.new(state, content, orders)
+	pipeline().run(ctx)
+	return ctx.rejected_orders

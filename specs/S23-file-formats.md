@@ -350,9 +350,16 @@ Wormholes and the Mystery Trader are stored with owner 0; the importer maps them
 ## Order files
 
 `.x` files carry one player's orders as blocks (waypoint changes, cargo transfers, production queue changes,
-research, relations, battle plans, fleet splits and merges). The harness does not need to read them, but writing
-them would let fixtures give orders to human players, so they can exercise rules the computer players never use
-(named fleets, mass drivers, minefields, specific transports). That is a later pass of this spec, when M4 needs it.
+research, relations, battle plans, fleet splits and merges), after the header (file kind 1; the player index in the
+header). The harness does not write them: order fixtures are made by playing turns in the original client. It
+converts them to our order files (`tools/harness/stars_orders.py`, S11); block types not yet converted stop the
+conversion.
+
+| Block | Layout |
+|---|---|
+| 29 production queue change | 2 bytes planet id (11 bits), then the whole queue as 4-byte items (as type 28) |
+| 34 research change | 1 byte research percent; 1 byte: current field in the low nibble, next field setting in the high nibble |
+| 35 planet change | 2 bytes planet id; 4 bytes v: bit 0 only leftover to research, bits 1–10 mass driver destination + 1 (0 none), bits 11–14 mass driver warp − 4, bits 15–24 route destination + 1 (0 none) |
 
 ## Mapping to our save format
 

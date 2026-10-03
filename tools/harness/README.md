@@ -8,6 +8,8 @@ is excluded from every export, and this folder has a `.gdignore`.
 |---|---|
 | `starsfile.py` | Reads the original's file container: block framing, the cipher, headers, packed text (S23). |
 | `stars_import.py` | Converts a game's `.xy` + `.hst` into our JSON save format (S03). |
+| `stars_orders.py` | Converts a player's `.x` order file into our order file format (S11). |
+| `test_stars_orders.py` | Tests of the order converter on synthetic files. |
 | `test_starsfile.py` | Tests on synthetic files (no original files needed); CI runs them. |
 | `../check_save.gd` | Loads save files with the core content and lists every problem. |
 | `../diff_saves.gd` | Compares two save files field by field. |
@@ -62,12 +64,16 @@ harness folder, not here.
    to `runs/<name>/tNNN/`. One process per turn means every turn starts from the same start-up random state.
    (`-gN` generates N turns in one process, but then only the first turn's start state is known.) Human players
    without orders simply pass.
+   **Orders for human players:** before generating a turn, open the player's `.m` file in the original client
+   (your registered copy), give the orders, and use Save and Submit; this writes the `.x` file the host reads. Keep
+   a copy of it with the turn's files (the host deletes it once applied). The harness does not write order files.
 4. **Convert:**
    `python tools/harness/stars_import.py <name>.xy runs/<name>/tNNN/<name>.hst tNNN.json`
    - Names are neutral by default (`Race 0`, `Design 3`, `Planet 17`); `--keep-names` keeps the names found in
      the files, for local use only. Planet names are never available: the original keeps them as ids into its own
      name list.
    - `--rng S1,S2` sets the classic random stream's state at the start of the turn (see "Open questions").
+   - Orders: `python tools/harness/stars_orders.py <name>.x1 tNNN.p0.orders.json`.
 5. **Check:** `godot --headless --path . --script res://tools/check_save.gd -- tNNN.json`
 6. **Compare two turns:** `godot --headless --path . --script res://tools/diff_saves.gd -- A.json B.json`
    (`--ignore=/rng`, `--limit=N`).

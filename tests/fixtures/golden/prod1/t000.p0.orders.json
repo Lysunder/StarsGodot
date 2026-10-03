@@ -1,0 +1,42 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "items": [
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 10,
+   "type": "production_queue"
+  },
+  {
+   "field": 0,
+   "next": 6,
+   "percent": 20,
+   "type": "research"
+  }
+ ],
+ "player": 0,
+ "turn": 0
+}

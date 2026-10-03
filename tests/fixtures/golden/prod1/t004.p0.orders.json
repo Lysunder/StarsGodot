@@ -1,0 +1,17 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "leftover_to_research": true,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 10,
+   "route": -1,
+   "type": "planet_settings"
+  }
+ ],
+ "player": 0,
+ "turn": 4
+}
