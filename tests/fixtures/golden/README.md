@@ -21,6 +21,7 @@ material from the original. Golden-turn tests compare our engine's turn N → N+
 | `tiny_random_races_only/` | tiny, sparse, close positions, two copies of the random race, seed 1017 | `t000` |
 | `small_random_race_accel/` | small, dense, distant positions, accelerated start, the random race, `#3 2` and `#2 3`, seed 1018 | `t000` |
 | `tiny_random_race_packed/` | tiny, packed, the random race and the IT race, seed 1019 | `t000` |
+| `terra1/` | tiny, normal density, no random events, seed 2002; player 0 a JoaT race with Total Terraforming, player 1 a Claim Adjuster; each colonized a nearby planet (turns 0-1, orders given in the client); player 0 queued terraform items on its colony in turn 2; no orders afterwards | `t002`, `t003`, `t013` … `t028`, orders `t002` |
 | `prod1/` | tiny, normal density, no random events, 2 humans (same race file), seed 2001; player 0 gave production orders in the original client each turn | `t000` … `t005`, orders `t000` … `t004` |
 
 **Orders:** `tNNN.pP.orders.json` holds player P's orders given in turn NNN (our order file format, S11), converted

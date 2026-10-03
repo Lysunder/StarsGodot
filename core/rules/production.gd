@@ -3,7 +3,7 @@ extends RefCounted
 ## Each planet's production for the year (spec S09 steps 3-6): research share, the queue, and
 ## what completed units do.
 ##
-## Not yet: terraforming items (S10), packets (S14), route following for new fleets (S11), and
+## Not yet: packets (S14), route following for new fleets (S11), and
 ## default orders for Alternate Reality miners. Such items are dropped from the queue with a
 ## warning.
 
@@ -20,7 +20,7 @@ enum Status {
 
 const AUTO_UNLIMITED := 1000
 const MERGE_HEADROOM := 32766
-const UNSUPPORTED := ["terraform", "packet"]
+const UNSUPPORTED := ["packet"]
 
 
 class SpendResult:
@@ -122,8 +122,12 @@ func _buildable(planet: Planet, player: Player, item: QueueItem) -> bool:
 		return true
 	if effect == "scanner":
 		return not planet.has_scanner
-	if effect in ["mines", "factories", "defenses"]:
-		var room := _maximum(planet, player.race, effect) - _built(planet, effect)
+	if effect in ["mines", "factories", "defenses", "terraform"]:
+		var room := (
+			Terraforming.max_steps(planet, player, _content)
+			if effect == "terraform"
+			else _maximum(planet, player.race, effect) - _built(planet, effect)
+		)
 		if item.count > room:
 			if room <= 0:
 				return false
@@ -161,7 +165,7 @@ func _spend(
 	var auto: bool = def.get("auto", false)
 	var count := item.count
 	if auto:
-		var room := maxi(_auto_room(planet, player.race, def), 0)
+		var room := maxi(_auto_room(planet, player, def), 0)
 		if room < count or def["effect"] == "alchemy":
 			count = room
 	var progress := item.progress
@@ -247,9 +251,17 @@ func _spend(
 
 
 ## How many units an auto item may build this year (S09 step 5).
-func _auto_room(planet: Planet, race: Race, def: Dictionary) -> int:
+func _auto_room(planet: Planet, player: Player, def: Dictionary) -> int:
+	var race := player.race
 	var next := PlanetEconomy.next_population(planet, race, _content)
 	match def["effect"]:
+		"terraform":
+			var steps := Terraforming.max_steps(planet, player, _content)
+			if steps > 0 and def.get("minimum", false):
+				var shrinking := PlanetEconomy.grow(planet, race, _content, false) < 0
+				if not shrinking and PlanetEconomy.hab_value(planet, race) > 0:
+					return 0
+			return steps
 		"mines":
 			return PlanetEconomy.operable_mines(planet, race, _content, next) - planet.mines
 		"factories":
@@ -290,6 +302,9 @@ func _complete(planet: Planet, player: Player, item: QueueItem, built: int) -> b
 					planet.factories += n
 				_:
 					planet.defenses += n
+		"terraform":
+			for k in built:
+				Terraforming.step(planet, player.race, player, true, _content)
 		"genesis":
 			for k in built:
 				_genesis(planet, player)

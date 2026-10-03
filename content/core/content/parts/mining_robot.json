@@ -170,7 +170,8 @@
     },
     "stats": {
       "mining_rate": 0,
-      "cloak": 50
+      "cloak": 50,
+      "remote_terraform": 1
     },
     "tags": [
       "orbital_adjuster"

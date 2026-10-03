@@ -1,0 +1,29 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "items": [
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.terraform",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_max_terraform",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 22,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 2
+}

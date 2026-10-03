@@ -434,5 +434,7 @@
   "constant.production.miniaturization_max.name": "Production: maximum miniaturization, percent",
   "constant.production.miniaturization_levels.name": "Production: tech levels that count for miniaturization",
   "constant.production.starbase_price_pct.name": "Production: starbase price, percent of the listed price",
-  "constant.limits.queue_count.name": "Limit: units in one queue item"
+  "constant.limits.queue_count.name": "Limit: units in one queue item",
+  "constant.terraform.permanent_chance.name": "Terraform: one in this many years a Claim Adjuster planet changes permanently",
+  "constant.terraform.permanent_population.name": "Terraform: population (units) that makes the permanent change certain"
 }

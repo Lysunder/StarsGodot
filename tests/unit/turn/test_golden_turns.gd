@@ -68,3 +68,30 @@ func test_tiny2(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void
 # gdlint: ignore=unused-argument
 func test_prod1(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void:
 	_check_turn("prod1", turn)
+
+
+## A Total Terraforming race's terraform items on a colony, and a Claim Adjuster colony
+## terraforming itself (S10); research level gains. Turns 2-3 (the order) and 13-28.
+func test_terra1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[2],
+		[13],
+		[14],
+		[15],
+		[16],
+		[17],
+		[18],
+		[19],
+		[20],
+		[21],
+		[22],
+		[23],
+		[24],
+		[25],
+		[26],
+		[27],
+	]
+) -> void:
+	_check_turn("terra1", turn)

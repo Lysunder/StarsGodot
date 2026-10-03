@@ -43,7 +43,8 @@
     "params": {
       "planet.revert_terraform_on_loss": 1,
       "production.terraform_cost_pct": 50,
-      "cost.terraform_resources_pct": 50
+      "cost.terraform_resources_pct": 50,
+      "terraform.instant": 1
     }
   },
   {

@@ -39,6 +39,7 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S07](S07-universe-generation.md) | Universe generation | draft |
 | [S08](S08-planet-economy.md) | Planet economy | draft |
 | [S09](S09-production.md) | Production | draft |
+| [S10](S10-terraforming.md) | Terraforming | draft |
 | [S11](S11-orders-and-waypoint-tasks.md) | Orders and waypoint tasks | draft |
 | [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
 | [S13](S13-minefields.md) | Minefields | draft |

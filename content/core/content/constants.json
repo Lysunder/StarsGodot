@@ -78,5 +78,7 @@
   { "type": "constant", "id": "constant.production.miniaturization_max", "value": 75 },
   { "type": "constant", "id": "constant.production.miniaturization_levels", "value": 19 },
   { "type": "constant", "id": "constant.production.starbase_price_pct", "value": 50 },
-  { "type": "constant", "id": "constant.limits.queue_count", "value": 1023 }
+  { "type": "constant", "id": "constant.limits.queue_count", "value": 1023 },
+  { "type": "constant", "id": "constant.terraform.permanent_chance", "value": 10 },
+  { "type": "constant", "id": "constant.terraform.permanent_population", "value": 1000 }
 ]
