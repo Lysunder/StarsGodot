@@ -358,7 +358,7 @@ func _place_wormhole(w: Wormhole) -> void:
 	for attempt in 100:
 		w.x = 1000 + _rng.random(_gen.width)
 		w.y = 1000 + _rng.random(_gen.width)
-		score = _wormhole_score(w)
+		score = Wormholes.score(_state, w, _gen.width)
 		if score == 0:
 			return
 		if score < best_score:
@@ -366,47 +366,6 @@ func _place_wormhole(w: Wormhole) -> void:
 			best = [w.x, w.y]
 	w.x = best[0]
 	w.y = best[1]
-
-
-## S07 step 12.3: lower is better, 0 is a clean spot, 15 an impossible one.
-func _wormhole_score(w: Wormhole) -> int:
-	var limit := _gen.width + 1000
-	if w.x < 1000 or w.y < 1000 or w.x > limit or w.y > limit:
-		return 15
-	for other in _state.space_objects():
-		if other != w and other.get("x") == w.x and other.get("y") == w.y:
-			return 15
-	for pl in _state.planets:
-		if pl.x == w.x and pl.y == w.y:
-			return 15
-	for f in _state.fleets:
-		if f.x == w.x and f.y == w.y:
-			return 15
-	var score := 0
-	if w.x < 1010 or w.y < 1010 or w.x > limit - 10 or w.y > limit - 10:
-		score |= 4
-	for other in _state.wormholes:
-		if other == w:
-			continue
-		var d2 := (w.x - other.x) * (w.x - other.x) + (w.y - other.y) * (w.y - other.y)
-		if other.number == w.other_end:
-			score |= _closeness(d2, [25, 100, 900, 4900])
-		else:
-			score |= _closeness(d2, [16, 64, 225, 900])
-	for pl in _state.planets:
-		var d2 := (w.x - pl.x) * (w.x - pl.x) + (w.y - pl.y) * (w.y - pl.y)
-		score |= _closeness(d2, [25, 100, 400, 784])
-	return score
-
-
-static func _closeness(d2: int, limits: Array) -> int:
-	if d2 < limits[0]:
-		return 8
-	if d2 < limits[1]:
-		return 4
-	if d2 < limits[2]:
-		return 2
-	return 1 if d2 < limits[3] else 0
 
 
 # --- Helpers ---------------------------------------------------------------------------------

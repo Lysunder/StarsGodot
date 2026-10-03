@@ -5,8 +5,7 @@ extends GdUnitTestSuite
 ## generation, S01), plus what a game's phases not built yet would change (GAME_IGNORE).
 
 const IGNORE := ["/rng"]
-## Wormholes shift every turn (S12, not built yet).
-const GAME_IGNORE := {"prod1": ["/wormholes*"]}
+const GAME_IGNORE := {}
 
 var _content: ContentRegistry
 

@@ -47,6 +47,7 @@ static func pipeline() -> TurnPipeline:
 		EconomyPhases.Planets.new(),
 		EconomyPhases.Growth.new(),
 		EconomyPhases.TechUpdate.new(),
+		SpacePhases.MoveAfterProduction.new(),
 		TurnEndPhases.Advance.new(),
 		TurnEndPhases.RandomSettings.new(),
 		TurnEndPhases.FileDraws.new(),

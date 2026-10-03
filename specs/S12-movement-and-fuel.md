@@ -2,11 +2,13 @@
 
 Status: draft (2026-09-30), second pass. Movement, fuel, ram scoops, warp-10 damage, stargates with overgating,
 wormholes, arrival, waypoint advancing with repeat orders, and refueling read from the code. Intercept retargeting
-details remain open.
+details remain open. The wormhole shift (added 2026-10-03) is implemented in `core/rules/wormholes.gd` and matches
+the original's drift in golden turns (no jump seen yet).
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
-`GenerateFleetFuel@10a8:1cfa`. Community "Fuel Usage" and "Overgating" pages as oracles.
+`GenerateFleetFuel@10a8:1cfa`, `MoveSpaceObjects@10a8:0f6e`, `SpaceObject_ValidatePosition@1100:0456`, the
+wormhole jump chance at 1100:0742 (named `Packet_GetWarp` in the notes). Community "Fuel Usage" and "Overgating" pages as oracles.
 
 ## Summary
 
@@ -131,11 +133,27 @@ After all movement passes:
    - The player is told how many ships were lost (few, many, most).
 6. The rule for which gate's range applies (source or destination) is to be confirmed; mass limits apply for both.
 
+### Wormholes shift (S02 phase 14)
+
+After production, every wormhole end, in wormhole number order (S03), moves:
+
+1. **Jump or drift:** chance c = (age div 5) + stability − 2, kept within 0–6 (percent). One draw `random(100)`;
+   below c the wormhole **jumps**: its age becomes 0 and the record of players who have been through it is cleared.
+   Otherwise it **drifts** and its age grows by 1.
+2. **New position:** up to 100 tries. A drift try is x = old x − 12 + random(25), y = old y − 12 + random(25); a
+   jump try is x = 1000 + random(W), y = 1000 + random(W) (W the universe width). A try that lands exactly on the
+   old position is skipped (no score). Otherwise it is scored as when wormholes are placed (S07 step 12.3, the
+   wormhole's partner counting as its partner); a score of 0 is taken at once. Otherwise the position with the
+   lowest score is kept (the first such), and used after the last try.
+
+The two ends move independently. Packets launched this year move in the same phase (S14).
+
 ## Randomness
 
 In fleet order: Cheap Engines (`random(10)` per fleet above warp 6), warp-10 damage (`random(10)` per ship at
 risk), overgating (`random(100)` per ship, plus `random(500)` for lost ships while damaged ships remain), minefield
-hits (S13).
+hits (S13). After production (phase 14), per wormhole in number order: `random(100)` for the jump, then 2 draws
+per position try.
 
 ## Edge cases
 
