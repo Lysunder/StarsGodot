@@ -13,7 +13,9 @@ for new colonies) added (2026-10-04), matching the original in terra1 turns 30-3
 starbase and the trait skips are not seen yet. Transport with every partner (2026-10-04): unloading minerals and an invasion at
 another player's planet match the original in terra1 turns 36-40 (ground combat itself is S17); the refusals,
 fleet partners and fix B26 have unit tests only. Design orders (block 27) added (2026-10-04), matching the original in
-terra1 turn 42 (create, replace, delete); deleting a design with ships and fix B19 have unit tests only.
+terra1 turn 42 (create, replace, delete); deleting a design with ships and fix B19 have unit tests only. Fill, wait,
+set amount and set waypoint actions added (2026-10-04); fill, wait and set amount (unloading) match the original in
+terra1 turn 45; the waiting cases and set waypoint have unit tests only.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -211,21 +213,25 @@ planet, fleet, deep space or salvage at the waypoint.
 | Unload all | unload | Give everything of that type. |
 | Load exactly n | load | Take n, limited by availability and space. |
 | Unload exactly n | unload | Give n, limited by what the fleet has. |
-| Fill up to n% | load | Take until the fleet holds n% of its capacity (fuel capacity for fuel, cargo capacity otherwise). |
-| Wait for n% | load | As fill up to n%, and the fleet stays at the waypoint until it reaches n%. |
-| Load optimal (fuel) | load | Fuel needed for the next leg. |
-| Set amount to n | both | Load or unload to end with n. |
-| Set waypoint to n | both | Load or unload so the planet ends with n. |
+| Fill up to n% | load | Take n% of the fleet's capacity (fuel capacity for fuel, cargo capacity otherwise; capped at 2,000,000; n × cap div 100, or n × (cap div 100) from 65,536 on), limited by free space and by what the other side has. **This adds to what is aboard**: the original does not subtract the cargo already carried (confirmed in terra1 turn 45:
+5 kT aboard, fill to 40% of 25 kT, 15 kT after). If less than that (limited by free space) could be taken, the task stays and the fleet waits. |
+| Wait for n% | load | As fill up to n%. Also, when nothing could be asked for (no free space, or n% of nothing), fuel always waits, and other cargo waits while the fleet has free cargo space. |
+| Load optimal | load | Not built yet: for fuel, unload what the next leg does not need and wait when short; for minerals, fill the space left after the other actions (a second round). |
+| Set amount to n | both | With d = n − carried: unload −d when d < 0 (unload pass); load d when d ≥ 0 (load pass), waiting while the other side has less than d. |
+| Set waypoint to n | both | With d = what the other side has − n: unload min(−d, carried) when d < 0; load d when d > 0. |
 
 Rules visible in the code (amounts to be confirmed, see "Open questions"):
 
-- Percent actions use n × capacity ÷ 100, with the capacity capped at 2,000,000 for this calculation.
+- Fuel is skipped entirely when the other side is a planet (refueling is a separate phase, S12); with fleets and
+  deep space it works like the other types.
+- A task that waits stays on the waypoint; its fleet doesn't move while waypoint 0 has a transport task (S12), and
+  the actions are tried again in the next passes and turns.
 - A fleet can't load from a planet it doesn't own; the player gets a message. (Fix B15: colonists can never be
   loaded from a planet the fleet's owner doesn't own.)
 - Unloading colonists onto another player's planet is an invasion (resolved in ground combat, S17).
 - Unloading onto deep space jettisons the cargo (salvage, S14).
-- Built so far: the four basic actions (load all, unload all, load n, unload n) with every partner below, for
-  minerals and colonists, and fuel between fleets (colonists move between the fleet's cargo and the planet's
+- Built so far: every action except load optimal, with every partner below, for minerals and colonists, and fuel
+  between fleets (colonists move between the fleet's cargo and the planet's
   population units, 1 kT = 1 unit = 100 colonists). Loading takes what the other side has, up to the fleet's free
   cargo space (its designs' cargo capacity minus minerals and colonists carried) or free fuel space.
 

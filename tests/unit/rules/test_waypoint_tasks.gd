@@ -266,3 +266,47 @@ func test_transport_between_fleets() -> void:
 	f.waypoints[0].target_owner = 1
 	_tasks(s).run_pass(1)
 	assert_array([f.cargo[3], f.waypoints[0].task]).is_equal([5, "none"])
+
+
+func test_fill_and_wait_percent() -> void:
+	var s := _game()
+	s.planets[0].surface.assign([50, 6, 0])
+	var f := _fleet(s, 0, 1)
+	f.cargo.assign([5, 0, 0, 0, 0])
+	# 40% of the 25 kT hold is 10 kT, loaded on top of what is aboard (as the original does)
+	_transport(f, {0: ["fill_percent", 40]})
+	_tasks(s).run_pass(2)
+	assert_array([f.cargo[0], f.waypoints[0].task]).is_equal([15, "none"])
+	# waiting for 80% (capped by the 10 kT left in the hold) with only 6 kT of boranium there
+	_transport(f, {1: ["wait_percent", 80]})
+	_tasks(s).run_pass(2)
+	assert_array([f.cargo[1], f.waypoints[0].task]).is_equal([6, "transport"])
+
+
+func test_set_amount_and_set_waypoint() -> void:
+	var s := _game()
+	var f := _fleet(s, 0, 1)
+	f.cargo.assign([0, 0, 0, 20, 0])
+	_transport(f, {3: ["set_amount", 12]})
+	_tasks(s).run_pass(1)
+	assert_array([f.cargo[3], s.planets[0].population]).is_equal([12, 108])
+	assert_str(f.waypoints[0].task_data["cargo"][3]["action"]).is_equal("none")
+	f.cargo[3] = 3
+	_transport(f, {3: ["set_amount", 12]})
+	_tasks(s).run_pass(2)
+	assert_array([f.cargo[3], f.waypoints[0].task]).is_equal([12, "none"])
+	s.planets[0].population = 2
+	f.cargo[3] = 0
+	_transport(f, {3: ["set_amount", 12]})
+	_tasks(s).run_pass(2)
+	assert_array([f.cargo[3], f.waypoints[0].task]).is_equal([2, "transport"])
+	# set waypoint: the planet keeps 30 kT of ironium
+	f.cargo.assign([0, 0, 0, 0, 0])
+	s.planets[0].surface.assign([50, 0, 0])
+	_transport(f, {0: ["set_waypoint", 30]})
+	_tasks(s).run_pass(2)
+	assert_array([f.cargo[0], s.planets[0].surface[0]]).is_equal([20, 30])
+	s.planets[0].surface[0] = 10
+	_transport(f, {0: ["set_waypoint", 30]})
+	_tasks(s).run_pass(1)
+	assert_array([f.cargo[0], s.planets[0].surface[0]]).is_equal([0, 30])

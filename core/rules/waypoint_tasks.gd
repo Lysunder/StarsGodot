@@ -20,6 +20,9 @@ const SCRAP_RETURN := {
 }
 const TRANSFERRED_COST_DIVISOR := 4
 const DESIGN_SLOTS := 16
+## Fill and wait percentages use the capacity capped here; from 65,536 on they divide first.
+const PERCENT_CAPACITY_MAX := 2000000
+const PERCENT_SPLIT := 65536
 const TROOPS_PCT_DEFAULT := 110
 const ARTIFACT_FIELDS := 6
 const ARTIFACT_MIN := 100
@@ -102,46 +105,106 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 			push_warning("transport with %s (S14) is not implemented yet" % wp.target)
 			return
 	var cargo: Array = wp.task_data.get("cargo", [])
+	var done := true
+	var wait_for_space := false
 	for c in mini(cargo.size(), Fleet.CARGO_FUEL + 1):
+		if c == Fleet.CARGO_FUEL and planet != null:
+			continue
 		var action: String = cargo[c].get("action", "none")
 		var amount: int = cargo[c].get("amount", 0)
+		var have := fleet.cargo[c]
+		var unload := -1
 		match action:
 			"load_all", "load":
 				if loading:
-					var want := -1 if action == "load_all" else amount
-					_load(fleet, other, planet, c, want)
+					_load(fleet, other, planet, c, -1 if action == "load_all" else amount)
 			"unload_all", "unload":
 				if not loading:
-					var give := (
-						fleet.cargo[c] if action == "unload_all" else mini(amount, fleet.cargo[c])
-					)
-					if not _unload(fleet, other, planet, c, give):
-						_task_done(wp)
-						return
-					cargo[c] = {"action": "none", "amount": 0}
+					unload = have if action == "unload_all" else mini(amount, have)
+			"fill_percent", "wait_percent":
+				if loading and _can_load(fleet, other, planet, c):
+					var x := mini(_percent_of_capacity(fleet, c, amount), _free_space(fleet, c))
+					if x == 0:
+						if action == "wait_percent":
+							if c == Fleet.CARGO_FUEL:
+								done = false
+							else:
+								wait_for_space = true
+					elif _load(fleet, other, planet, c, x) != x:
+						done = false
+			"set_amount":
+				var diff := amount - have
+				if diff < 0 and not loading:
+					unload = -diff
+				elif diff >= 0 and loading and _can_load(fleet, other, planet, c):
+					if _available(other, planet, c) < diff:
+						done = false
+					_load(fleet, other, planet, c, diff)
+			"set_waypoint":
+				var diff := _available(other, planet, c) - amount
+				if diff < 0 and not loading:
+					unload = mini(-diff, have)
+				elif diff > 0 and loading:
+					_load(fleet, other, planet, c, diff)
 			"none":
 				pass
 			_:
 				push_warning("transport action %s is not implemented yet" % action)
-	if loading:
+		if unload >= 0:
+			if not _unload(fleet, other, planet, c, unload):
+				_task_done(wp)
+				return
+			cargo[c] = {"action": "none", "amount": 0}
+	if wait_for_space and _cargo_space(fleet, _state.player(fleet.owner)) > 0:
+		done = false
+	if loading and done:
 		_task_done(wp)
 
 
-## Takes up to `want` (-1: all there is) of cargo type `c` from the fleet owner's own planet or
-## fleet, limited by the fleet's free space. Anything else is skipped (fix B26/B15).
-func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> void:
-	var there := 0
-	if other != null and other.owner == fleet.owner:
-		there = other.cargo[c]
-	elif planet != null and planet.owner == fleet.owner and c != Fleet.CARGO_FUEL:
-		there = planet.population if c == CARGO_COLONISTS else planet.surface[c]
+## What the other side has of cargo type `c`: the target fleet's cargo or the planet's surface or
+## population; 0 in deep space.
+func _available(other: Fleet, planet: Planet, c: int) -> int:
+	if other != null:
+		return other.cargo[c]
+	if planet == null or c == Fleet.CARGO_FUEL:
+		return 0
+	return planet.population if c == CARGO_COLONISTS else planet.surface[c]
+
+
+## Loads come only from the fleet owner's own planet (not fuel) or own fleets (fix B26/B15).
+func _can_load(fleet: Fleet, other: Fleet, planet: Planet, c: int) -> bool:
+	if other != null:
+		return other.owner == fleet.owner
+	return planet != null and planet.owner == fleet.owner and c != Fleet.CARGO_FUEL
+
+
+## n percent of the fleet's capacity for cargo type `c` (fuel capacity for fuel), the capacity
+## capped at 2,000,000 (S11 "Fill up to n%").
+func _percent_of_capacity(fleet: Fleet, c: int, n: int) -> int:
+	var owner := _state.player(fleet.owner)
+	var cap := 0
+	if c == Fleet.CARGO_FUEL:
+		cap = Movement.fuel_capacity(fleet, owner, _content)
 	else:
-		return
-	var moved := mini(there, _free_space(fleet, c))
+		for stack in fleet.stacks:
+			cap += stack.count * PartRules.cargo_capacity(owner.ship_design(stack.design), _content)
+	cap = mini(cap, PERCENT_CAPACITY_MAX)
+	if cap < PERCENT_SPLIT:
+		return n * cap / 100
+	return n * (cap / 100)
+
+
+## Takes up to `want` (-1: all there is) of cargo type `c` from the fleet owner's own planet or
+## fleet, limited by the fleet's free space; returns what moved. Anything else is skipped (fix
+## B26/B15).
+func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int:
+	if not _can_load(fleet, other, planet, c):
+		return 0
+	var moved := mini(_available(other, planet, c), _free_space(fleet, c))
 	if want >= 0:
 		moved = mini(moved, want)
 	if moved <= 0:
-		return
+		return 0
 	fleet.cargo[c] += moved
 	if other != null:
 		other.cargo[c] -= moved
@@ -149,6 +212,7 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> voi
 		planet.population -= moved
 	else:
 		planet.surface[c] -= moved
+	return moved
 
 
 ## Gives up to `amount` of cargo type `c` to the other side (S11 "Unloading"). Returns false when a

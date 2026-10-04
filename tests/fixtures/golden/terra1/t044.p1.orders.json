@@ -1,0 +1,48 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 3,
+   "index": 0,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 27,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "load",
+       "amount": 5
+      },
+      {
+       "action": "load",
+       "amount": 3
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 0,
+    "x": 1303,
+    "y": 1060
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 44
+}
