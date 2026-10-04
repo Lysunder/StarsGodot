@@ -1,0 +1,110 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.scout",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 16,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 23
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.scout",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.radiating_hydro_ram_scoop"
+     },
+     {
+      "count": 1,
+      "part": "part.scanner.rhino_scanner"
+     },
+     {
+      "count": 1,
+      "part": "part.mechanical.fuel_tank"
+     }
+    ],
+    "picture": 16,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 23
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 2,
+     "design": 3,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 2,
+     "design": -1,
+     "item": "production_item.auto_defenses",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 85,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 23
+}

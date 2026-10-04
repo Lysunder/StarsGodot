@@ -80,7 +80,10 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    the data segment at 1110:1fb8; seen in the harness: 9.2 ly cost fuel for 10, terra1 turn 40); the fuel use is
    computed for m.
 2. If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
-   allows and ends with 0 fuel; then its next waypoint's warp is lowered to the highest warp at which it uses no
+   allows and ends with 0 fuel. Either way, a fleet whose tank is empty after a move that used fuel, and that did
+   not get within reach of its target (m + 0.99999 ≤ distance) or could not move at all, has **run out of fuel**
+   (seen in long1 turn 31: exactly enough fuel for a 36 ly leg, still out of fuel): its next waypoint's warp is
+   lowered to the highest warp at which it uses no
    fuel (if that is warp 1 or less the fleet is stuck), with a message.
 3. If the budget reaches the destination, the fleet is placed on it (on the planet if the waypoint targets a
    planet). Otherwise it moves along the straight line: with r = m ÷ distance in floating point,
@@ -93,8 +96,10 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 5. A fleet that moves loses its "didn't move" mark.
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the
    number of engines on the design, k = e; if warp w + 1 is also free, k = 3e; if w + 2 is too, k = 6e; if w ≤ 7 and
-   w + 3 is free as well, k = 10e. Fuel made = Σ ships × k × distance moved, added up to the free fuel space (the
-   message shows at most 32,500).
+   w + 3 is free as well, k = 10e. Fuel made = Σ ships × k × s, where s = min(m, trunc(distance − 0.99999)) (the
+   constant is at 1110:1fc8; a 1.4 ly arrival makes nothing, a 2.2 ly move counts 1; seen in long1 turn 28 and
+   terra1 turn 32), added up to the free fuel space (the message shows at most 32,500). A fleet that ran out of fuel
+   this turn makes none.
 7. **Radiating Hydro-Ram Scoop:** a fleet using it, carrying colonists of a race that isn't immune to radiation and
    whose radiation range center c = (low + high) div 2 is below 85, loses colonists × ((86 − c) div 2) div 100 (at
    least 1).

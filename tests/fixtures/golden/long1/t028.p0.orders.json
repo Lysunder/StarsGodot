@@ -1,0 +1,607 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 85,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1534,
+    "y": 1480
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 85,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 7,
+    "x": 1534,
+    "y": 1480
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "fill_percent",
+       "amount": 10
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1468,
+    "y": 1546
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "scrap",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1468,
+    "y": 1546
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 104,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 9,
+    "x": 1655,
+    "y": 1525
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 115,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1721,
+    "y": 1519
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 3,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 119,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1751,
+    "y": 1482
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 4,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 122,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1760,
+    "y": 1526
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 5,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 123,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1763,
+    "y": 1552
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 6,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 127,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1786,
+    "y": 1548
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 7,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 125,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1777,
+    "y": 1614
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 8,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 121,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1755,
+    "y": 1606
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 9,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 116,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1730,
+    "y": 1617
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 10,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 110,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1694,
+    "y": 1593
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 11,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 102,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1642,
+    "y": 1693
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 12,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 98,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1613,
+    "y": 1732
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 13,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 95,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1577,
+    "y": 1649
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 14,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 92,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1559,
+    "y": 1659
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 15,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 78,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1482,
+    "y": 1672
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 16,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 75,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1471,
+    "y": 1657
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 17,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 71,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 4,
+    "x": 1456,
+    "y": 1664
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 18,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 66,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1420,
+    "y": 1717
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 19,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 65,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1413,
+    "y": 1646
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 20,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 62,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1369,
+    "y": 1721
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 21,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 50,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1309,
+    "y": 1729
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 22,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 46,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1294,
+    "y": 1660
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 23,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 56,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1334,
+    "y": 1621
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 24,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 61,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1369,
+    "y": 1589
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 25,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 42,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1259,
+    "y": 1631
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 26,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 35,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1201,
+    "y": 1686
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 27,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 31,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1178,
+    "y": 1649
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 28,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 33,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1192,
+    "y": 1596
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 29,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 38,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1226,
+    "y": 1541
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 30,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 41,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1255,
+    "y": 1462
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 28
+}

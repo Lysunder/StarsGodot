@@ -20,6 +20,8 @@ const SCOOP_MAX_WARP := 8
 const ROUND_HALF := 0.5
 ## The distance to the target is rounded up (+ 0.9999, then truncated; S12 step 1).
 const DISTANCE_ROUND_UP := 0.9999
+## Ram scoops count the distance less this (S12 step 6).
+const SCOOP_DISTANCE_CUT := 0.99999
 
 
 ## Fuel (mg) the fleet needs to move `distance` light years at `warp` (S12 "Fuel use"); a huge value
@@ -129,14 +131,20 @@ static func _move(
 	var budget := warp * warp
 	var move := mini(budget, whole)
 	var reach := fuel_range(fleet, owner, warp, content)
-	var out_of_fuel := false
+	var used := 0
 	if reach < move:
 		fleet.cargo[Fleet.CARGO_FUEL] = 0
 		move = reach
-		out_of_fuel = true
+		used = 1
 	else:
-		var need := fuel_needed(fleet, owner, warp, move, content)
-		fleet.cargo[Fleet.CARGO_FUEL] = maxi(fleet.cargo[Fleet.CARGO_FUEL] - need, 0)
+		used = fuel_needed(fleet, owner, warp, move, content)
+		fleet.cargo[Fleet.CARGO_FUEL] = maxi(fleet.cargo[Fleet.CARGO_FUEL] - used, 0)
+	# out of fuel: the tank ran dry short of the target (or the fleet could not move at all)
+	var out_of_fuel := (
+		fleet.cargo[Fleet.CARGO_FUEL] == 0
+		and used > 0
+		and (move + DISTANCE_ROUND_UP <= exact or reach == 0)
+	)
 	if out_of_fuel:
 		_lower_warp(fleet, owner, next, content)
 	if move <= 0:
@@ -154,7 +162,11 @@ static func _move(
 		# rounding can land the fleet on its target: then it has arrived
 		var landed := fleet.x == next.x and fleet.y == next.y
 		fleet.planet = next.target_id if landed and next.target == "planet" else -1
-	_ram_scoops(fleet, owner, warp, move, content)
+	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel
+	if not out_of_fuel:
+		var scooped := mini(move, int(exact - SCOOP_DISTANCE_CUT))
+		if scooped > 0:
+			_ram_scoops(fleet, owner, warp, scooped, content)
 
 
 ## Out of fuel: the next waypoint's warp drops to the highest warp that uses no fuel.

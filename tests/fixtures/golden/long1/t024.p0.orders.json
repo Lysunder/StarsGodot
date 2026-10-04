@@ -1,0 +1,151 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 6,
+   "owner": 0,
+   "type": "fleet_split"
+  },
+  {
+   "fleet": 6,
+   "other": 7,
+   "owner": 0,
+   "ships": [
+    {
+     "count": -1,
+     "design": 3
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    210,
+    0
+   ],
+   "fleet": 6,
+   "other": {
+    "planet": 85
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 6,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 96,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1587,
+    "y": 1574
+   }
+  },
+  {
+   "fleet": 6,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 96,
+    "target_owner": -1,
+    "task": "scrap",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1587,
+    "y": 1574
+   }
+  },
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    210,
+    0
+   ],
+   "fleet": 7,
+   "other": {
+    "planet": 85
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1468,
+    "y": 1546
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1468,
+    "y": 1546
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 24
+}
