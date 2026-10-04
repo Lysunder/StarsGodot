@@ -4,10 +4,25 @@ extends GdUnitTestSuite
 ## random streams are ignored (a fixture holds the state at the start of the next turn's
 ## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
 ## design keeps the giver's name, S11), plus what a game's phases not built yet would change
-## (GAME_IGNORE).
+## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
+## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9);
+## turn 31: the starbase repaired that damage (repair, S19).
+const TURN_IGNORE := {
+	"terra1":
+	{
+		30:
+		[
+			"/fleets[1:1]*",
+			"/planets/23/starbase/damage",
+			"/planets/23/surface*",
+			"/players/1/ship_designs[3]/remaining",
+		],
+		31: ["/planets/23/starbase/damage"],
+	},
+}
 
 var _content: ContentRegistry
 
@@ -46,6 +61,7 @@ func _check_turn(game: String, turn: int) -> void:
 	var expected := _load(game, turn + 1)
 	var ignore := PackedStringArray(IGNORE)
 	ignore.append_array(GAME_IGNORE.get(game, []))
+	ignore.append_array(TURN_IGNORE.get(game, {}).get(turn, []))
 	var diffs := StateDiff.compare(expected, state, ignore)
 	(
 		assert_array(diffs)
@@ -99,6 +115,10 @@ func test_terra1(
 		[27],
 		[28],
 		[29],
+		[30],
+		[31],
+		[32],
+		[33],
 	]
 ) -> void:
 	_check_turn("terra1", turn)

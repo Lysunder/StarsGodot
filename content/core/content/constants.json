@@ -30,6 +30,7 @@
   { "type": "constant", "id": "constant.research.base_cost_26", "value": 84700 },
   { "type": "constant", "id": "constant.limits.players", "value": 16 },
   { "type": "constant", "id": "constant.limits.fleets_per_player", "value": 512 },
+  { "type": "constant", "id": "constant.limits.default_queue_items", "value": 12 },
   { "type": "constant", "id": "constant.limits.ship_designs", "value": 16 },
   { "type": "constant", "id": "constant.limits.starbase_designs", "value": 10 },
   { "type": "constant", "id": "constant.limits.waypoints", "value": 87 },

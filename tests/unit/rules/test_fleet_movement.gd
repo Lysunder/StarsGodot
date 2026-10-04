@@ -153,3 +153,74 @@ func test_colonizing_together() -> void:
 	tasks.run_pass(1)
 	tasks.resolve()
 	assert_int(tie.planets[1].owner).is_equal(-1)
+
+
+func _queue_item(item: String, count: int) -> QueueItem:
+	var q := QueueItem.new()
+	q.item = item
+	q.count = count
+	return q
+
+
+func test_new_colony_gets_the_default_queue() -> void:
+	for prt in ["trait.prt.JoaT", "trait.prt.CA", "trait.prt.AR"]:
+		var s := _game()
+		var p := s.players[0]
+		p.race.primary_trait = prt
+		var base := _colony_ship()
+		base.hull = "hull.orbital_fort"
+		base.parts.clear()
+		p.set_design(base, true)
+		p.default_leftover_to_research = true
+		(
+			p
+			. default_queue
+			. assign(
+				[
+					_queue_item("production_item.auto_factories", 10),
+					_queue_item("production_item.auto_min_terraform", 2),
+					_queue_item("production_item.mines", 5),
+				]
+			)
+		)
+		var f := _fleet(s, 0, 1)
+		f.cargo[WaypointTasks.CARGO_COLONISTS] = 25
+		f.waypoints[0].task = "colonize"
+		var tasks := WaypointTasks.new(s, _content, StarsRandom.new())
+		tasks.run_pass(1)
+		tasks.resolve()
+		var colony := s.planets[1]
+		var items: Array = colony.queue.map(func(q: QueueItem) -> String: return q.item)
+		assert_bool(colony.leftover_to_research).is_true()
+		match prt:
+			"trait.prt.JoaT":
+				assert_int(items.size()).is_equal(3)
+				assert_object(colony.starbase).is_null()
+			"trait.prt.CA":
+				assert_array(items).is_equal(
+					["production_item.auto_factories", "production_item.mines"]
+				)
+			"trait.prt.AR":
+				assert_array(items).is_equal(
+					["production_item.auto_min_terraform", "production_item.mines"]
+				)
+				assert_object(colony.starbase).is_not_null()
+				assert_int(p.starbase_design(0).remaining).is_equal(1)
+
+
+func test_player_defaults_order() -> void:
+	var s := _game()
+	var order := {
+		"type": "player_defaults",
+		"leftover_to_research": true,
+		"queue": [_queue_item("production_item.mines", 5).to_dict()],
+	}
+	assert_str(OrderRules.apply(s, _content, 0, order)).is_empty()
+	(
+		assert_array([s.players[0].default_queue.size(), s.players[0].default_leftover_to_research])
+		. is_equal([1, true])
+	)
+	var design := _queue_item("", 1)
+	design.design = 0
+	order["queue"] = [design.to_dict()]
+	assert_str(OrderRules.apply(s, _content, 0, order)).is_equal("no such production item")

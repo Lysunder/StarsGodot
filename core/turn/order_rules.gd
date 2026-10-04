@@ -17,6 +17,7 @@ const TYPES := [
 	"fleet_repeat",
 	"fleet_rename",
 	"fleet_battle_plan",
+	"player_defaults",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -56,6 +57,8 @@ static func apply(
 			return _fleet_ships(state, content, player, order)
 		"fleet_repeat", "fleet_rename", "fleet_battle_plan":
 			return _fleet_settings(state, player, order)
+		"player_defaults":
+			return _player_defaults(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -187,6 +190,35 @@ static func _waypoint(state: GameState, player: int, order: Dictionary) -> Strin
 		if index >= waypoints.size():
 			return "bad waypoint index"
 		waypoints[index] = wp
+	return ""
+
+
+## The default queue and leftover setting for new colonies (S11 "player_defaults"): standard
+## items only, at most `constant.limits.default_queue_items`, progress 0.
+static func _player_defaults(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var leftover: Variant = order.get("leftover_to_research")
+	var items: Variant = order.get("queue")
+	if not leftover is bool:
+		return "leftover_to_research must be true or false"
+	if not items is Array or items.size() > content.constant("constant.limits.default_queue_items"):
+		return "bad default queue"
+	var fresh: Array[QueueItem] = []
+	for d: Variant in items:
+		var errors := PackedStringArray()
+		var q := ModelObject.object_from(QueueItem, d, "", errors) as QueueItem
+		if not errors.is_empty():
+			return "bad queue item: %s" % errors[0]
+		if q.is_design() or not content.ids("production_item").has(q.item):
+			return "no such production item"
+		if q.count < 0 or q.count > content.constant("constant.limits.queue_count"):
+			return "bad queue item count"
+		q.progress = 0
+		fresh.append(q)
+	var p := state.player(player)
+	p.default_queue = fresh
+	p.default_leftover_to_research = leftover
 	return ""
 
 

@@ -90,6 +90,8 @@ files are read only by the dev harness (S23).
 | `battle_plans` | list of battle plans (S16) |
 | `ship_designs` | 16 slots (limit `limits.ship_designs`), each empty or a design |
 | `starbase_designs` | 10 slots (limit `limits.starbase_designs`), each empty or a design |
+| `default_queue` | the production queue a newly colonized planet starts with: standard items only, at most 12, progress 0 (S09, S11) |
+| `default_leftover_to_research` | a new colony's "contribute only leftover resources to research" setting |
 | `trader_parts` | Mystery Trader parts obtained (S18) |
 | `knowledge` | what this player knows of other objects (S15), below |
 | `mod_data` | per mod |

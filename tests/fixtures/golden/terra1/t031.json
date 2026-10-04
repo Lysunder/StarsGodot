@@ -19,7 +19,7 @@
      0,
      0,
      0,
-     50
+     200
     ],
     "mod_data": {},
     "name": "",
@@ -32,183 +32,7 @@
       "count": 1,
       "damage": 0,
       "damaged_percent": 0,
-      "design": 0,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 23,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1277,
-      "y": 1233
-     }
-    ],
-    "x": 1277,
-    "y": 1233
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     300
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 1,
-    "owner": 0,
-    "planet": 23,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 1,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 23,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1277,
-      "y": 1233
-     }
-    ],
-    "x": 1277,
-    "y": 1233
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     450
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 3,
-    "owner": 0,
-    "planet": 23,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 3,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 23,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1277,
-      "y": 1233
-     }
-    ],
-    "x": 1277,
-    "y": 1233
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     530
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 4,
-    "owner": 0,
-    "planet": 23,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 4,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 23,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1277,
-      "y": 1233
-     }
-    ],
-    "x": 1277,
-    "y": 1233
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     210
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 5,
-    "owner": 0,
-    "planet": 23,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 5,
+      "design": 2,
       "paid": [
        0,
        0,
@@ -275,6 +99,74 @@
     ],
     "x": 1303,
     "y": 1060
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     1280
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 1,
+    "owner": 1,
+    "planet": 23,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 4,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 5,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 6,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 23,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1277,
+      "y": 1233
+     }
+    ],
+    "x": 1277,
+    "y": 1233
    },
    {
     "battle_plan": 0,
@@ -1375,16 +1267,16 @@
     ],
     "defenses": 0,
     "environment": [
-     52,
-     39,
-     52
+     50,
+     40,
+     50
     ],
     "environment_original": [
      52,
      39,
      54
     ],
-    "extra_colonists": 11,
+    "extra_colonists": 75,
     "factories": 0,
     "has_scanner": false,
     "homeworld": false,
@@ -1396,13 +1288,13 @@
     "mod_data": {},
     "name": "Planet 22",
     "owner": 0,
-    "population": 295,
+    "population": 805,
     "queue": [
      {
-      "count": 3,
+      "count": 1,
       "design": -1,
       "item": "production_item.terraform",
-      "progress": 53,
+      "progress": 9,
       "starbase": false
      },
      {
@@ -1431,9 +1323,9 @@
      30
     ],
     "concentration_fraction": [
-     251,
-     0,
-     210
+     71,
+     161,
+     194
     ],
     "defenses": 10,
     "environment": [
@@ -1446,29 +1338,29 @@
      50,
      50
     ],
-    "extra_colonists": 34,
+    "extra_colonists": 75,
     "factories": 10,
     "has_scanner": true,
     "homeworld": true,
     "id": 23,
-    "leftover_to_research": false,
+    "leftover_to_research": true,
     "mass_driver_target": -1,
     "mass_driver_warp": 4,
     "mines": 10,
     "mod_data": {},
     "name": "Planet 23",
     "owner": 0,
-    "population": 5069,
+    "population": 7950,
     "queue": [],
     "route": -1,
     "starbase": {
-     "damage": 0,
+     "damage": 12,
      "design": 0
     },
     "surface": [
-     674,
-     559,
-     574
+     804,
+     614,
+     594
     ],
     "x": 1277,
     "y": 1233
@@ -1543,7 +1435,7 @@
      25,
      43
     ],
-    "extra_colonists": 74,
+    "extra_colonists": 59,
     "factories": 0,
     "has_scanner": false,
     "homeworld": false,
@@ -1555,7 +1447,7 @@
     "mod_data": {},
     "name": "Planet 25",
     "owner": 1,
-    "population": 248,
+    "population": 621,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1622,9 +1514,9 @@
      30
     ],
     "concentration_fraction": [
-     251,
-     0,
-     210
+     71,
+     161,
+     194
     ],
     "defenses": 10,
     "environment": [
@@ -1637,7 +1529,7 @@
      50,
      50
     ],
-    "extra_colonists": 36,
+    "extra_colonists": 56,
     "factories": 10,
     "has_scanner": true,
     "homeworld": true,
@@ -1649,7 +1541,7 @@
     "mod_data": {},
     "name": "Planet 27",
     "owner": 1,
-    "population": 4712,
+    "population": 6884,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -1657,9 +1549,9 @@
      "design": 0
     },
     "surface": [
-     537,
-     434,
-     324
+     617,
+     490,
+     348
     ],
     "x": 1303,
     "y": 1060
@@ -1900,8 +1792,37 @@
       "tactic": 0
      }
     ],
-    "default_leftover_to_research": false,
-    "default_queue": [],
+    "default_leftover_to_research": true,
+    "default_queue": [
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
     "homeworld": 23,
     "index": 0,
     "knowledge": {},
@@ -1959,7 +1880,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     1018,
+     2074,
      0,
      0,
      0,
@@ -1987,7 +1908,7 @@
        }
       ],
       "picture": 17,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 0,
       "transferred": false,
       "turn_designed": 1
@@ -2012,13 +1933,13 @@
        }
       ],
       "picture": 18,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 1,
       "transferred": false,
       "turn_designed": 1
      },
      {
-      "built": 1,
+      "built": 2,
       "hull": "hull.colony_ship",
       "mod_data": {},
       "name": "Design 2",
@@ -2033,7 +1954,7 @@
        }
       ],
       "picture": 60,
-      "remaining": 0,
+      "remaining": 1,
       "slot": 2,
       "transferred": false,
       "turn_designed": 1
@@ -2058,7 +1979,7 @@
        }
       ],
       "picture": 4,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 3,
       "transferred": false,
       "turn_designed": 1
@@ -2099,7 +2020,7 @@
        }
       ],
       "picture": 24,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 4,
       "transferred": false,
       "turn_designed": 1
@@ -2128,7 +2049,7 @@
        }
       ],
       "picture": 85,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 5,
       "transferred": false,
       "turn_designed": 1
@@ -2198,7 +2119,7 @@
      }
     ],
     "tech_levels": [
-     7,
+     9,
      3,
      3,
      3,
@@ -2310,7 +2231,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     880,
+     1765,
      0,
      0,
      0,
@@ -2392,6 +2313,122 @@
       "slot": 2,
       "transferred": false,
       "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 3",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.beam.x_ray_laser"
+       }
+      ],
+      "picture": 17,
+      "remaining": 0,
+      "slot": 3,
+      "transferred": true,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 4",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 18,
+      "remaining": 1,
+      "slot": 4,
+      "transferred": true,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.medium_freighter",
+      "mod_data": {},
+      "name": "Design 5",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.armor.crobmnium"
+       }
+      ],
+      "picture": 4,
+      "remaining": 1,
+      "slot": 5,
+      "transferred": true,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.destroyer",
+      "mod_data": {},
+      "name": "Design 6",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.beam.x_ray_laser"
+       },
+       {
+        "count": 1,
+        "part": "part.torpedo.alpha_torpedo"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 2,
+        "part": "part.armor.crobmnium"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       },
+       {
+        "count": 1,
+        "part": "part.electrical.battle_computer"
+       }
+      ],
+      "picture": 24,
+      "remaining": 1,
+      "slot": 6,
+      "transferred": true,
+      "turn_designed": 1
      }
     ],
     "starbase_designs": [
@@ -2458,7 +2495,7 @@
      }
     ],
     "tech_levels": [
-     7,
+     9,
      1,
      1,
      2,
@@ -2514,7 +2551,7 @@
    }
   },
   "traders": [],
-  "turn": 23,
+  "turn": 31,
   "wormholes": []
  }
 }

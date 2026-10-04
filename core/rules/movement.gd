@@ -16,6 +16,8 @@ const RANGE_PROBE := 1000
 const FAILURE_WARP := 6
 const FAILURE_CHANCE := 10
 const SCOOP_MAX_WARP := 8
+## A partial move rounds to the nearest light year, halves away from zero (S12 step 3).
+const ROUND_HALF := 0.5
 
 
 ## Fuel (mg) the fleet needs to move `distance` light years at `warp` (S12 "Fuel use"); a huge value
@@ -143,8 +145,9 @@ static func _move(
 		fleet.y = next.y
 		fleet.planet = next.target_id if next.target == "planet" else -1
 	else:
-		fleet.x += int(dx * move / exact)
-		fleet.y += int(dy * move / exact)
+		var ratio := float(move) / exact
+		fleet.x += int(dx * ratio + (ROUND_HALF if dx > 0 else -ROUND_HALF))
+		fleet.y += int(dy * ratio + (ROUND_HALF if dy > 0 else -ROUND_HALF))
 		fleet.planet = -1
 	_ram_scoops(fleet, owner, warp, move, content)
 

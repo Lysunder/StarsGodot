@@ -65,6 +65,20 @@ class TestOrders(unittest.TestCase):
         kept = stars_orders.convert(self.x_file([(44, name)]), keep_names=True)["orders"]
         self.assertEqual(kept[0]["name"], "Scouts")
 
+    def test_converts_player_defaults(self):
+        words = struct.pack("<HH", 1 | 0x3FF << 6, 8 | 5 << 6)
+        out = stars_orders.convert(self.x_file([(46, bytes([1, 2]) + words)]))["orders"]
+        self.assertEqual(out, [{
+            "type": "player_defaults",
+            "leftover_to_research": True,
+            "queue": [
+                {"item": "production_item.auto_factories", "design": -1, "starbase": False,
+                 "count": 1023, "progress": 0},
+                {"item": "production_item.mines", "design": -1, "starbase": False,
+                 "count": 5, "progress": 0},
+            ],
+        }])
+
     def test_unknown_blocks_and_wrong_files_stop(self):
         with self.assertRaises(stars_orders.StarsOrdersError):
             stars_orders.convert(self.x_file([(27, b"\0" * 8)]))

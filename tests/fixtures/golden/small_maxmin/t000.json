@@ -8033,6 +8033,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 116,
     "index": 0,
     "knowledge": {},
@@ -8382,6 +8384,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 110,
     "index": 1,
     "knowledge": {},

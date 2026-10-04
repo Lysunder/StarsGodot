@@ -71,6 +71,16 @@ func _check_player(p: Player, path: String) -> void:
 	)
 	_list_range(p.research_points, _tech_fields, 0, 1 << 53, path + "/research_points")
 	_range(p.research_percent, 0, 100, path + "/research_percent")
+	_range(p.default_queue.size(), 0, _limit("default_queue_items"), path + "/default_queue")
+	for i in p.default_queue.size():
+		var q := p.default_queue[i]
+		var at := "%s/default_queue/%d" % [path, i]
+		if q.is_design():
+			_err(at, "a default queue holds standard items only")
+		else:
+			_content_ref(q.item, "production_item", at + "/item")
+		_range(q.count, 0, _limit("queue_count"), at + "/count")
+		_range(q.progress, 0, 0, at + "/progress")
 	_range(p.research_field, 0, _tech_fields - 1, path + "/research_field")
 	_range(p.next_research_field, 0, Player.NEXT_FIELD_LOWEST, path + "/next_research_field")
 	if p.relations.size() != _state.players.size():

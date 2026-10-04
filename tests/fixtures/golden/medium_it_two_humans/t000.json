@@ -17571,6 +17571,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 111,
     "index": 0,
     "knowledge": {},
@@ -17908,6 +17910,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 219,
     "index": 1,
     "knowledge": {},
@@ -18258,6 +18262,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 265,
     "index": 2,
     "knowledge": {},

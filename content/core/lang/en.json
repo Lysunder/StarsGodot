@@ -11,6 +11,7 @@
   "name_list.races.name": "Race names",
   "constant.limits.players.name": "Players",
   "constant.limits.fleets_per_player.name": "Fleets per player",
+  "constant.limits.default_queue_items.name": "Items in the default production queue",
   "constant.limits.ship_designs.name": "Ship designs per player",
   "constant.limits.starbase_designs.name": "Starbase designs per player",
   "constant.limits.waypoints.name": "Waypoints per fleet",

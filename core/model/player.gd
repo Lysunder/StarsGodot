@@ -31,6 +31,11 @@ var battle_plans: Array = []
 ## Designs, sorted by slot; empty slots are absent.
 var ship_designs: Array[Design] = []
 var starbase_designs: Array[Design] = []
+## The queue a newly colonized planet starts with (standard items only, at most
+## `constant.limits.default_queue_items`; S09, S11).
+var default_queue: Array[QueueItem] = []
+## The "contribute only leftover resources to research" setting of a new colony.
+var default_leftover_to_research: bool = false
 ## Mystery Trader part content ids obtained (S18), sorted.
 var trader_parts: Array[String] = []
 ## What this player knows of objects it does not own (S15).
@@ -59,6 +64,8 @@ func _schema() -> Array:
 		["battle_plans", Kind.JSON],
 		["ship_designs", Kind.OBJECT_LIST, Design],
 		["starbase_designs", Kind.OBJECT_LIST, Design],
+		["default_queue", Kind.OBJECT_LIST, QueueItem],
+		["default_leftover_to_research", Kind.BOOL],
 		["trader_parts", Kind.STRING_LIST],
 		["knowledge", Kind.JSON],
 		["mod_data", Kind.JSON],

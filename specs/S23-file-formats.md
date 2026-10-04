@@ -199,7 +199,10 @@ name (packed text each). Otherwise the names follow byte 7 directly (another pla
 | 0x4C | 1 | primary trait index (S06 order) | `race.primary_trait` (via the trait ids) |
 | 0x4E | 4 | bits 0–13: lesser traits (S06 order); bit 29: techs start at 3; bit 31: cheap factories | `race.lesser_traits`, options |
 | 0x52 | 2 | Mystery Trader items (second pass, S18) | `trader_parts` |
-| 0x54 … 0x6F | | not imported | |
+| 0x54 | 2 | not imported | |
+| 0x56 | 1 | bit 0: new colonies contribute only leftover resources to research | `default_leftover_to_research` |
+| 0x57 | 1 | number of default queue items (0–12) | |
+| 0x58 | 12 × 2 | default queue for new colonies: item number (low 6 bits, standard items as in type 28), count (high 10 bits) | `default_queue` |
 | 0x70 | 1 + n | relations, one byte per player: 0 neutral, 1 friend, 2 enemy; n can be smaller than the number of players (trailing neutral entries are left out) | `relations` |
 
 ### Planet (type 13 full, 14 partial)
@@ -369,6 +372,7 @@ conversion.
 | 37 merge fleets | target fleet id; the other fleet ids, 2 bytes each (none: all the owner's fleets at the target's position) |
 | 42 fleet battle plan | fleet id; 2 bytes battle plan index |
 | 44 rename fleet | fleet id; 2 bytes (not used); the name as in type 21 (length byte, packed text or zero-terminated) |
+| 46 player defaults | 1 byte (as player record 0x56); 1 byte item count; the items (as player record 0x58); copied into the player record at 0x56 |
 
 ## Mapping to our save format
 

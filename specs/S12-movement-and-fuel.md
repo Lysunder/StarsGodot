@@ -81,8 +81,10 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    allows and ends with 0 fuel; then its next waypoint's warp is lowered to the highest warp at which it uses no
    fuel (if that is warp 1 or less the fleet is stuck), with a message.
 3. If the budget reaches the destination, the fleet is placed on it (on the planet if the waypoint targets a
-   planet). Otherwise it moves along the straight line: x = x₀ + trunc((x₁ − x₀) × budget ÷ distance), likewise y,
-   with the distance computed in floating point.
+   planet). Otherwise it moves along the straight line: with r = m ÷ distance in floating point,
+   x = x₀ + trunc((x₁ − x₀) × r + h), where h = +0.5 when x₁ > x₀ and −0.5 otherwise (rounding to the nearest light
+   year, halves away from zero; the constants are in the data segment at 1110:1f98), likewise y. (Seen in the
+   harness: a move of 36 ly with Δy = −173 lands at −36, terra1 turn 31.)
 4. Minefields are checked along the path (S13) and may stop the fleet early.
 5. A fleet that moves loses its "didn't move" mark.
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the

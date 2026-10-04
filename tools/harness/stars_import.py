@@ -296,12 +296,20 @@ class Importer:
             "battle_plans": [],
             "ship_designs": [],
             "starbase_designs": [],
+            "default_queue": self.default_queue(index, d[0x57], d[0x58:0x70]),
+            "default_leftover_to_research": bool(d[0x56] & 1),
             "trader_parts": [],
             "knowledge": {},
             "mod_data": {},
             "_ship_design_count": d[1],
             "_starbase_design_count": d[5] >> 4,
         }
+
+    def default_queue(self, index, count, d):
+        """The player's default queue for new colonies (S09): words of item number (low 6 bits) and
+        count (high 10 bits), standard items only."""
+        words = [w for (w,) in struct.iter_unpack("<H", d[: 2 * count])]
+        return [self.queue_item(-1, ((w & 0x3F) << 10 | w >> 6, QUEUE_STANDARD)) for w in words]
 
     def battle_plan(self, d, players):
         owner, number = d[0] & 15, d[0] >> 4

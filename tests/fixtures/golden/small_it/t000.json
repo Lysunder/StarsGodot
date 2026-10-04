@@ -6488,6 +6488,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 68,
     "index": 0,
     "knowledge": {},
@@ -6824,6 +6826,8 @@
       "tactic": 0
      }
     ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
     "homeworld": 30,
     "index": 1,
     "knowledge": {},

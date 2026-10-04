@@ -236,6 +236,12 @@ mineral. The packet's speed comes from the driver's speed setting, with adjustme
 Inter-stellar Traveler races that S14 specifies. A packet launched this year from the same planet to the same
 destination at the same speed absorbs the new minerals; otherwise a new packet is created (S14).
 
+### 7. Default queue for new colonies
+
+Each player has a default queue of up to 12 standard items (no designs) and a default "contribute only leftover
+resources to research" setting, set by the `player_defaults` order. A newly colonized planet starts with a copy
+(S11 "Colonizing an empty planet"). Computer players' defaults were empty in every harness game so far.
+
 ## Randomness
 
 Only the Genesis Device draws: 12 draws per device, 4 per index (two for the environment axis, then two for the

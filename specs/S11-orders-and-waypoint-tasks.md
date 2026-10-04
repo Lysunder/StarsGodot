@@ -8,7 +8,9 @@ colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), mat
 0-2. Fleet orders (split, ship moves, merge, repeat, rename, battle plan) added from the code (2026-10-04,
 `core/rules/fleet_orders.gd`); ship moves, split, repeat and battle plan match the original in terra1 turn 28
 (the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet. Merge, scrap (at a
-planet) and transfer tasks added (2026-10-04), matching the original in terra1 turn 29.
+planet) and transfer tasks added (2026-10-04), matching the original in terra1 turn 29. Player defaults (default queue
+for new colonies) added (2026-10-04), matching the original in terra1 turns 30-33; the Alternate Reality colony
+starbase and the trait skips are not seen yet.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -59,8 +61,9 @@ and has no effect (the original trusted its client more; see "Validation").
 | Player relations | Friend, neutral or enemy toward each other player (S16). |
 | Rename fleet | Cosmetic. |
 
-The original also had order blocks for passwords and for "save and submit"; they are file mechanics, not game
-rules.
+The original also had an order block for passwords, which is file mechanics, not a game rule. Its block 46 (named
+"save and submit" in the decompilation notes) carries the player's defaults for new colonies (`player_defaults`
+below).
 
 ### Order files (our format)
 
@@ -112,6 +115,9 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`player_defaults`** `{leftover_to_research, queue}`: the default queue for new colonies (at most 12 standard
+  items, any progress dropped) and their "contribute only leftover resources to research" setting. Block 46, which
+  copies up to 26 bytes into the player record.
 
 **Cargo after a ship move.** Computed for each fleet from its state before the move (ships S, cargo, fuel):
 
@@ -229,9 +235,11 @@ same planet in one turn are resolved there.
 2. The player with the greatest strength wins; an exact tie for the greatest means nobody colonizes (the colonists
    are lost). "Second" is the greatest strength before the winner's in player order.
 3. Population = the winner's colonists, times (top − second) div top when a second player had strength; at least 1.
-4. The planet becomes the winner's with that population. Its queue becomes a copy of the player's default
-   production template (S09; not modelled yet, empty for human players by default) and its "only leftover to
-   research" setting the player's default.
+4. The planet becomes the winner's with that population. Its "only leftover to research" setting becomes the
+   player's default, and, when the player's default queue has items, its queue becomes a copy of it, in order,
+   leaving out auto items the race does not use (trait parameters `colony.skips_auto_<effect>`: Alternate Reality
+   skips auto mines, factories and defenses, Claim Adjuster both auto terraform items). Alternate Reality
+   (`colony.starbase`) also gets a starbase of its starbase design 0, whose built and existing counts grow by one.
 5. An artifact on the planet is removed; with random events on, the winner gains 100 + random(301) research
    points (scaled by population div 10 below 10 units) in field random(6) (draws in that order).
 

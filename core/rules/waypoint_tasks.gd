@@ -369,8 +369,25 @@ func resolve() -> void:
 
 
 func _found_colony(planet: Planet, player: int, population: int) -> void:
+	var owner := _state.player(player)
 	planet.owner = player
 	planet.population = population
+	planet.leftover_to_research = owner.default_leftover_to_research
+	planet.queue.clear()
+	for q in owner.default_queue:
+		var effect: String = _content.get_def("production_item", q.item).get("effect", "")
+		var skips := RaceMath.trait_param(owner.race, _content, "colony.skips_auto_" + effect, 0)
+		if _content.get_def("production_item", q.item).get("auto", false) and skips:
+			continue
+		var copy := q.copy() as QueueItem
+		copy.progress = 0
+		planet.queue.append(copy)
+	if RaceMath.trait_param(owner.race, _content, "colony.starbase", 0):
+		planet.starbase = Starbase.new()
+		var base := owner.starbase_design(0)
+		if base != null:
+			base.built += 1
+			base.remaining += 1
 	if planet.artifact != null:
 		planet.artifact = null
 		if not _state.settings.no_random_events:

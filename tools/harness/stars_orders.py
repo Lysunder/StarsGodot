@@ -4,8 +4,9 @@ Usage: python tools/harness/stars_orders.py <name>.x1 out.orders.json
 
 Order blocks converted so far: waypoint delete, add and change (3, 4, 5), repeat orders (10), ship
 moves, split and merge (23, 24, 37), production queue change (29), research change (34), planet
-change (35), fleet battle plan (42) and rename fleet (44; the name is left out unless --keep-names,
-as the importer leaves fleet names out). Any other order block stops the conversion with its type, so a fixture never silently
+change (35), fleet battle plan (42), rename fleet (44; the name is left out unless --keep-names,
+as the importer leaves fleet names out) and player defaults (46: the default queue for new
+colonies and their leftover-to-research setting). Any other order block stops the conversion with its type, so a fixture never silently
 loses orders. Registration data (block type 9) is dropped unread by the file reader.
 """
 
@@ -33,6 +34,7 @@ PLANET_CHANGE = 35
 MERGE_FLEETS = 37
 FLEET_BATTLE_PLAN = 42
 RENAME_FLEET = 44
+PLAYER_DEFAULTS = 46
 FILE_KIND_ORDERS = 1
 
 
@@ -101,6 +103,9 @@ def convert_block(importer, b, keep_names=False):
         out.update(index=index, waypoint=importer.waypoint(d[4:]))
         out["type"] = "waypoint_add" if b.type == WAYPOINT_ADD else "waypoint_change"
         return out
+    if b.type == PLAYER_DEFAULTS:
+        queue = importer.default_queue(-1, d[1], d[2:]) if len(d) > 1 else []
+        return {"type": "player_defaults", "leftover_to_research": bool(d[0] & 1), "queue": queue}
     if b.type == QUEUE_CHANGE:
         planet = struct.unpack_from("<H", d, 0)[0] & 0x7FF
         items = [importer.queue_item(planet, w) for w in struct.iter_unpack("<HH", d[2:])]
