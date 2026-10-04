@@ -188,3 +188,81 @@ func test_tech_bonus_once_per_turn() -> void:
 			assert_int(p.research_points[got - 1]).is_equal(cost[got - 1])
 	assert_int(gained).is_greater(0)
 	assert_bool(p.tech_bonus_taken).is_true()
+
+
+func _transport(f: Fleet, actions: Dictionary) -> void:
+	var cargo := []
+	for c in 5:
+		var a: Array = actions.get(c, ["none", 0])
+		cargo.append({"action": a[0], "amount": a[1]})
+	f.waypoints[0].task = "transport"
+	f.waypoints[0].task_data = {"cargo": cargo}
+
+
+func test_unload_at_another_players_planet() -> void:
+	var s := _game()
+	s.planets[0].owner = 1
+	var f := _fleet(s, 0, 1)
+	f.cargo.assign([10, 0, 0, 20, 0])
+	_transport(f, {0: ["unload_all", 0], 3: ["unload", 5]})
+	_tasks(s).run_pass(1)
+	# minerals land; colonists become an invasion (ground combat, S17) and leave the fleet
+	assert_array([s.planets[0].surface[0], f.cargo[0], f.cargo[3]]).is_equal([10, 0, 15])
+	assert_str(f.waypoints[0].task_data["cargo"][3]["action"]).is_equal("none")
+	assert_int(s.planets[0].population).is_equal(100)
+
+
+func test_colonist_unload_refused_cancels_the_task() -> void:
+	for case in ["starbase", "unowned", "space_race"]:
+		var s := _game()
+		s.planets[0].owner = 1 if case != "unowned" else -1
+		if case == "starbase":
+			s.planets[0].starbase = Starbase.new()
+		if case == "space_race":
+			s.players[0].race.primary_trait = "trait.prt.AR"
+		var f := _fleet(s, 0, 1)
+		f.cargo.assign([0, 0, 0, 20, 0])
+		_transport(f, {3: ["unload_all", 0], 4: ["unload_all", 0]})
+		_tasks(s).run_pass(1)
+		assert_array([f.cargo[3], f.waypoints[0].task]).is_equal([20, "none"])
+
+
+func test_load_from_what_the_player_does_not_control_is_skipped() -> void:
+	var s := _game()
+	s.planets[0].owner = 1
+	s.planets[0].surface.assign([50, 0, 0])
+	var f := _fleet(s, 0, 1)
+	_transport(f, {0: ["load_all", 0]})
+	_tasks(s).run_pass(2)
+	# fix B26: the impossible load is a no-op and the task completes
+	assert_array([f.cargo[0], f.waypoints[0].task]).is_equal([0, "none"])
+
+
+func test_transport_between_fleets() -> void:
+	var s := _game()
+	var mine := _fleet(s, 0, 1)
+	var theirs := _fleet(s, 1, 1)
+	var f := _fleet(s, 0, 1)
+	f.cargo.assign([20, 0, 0, 0, 100])
+	mine.cargo.assign([0, 7, 0, 0, 0])
+	_transport(f, {0: ["unload", 12], 1: ["load_all", 0], 4: ["unload", 40]})
+	f.waypoints[0].target = "fleet"
+	f.waypoints[0].target_owner = 0
+	f.waypoints[0].target_id = mine.number
+	_tasks(s).run_pass(1)
+	_tasks(s).run_pass(2)
+	assert_array(f.cargo).is_equal([8, 7, 0, 0, 60])
+	assert_array(mine.cargo).is_equal([12, 0, 0, 0, 40])
+	# another player's fleet gets fuel, never minerals (fix B20) or colonists
+	_transport(f, {0: ["unload_all", 0], 4: ["unload", 10]})
+	f.waypoints[0].target_owner = 1
+	f.waypoints[0].target_id = theirs.number
+	_tasks(s).run_pass(1)
+	assert_array([f.cargo[0], f.cargo[4], theirs.cargo[0], theirs.cargo[4]]).is_equal(
+		[8, 50, 0, 10]
+	)
+	f.cargo[3] = 5
+	_transport(f, {3: ["unload_all", 0]})
+	f.waypoints[0].target_owner = 1
+	_tasks(s).run_pass(1)
+	assert_array([f.cargo[3], f.waypoints[0].task]).is_equal([5, "none"])

@@ -108,6 +108,7 @@
       "production.genesis_keeps_installations": 1,
       "invasion.troops_pct": 0,
       "colony.starbase": 1,
+      "transport.no_invasion": 1,
       "colony.skips_auto_mines": 1,
       "colony.skips_auto_factories": 1,
       "colony.skips_auto_defenses": 1

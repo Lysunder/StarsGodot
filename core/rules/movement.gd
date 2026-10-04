@@ -18,6 +18,8 @@ const FAILURE_CHANCE := 10
 const SCOOP_MAX_WARP := 8
 ## A partial move rounds to the nearest light year, halves away from zero (S12 step 3).
 const ROUND_HALF := 0.5
+## The distance to the target is rounded up (+ 0.9999, then truncated; S12 step 1).
+const DISTANCE_ROUND_UP := 0.9999
 
 
 ## Fuel (mg) the fleet needs to move `distance` light years at `warp` (S12 "Fuel use"); a huge value
@@ -122,7 +124,7 @@ static func _move(
 	var dx := next.x - fleet.x
 	var dy := next.y - fleet.y
 	var exact := sqrt(float(dx * dx + dy * dy))
-	var whole := int(exact)
+	var whole := int(exact + DISTANCE_ROUND_UP)
 	var warp := next.warp
 	var budget := warp * warp
 	var move := mini(budget, whole)
@@ -148,7 +150,9 @@ static func _move(
 		var ratio := float(move) / exact
 		fleet.x += int(dx * ratio + (ROUND_HALF if dx > 0 else -ROUND_HALF))
 		fleet.y += int(dy * ratio + (ROUND_HALF if dy > 0 else -ROUND_HALF))
-		fleet.planet = -1
+		# rounding can land the fleet on its target: then it has arrived
+		var landed := fleet.x == next.x and fleet.y == next.y
+		fleet.planet = next.target_id if landed and next.target == "planet" else -1
 	_ram_scoops(fleet, owner, warp, move, content)
 
 
@@ -212,8 +216,12 @@ static func _advance_waypoints(fleet: Fleet) -> void:
 		if fleet.repeat:
 			fleet.waypoints.append(next.copy() as Waypoint)
 		return
-	var here := Waypoint.new(fleet.x, fleet.y)
-	fleet.waypoints[0] = here
+	var here := fleet.waypoints[0]
+	here.x = fleet.x
+	here.y = fleet.y
+	here.target = "none"
+	here.target_owner = -1
+	here.target_id = -1
 
 
 ## S02 phase 15: a fleet at a starbase with a dock that belongs to its owner or a friend is

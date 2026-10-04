@@ -10,7 +10,9 @@ colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), mat
 (the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet. Merge, scrap (at a
 planet) and transfer tasks added (2026-10-04), matching the original in terra1 turn 29. Player defaults (default queue
 for new colonies) added (2026-10-04), matching the original in terra1 turns 30-33; the Alternate Reality colony
-starbase and the trait skips are not seen yet.
+starbase and the trait skips are not seen yet. Transport with every partner (2026-10-04): unloading minerals and an invasion at
+another player's planet match the original in terra1 turns 36-40 (ground combat itself is S17); the refusals,
+fleet partners and fix B26 have unit tests only.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -207,10 +209,36 @@ Rules visible in the code (amounts to be confirmed, see "Open questions"):
   loaded from a planet the fleet's owner doesn't own.)
 - Unloading colonists onto another player's planet is an invasion (resolved in ground combat, S17).
 - Unloading onto deep space jettisons the cargo (salvage, S14).
-- Built so far: the four basic actions at the owner's own planet, for minerals and colonists (colonists move between
-  the fleet's cargo and the planet's population units, 1 kT = 1 unit = 100 colonists). The load pass ends the task.
-  Loading takes what the planet has, up to the fleet's free cargo space (its designs' cargo capacity minus minerals
-  and colonists carried).
+- Built so far: the four basic actions (load all, unload all, load n, unload n) with every partner below, for
+  minerals and colonists, and fuel between fleets (colonists move between the fleet's cargo and the planet's
+  population units, 1 kT = 1 unit = 100 colonists). Loading takes what the other side has, up to the fleet's free
+  cargo space (its designs' cargo capacity minus minerals and colonists carried) or free fuel space.
+
+**The other side** comes from the current waypoint's target: a fleet (the target fleet, which must be at the same
+position), a planet (the planet the fleet is at), or deep space. Space objects (salvage, packets) belong to S14 and
+are skipped with a warning.
+
+**Unloading** (passes 1 and 3), per cargo type in order (ironium, boranium, germanium, colonists, fuel); each unload
+action is cleared once carried out:
+
+| Other side | Minerals | Colonists | Fuel |
+|---|---|---|---|
+| The fleet owner's planet | to the surface | join the population | not transferred |
+| Another player's planet | to the surface | an invasion, recorded for ground combat (S17), unless the planet has a starbase or the fleet's race lives in space (Alternate Reality, trait parameter `transport.no_invasion`): then refused | not transferred |
+| An unowned planet | to the surface | refused (colonizing needs the colonize task) | not transferred |
+| One of the player's fleets | up to its free cargo space | up to its free cargo space | up to its free fuel space |
+| Another player's fleet | refused (fix B20; the original lets them vanish) | refused | up to its free fuel space, nothing if that player counts the giver as an enemy |
+| Deep space | jettisoned as salvage (S14; not built yet) | refused | not built yet |
+
+A refused colonist unload cancels the whole transport task (the original's "order canceled" messages): later cargo
+types and the load actions are not carried out.
+
+**Loading** (passes 2 and 4) works only from the fleet owner's own planet or own fleets. From anything else (another
+player's or an unowned planet, another player's fleet, deep space) the load is skipped. **Fix B26/B15:** the original
+keeps the task, so the fleet waits at waypoint 0 until the load is canceled in pass 4 and loses its move; we skip the
+impossible load, the task completes and the fleet moves on. (Stealing cargo with a robber-baron scanner, message
+"has stolen", and picking up minerals from one's own remote-mining fleet at an unowned planet are not built yet;
+see "Open questions".) The load pass ends the task.
 
 ### Colonize
 

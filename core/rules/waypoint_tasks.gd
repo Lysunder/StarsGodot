@@ -80,46 +80,127 @@ func run_pass(pass_number: int) -> void:
 				push_warning("waypoint task %s is not implemented yet" % wp.task)
 
 
+## S11 "Transport": the other side is the target fleet, the planet the fleet is at, or deep
+## space. Unload actions run in passes 1 and 3 and are cleared once done; loads run in passes 2 and
+## 4 and end the task. A refused colonist unload cancels the task.
 func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
-	var planet := _state.planet(fleet.planet) if fleet.planet >= 0 else null
-	if planet == null or planet.owner != fleet.owner:
-		push_warning("transport other than at the owner's own planet is not implemented yet")
-		return
+	var other: Fleet = null
+	var planet: Planet = null
+	match wp.target:
+		"fleet":
+			other = _state.fleet(wp.target_owner, wp.target_id)
+			if other == null or other == fleet or other.x != fleet.x or other.y != fleet.y:
+				other = null
+				if loading:
+					_task_done(wp)
+				return
+		"planet":
+			planet = _state.planet(fleet.planet) if fleet.planet >= 0 else null
+		"none":
+			pass
+		_:
+			push_warning("transport with %s (S14) is not implemented yet" % wp.target)
+			return
 	var cargo: Array = wp.task_data.get("cargo", [])
-	var owner := _state.player(fleet.owner)
-	for c in mini(cargo.size(), Fleet.CARGO_FUEL):
+	for c in mini(cargo.size(), Fleet.CARGO_FUEL + 1):
 		var action: String = cargo[c].get("action", "none")
 		var amount: int = cargo[c].get("amount", 0)
-		var have := fleet.cargo[c]
-		var there := planet.population if c == CARGO_COLONISTS else planet.surface[c]
-		var space := _cargo_space(fleet, owner)
-		var moved := 0
 		match action:
-			"load_all":
+			"load_all", "load":
 				if loading:
-					moved = mini(there, space)
-			"load":
-				if loading:
-					moved = mini(amount, mini(there, space))
-			"unload_all":
+					var want := -1 if action == "load_all" else amount
+					_load(fleet, other, planet, c, want)
+			"unload_all", "unload":
 				if not loading:
-					moved = -have
-			"unload":
-				if not loading:
-					moved = -mini(amount, have)
+					var give := (
+						fleet.cargo[c] if action == "unload_all" else mini(amount, fleet.cargo[c])
+					)
+					if not _unload(fleet, other, planet, c, give):
+						_task_done(wp)
+						return
+					cargo[c] = {"action": "none", "amount": 0}
 			"none":
 				pass
 			_:
 				push_warning("transport action %s is not implemented yet" % action)
-		if moved == 0:
-			continue
-		fleet.cargo[c] += moved
-		if c == CARGO_COLONISTS:
-			planet.population -= moved
-		else:
-			planet.surface[c] -= moved
 	if loading:
 		_task_done(wp)
+
+
+## Takes up to `want` (-1: all there is) of cargo type `c` from the fleet owner's own planet or
+## fleet, limited by the fleet's free space. Anything else is skipped (fix B26/B15).
+func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> void:
+	var there := 0
+	if other != null and other.owner == fleet.owner:
+		there = other.cargo[c]
+	elif planet != null and planet.owner == fleet.owner and c != Fleet.CARGO_FUEL:
+		there = planet.population if c == CARGO_COLONISTS else planet.surface[c]
+	else:
+		return
+	var moved := mini(there, _free_space(fleet, c))
+	if want >= 0:
+		moved = mini(moved, want)
+	if moved <= 0:
+		return
+	fleet.cargo[c] += moved
+	if other != null:
+		other.cargo[c] -= moved
+	elif c == CARGO_COLONISTS:
+		planet.population -= moved
+	else:
+		planet.surface[c] -= moved
+
+
+## Gives up to `amount` of cargo type `c` to the other side (S11 "Unloading"). Returns false when a
+## colonist unload is refused, which cancels the task.
+func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) -> bool:
+	if other != null:
+		var foreign := other.owner != fleet.owner
+		if foreign and c == CARGO_COLONISTS:
+			return false
+		if foreign and c != Fleet.CARGO_FUEL:
+			return true
+		if foreign and _state.player(other.owner).relations[fleet.owner] == "enemy":
+			return true
+		var moved := mini(amount, _free_space(other, c))
+		if moved > 0:
+			fleet.cargo[c] -= moved
+			other.cargo[c] += moved
+		return true
+	if planet == null:
+		if c == CARGO_COLONISTS:
+			return false
+		if amount > 0:
+			push_warning("jettisoning cargo in deep space (salvage, S14) is not implemented yet")
+		return true
+	if c == Fleet.CARGO_FUEL or amount <= 0:
+		return true
+	if c != CARGO_COLONISTS:
+		fleet.cargo[c] -= amount
+		planet.surface[c] += amount
+		return true
+	if planet.owner == fleet.owner:
+		fleet.cargo[c] -= amount
+		planet.population += amount
+		return true
+	var race := _state.player(fleet.owner).race
+	if (
+		planet.owner < 0
+		or planet.starbase != null
+		or RaceMath.trait_param(race, _content, "transport.no_invasion", 0)
+	):
+		return false
+	_pending.append(Colonization.new(fleet.owner, planet.id, amount))
+	fleet.cargo[c] -= amount
+	return true
+
+
+## Free cargo space for minerals and colonists, free fuel space for fuel.
+func _free_space(fleet: Fleet, c: int) -> int:
+	var owner := _state.player(fleet.owner)
+	if c == Fleet.CARGO_FUEL:
+		return maxi(Movement.fuel_capacity(fleet, owner, _content) - fleet.cargo[c], 0)
+	return _cargo_space(fleet, owner)
 
 
 func _cargo_space(fleet: Fleet, owner: Player) -> int:

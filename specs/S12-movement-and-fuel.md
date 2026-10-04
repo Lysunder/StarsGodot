@@ -76,7 +76,9 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 ### Moving
 
 1. The move budget is w² light years; a fleet following another fleet uses the target's current position. The
-   move m = min(budget, distance to the target truncated to an integer); the fuel use is computed for m.
+   move m = min(budget, trunc(distance to the target + 0.9999)), so the distance is rounded up (the constant is in
+   the data segment at 1110:1fb8; seen in the harness: 9.2 ly cost fuel for 10, terra1 turn 40); the fuel use is
+   computed for m.
 2. If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
    allows and ends with 0 fuel; then its next waypoint's warp is lowered to the highest warp at which it uses no
    fuel (if that is warp 1 or less the fleet is stuck), with a message.
@@ -84,7 +86,8 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    planet). Otherwise it moves along the straight line: with r = m ÷ distance in floating point,
    x = x₀ + trunc((x₁ − x₀) × r + h), where h = +0.5 when x₁ > x₀ and −0.5 otherwise (rounding to the nearest light
    year, halves away from zero; the constants are in the data segment at 1110:1f98), likewise y. (Seen in the
-   harness: a move of 36 ly with Δy = −173 lands at −36, terra1 turn 31.)
+   harness: a move of 36 ly with Δy = −173 lands at −36, terra1 turn 31.) A fleet whose rounded position is its target's has arrived (on the
+   planet if the target is one; seen in terra1 turn 33: 1.4 ly at warp 1).
 4. Minefields are checked along the path (S13) and may stop the fleet early.
 5. A fleet that moves loses its "didn't move" mark.
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the
@@ -105,7 +108,8 @@ After all movement passes:
    a gate); if the target no longer exists the waypoint becomes a deep-space waypoint.
 2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
    the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
-   only part of the way gets a new current waypoint in deep space at its position (warp 0, no task).
+   only part of the way has its current waypoint moved to its position as a deep-space waypoint; the waypoint keeps
+   its warp and task (seen in the harness: warp 6 kept, terra1 turn 36).
 3. **Repeat orders:** with repeat on, the removed waypoint is appended at the end of the list, so the route loops.
 
 ### Refueling (S02 phase 15)

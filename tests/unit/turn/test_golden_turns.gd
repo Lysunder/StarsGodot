@@ -9,7 +9,8 @@ extends GdUnitTestSuite
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
 ## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9);
-## turn 31: the starbase repaired that damage (repair, S19).
+## turn 31: the starbase repaired that damage (repair, S19); turn 40: player 2's colonists unloaded
+## onto player 1's colony fought its ground troops (ground combat, S17).
 const TURN_IGNORE := {
 	"terra1":
 	{
@@ -21,6 +22,7 @@ const TURN_IGNORE := {
 			"/players/1/ship_designs[3]/remaining",
 		],
 		31: ["/planets/23/starbase/damage"],
+		40: ["/planets/30/population"],
 	},
 }
 
@@ -119,6 +121,14 @@ func test_terra1(
 		[31],
 		[32],
 		[33],
+		[34],
+		[35],
+		[36],
+		[37],
+		[38],
+		[39],
+		[40],
+		[41],
 	]
 ) -> void:
 	_check_turn("terra1", turn)
