@@ -1,0 +1,111 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 57,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1336,
+    "y": 1385
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 58,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1344,
+    "y": 1421
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 3,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 54,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1329,
+    "y": 1438
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 4,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 60,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1366,
+    "y": 1463
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 5,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 59,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1349,
+    "y": 1519
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 6,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 85,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1534,
+    "y": 1480
+   }
+  },
+  {
+   "field": 2,
+   "next": 7,
+   "percent": 40,
+   "type": "research"
+  }
+ ],
+ "player": 0,
+ "turn": 20
+}

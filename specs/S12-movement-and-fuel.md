@@ -86,8 +86,9 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    planet). Otherwise it moves along the straight line: with r = m ÷ distance in floating point,
    x = x₀ + trunc((x₁ − x₀) × r + h), where h = +0.5 when x₁ > x₀ and −0.5 otherwise (rounding to the nearest light
    year, halves away from zero; the constants are in the data segment at 1110:1f98), likewise y. (Seen in the
-   harness: a move of 36 ly with Δy = −173 lands at −36, terra1 turn 31.) A fleet whose rounded position is its target's has arrived (on the
-   planet if the target is one; seen in terra1 turn 33: 1.4 ly at warp 1).
+   harness: a move of 36 ly with Δy = −173 lands at −36, terra1 turn 31.) A fleet arrives when m covers the distance rounded down (trunc(distance)
+   ≤ m), so it can arrive although fuel was charged for the distance rounded up (seen in long1 turn 15: 36.7 ly at
+   warp 6, and terra1 turn 33: 1.4 ly at warp 1); a fleet whose rounded position is its target's has also arrived.
 4. Minefields are checked along the path (S13) and may stop the fleet early.
 5. A fleet that moves loses its "didn't move" mark.
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the

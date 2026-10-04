@@ -1,0 +1,140 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    25,
+    0
+   ],
+   "fleet": 2,
+   "other": {
+    "planet": 85
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 96,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1587,
+    "y": 1574
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 96,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1587,
+    "y": 1574
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 99,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_defenses",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_max_terraform",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 74,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 13
+}

@@ -142,7 +142,8 @@ static func _move(
 	if move <= 0:
 		return
 	fleet.did_not_move = false
-	if move >= whole:
+	# the move reaches the target when it covers the distance rounded down (fuel counts it rounded up)
+	if move >= int(exact):
 		fleet.x = next.x
 		fleet.y = next.y
 		fleet.planet = next.target_id if next.target == "planet" else -1
