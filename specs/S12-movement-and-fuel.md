@@ -110,7 +110,10 @@ After all movement passes:
    the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
    only part of the way has its current waypoint moved to its position as a deep-space waypoint; the waypoint keeps
    its warp and task (seen in the harness: warp 6 kept, terra1 turn 36).
-3. **Repeat orders:** with repeat on, the removed waypoint is appended at the end of the list, so the route loops.
+3. **Repeat orders:** with repeat on, the reached waypoint is also appended at the end of the list, so the route
+   loops, unless the list had only two waypoints or the last waypoint is at the reached one's position
+   (`Fleet_RemoveWaypoint@1048:6230`; seen in long1 turn 1: a two-waypoint route with repeat on ends with one
+   waypoint).
 
 ### Refueling (S02 phase 15)
 

@@ -360,6 +360,7 @@ conversion.
 
 | Block | Layout |
 |---|---|
+| 1, 2, 25 cargo transfer | 2 bytes first holder id; 2 bytes second holder id; 1 byte holder kinds (first in the low nibble, second in the high: 1 planet, 2 fleet, 4 deep space, 8 object); 1 byte cargo mask (ironium, boranium, germanium, colonists, fuel); per set bit a signed amount of 1 (block 1), 2 (block 2) or 4 bytes (block 25), positive into the first holder |
 | 3 waypoint delete | 2 bytes fleet id (number, owner × 512); 2 bytes index, bit 15 set: delete two |
 | 4 waypoint add | fleet id; 2 bytes index; the waypoint as in type 19/20 (8 bytes, or with 2 to 10 bytes of task data; missing words are zero) |
 | 5 waypoint change | as 4; replaces the waypoint at index |

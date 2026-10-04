@@ -1,0 +1,105 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    25,
+    0
+   ],
+   "fleet": 2,
+   "other": {
+    "planet": 85
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1468,
+    "y": 1546
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 74,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 7,
+    "x": 1468,
+    "y": 1546
+   }
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.scout",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 16,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 4
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "slot": 6,
+   "starbase": false,
+   "type": "design_delete"
+  },
+  {
+   "field": 2,
+   "next": 7,
+   "percent": 40,
+   "type": "research"
+  }
+ ],
+ "player": 0,
+ "turn": 4
+}

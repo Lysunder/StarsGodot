@@ -20,6 +20,7 @@ const SCRAP_RETURN := {
 }
 const TRANSFERRED_COST_DIVISOR := 4
 const DESIGN_SLOTS := 16
+const MINING_RATE_MAX := 4000
 ## Fill and wait percentages use the capacity capped here; from 65,536 on they divide first.
 const PERCENT_CAPACITY_MAX := 2000000
 const PERCENT_SPLIT := 65536
@@ -45,6 +46,8 @@ class Colonization:
 var _state: GameState
 var _content: ContentRegistry
 var _rng: StarsRandom
+## The unowned planet whose own remote miner is the transport partner, during one transport.
+var _site: Planet = null
 ## Colonizations waiting for the next resolution (S11 "Colonize").
 var _pending: Array[Colonization] = []
 
@@ -77,6 +80,9 @@ func run_pass(pass_number: int) -> void:
 			"transfer":
 				if pass_number == 4:
 					_transfer(fleet, wp)
+			"remote_mine":
+				if pass_number == 3:
+					_remote_mine(fleet, wp)
 			"none", "patrol", "route":
 				pass
 			_:
@@ -99,6 +105,12 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 				return
 		"planet":
 			planet = _state.planet(fleet.planet) if fleet.planet >= 0 else null
+			if planet != null and planet.owner < 0:
+				var miner := _resting_miner(fleet, planet)
+				if miner != null:
+					other = miner
+					_site = planet
+					planet = null
 		"none":
 			pass
 		_:
@@ -107,6 +119,8 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 	var cargo: Array = wp.task_data.get("cargo", [])
 	var done := true
 	var wait_for_space := false
+	var dunnage := false
+	var fuel_optimal := false
 	for c in mini(cargo.size(), Fleet.CARGO_FUEL + 1):
 		if c == Fleet.CARGO_FUEL and planet != null:
 			continue
@@ -146,6 +160,11 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 					unload = mini(-diff, have)
 				elif diff > 0 and loading:
 					_load(fleet, other, planet, c, diff)
+			"load_optimal":
+				if c == Fleet.CARGO_FUEL:
+					fuel_optimal = true
+				elif loading:
+					dunnage = true
 			"none":
 				pass
 			_:
@@ -155,15 +174,62 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 				_task_done(wp)
 				return
 			cargo[c] = {"action": "none", "amount": 0}
+	if loading and fuel_optimal and not dunnage:
+		done = _fuel_optimal(fleet, other) and done
+	if loading and dunnage and done:
+		var space := _cargo_space(fleet, _state.player(fleet.owner))
+		if space > 0 or fuel_optimal:
+			for c in mini(cargo.size(), Fleet.CARGO_FUEL):
+				if cargo[c].get("action", "none") == "load_optimal":
+					_load(fleet, other, planet, c, -1)
+			if fuel_optimal:
+				done = _fuel_optimal(fleet, other) and done
 	if wait_for_space and _cargo_space(fleet, _state.player(fleet.owner)) > 0:
 		done = false
+	_site = null
 	if loading and done:
 		_task_done(wp)
+
+
+## The fleet owner's first remote miner resting at this unowned planet (didn't move, mining rate
+## above 0): transport there goes through it (S11 "Transport at a mining site").
+func _resting_miner(fleet: Fleet, planet: Planet) -> Fleet:
+	var owner := _state.player(fleet.owner)
+	for f in _state.fleets:
+		if f == fleet or f.owner != fleet.owner or f.planet != planet.id or not f.did_not_move:
+			continue
+		if mining_rate(f, owner, _content) > 0:
+			return f
+	return null
+
+
+## "Load optimal" fuel (S11): with no next waypoint, all fuel goes to the other side; otherwise
+## fuel beyond what the next leg needs goes to it, or the fleet waits when short (returns false).
+func _fuel_optimal(fleet: Fleet, other: Fleet) -> bool:
+	var owner := _state.player(fleet.owner)
+	var give := fleet.cargo[Fleet.CARGO_FUEL]
+	if fleet.waypoints.size() >= 2:
+		var next := fleet.waypoints[1]
+		var dx := next.x - fleet.x
+		var dy := next.y - fleet.y
+		var distance := int(sqrt(float(dx * dx + dy * dy)) + Movement.DISTANCE_ROUND_UP)
+		var need := Movement.fuel_needed(fleet, owner, next.warp, distance, _content)
+		if fleet.cargo[Fleet.CARGO_FUEL] < need:
+			return false
+		give -= need
+	if other == null or give <= 0:
+		return true
+	var moved := mini(give, _free_space(other, Fleet.CARGO_FUEL))
+	fleet.cargo[Fleet.CARGO_FUEL] -= moved
+	other.cargo[Fleet.CARGO_FUEL] += moved
+	return true
 
 
 ## What the other side has of cargo type `c`: the target fleet's cargo or the planet's surface or
 ## population; 0 in deep space.
 func _available(other: Fleet, planet: Planet, c: int) -> int:
+	if _site != null and c != Fleet.CARGO_FUEL:
+		return _site.population if c == CARGO_COLONISTS else _site.surface[c]
 	if other != null:
 		return other.cargo[c]
 	if planet == null or c == Fleet.CARGO_FUEL:
@@ -205,6 +271,19 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 		moved = mini(moved, want)
 	if moved <= 0:
 		return 0
+	if _site != null and c != Fleet.CARGO_FUEL:
+		# from the miner's hold first, the rest from the planet's surface
+		var asked := mini(want if want >= 0 else moved, _free_space(fleet, c))
+		var from_miner := mini(moved, other.cargo[c])
+		other.cargo[c] -= from_miner
+		var there := _site.population if c == CARGO_COLONISTS else _site.surface[c]
+		var from_site := mini(asked - from_miner, there)
+		if c == CARGO_COLONISTS:
+			_site.population -= from_site
+		else:
+			_site.surface[c] -= from_site
+		fleet.cargo[c] += from_miner + from_site
+		return from_miner + from_site
 	fleet.cargo[c] += moved
 	if other != null:
 		other.cargo[c] -= moved
@@ -348,6 +427,43 @@ func _merge(fleet: Fleet, wp: Waypoint) -> void:
 	for stack in fleet.stacks:
 		ships[stack.design] = stack.count
 	FleetOrders.move_ships(_state, _content, target, fleet, ships, -1)
+
+
+## S11 "Remote mining" (pass 3, fleets that didn't move): an unowned planet is mined at the
+## fleet's mining rate; the task stays. In deep space, at another player's planet (unless the race
+## lives in space) or without mining robots the task is cleared.
+func _remote_mine(fleet: Fleet, wp: Waypoint) -> void:
+	if not fleet.did_not_move:
+		return
+	if fleet.planet < 0:
+		_task_done(wp)
+		return
+	var planet := _state.planet(fleet.planet)
+	var rate := mining_rate(fleet, _state.player(fleet.owner), _content)
+	if rate <= 0:
+		_task_done(wp)
+		return
+	if planet.owner >= 0:
+		var race := _state.player(fleet.owner).race
+		if not RaceMath.trait_param(race, _content, "transport.no_invasion", 0):
+			_task_done(wp)
+		return
+	PlanetEconomy.mine_remote(planet, rate, _rng)
+
+
+## The fleet's mining rate: ships × the design's mining robots' `mining_rate`, at most 4,000.
+static func mining_rate(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:
+	var rate := 0
+	for stack in fleet.stacks:
+		var design := owner.ship_design(stack.design)
+		for slot in design.parts:
+			if not slot.part.is_empty() and slot.count > 0:
+				rate += (
+					stack.count
+					* slot.count
+					* int(content.part(slot.part).get("stats", {}).get("mining_rate", 0))
+				)
+	return mini(rate, MINING_RATE_MAX)
 
 
 ## S11 "Scrap": the fleet is taken apart at a planet; the planet gets part of the ships' minerals

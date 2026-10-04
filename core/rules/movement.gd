@@ -211,9 +211,13 @@ static func _advance_waypoints(fleet: Fleet) -> void:
 		return
 	var next := fleet.waypoints[1]
 	if fleet.x == next.x and fleet.y == next.y:
+		var last := fleet.waypoints[-1]
+		var loop := (
+			fleet.repeat and fleet.waypoints.size() != 2 and (last.x != next.x or last.y != next.y)
+		)
 		fleet.waypoints.remove_at(1)
 		fleet.waypoints[0] = next
-		if fleet.repeat:
+		if loop:
 			fleet.waypoints.append(next.copy() as Waypoint)
 		return
 	var here := fleet.waypoints[0]

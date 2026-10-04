@@ -20,6 +20,7 @@ const TYPES := [
 	"player_defaults",
 	"design_change",
 	"design_delete",
+	"cargo_transfer",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -63,6 +64,8 @@ static func apply(
 			return _player_defaults(state, content, player, order)
 		"design_change", "design_delete":
 			return _design(state, content, player, order)
+		"cargo_transfer":
+			return _cargo_transfer(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -224,6 +227,88 @@ static func _player_defaults(
 	p.default_queue = fresh
 	p.default_leftover_to_research = leftover
 	return ""
+
+
+## A cargo transfer by hand (S11 `cargo_transfer`): unloads first, then loads, each limited by
+## what the giver has and the receiver's free space; the rest stays with the giver (fix B20).
+static func _cargo_transfer(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var fleet := _own_fleet(state, player, order)
+	if fleet == null:
+		return "not the player's fleet"
+	var other: Variant = order.get("other")
+	var amounts: Variant = order.get("amounts")
+	if not other is Dictionary or not amounts is Array or amounts.size() != Fleet.CARGO_FUEL + 1:
+		return "bad cargo transfer"
+	for a: Variant in amounts:
+		if not a is int:
+			return "bad cargo amount"
+	var planet: Planet = null
+	var partner: Fleet = null
+	if other.has("planet"):
+		planet = state.planet(other["planet"]) if other["planet"] is int else null
+		if planet == null or fleet.planet != planet.id:
+			return "the fleet is not at that planet"
+		if planet.owner != player:
+			return "transfers with other players' planets are not implemented yet"
+	elif other.has("fleet"):
+		var number: Variant = other["fleet"]
+		var owner: Variant = other.get("owner", player)
+		partner = state.fleet(owner, number) if number is int and owner is int else null
+		if partner == null or partner == fleet or partner.x != fleet.x or partner.y != fleet.y:
+			return "no such fleet here"
+		if partner.owner != player:
+			return "transfers with other players' fleets are not implemented yet"
+	else:
+		return "bad cargo transfer"
+	for loading in [false, true]:
+		for c in Fleet.CARGO_FUEL + 1:
+			var amount: int = amounts[c]
+			if amount == 0 or (amount > 0) != loading:
+				continue
+			if planet != null and c == Fleet.CARGO_FUEL:
+				continue
+			var giver_has := 0
+			var room := 0
+			if loading:
+				giver_has = _holder_amount(partner, planet, c)
+				room = _room(state, content, fleet, c)
+			else:
+				giver_has = fleet.cargo[c]
+				room = _room(state, content, partner, c) if partner != null else 1 << 53
+			var moved := mini(absi(amount), mini(giver_has, room))
+			if moved <= 0:
+				continue
+			var sign := 1 if loading else -1
+			fleet.cargo[c] += sign * moved
+			if partner != null:
+				partner.cargo[c] -= sign * moved
+			elif c == Fleet.CARGO_COLONISTS:
+				planet.population -= sign * moved
+			else:
+				planet.surface[c] -= sign * moved
+	return ""
+
+
+static func _holder_amount(partner: Fleet, planet: Planet, c: int) -> int:
+	if partner != null:
+		return partner.cargo[c]
+	return planet.population if c == Fleet.CARGO_COLONISTS else planet.surface[c]
+
+
+## Free cargo space (minerals and colonists) or free fuel space of a fleet.
+static func _room(state: GameState, content: ContentRegistry, fleet: Fleet, c: int) -> int:
+	var owner := state.player(fleet.owner)
+	if c == Fleet.CARGO_FUEL:
+		return maxi(Movement.fuel_capacity(fleet, owner, content) - fleet.cargo[c], 0)
+	var capacity := 0
+	for stack in fleet.stacks:
+		capacity += stack.count * PartRules.cargo_capacity(owner.ship_design(stack.design), content)
+	var used := 0
+	for k in Fleet.CARGO_FUEL:
+		used += fleet.cargo[k]
+	return maxi(capacity - used, 0)
 
 
 ## Creates, replaces or deletes a design (S11 `design_change`, `design_delete`).

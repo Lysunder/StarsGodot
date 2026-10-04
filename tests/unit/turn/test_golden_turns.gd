@@ -136,3 +136,12 @@ func test_terra1(
 	]
 ) -> void:
 	_check_turn("terra1", turn)
+
+
+## long1 (the M6 long game): one player playing normally, checked in batches.
+func test_long1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]
+) -> void:
+	_check_turn("long1", turn)

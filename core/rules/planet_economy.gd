@@ -152,6 +152,20 @@ static func mine(planet: Planet, race: Race, content: ContentRegistry, rng: Star
 		_wear(planet, m, c * mines / 100)
 
 
+## A remote miner mines an unowned planet at `rate` (S08 step 6, remote form; S11 "Remote
+## mining"): raw output C × rate, no mine-output factor and no homeworld minimum.
+static func mine_remote(planet: Planet, rate: int, rng: StarsRandom) -> void:
+	for m in 3:
+		var c := planet.concentration[m]
+		var raw := c * rate
+		var amount := raw / 100
+		var q := raw % 100
+		if q > 0 and rng != null and rng.random(100) < q:
+			amount += 1
+		planet.surface[m] += amount
+		_wear(planet, m, c * rate / 100)
+
+
 ## Concentration wear from mining effort `effort` (S08 step 6.5).
 static func _wear(planet: Planet, m: int, effort: int) -> void:
 	var e := effort

@@ -2,7 +2,8 @@
 
 Usage: python tools/harness/stars_orders.py <name>.x1 out.orders.json
 
-Order blocks converted so far: waypoint delete, add and change (3, 4, 5), repeat orders (10), ship
+Order blocks converted so far: cargo transfers (1, 2, 25), waypoint delete, add and change (3, 4, 5),
+repeat orders (10), ship
 moves, split and merge (23, 24, 37), design change (27; design names neutral unless --keep-names),
 production queue change (29), research change (34), planet
 change (35), fleet battle plan (42), rename fleet (44; the name is left out unless --keep-names,
@@ -23,6 +24,8 @@ import stars_import  # noqa: E402
 
 FORMAT = "starsgodot-orders"
 FORMAT_VERSION = 1
+CARGO_TRANSFERS = {1: "b", 2: "h", 25: "i"}
+HOLDER_KINDS = {1: "planet", 2: "fleet", 4: "deep_space", 8: "object"}
 WAYPOINT_DELETE = 3
 WAYPOINT_ADD = 4
 WAYPOINT_CHANGE = 5
@@ -76,8 +79,29 @@ def fleet_ref(word):
     return {"fleet": word & 0x1FF, "owner": (word >> 9) & 15}
 
 
+def holder(kind, word):
+    """One side of a cargo transfer (S23 blocks 1, 2, 25)."""
+    name = HOLDER_KINDS.get(kind)
+    if name == "planet":
+        return {"planet": word & 0x7FF}
+    if name == "fleet":
+        return {"fleet": word & 0x1FF, "owner": (word >> 9) & 15}
+    raise StarsOrdersError("cargo transfer with a %s is not converted yet" % name)
+
+
 def convert_block(importer, b, keep_names=False):
     d = b.data
+    if b.type in CARGO_TRANSFERS:
+        first, second, kinds, mask = struct.unpack_from("<HHBB", d, 0)
+        size = struct.calcsize(CARGO_TRANSFERS[b.type])
+        values = iter(struct.unpack_from("<%d%s" % (bin(mask).count("1"), CARGO_TRANSFERS[b.type]), d, 6))
+        amounts = [next(values) if mask >> c & 1 else 0 for c in range(5)]
+        assert len(d) == 6 + size * bin(mask).count("1")
+        out = holder(kinds & 15, first)
+        if "fleet" not in out:
+            raise StarsOrdersError("cargo transfer from a planet is not converted yet")
+        out.update(type="cargo_transfer", other=holder(kinds >> 4, second), amounts=amounts)
+        return out
     if b.type in (REPEAT_ORDERS, SPLIT_FLEET, MERGE_FLEETS, FLEET_BATTLE_PLAN, RENAME_FLEET, MOVE_SHIPS):
         out = fleet_ref(struct.unpack_from("<H", d, 0)[0])
         if b.type == REPEAT_ORDERS:

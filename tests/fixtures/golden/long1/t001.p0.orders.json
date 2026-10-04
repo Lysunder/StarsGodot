@@ -1,0 +1,194 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 5,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 93,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1560,
+    "y": 1472
+   }
+  },
+  {
+   "fleet": 5,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 93,
+    "target_owner": -1,
+    "task": "remote_mine",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1560,
+    "y": 1472
+   }
+  },
+  {
+   "fleet": 5,
+   "owner": 0,
+   "repeat": true,
+   "type": "fleet_repeat"
+  },
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 93,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1560,
+    "y": 1472
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 93,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "load_optimal",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1560,
+    "y": 1472
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 85,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "load_optimal",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1534,
+    "y": 1480
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 85,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "load_optimal",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1534,
+    "y": 1480
+   }
+  },
+  {
+   "fleet": 3,
+   "owner": 0,
+   "repeat": true,
+   "type": "fleet_repeat"
+  }
+ ],
+ "player": 0,
+ "turn": 1
+}

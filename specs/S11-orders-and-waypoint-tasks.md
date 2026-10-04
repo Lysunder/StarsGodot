@@ -120,6 +120,15 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`cargo_transfer`** `{owner, fleet, other, amounts}`: a transfer by hand, applied at once with the orders (before
+  any waypoint task). `other` is `{"planet": id}` or `{"fleet": number, "owner": o}`; `amounts` gives five signed
+  amounts (ironium, boranium, germanium, colonists, fuel), positive into the fleet. Unloads (negative) go first, then
+  loads, each type in order; each is limited by what the giver has and the receiver's free space (cargo or fuel;
+  planets take anything but fuel). What the receiver can't take stays with the giver (fix B20: the original lets it
+  vanish). Built so far: the fleet's owner's own planet at the fleet's location, and the owner's fleets at the same
+  position; transfers with other players' planets or fleets (queued in the original, S02 5f) and jettisoning are
+  rejected for now. Blocks 1, 2 and 25 (amounts of 1, 2 or 4 bytes). `ApplyOrderBlock@1040:651e`,
+  `TransferCargo@1048:3aec`.
 - **`design_change`** `{starbase, slot, design}`: creates the player's ship design (slot 0–15) or starbase design
   (slot 0–9) in that slot, or replaces it. A design that still has ships (or starbases) in existence can't be
   changed (only deleted). The design must be valid (S04: a hull of the right kind, one entry per hull slot, each part
@@ -216,7 +225,7 @@ planet, fleet, deep space or salvage at the waypoint.
 | Fill up to n% | load | Take n% of the fleet's capacity (fuel capacity for fuel, cargo capacity otherwise; capped at 2,000,000; n × cap div 100, or n × (cap div 100) from 65,536 on), limited by free space and by what the other side has. **This adds to what is aboard**: the original does not subtract the cargo already carried (confirmed in terra1 turn 45:
 5 kT aboard, fill to 40% of 25 kT, 15 kT after). If less than that (limited by free space) could be taken, the task stays and the fleet waits. |
 | Wait for n% | load | As fill up to n%. Also, when nothing could be asked for (no free space, or n% of nothing), fuel always waits, and other cargo waits while the fleet has free cargo space. |
-| Load optimal | load | Not built yet: for fuel, unload what the next leg does not need and wait when short; for minerals, fill the space left after the other actions (a second round). |
+| Load optimal | load | Fuel (other side a fleet or deep space; skipped at planets like all fuel): with no next waypoint all fuel goes to the other side; otherwise the fuel beyond what the leg to the next waypoint needs (S12, distance rounded up, at that waypoint's warp) goes to the other side up to its free fuel space, and a fleet with less than it needs waits (nothing is loaded). Minerals: when the other actions are done and the fleet has free cargo space (or fuel optimal is set), a second round loads all available of each mineral with this action; the fuel step then runs after it. |
 | Set amount to n | both | With d = n − carried: unload −d when d < 0 (unload pass); load d when d ≥ 0 (load pass), waiting while the other side has less than d. |
 | Set waypoint to n | both | With d = what the other side has − n: unload min(−d, carried) when d < 0; load d when d > 0. |
 
@@ -254,12 +263,20 @@ action is cleared once carried out:
 A refused colonist unload cancels the whole transport task (the original's "order canceled" messages): later cargo
 types and the load actions are not carried out.
 
+**Transport at a mining site:** when the waypoint is an unowned planet where one of the fleet owner's remote miners
+rests (didn't move this turn, mining rate above 0; the first such fleet in fleet order), that miner fleet is the
+other side instead: unloads go into its hold (and fuel tank), and loads take minerals from its hold first and the rest
+from the planet's surface, while "what the other side has" for minerals is the planet's surface (seen in long1 turn
+3: a freighter loading at a mini-miner's planet and leaving it its spare fuel). Before movement (passes 1 and 2) the
+"didn't move" mark is last turn's in the original; we keep it only during a turn, so this is not built for those
+passes yet.
+
 **Loading** (passes 2 and 4) works only from the fleet owner's own planet or own fleets. From anything else (another
 player's or an unowned planet, another player's fleet, deep space) the load is skipped. **Fix B26/B15:** the original
 keeps the task, so the fleet waits at waypoint 0 until the load is canceled in pass 4 and loses its move; we skip the
 impossible load, the task completes and the fleet moves on. (Stealing cargo with a robber-baron scanner, message
 "has stolen", and picking up minerals from one's own remote-mining fleet at an unowned planet are not built yet;
-see "Open questions".) The load pass ends the task.
+see "Open questions".) The load pass ends the task unless an action waits.
 
 ### Colonize
 
@@ -340,15 +357,17 @@ ship move of all its ships (cargo, fuel and damage follow, see "Fleet orders"), 
 
 ### Remote mining
 
-Pass 3 only. Conditions (each failure sends a message; the task stays and is tried again next turn):
+Pass 3 only, and only for a fleet that didn't move this turn (otherwise nothing happens and the task stays).
+Conditions (each failure sends a message and clears the task):
 
-1. The fleet didn't move this turn (S12: every fleet is marked at the start of movement and the mark is cleared
-   when it moves; a fleet whose current waypoint has a transport or lay-mines task doesn't move, which is how
-   "wait for %" holds it).
-2. It is at a planet (not deep space).
-3. The planet has no owner. (A fleet of an Alternate Reality race at an owned planet does nothing here; AR mines its
-   own worlds during the mining phase, S08.)
-4. The fleet's mining rate is above 0: Σ ships × the design's mining robots' `mining_rate`, capped at 4,000.
+1. It is at a planet (not deep space).
+2. The fleet's mining rate is above 0: Σ ships × the design's mining robots' `mining_rate`, capped at 4,000.
+3. The planet has no owner. (A fleet of an Alternate Reality race at an owned planet does nothing here and keeps
+   its task; AR mines its own worlds during the mining phase, S08.)
+
+(The "didn't move" mark comes from S12: every fleet is marked at the start of movement and the mark is cleared when
+it moves; a fleet whose current waypoint has a transport or lay-mines task doesn't move. Built 2026-10-04; in
+long1 turn 2 a mini-miner at an unowned planet.)
 
 The planet is mined at that rate (S08 "Mining", remote form: rate × concentration, no mine-output factor); the yield
 goes to the planet's surface. Remote mining never completes; it repeats every turn.
