@@ -148,6 +148,10 @@ planet mined during turn generation. The order of planets and remote miners is p
   4 × (99 − c div 10) hundredths of a percent, which is one step more: 0.08% at 101%, 4.04% at 200%, capped at 12%.
 - The rest (crowding factor 16/9 × (1 − fill)², half production for overcrowded population, nothing above 300%)
   agrees.
+- Abandoning a planet: the 1996 player's guide says the starbase and all installations are destroyed. The code
+  (`Planet_Depopulate`) removes the starbase, defenses and scanner but keeps mines and factories; we follow the code.
+- The guide's figures for mine wear (12,500 ÷ concentration mine-years per point), the homeworld minimum
+  concentration (30), the population limits by trait and the death rate on hostile planets agree with the code.
 
 ## Worked examples
 

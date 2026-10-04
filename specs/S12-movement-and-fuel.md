@@ -166,6 +166,9 @@ per position try.
 - A design with a partly filled engine slot can't move at all.
 - A fleet with no fuel can still move at warps its engines do for free.
 - Cargo goes on the most fuel-efficient ships first, which lowers fuel use for mixed fleets.
+- Hints from the player's guide, to confirm in the code when these parts are written: a fleet can exceed a
+  stargate's mass or range limit up to five times and still arrive, always damaged and possibly destroyed; Alternate
+  Reality colonists in a fleet lose 3% a year in transit.
 
 ## Worked examples
 

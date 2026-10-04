@@ -240,6 +240,7 @@ same planet in one turn are resolved there.
    leaving out auto items the race does not use (trait parameters `colony.skips_auto_<effect>`: Alternate Reality
    skips auto mines, factories and defenses, Claim Adjuster both auto terraform items). Alternate Reality
    (`colony.starbase`) also gets a starbase of its starbase design 0, whose built and existing counts grow by one.
+   The player's guide says the default queue also applies to a planet taken over by invasion; to confirm in S17.
 5. An artifact on the planet is removed; with random events on, the winner gains 100 + random(301) research
    points (scaled by population div 10 below 10 units) in field random(6) (draws in that order).
 

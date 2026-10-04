@@ -253,6 +253,8 @@ ships and route following (S11) do not draw.
 - Resources not spent are never lost: they go to research.
 - Mines, factories and defenses paid for beyond the planet's maximum are lost (the item is removed).
 - A count above the room is cut down with a message; auto items never change their queue entry.
+- The player's guide says a comet strike (random event, S18) resets the planet's queue, losing the work in
+  progress; to confirm when S18 is written.
 
 ## Mod hooks
 
