@@ -504,7 +504,7 @@ class Importer:
             "cargo": cargo,
             "battle_plan": battle_plan,
             "waypoints": [],
-            "repeat": False,
+            "repeat": bool(flags & 2),
             "mod_data": {},
         }
         return fleet, wp_count

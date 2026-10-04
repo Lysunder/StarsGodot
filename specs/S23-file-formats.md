@@ -248,7 +248,7 @@ Sections:
 | 0 | 2 | bits 0–8: fleet number; bits 9–12: owner |
 | 2 | 2 | owner again (16-bit) |
 | 4 | 1 | kind: 7 full, 4 full except damage and orders, 3 partial |
-| 5 | 1 | flags: 8 = ship counts are 1 byte each (else 2) |
+| 5 | 1 | flags: 2 = repeat orders, 8 = ship counts are 1 byte each (else 2) |
 | 6 | 2 | planet id in orbit, 0xFFFF = none (`planet` −1) |
 | 8, 10 | 2 + 2 | x, y |
 | 12 | 2 | design mask: bit d set = the fleet has ships of design slot d |
@@ -360,9 +360,15 @@ conversion.
 | 3 waypoint delete | 2 bytes fleet id (number, owner × 512); 2 bytes index, bit 15 set: delete two |
 | 4 waypoint add | fleet id; 2 bytes index; the waypoint as in type 19/20 (8 bytes, or with 2 to 10 bytes of task data; missing words are zero) |
 | 5 waypoint change | as 4; replaces the waypoint at index |
+| 10 repeat orders | fleet id; 2 bytes, bit 0: repeat |
+| 23 move ships | fleet id; other fleet id; 1 byte: the kinds of both cargo holders, 2 = fleet (the other's in the high nibble); 2 bytes design mask; per set bit a signed 16-bit count (positive: from the other fleet to the first) |
+| 24 split fleet | fleet id (the new fleet takes the owner's lowest free number) |
 | 29 production queue change | 2 bytes planet id (11 bits), then the whole queue as 4-byte items (as type 28) |
 | 34 research change | 1 byte research percent; 1 byte: current field in the low nibble, next field setting in the high nibble |
 | 35 planet change | 2 bytes planet id; 4 bytes v: bit 0 only leftover to research, bits 1–10 mass driver destination + 1 (0 none), bits 11–14 mass driver warp − 4, bits 15–24 route destination + 1 (0 none) |
+| 37 merge fleets | target fleet id; the other fleet ids, 2 bytes each (none: all the owner's fleets at the target's position) |
+| 42 fleet battle plan | fleet id; 2 bytes battle plan index |
+| 44 rename fleet | fleet id; 2 bytes (not used); the name as in type 21 (length byte, packed text or zero-terminated) |
 
 ## Mapping to our save format
 
@@ -377,8 +383,7 @@ conversion.
   fleet names, so converted files hold no text from the original and can serve as fixtures. A `--keep-names`
   option keeps race, design, plan and fleet names for local use.
 - Relations shorter than the player count are padded with neutral entries.
-- Values the importer cannot know yet are written as defaults and marked here: `paid` on stacks (0), `repeat` on
-  fleets (false; the flag is not located yet), `trader_parts` and the trader's `item` (S18), and task data in
+- Values the importer cannot know yet are written as defaults and marked here: `paid` on stacks (0), `trader_parts` and the trader's `item` (S18), and task data in
   raw form (S11).
 - Implementation: `tools/harness/starsfile.py` (container, cipher, packed text) and `stars_import.py` (mapping);
   `tools/check_save.gd` loads converted files with `SaveFile` and `StateValidator`.

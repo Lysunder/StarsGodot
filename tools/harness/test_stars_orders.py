@@ -41,9 +41,33 @@ class TestOrders(unittest.TestCase):
             ],
         )
 
+    def test_converts_fleet_orders(self):
+        a, b = 3 | 1 << 9, 7 | 1 << 9
+        move = struct.pack("<HHBHhh", a, b, 0x11, 0b101, 2, -1)
+        name = struct.pack("<HH", a, 0) + bytes([0]) + b"Scouts\0"
+        raw = self.x_file([
+            (24, struct.pack("<H", a)), (23, move), (37, struct.pack("<HHH", a, b, 9 | 1 << 9)),
+            (37, struct.pack("<H", a)), (10, struct.pack("<HH", a, 1)), (42, struct.pack("<HH", a, 2)),
+            (44, name),
+        ])
+        out = stars_orders.convert(raw)["orders"]
+        ref = {"fleet": 3, "owner": 1}
+        self.assertEqual(out, [
+            dict(ref, type="fleet_split"),
+            dict(ref, type="fleet_move_ships", other=7,
+                 ships=[{"design": 0, "count": 2}, {"design": 2, "count": -1}]),
+            dict(ref, type="fleet_merge", fleets=[7, 9]),
+            dict(ref, type="fleet_merge", fleets=[]),
+            dict(ref, type="fleet_repeat", repeat=True),
+            dict(ref, type="fleet_battle_plan", plan=2),
+            dict(ref, type="fleet_rename", name=""),
+        ])
+        kept = stars_orders.convert(self.x_file([(44, name)]), keep_names=True)["orders"]
+        self.assertEqual(kept[0]["name"], "Scouts")
+
     def test_unknown_blocks_and_wrong_files_stop(self):
         with self.assertRaises(stars_orders.StarsOrdersError):
-            stars_orders.convert(self.x_file([(24, b"\0" * 8)]))
+            stars_orders.convert(self.x_file([(27, b"\0" * 8)]))
         with self.assertRaises(stars_orders.StarsOrdersError):
             stars_orders.convert(self.x_file([], kind=2))
 

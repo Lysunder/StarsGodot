@@ -1,0 +1,96 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 0,
+   "other": 1,
+   "owner": 0,
+   "ships": [
+    {
+     "count": 1,
+     "design": 1
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 0,
+   "other": 3,
+   "owner": 0,
+   "ships": [
+    {
+     "count": 1,
+     "design": 3
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 0,
+   "other": 4,
+   "owner": 0,
+   "ships": [
+    {
+     "count": 1,
+     "design": 4
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 0,
+   "index": 0,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 23,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 0,
+    "x": 1277,
+    "y": 1233
+   }
+  },
+  {
+   "fleet": 0,
+   "owner": 0,
+   "type": "fleet_split"
+  },
+  {
+   "fleet": 0,
+   "other": 1,
+   "owner": 0,
+   "ships": [
+    {
+     "count": -1,
+     "design": 4
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 0,
+   "owner": 0,
+   "repeat": true,
+   "type": "fleet_repeat"
+  },
+  {
+   "fleet": 0,
+   "owner": 0,
+   "plan": 1,
+   "type": "fleet_battle_plan"
+  },
+  {
+   "fleet": 0,
+   "name": "",
+   "owner": 0,
+   "type": "fleet_rename"
+  }
+ ],
+ "player": 0,
+ "turn": 28
+}

@@ -143,7 +143,7 @@ func _colonize(fleet: Fleet, _wp: Waypoint) -> void:
 	_pending.append(Colonization.new(fleet.owner, planet.id, fleet.cargo[CARGO_COLONISTS]))
 	for stack in fleet.stacks:
 		owner.ship_design(stack.design).remaining -= stack.count
-	_state.remove_fleet(fleet)
+	FleetOrders.delete_fleet(_state, fleet, -1)
 
 
 static func _task_done(wp: Waypoint) -> void:

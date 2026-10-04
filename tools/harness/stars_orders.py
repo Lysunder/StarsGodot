@@ -2,8 +2,10 @@
 
 Usage: python tools/harness/stars_orders.py <name>.x1 out.orders.json
 
-Order blocks converted so far: waypoint delete, add and change (3, 4, 5), production queue change
-(29), research change (34) and planet change (35). Any other order block stops the conversion with its type, so a fixture never silently
+Order blocks converted so far: waypoint delete, add and change (3, 4, 5), repeat orders (10), ship
+moves, split and merge (23, 24, 37), production queue change (29), research change (34), planet
+change (35), fleet battle plan (42) and rename fleet (44; the name is left out unless --keep-names,
+as the importer leaves fleet names out). Any other order block stops the conversion with its type, so a fixture never silently
 loses orders. Registration data (block type 9) is dropped unread by the file reader.
 """
 
@@ -22,9 +24,15 @@ FORMAT_VERSION = 1
 WAYPOINT_DELETE = 3
 WAYPOINT_ADD = 4
 WAYPOINT_CHANGE = 5
+REPEAT_ORDERS = 10
+MOVE_SHIPS = 23
+SPLIT_FLEET = 24
 QUEUE_CHANGE = 29
 RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
+MERGE_FLEETS = 37
+FLEET_BATTLE_PLAN = 42
+RENAME_FLEET = 44
 FILE_KIND_ORDERS = 1
 
 
@@ -32,7 +40,7 @@ class StarsOrdersError(Exception):
     pass
 
 
-def convert(raw, legacy=None):
+def convert(raw, legacy=None, keep_names=False):
     """Our order file (a dict) from the bytes of a .x file."""
     f = starsfile.StarsFile(raw)
     if len(f.turns) != 1:
@@ -46,7 +54,7 @@ def convert(raw, legacy=None):
     for b in blocks:
         if b.type == starsfile.TYPE_FOOTER:
             continue
-        orders.append(convert_block(importer, b))
+        orders.append(convert_block(importer, b, keep_names))
     return {
         "format": FORMAT,
         "format_version": FORMAT_VERSION,
@@ -57,8 +65,33 @@ def convert(raw, legacy=None):
     }
 
 
-def convert_block(importer, b):
+def fleet_ref(word):
+    """{"fleet", "owner"} from a fleet id (number, owner x 512)."""
+    return {"fleet": word & 0x1FF, "owner": (word >> 9) & 15}
+
+
+def convert_block(importer, b, keep_names=False):
     d = b.data
+    if b.type in (REPEAT_ORDERS, SPLIT_FLEET, MERGE_FLEETS, FLEET_BATTLE_PLAN, RENAME_FLEET, MOVE_SHIPS):
+        out = fleet_ref(struct.unpack_from("<H", d, 0)[0])
+        if b.type == REPEAT_ORDERS:
+            out.update(type="fleet_repeat", repeat=bool(struct.unpack_from("<H", d, 2)[0] & 1))
+        elif b.type == SPLIT_FLEET:
+            out.update(type="fleet_split")
+        elif b.type == MERGE_FLEETS:
+            others = [w & 0x1FF for (w,) in struct.iter_unpack("<H", d[2:])]
+            out.update(type="fleet_merge", fleets=others)
+        elif b.type == FLEET_BATTLE_PLAN:
+            out.update(type="fleet_battle_plan", plan=struct.unpack_from("<H", d, 2)[0])
+        elif b.type == RENAME_FLEET:
+            name = starsfile.read_string(d, 4)[0] if keep_names else ""
+            out.update(type="fleet_rename", name=name)
+        else:
+            other, mask = struct.unpack_from("<HxH", d, 2)
+            counts = iter(struct.unpack_from("<%dh" % bin(mask).count("1"), d, 7))
+            ships = [{"design": i, "count": next(counts)} for i in range(16) if mask >> i & 1]
+            out.update(type="fleet_move_ships", other=other & 0x1FF, ships=ships)
+        return out
     if b.type in (WAYPOINT_DELETE, WAYPOINT_ADD, WAYPOINT_CHANGE):
         fleet_id, index = struct.unpack_from("<HH", d, 0)
         out = {"fleet": fleet_id & 0x1FF, "owner": (fleet_id >> 9) & 15}
@@ -92,9 +125,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("x")
     ap.add_argument("out")
+    ap.add_argument("--keep-names", action="store_true", help="keep fleet names (never for committed fixtures)")
     args = ap.parse_args(argv)
     with open(args.x, "rb") as f:
-        result = convert(f.read())
+        result = convert(f.read(), keep_names=args.keep_names)
     with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         json.dump(result, f, indent=1, sort_keys=True)
         f.write("\n")

@@ -5,7 +5,9 @@ read from the code; transport amounts partly (see "Open questions"). Order appli
 production queue, research and planet orders are implemented (`core/turn/order_rules.gd`) and match the original in
 a harness game with orders given in the client. Waypoint orders, transport at the owner's planet, colonize and
 colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), matching the original in terra1 turns
-0-2.
+0-2. Fleet orders (split, ship moves, merge, repeat, rename, battle plan) added from the code (2026-10-04,
+`core/rules/fleet_orders.gd`); ship moves, split, repeat and battle plan match the original in terra1 turn 28
+(the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -86,6 +88,62 @@ against the state when the turn is generated.
   but without task data gets the task's empty data (the original fills missing words with zero).
 
 References for these: `ApplyOrderBlock@1040:651e` (blocks 3, 4, 5, 29, 34, 35).
+
+### Fleet orders
+
+Every fleet order names a fleet of the ordering player (`owner` must be the player); the original checks only that
+the fleets of a ship move have the same owner, and trusts the client for the rest.
+
+- **`fleet_split`** `{owner, fleet}`: creates an empty fleet for the player with the lowest free number (rejected
+  at the fleet limit), at the same place (planet or deep space) as the given fleet, with a copy of its waypoints,
+  its repeat setting and its battle plan; no name, no ships, no cargo. The client always follows it with a ship move
+  into the new fleet (an empty fleet left behind stays empty). `CloneFleetShell@1030:213c`, `CreateFleet@1030:1f2e`.
+- **`fleet_move_ships`** `{owner, fleet, other, ships}`: `ships` lists `{design, count}` (design slot); a positive count
+  moves that many ships of the design from `other` to `fleet`, a negative one from `fleet` to `other`. Both fleets
+  must be the player's and at the same position. Each count is limited to what the giving fleet has (the original
+  limits only the giving side, so a forged count would create ships). Then, per fleet, cargo, fuel and damage
+  follow the ships (below), and a fleet left without ships is deleted. Block 23, `Fleets_RedistributeCargo@1048:6c1c`.
+- **`fleet_merge`** `{owner, fleet, fleets}`: the listed fleets join `fleet` (the target), in list order. Fleets
+  that are not the player's or not at the target's position are skipped (the original merges any listed fleet).
+  An empty list means every other fleet of the player at the target's position, in fleet order. For each merged
+  fleet its ships per design and its cargo are added to the target, and the fleet is deleted; the target keeps its
+  waypoints, name, battle plan and repeat setting. Damage is combined (below). Block 37, `MergeFleetList@1030:2230`.
+- **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
+- **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
+- **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+
+**Cargo after a ship move.** Computed for each fleet from its state before the move (ships S, cargo, fuel):
+
+- fuel lost = lost fuel capacity × fuel div fuel capacity, where fuel capacity is Σ ships × design fuel capacity
+  over S and lost fuel capacity the same sum over the ships the fleet gave away;
+- cargo lost L = lost cargo capacity × C div cargo capacity, with C the fleet's minerals plus colonists, the
+  capacities as for fuel with design cargo capacity. Each of ironium, boranium, germanium and colonists in turn loses
+  min(L × its amount div C, what is left of L); then, in the same order, each type that still has some loses 1 while
+  anything is left of L (one pass).
+- What a fleet loses goes to the other fleet. Both fleets' losses are computed before either is applied. (No
+  capacity check on the receiving side; it gains at least the capacity that came with the ships.)
+
+**Damage after a ship move**, per design moved: the giving fleet had c ships of it with d damaged (d = damaged
+percent × c div 100) at damage e each; the receiving fleet c′ ships with d′ damaged at e′; n ships move, and the
+damaged ones move first: m = min(n, d). Percentages are rounded up against the new counts.
+
+- d = 0: if d′ > 0 the receiver's damaged percent becomes d′ × 100 / its new count.
+- d > 0, d′ = 0: the receiver gets damage e and percent m × 100 / its new count.
+- both > 0: the receiver's damage becomes (e × m + e′ × d′) / (m + d′) rounded up, percent (m + d′) × 100 / its new
+  count. **Fix B32:** the original divides by the receiver's new ship count, so moving damaged ships into a stack with
+  damaged ships loses damage.
+- When d > 0 the giver's damaged percent becomes (d − m) × 100 / its new count, or no damage when m = d.
+
+`paid` (B14) moves with the ships: the giver's stack gives paid × n div c of each amount.
+
+**Damage after a merge**, per design: every fleet in the merge (target included) whose stack has any damage counts
+max(1, damaged percent × count div 100) damaged ships carrying its damage each. With D damaged ships and total
+damage T over all of them and N ships in the merged stack: damaged percent = D × 100 / N rounded up, damage =
+T div D (none when D or N is 0).
+
+**Deleting a fleet** (ship move, merge, colonize, scrap): every waypoint of any fleet that targets it is retargeted
+to what is at its position: another fleet there (the ordering player's first, else the first in fleet order), else
+the planet there, else deep space. `RetargetWaypointsFromFleet@1048:796c`, `FindObjectsAt@1030:294e`.
 
 ### Task data
 

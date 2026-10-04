@@ -11,7 +11,15 @@ const TYPES := [
 	"waypoint_add",
 	"waypoint_change",
 	"waypoint_delete",
+	"fleet_split",
+	"fleet_move_ships",
+	"fleet_merge",
+	"fleet_repeat",
+	"fleet_rename",
+	"fleet_battle_plan",
 ]
+const NAME_MAX := 31
+const DESIGN_SLOTS := 16
 
 
 ## Applies every order set; returns one "player P order I: reason" line per rejected order.
@@ -44,6 +52,10 @@ static func apply(
 			return _planet_settings(state, player, order)
 		"waypoint_add", "waypoint_change", "waypoint_delete":
 			return _waypoint(state, player, order)
+		"fleet_split", "fleet_move_ships", "fleet_merge":
+			return _fleet_ships(state, content, player, order)
+		"fleet_repeat", "fleet_rename", "fleet_battle_plan":
+			return _fleet_settings(state, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -176,6 +188,85 @@ static func _waypoint(state: GameState, player: int, order: Dictionary) -> Strin
 			return "bad waypoint index"
 		waypoints[index] = wp
 	return ""
+
+
+## Split, ship moves and merges (S11 "Fleet orders").
+static func _fleet_ships(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var fleet := _own_fleet(state, player, order)
+	if fleet == null:
+		return "not the player's fleet"
+	match order["type"]:
+		"fleet_split":
+			if FleetOrders.split(state, content, fleet) == null:
+				return "too many fleets"
+		"fleet_move_ships":
+			var other: Variant = order.get("other")
+			var b := state.fleet(player, other) if other is int else null
+			if b == null or b == fleet:
+				return "not the player's fleet"
+			if b.x != fleet.x or b.y != fleet.y:
+				return "fleets are not at the same place"
+			if not order.get("ships") is Array:
+				return "ships must be a list"
+			var ships := {}
+			for e: Variant in order["ships"]:
+				var design: Variant = e.get("design") if e is Dictionary else null
+				var count: Variant = e.get("count") if e is Dictionary else null
+				if not design is int or design < 0 or design >= DESIGN_SLOTS:
+					return "bad design slot"
+				if not count is int:
+					return "bad ship count"
+				ships[design] = ships.get(design, 0) + count
+			FleetOrders.move_ships(state, content, fleet, b, ships, player)
+		"fleet_merge":
+			if not order.get("fleets", []) is Array:
+				return "fleets must be a list"
+			var others: Array[Fleet] = []
+			var listed: Array = order.get("fleets", [])
+			if listed.is_empty():
+				for f in state.fleets_of(player):
+					if f != fleet and f.x == fleet.x and f.y == fleet.y:
+						others.append(f)
+			for number: Variant in listed:
+				var f := state.fleet(player, number) if number is int else null
+				if f != null and f != fleet and f.x == fleet.x and f.y == fleet.y:
+					if not others.has(f):
+						others.append(f)
+			FleetOrders.merge(state, fleet, others, player)
+	return ""
+
+
+## Repeat orders, name and battle plan (S11 "Fleet orders").
+static func _fleet_settings(state: GameState, player: int, order: Dictionary) -> String:
+	var fleet := _own_fleet(state, player, order)
+	if fleet == null:
+		return "not the player's fleet"
+	match order["type"]:
+		"fleet_repeat":
+			if not order.get("repeat") is bool:
+				return "repeat must be true or false"
+			fleet.repeat = order["repeat"]
+		"fleet_rename":
+			var fleet_name: Variant = order.get("name")
+			if not fleet_name is String or fleet_name.length() > NAME_MAX:
+				return "bad fleet name"
+			fleet.name = fleet_name
+		"fleet_battle_plan":
+			var plan: Variant = order.get("plan")
+			if not plan is int or plan < 0 or plan >= state.player(player).battle_plans.size():
+				return "no such battle plan"
+			fleet.battle_plan = plan
+	return ""
+
+
+static func _own_fleet(state: GameState, player: int, order: Dictionary) -> Fleet:
+	var owner: Variant = order.get("owner", player)
+	var number: Variant = order.get("fleet")
+	if not owner is int or owner != player or not number is int:
+		return null
+	return state.fleet(player, number)
 
 
 static func _own_planet(state: GameState, player: int, id: Variant) -> Planet:

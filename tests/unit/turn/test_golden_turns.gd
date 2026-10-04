@@ -95,6 +95,7 @@ func test_terra1(
 		[25],
 		[26],
 		[27],
+		[28],
 	]
 ) -> void:
 	_check_turn("terra1", turn)
