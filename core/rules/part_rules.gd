@@ -23,6 +23,43 @@ static func available(item: Dictionary, player: Player, tech_order: Dictionary) 
 	return true
 
 
+## Why a design is not one the player can make (S04, S11 `design_change`), or "": hull of the
+## right kind, one entry per hull slot, parts accepted by their slots within the maximum count,
+## a picture among the hull's four, and only hulls and parts the player can use.
+static func design_problem(
+	design: Design, starbase: bool, player: Player, content: ContentRegistry
+) -> String:
+	if not content.ids("hull").has(design.hull):
+		return "no such hull"
+	var hull := content.hull(design.hull)
+	if bool(hull.get("starbase", false)) != starbase:
+		return "wrong kind of hull"
+	if design_picture(design.picture, hull) != design.picture:
+		return "bad picture"
+	var order := tech_order(content)
+	if not available(hull, player, order):
+		return "hull not available"
+	var slots: Array = hull["slots"]
+	if design.parts.size() != slots.size():
+		return "one entry per hull slot"
+	for i in slots.size():
+		var entry := design.parts[i]
+		if entry.part.is_empty():
+			if entry.count != 0:
+				return "an empty slot has no count"
+			continue
+		if not content.ids("part").has(entry.part):
+			return "no such part"
+		var part := content.part(entry.part)
+		if not (slots[i]["accepts"] as Array).has(part["category"]):
+			return "a slot does not accept that part"
+		if entry.count < 1 or entry.count > int(slots[i]["max"]):
+			return "bad part count"
+		if not available(part, player, order):
+			return "part not available"
+	return ""
+
+
 ## The race's trait ids: the primary trait and the lesser traits.
 static func traits_of(race: Race) -> Array[String]:
 	var out: Array[String] = [race.primary_trait]

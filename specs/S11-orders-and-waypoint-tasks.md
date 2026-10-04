@@ -12,7 +12,8 @@ planet) and transfer tasks added (2026-10-04), matching the original in terra1 t
 for new colonies) added (2026-10-04), matching the original in terra1 turns 30-33; the Alternate Reality colony
 starbase and the trait skips are not seen yet. Transport with every partner (2026-10-04): unloading minerals and an invasion at
 another player's planet match the original in terra1 turns 36-40 (ground combat itself is S17); the refusals,
-fleet partners and fix B26 have unit tests only.
+fleet partners and fix B26 have unit tests only. Design orders (block 27) added (2026-10-04), matching the original in
+terra1 turn 42 (create, replace, delete); deleting a design with ships and fix B19 have unit tests only.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -117,6 +118,20 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`design_change`** `{starbase, slot, design}`: creates the player's ship design (slot 0–15) or starbase design
+  (slot 0–9) in that slot, or replaces it. A design that still has ships (or starbases) in existence can't be
+  changed (only deleted). The design must be valid (S04: a hull of the right kind, one entry per hull slot, each part
+  accepted by its slot and within its maximum count, picture among the hull's four) and use only hulls and parts the
+  player can use (tech and traits; the original trusts its client here). A created or replaced design starts with
+  built and existing counts of 0 whatever the order says (the client sends zeros; seen in terra1 turn 42, where a
+  replaced design's built count went from 1 to 0); the transferred mark is cleared. Queue items of that design keep
+  their place; **fix B19**: their progress is converted by resources (see S09 step 7a). Block 27 (operation 1).
+- **`design_delete`** `{starbase, slot}`: deletes the design. Ship design: every fleet of the player loses its ships
+  of that design; the cargo and fuel that went with their capacity are lost (as a ship move into a fleet that is
+  then discarded, without damage moving), and a fleet left without ships is deleted. Starbase design: every planet
+  of the player with that starbase loses it, and those planets' queues lose their ship and packet items. Then the
+  design leaves all of the player's queues. Block 27 (operation 0). `Fleets_SplitOutDesign@1048:748c`,
+  `Planets_RemoveStarbaseDesign@1048:7426`, `RemoveDesignFromQueues@1048:7680`.
 - **`player_defaults`** `{leftover_to_research, queue}`: the default queue for new colonies (at most 12 standard
   items, any progress dropped) and their "contribute only leftover resources to research" setting. Block 46, which
   copies up to 26 bytes into the player record.

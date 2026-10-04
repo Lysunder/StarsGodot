@@ -79,9 +79,28 @@ class TestOrders(unittest.TestCase):
             ],
         }])
 
+    def test_converts_design_changes(self):
+        legacy = stars_orders.stars_import.Legacy()
+        hull = next(n for n, cid in legacy.hulls.items() if cid == "hull.scout")
+        kind, item = next(k for k, cid in legacy.parts.items() if cid == "part.engine.long_hump_6")
+        word = 1 | 1 << 4 | 3 << 8
+        design = bytes([5, 1 | 3 << 2, hull, legacy.pictures["hull.scout"]]) + struct.pack("<H", 20)
+        design += bytes([1]) + struct.pack("<HII", 7, 0, 0) + struct.pack("<HBB", kind, item, 1)
+        design += bytes([0]) + b"Mine\0"
+        out = stars_orders.convert(self.x_file([
+            (27, struct.pack("<H", word) + design),
+            (27, struct.pack("<H", 0 | 1 << 4 | 18 << 8)),
+        ]))["orders"]
+        self.assertEqual(out[0]["type"], "design_change")
+        self.assertEqual((out[0]["starbase"], out[0]["slot"]), (False, 3))
+        d = out[0]["design"]
+        self.assertEqual((d["hull"], d["name"], d["turn_designed"]), ("hull.scout", "Design 3", 7))
+        self.assertEqual(d["parts"], [{"part": "part.engine.long_hump_6", "count": 1}])
+        self.assertEqual(out[1], {"type": "design_delete", "starbase": True, "slot": 2})
+
     def test_unknown_blocks_and_wrong_files_stop(self):
         with self.assertRaises(stars_orders.StarsOrdersError):
-            stars_orders.convert(self.x_file([(27, b"\0" * 8)]))
+            stars_orders.convert(self.x_file([(30, b"\0" * 8)]))
         with self.assertRaises(stars_orders.StarsOrdersError):
             stars_orders.convert(self.x_file([], kind=2))
 

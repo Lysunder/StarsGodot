@@ -158,6 +158,35 @@ static func merge(state: GameState, target: Fleet, others: Array[Fleet], player:
 			stack.damage = total[stack.design] / k
 
 
+## A deleted ship design takes its ships out of every fleet of the owner (S11 `design_delete`):
+## the cargo and fuel that went with their capacity are lost, and a fleet left without ships is
+## deleted. Damage of the other ships is unchanged.
+static func remove_design_ships(
+	state: GameState, content: ContentRegistry, owner: int, slot: int
+) -> void:
+	var player := state.player(owner)
+	var fleets: Array[Fleet] = state.fleets_of(owner)
+	for fleet in fleets:
+		var stack := fleet.stack_for(slot)
+		if stack == null or stack.count <= 0:
+			continue
+		if fleet.stacks.size() == 1:
+			delete_fleet(state, fleet, owner)
+			continue
+		var caps := [0, 0, 0, 0]
+		for s in fleet.stacks:
+			var design := player.ship_design(s.design)
+			caps[0] += s.count * PartRules.fuel_capacity(design, content)
+			caps[1] += s.count * PartRules.cargo_capacity(design, content)
+		var gone := player.ship_design(slot)
+		caps[2] = stack.count * PartRules.fuel_capacity(gone, content)
+		caps[3] = stack.count * PartRules.cargo_capacity(gone, content)
+		var lost := _cargo_lost(fleet, caps)
+		for c in Fleet.CARGO_FUEL + 1:
+			fleet.cargo[c] -= lost[c]
+		fleet.stacks.erase(stack)
+
+
 ## Removes a fleet; waypoints of other fleets that target it now target what is at its position:
 ## another fleet (the first of `preferred_owner`, else the first in fleet order), else the planet,
 ## else deep space (S11 "Deleting a fleet").

@@ -1,0 +1,133 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.destroyer",
+    "mod_data": {},
+    "name": "Design 4",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.long_hump_6"
+     },
+     {
+      "count": 1,
+      "part": "part.beam.x_ray_laser"
+     },
+     {
+      "count": 1,
+      "part": "part.torpedo.alpha_torpedo"
+     },
+     {
+      "count": 1,
+      "part": "part.shield.bear_neutrino_barrier"
+     },
+     {
+      "count": 2,
+      "part": "part.armor.crobmnium"
+     },
+     {
+      "count": 1,
+      "part": "part.mechanical.fuel_tank"
+     },
+     {
+      "count": 1,
+      "part": "part.electrical.battle_computer"
+     }
+    ],
+    "picture": 24,
+    "remaining": 0,
+    "slot": 4,
+    "transferred": false,
+    "turn_designed": 1
+   },
+   "slot": 4,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.scout",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 16,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 42
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.scout",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.long_hump_6"
+     },
+     {
+      "count": 1,
+      "part": "part.scanner.rhino_scanner"
+     },
+     {
+      "count": 1,
+      "part": "part.mechanical.maneuvering_jet"
+     }
+    ],
+    "picture": 16,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 42
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "slot": 5,
+   "starbase": false,
+   "type": "design_delete"
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 23,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 42
+}

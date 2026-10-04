@@ -236,6 +236,13 @@ mineral. The packet's speed comes from the driver's speed setting, with adjustme
 Inter-stellar Traveler races that S14 specifies. A packet launched this year from the same planet to the same
 destination at the same speed absorbs the new minerals; otherwise a new packet is created (S14).
 
+### 7a. Design changes and queue progress
+
+A design that is replaced (S11 `design_change`) keeps its queue items. **Fix B19:** the original keeps each item's
+progress percentage, so a nearly finished cheap design can be redesigned into an expensive one for the rest of the
+price. We carry the resources spent over instead: new progress = min(100, progress × old resource cost div new
+resource cost), with both costs from step 2a for the player.
+
 ### 7. Default queue for new colonies
 
 Each player has a default queue of up to 12 standard items (no designs) and a default "contribute only leftover

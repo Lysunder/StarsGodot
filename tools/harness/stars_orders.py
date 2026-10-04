@@ -3,7 +3,8 @@
 Usage: python tools/harness/stars_orders.py <name>.x1 out.orders.json
 
 Order blocks converted so far: waypoint delete, add and change (3, 4, 5), repeat orders (10), ship
-moves, split and merge (23, 24, 37), production queue change (29), research change (34), planet
+moves, split and merge (23, 24, 37), design change (27; design names neutral unless --keep-names),
+production queue change (29), research change (34), planet
 change (35), fleet battle plan (42), rename fleet (44; the name is left out unless --keep-names,
 as the importer leaves fleet names out) and player defaults (46: the default queue for new
 colonies and their leftover-to-research setting). Any other order block stops the conversion with its type, so a fixture never silently
@@ -28,6 +29,8 @@ WAYPOINT_CHANGE = 5
 REPEAT_ORDERS = 10
 MOVE_SHIPS = 23
 SPLIT_FLEET = 24
+DESIGN_CHANGE = 27
+STARBASE_SLOT_BASE = 16
 QUEUE_CHANGE = 29
 RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
@@ -52,6 +55,7 @@ def convert(raw, legacy=None, keep_names=False):
         raise StarsOrdersError("not an order file (file kind %d)" % header.file_kind)
     importer = stars_import.Importer.__new__(stars_import.Importer)
     importer.legacy = legacy or stars_import.Legacy()
+    importer.keep_names = keep_names
     orders = []
     for b in blocks:
         if b.type == starsfile.TYPE_FOOTER:
@@ -102,6 +106,17 @@ def convert_block(importer, b, keep_names=False):
             return out
         out.update(index=index, waypoint=importer.waypoint(d[4:]))
         out["type"] = "waypoint_add" if b.type == WAYPOINT_ADD else "waypoint_change"
+        return out
+    if b.type == DESIGN_CHANGE:
+        word = struct.unpack_from("<H", d, 0)[0]
+        operation, slot = word & 15, (word >> 8) & 31
+        starbase = slot >= STARBASE_SLOT_BASE
+        out = {"starbase": starbase, "slot": slot - STARBASE_SLOT_BASE if starbase else slot}
+        if operation == 0:
+            out["type"] = "design_delete"
+            return out
+        design = importer.design(starsfile.Block(stars_import.T_DESIGN, d[2:]), starbase)
+        out.update(type="design_change", design=design)
         return out
     if b.type == PLAYER_DEFAULTS:
         queue = importer.default_queue(-1, d[1], d[2:]) if len(d) > 1 else []

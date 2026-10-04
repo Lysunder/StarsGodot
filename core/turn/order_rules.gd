@@ -18,6 +18,8 @@ const TYPES := [
 	"fleet_rename",
 	"fleet_battle_plan",
 	"player_defaults",
+	"design_change",
+	"design_delete",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -59,6 +61,8 @@ static func apply(
 			return _fleet_settings(state, player, order)
 		"player_defaults":
 			return _player_defaults(state, content, player, order)
+		"design_change", "design_delete":
+			return _design(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -220,6 +224,96 @@ static func _player_defaults(
 	p.default_queue = fresh
 	p.default_leftover_to_research = leftover
 	return ""
+
+
+## Creates, replaces or deletes a design (S11 `design_change`, `design_delete`).
+static func _design(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var starbase: Variant = order.get("starbase")
+	var slot: Variant = order.get("slot")
+	if not starbase is bool:
+		return "starbase must be true or false"
+	var limit := content.constant(
+		"constant.limits.%s" % ("starbase_designs" if starbase else "ship_designs")
+	)
+	if not slot is int or slot < 0 or slot >= limit:
+		return "bad design slot"
+	var p := state.player(player)
+	var old := p.starbase_design(slot) if starbase else p.ship_design(slot)
+	if order["type"] == "design_delete":
+		if old != null:
+			_delete_design(state, content, player, slot, starbase)
+		return ""
+	if old != null and old.remaining != 0:
+		return "the design has ships"
+	var errors := PackedStringArray()
+	var fresh := ModelObject.object_from(Design, order.get("design"), "", errors) as Design
+	if not errors.is_empty():
+		return "bad design: %s" % errors[0]
+	var problem := PartRules.design_problem(fresh, starbase, p, content)
+	if not problem.is_empty():
+		return problem
+	fresh.slot = slot
+	fresh.transferred = false
+	fresh.built = 0
+	fresh.remaining = 0
+	if old != null:
+		_carry_progress(state, content, p, old, fresh, starbase)
+	p.set_design(fresh, starbase)
+	return ""
+
+
+## Fix B19 (S09 step 7a): queue progress of a replaced design is carried over by resources.
+static func _carry_progress(
+	state: GameState,
+	content: ContentRegistry,
+	p: Player,
+	old: Design,
+	fresh: Design,
+	starbase: bool
+) -> void:
+	var old_cost: int = ProductionCosts.design_cost(old, p, content)[ProductionCosts.RESOURCES]
+	var new_cost: int = ProductionCosts.design_cost(fresh, p, content)[ProductionCosts.RESOURCES]
+	for planet in state.planets:
+		if planet.owner != p.index:
+			continue
+		for q in planet.queue:
+			if q.design == old.slot and q.starbase == starbase and q.progress > 0:
+				q.progress = mini(100, q.progress * old_cost / maxi(new_cost, 1))
+
+
+static func _delete_design(
+	state: GameState, content: ContentRegistry, player: int, slot: int, starbase: bool
+) -> void:
+	if starbase:
+		for planet in state.planets:
+			if (
+				planet.owner == player
+				and planet.starbase != null
+				and planet.starbase.design == slot
+			):
+				planet.starbase = null
+				var kept: Array[QueueItem] = []
+				for q in planet.queue:
+					var packet: bool = (
+						not q.is_design()
+						and content.get_def("production_item", q.item).get("effect", "") == "packet"
+					)
+					if not (q.is_design() and not q.starbase) and not packet:
+						kept.append(q)
+				planet.queue = kept
+	else:
+		FleetOrders.remove_design_ships(state, content, player, slot)
+	for planet in state.planets:
+		if planet.owner != player:
+			continue
+		var kept: Array[QueueItem] = []
+		for q in planet.queue:
+			if not (q.is_design() and q.design == slot and q.starbase == starbase):
+				kept.append(q)
+		planet.queue = kept
+	state.player(player).remove_design(slot, starbase)
 
 
 ## Split, ship moves and merges (S11 "Fleet orders").

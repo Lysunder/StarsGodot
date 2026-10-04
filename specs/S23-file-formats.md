@@ -366,6 +366,7 @@ conversion.
 | 10 repeat orders | fleet id; 2 bytes, bit 0: repeat |
 | 23 move ships | fleet id; other fleet id; 1 byte: the kinds of both cargo holders, 2 = fleet (the other's in the high nibble); 2 bytes design mask; per set bit a signed 16-bit count (positive: from the other fleet to the first) |
 | 24 split fleet | fleet id (the new fleet takes the owner's lowest free number) |
+| 27 design change | 2 bytes: bits 0–3 operation (0 delete, 1 create or replace), bits 4–7 player, bits 8–12 design slot (0–15 ship, 16–25 starbase 0–9); for operation 1 a full design as in type 26 follows |
 | 29 production queue change | 2 bytes planet id (11 bits), then the whole queue as 4-byte items (as type 28) |
 | 34 research change | 1 byte research percent; 1 byte: current field in the low nibble, next field setting in the high nibble |
 | 35 planet change | 2 bytes planet id; 4 bytes v: bit 0 only leftover to research, bits 1–10 mass driver destination + 1 (0 none), bits 11–14 mass driver warp − 4, bits 15–24 route destination + 1 (0 none) |
