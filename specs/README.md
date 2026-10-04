@@ -44,5 +44,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S12](S12-movement-and-fuel.md) | Movement and fuel | draft |
 | [S13](S13-minefields.md) | Minefields | draft |
 | [S23](S23-file-formats.md) | File formats (harness import only) | draft |
+| [S24](S24-tech-trading.md) | Tech trading (tech gain) | draft (scrapping only) |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).

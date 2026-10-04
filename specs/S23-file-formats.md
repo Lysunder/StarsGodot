@@ -315,7 +315,7 @@ position.
 | Offset | Size | Meaning |
 |---|---|---|
 | 0 | 1 | bits 0–1 always set; bit 2: full design |
-| 1 | 1 | bit 0 always set; bits 2–5 design slot; bit 6 starbase; bit 7 a second flag (to identify) |
+| 1 | 1 | bit 0 always set; bits 2–5 design slot; bit 6 starbase; bit 7 transferred (the design came with ships another player gave; `FindIdenticalDesign@1030:4dcc`) |
 | 2 | 1 | hull number (0–31 ship hulls, 32–36 starbase hulls; content id via `legacy_ids.json`) |
 | 3 | 1 | picture |
 

@@ -37,6 +37,10 @@ var trader_parts: Array[String] = []
 var knowledge: Dictionary = {}
 var mod_data: Dictionary = {}
 
+## Turn-only mark: the player already gained tech from scrapping, battle or invasion this turn
+## (S24).
+var tech_bonus_taken: bool = false
+
 
 func _schema() -> Array:
 	return [

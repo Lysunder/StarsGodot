@@ -15,6 +15,9 @@ var built: int = 0
 var remaining: int = 0
 ## Cosmetic picture index.
 var picture: int = 0
+## Came with ships another player transferred (S11); its ships count at a quarter of their cost
+## when scrapped or colonizing.
+var transferred: bool = false
 var mod_data: Dictionary = {}
 
 
@@ -28,5 +31,6 @@ func _schema() -> Array:
 		["built", Kind.INT],
 		["remaining", Kind.INT],
 		["picture", Kind.INT],
+		["transferred", Kind.BOOL],
 		["mod_data", Kind.JSON],
 	]

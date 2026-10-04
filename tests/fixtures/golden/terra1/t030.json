@@ -19,13 +19,13 @@
      0,
      0,
      0,
-     50
+     300
     ],
     "mod_data": {},
     "name": "",
     "number": 0,
-    "owner": 0,
-    "planet": 5,
+    "owner": 1,
+    "planet": 27,
     "repeat": false,
     "stacks": [
      {
@@ -44,17 +44,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 5,
+      "target_id": 27,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1104,
-      "y": 1160
+      "x": 1303,
+      "y": 1060
      }
     ],
-    "x": 1104,
-    "y": 1160
+    "x": 1303,
+    "y": 1060
    },
    {
     "battle_plan": 0,
@@ -63,20 +63,56 @@
      0,
      0,
      0,
-     300
+     1330
     ],
     "mod_data": {},
     "name": "",
     "number": 1,
-    "owner": 0,
-    "planet": 5,
+    "owner": 1,
+    "planet": 23,
     "repeat": false,
     "stacks": [
      {
       "count": 1,
       "damage": 0,
       "damaged_percent": 0,
-      "design": 1,
+      "design": 3,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 4,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 5,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 6,
       "paid": [
        0,
        0,
@@ -88,17 +124,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 5,
+      "target_id": 23,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1104,
-      "y": 1160
+      "x": 1277,
+      "y": 1233
      }
     ],
-    "x": 1104,
-    "y": 1160
+    "x": 1277,
+    "y": 1233
    },
    {
     "battle_plan": 0,
@@ -107,13 +143,13 @@
      0,
      0,
      0,
-     200
+     210
     ],
     "mod_data": {},
     "name": "",
     "number": 2,
-    "owner": 0,
-    "planet": 5,
+    "owner": 1,
+    "planet": 27,
     "repeat": false,
     "stacks": [
      {
@@ -132,413 +168,17 @@
     "waypoints": [
      {
       "target": "planet",
-      "target_id": 5,
+      "target_id": 27,
       "target_owner": -1,
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1104,
-      "y": 1160
+      "x": 1303,
+      "y": 1060
      }
     ],
-    "x": 1104,
-    "y": 1160
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     450
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 3,
-    "owner": 0,
-    "planet": 5,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 3,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 5,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1104,
-      "y": 1160
-     }
-    ],
-    "x": 1104,
-    "y": 1160
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     530
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 4,
-    "owner": 0,
-    "planet": 5,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 4,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 5,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1104,
-      "y": 1160
-     }
-    ],
-    "x": 1104,
-    "y": 1160
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     210
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 5,
-    "owner": 0,
-    "planet": 5,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 5,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 5,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1104,
-      "y": 1160
-     }
-    ],
-    "x": 1104,
-    "y": 1160
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     50
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 0,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 0,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     300
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 1,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 1,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     200
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 2,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 2,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     450
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 3,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 3,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     530
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 4,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 4,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "battle_plan": 0,
-    "cargo": [
-     0,
-     0,
-     0,
-     0,
-     210
-    ],
-    "mod_data": {},
-    "name": "",
-    "number": 5,
-    "owner": 1,
-    "planet": 9,
-    "repeat": false,
-    "stacks": [
-     {
-      "count": 1,
-      "damage": 0,
-      "damaged_percent": 0,
-      "design": 5,
-      "paid": [
-       0,
-       0,
-       0,
-       0
-      ]
-     }
-    ],
-    "waypoints": [
-     {
-      "target": "planet",
-      "target_id": 9,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 0,
-      "x": 1180,
-      "y": 1296
-     }
-    ],
-    "x": 1180,
-    "y": 1296
+    "x": 1303,
+    "y": 1060
    }
   ],
   "history": [],
@@ -550,9 +190,9 @@
    {
     "artifact": null,
     "concentration": [
-     27,
-     76,
-     76
+     102,
+     74,
+     7
     ],
     "concentration_fraction": [
      0,
@@ -561,14 +201,14 @@
     ],
     "defenses": 0,
     "environment": [
-     9,
-     91,
-     21
+     12,
+     25,
+     62
     ],
     "environment_original": [
-     9,
-     91,
-     21
+     12,
+     25,
+     62
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -591,15 +231,15 @@
      0,
      0
     ],
-    "x": 1022,
-    "y": 1274
+    "x": 1025,
+    "y": 1148
    },
    {
     "artifact": null,
     "concentration": [
-     16,
-     29,
-     60
+     80,
+     4,
+     80
     ],
     "concentration_fraction": [
      0,
@@ -608,14 +248,14 @@
     ],
     "defenses": 0,
     "environment": [
-     6,
-     66,
-     70
+     95,
+     68,
+     14
     ],
     "environment_original": [
-     6,
-     66,
-     70
+     95,
+     68,
+     14
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -638,15 +278,15 @@
      0,
      0
     ],
-    "x": 1049,
-    "y": 1348
+    "x": 1037,
+    "y": 1189
    },
    {
     "artifact": null,
     "concentration": [
-     8,
-     76,
-     74
+     59,
+     60,
+     94
     ],
     "concentration_fraction": [
      0,
@@ -655,14 +295,14 @@
     ],
     "defenses": 0,
     "environment": [
-     20,
-     51,
-     5
+     86,
+     87,
+     36
     ],
     "environment_original": [
-     20,
-     51,
-     5
+     86,
+     87,
+     36
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -685,15 +325,15 @@
      0,
      0
     ],
-    "x": 1055,
-    "y": 1101
+    "x": 1043,
+    "y": 1266
    },
    {
     "artifact": null,
     "concentration": [
-     74,
-     87,
-     98
+     4,
+     10,
+     7
     ],
     "concentration_fraction": [
      0,
@@ -702,14 +342,14 @@
     ],
     "defenses": 0,
     "environment": [
-     79,
-     21,
-     62
+     71,
+     44,
+     72
     ],
     "environment_original": [
-     79,
-     21,
-     62
+     71,
+     44,
+     72
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -732,15 +372,15 @@
      0,
      0
     ],
-    "x": 1062,
-    "y": 1037
+    "x": 1053,
+    "y": 1252
    },
    {
     "artifact": null,
     "concentration": [
-     75,
-     21,
-     76
+     102,
+     66,
+     114
     ],
     "concentration_fraction": [
      0,
@@ -749,14 +389,14 @@
     ],
     "defenses": 0,
     "environment": [
-     65,
-     91,
-     62
+     11,
+     81,
+     52
     ],
     "environment_original": [
-     65,
-     91,
-     62
+     11,
+     81,
+     52
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -779,65 +419,15 @@
      0,
      0
     ],
-    "x": 1101,
-    "y": 1016
+    "x": 1062,
+    "y": 1064
    },
    {
     "artifact": null,
     "concentration": [
-     30,
+     86,
      76,
-     76
-    ],
-    "concentration_fraction": [
-     250,
-     223,
-     223
-    ],
-    "defenses": 10,
-    "environment": [
-     50,
-     50,
-     50
-    ],
-    "environment_original": [
-     50,
-     50,
-     50
-    ],
-    "extra_colonists": 5,
-    "factories": 10,
-    "has_scanner": true,
-    "homeworld": true,
-    "id": 5,
-    "leftover_to_research": false,
-    "mass_driver_target": -1,
-    "mass_driver_warp": 4,
-    "mines": 10,
-    "mod_data": {},
-    "name": "Planet 5",
-    "owner": 0,
-    "population": 380,
-    "queue": [],
-    "route": -1,
-    "starbase": {
-     "damage": 0,
-     "design": 0
-    },
-    "surface": [
-     441,
-     763,
-     833
-    ],
-    "x": 1104,
-    "y": 1160
-   },
-   {
-    "artifact": null,
-    "concentration": [
-     81,
-     69,
-     90
+     1
     ],
     "concentration_fraction": [
      0,
@@ -846,14 +436,61 @@
     ],
     "defenses": 0,
     "environment": [
-     55,
-     86,
-     34
+     37,
+     52,
+     8
     ],
     "environment_original": [
-     55,
-     86,
-     34
+     37,
+     52,
+     8
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 5,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 5",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1068,
+    "y": 1274
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     56,
+     51,
+     93
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     18,
+     27,
+     2
+    ],
+    "environment_original": [
+     18,
+     27,
+     2
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -876,15 +513,15 @@
      0,
      0
     ],
-    "x": 1150,
-    "y": 1120
+    "x": 1070,
+    "y": 1107
    },
    {
     "artifact": null,
     "concentration": [
-     83,
-     70,
-     89
+     17,
+     95,
+     17
     ],
     "concentration_fraction": [
      0,
@@ -893,14 +530,14 @@
     ],
     "defenses": 0,
     "environment": [
-     34,
-     24,
-     95
+     28,
+     90,
+     87
     ],
     "environment_original": [
-     34,
-     24,
-     95
+     28,
+     90,
+     87
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -923,15 +560,15 @@
      0,
      0
     ],
-    "x": 1156,
-    "y": 1071
+    "x": 1077,
+    "y": 1159
    },
    {
     "artifact": null,
     "concentration": [
-     95,
-     43,
-     87
+     66,
+     44,
+     40
     ],
     "concentration_fraction": [
      0,
@@ -940,14 +577,14 @@
     ],
     "defenses": 0,
     "environment": [
-     7,
-     73,
-     98
+     49,
+     87,
+     25
     ],
     "environment_original": [
-     7,
-     73,
-     98
+     49,
+     87,
+     25
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -970,65 +607,15 @@
      0,
      0
     ],
-    "x": 1168,
-    "y": 1046
+    "x": 1084,
+    "y": 1015
    },
    {
     "artifact": null,
     "concentration": [
-     30,
-     76,
-     76
-    ],
-    "concentration_fraction": [
-     250,
-     223,
-     223
-    ],
-    "defenses": 10,
-    "environment": [
-     50,
-     50,
-     50
-    ],
-    "environment_original": [
-     50,
-     50,
-     50
-    ],
-    "extra_colonists": 5,
-    "factories": 10,
-    "has_scanner": true,
-    "homeworld": true,
-    "id": 9,
-    "leftover_to_research": false,
-    "mass_driver_target": -1,
-    "mass_driver_warp": 4,
-    "mines": 10,
-    "mod_data": {},
-    "name": "Planet 9",
-    "owner": 1,
-    "population": 380,
-    "queue": [],
-    "route": -1,
-    "starbase": {
-     "damage": 0,
-     "design": 0
-    },
-    "surface": [
-     441,
-     763,
-     833
-    ],
-    "x": 1180,
-    "y": 1296
-   },
-   {
-    "artifact": null,
-    "concentration": [
-     69,
-     63,
-     100
+     6,
+     95,
+     83
     ],
     "concentration_fraction": [
      0,
@@ -1037,14 +624,61 @@
     ],
     "defenses": 0,
     "environment": [
-     32,
-     15,
-     34
+     92,
+     44,
+     15
     ],
     "environment_original": [
-     32,
-     15,
-     34
+     92,
+     44,
+     15
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 9,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 9",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1090,
+    "y": 1043
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     73,
+     63,
+     8
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     69,
+     18,
+     38
+    ],
+    "environment_original": [
+     69,
+     18,
+     38
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1067,15 +701,15 @@
      0,
      0
     ],
-    "x": 1193,
-    "y": 1304
+    "x": 1101,
+    "y": 1208
    },
    {
     "artifact": null,
     "concentration": [
-     11,
-     100,
-     75
+     77,
+     83,
+     52
     ],
     "concentration_fraction": [
      0,
@@ -1084,14 +718,14 @@
     ],
     "defenses": 0,
     "environment": [
-     60,
-     89,
-     4
+     72,
+     14,
+     49
     ],
     "environment_original": [
-     60,
-     89,
-     4
+     72,
+     14,
+     49
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1114,15 +748,15 @@
      0,
      0
     ],
-    "x": 1205,
-    "y": 1213
+    "x": 1111,
+    "y": 1137
    },
    {
     "artifact": null,
     "concentration": [
-     72,
-     83,
-     25
+     61,
+     23,
+     27
     ],
     "concentration_fraction": [
      0,
@@ -1131,14 +765,14 @@
     ],
     "defenses": 0,
     "environment": [
-     51,
-     71,
-     9
+     90,
+     70,
+     21
     ],
     "environment_original": [
-     51,
-     71,
-     9
+     90,
+     70,
+     21
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1161,15 +795,15 @@
      0,
      0
     ],
-    "x": 1229,
-    "y": 1216
+    "x": 1130,
+    "y": 1270
    },
    {
     "artifact": null,
     "concentration": [
-     81,
-     54,
-     22
+     19,
+     7,
+     28
     ],
     "concentration_fraction": [
      0,
@@ -1178,14 +812,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     52,
-     21
+     43,
+     12,
+     22
     ],
     "environment_original": [
-     89,
-     52,
-     21
+     43,
+     12,
+     22
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1208,15 +842,15 @@
      0,
      0
     ],
-    "x": 1233,
-    "y": 1086
+    "x": 1139,
+    "y": 1095
    },
    {
     "artifact": null,
     "concentration": [
-     17,
-     89,
-     10
+     54,
+     5,
+     65
     ],
     "concentration_fraction": [
      0,
@@ -1225,14 +859,14 @@
     ],
     "defenses": 0,
     "environment": [
-     51,
-     28,
-     73
+     36,
+     50,
+     89
     ],
     "environment_original": [
-     51,
-     28,
-     73
+     36,
+     50,
+     89
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1255,15 +889,15 @@
      0,
      0
     ],
-    "x": 1245,
-    "y": 1163
+    "x": 1140,
+    "y": 1365
    },
    {
     "artifact": null,
     "concentration": [
-     91,
-     72,
-     72
+     95,
+     4,
+     78
     ],
     "concentration_fraction": [
      0,
@@ -1272,14 +906,14 @@
     ],
     "defenses": 0,
     "environment": [
-     37,
-     41,
-     44
+     10,
+     26,
+     71
     ],
     "environment_original": [
-     37,
-     41,
-     44
+     10,
+     26,
+     71
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1302,15 +936,15 @@
      0,
      0
     ],
-    "x": 1274,
-    "y": 1232
+    "x": 1184,
+    "y": 1153
    },
    {
     "artifact": null,
     "concentration": [
-     81,
-     100,
-     74
+     14,
+     93,
+     10
     ],
     "concentration_fraction": [
      0,
@@ -1319,14 +953,14 @@
     ],
     "defenses": 0,
     "environment": [
-     10,
      15,
-     8
+     33,
+     39
     ],
     "environment_original": [
-     10,
      15,
-     8
+     33,
+     39
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1349,15 +983,15 @@
      0,
      0
     ],
-    "x": 1301,
-    "y": 1020
+    "x": 1186,
+    "y": 1118
    },
    {
     "artifact": null,
     "concentration": [
-     23,
-     86,
-     66
+     15,
+     110,
+     6
     ],
     "concentration_fraction": [
      0,
@@ -1366,14 +1000,14 @@
     ],
     "defenses": 0,
     "environment": [
-     45,
-     77,
-     42
+     87,
+     5,
+     82
     ],
     "environment_original": [
-     45,
-     77,
-     42
+     87,
+     5,
+     82
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1396,15 +1030,15 @@
      0,
      0
     ],
-    "x": 1302,
-    "y": 1098
+    "x": 1193,
+    "y": 1217
    },
    {
     "artifact": null,
     "concentration": [
-     93,
-     23,
-     103
+     18,
+     18,
+     115
     ],
     "concentration_fraction": [
      0,
@@ -1413,14 +1047,14 @@
     ],
     "defenses": 0,
     "environment": [
-     5,
-     47,
-     77
+     85,
+     3,
+     32
     ],
     "environment_original": [
-     5,
-     47,
-     77
+     85,
+     3,
+     32
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1443,15 +1077,15 @@
      0,
      0
     ],
-    "x": 1303,
-    "y": 1117
+    "x": 1214,
+    "y": 1356
    },
    {
     "artifact": null,
     "concentration": [
-     27,
-     16,
-     17
+     24,
+     67,
+     74
     ],
     "concentration_fraction": [
      0,
@@ -1460,14 +1094,14 @@
     ],
     "defenses": 0,
     "environment": [
-     32,
-     49,
-     76
+     26,
+     67,
+     41
     ],
     "environment_original": [
-     32,
-     49,
-     76
+     26,
+     67,
+     41
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1490,15 +1124,15 @@
      0,
      0
     ],
-    "x": 1307,
-    "y": 1344
+    "x": 1228,
+    "y": 1143
    },
    {
     "artifact": null,
     "concentration": [
-     107,
-     91,
-     22
+     88,
+     12,
+     47
     ],
     "concentration_fraction": [
      0,
@@ -1507,14 +1141,14 @@
     ],
     "defenses": 0,
     "environment": [
-     89,
-     84,
-     64
+     17,
+     24,
+     81
     ],
     "environment_original": [
-     89,
-     84,
-     64
+     17,
+     24,
+     81
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1537,15 +1171,15 @@
      0,
      0
     ],
-    "x": 1311,
-    "y": 1195
+    "x": 1229,
+    "y": 1033
    },
    {
     "artifact": null,
     "concentration": [
-     6,
-     83,
-     78
+     99,
+     19,
+     87
     ],
     "concentration_fraction": [
      0,
@@ -1554,14 +1188,14 @@
     ],
     "defenses": 0,
     "environment": [
-     74,
-     8,
-     77
+     15,
+     63,
+     91
     ],
     "environment_original": [
-     74,
-     8,
-     77
+     15,
+     63,
+     91
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1584,15 +1218,15 @@
      0,
      0
     ],
-    "x": 1328,
-    "y": 1022
+    "x": 1241,
+    "y": 1183
    },
    {
     "artifact": null,
     "concentration": [
-     6,
-     70,
-     59
+     74,
+     71,
+     5
     ],
     "concentration_fraction": [
      0,
@@ -1601,16 +1235,16 @@
     ],
     "defenses": 0,
     "environment": [
-     41,
-     82,
-     65
+     51,
+     40,
+     50
     ],
     "environment_original": [
-     41,
-     82,
-     65
+     52,
+     39,
+     54
     ],
-    "extra_colonists": 0,
+    "extra_colonists": 5,
     "factories": 0,
     "has_scanner": false,
     "homeworld": false,
@@ -1621,72 +1255,90 @@
     "mines": 0,
     "mod_data": {},
     "name": "Planet 22",
-    "owner": -1,
-    "population": 0,
-    "queue": [],
+    "owner": 0,
+    "population": 708,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.terraform",
+      "progress": 24,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
     "route": -1,
     "starbase": null,
     "surface": [
-     0,
-     0,
-     0
+     18,
+     6,
+     17
     ],
-    "x": 1329,
-    "y": 1121
+    "x": 1241,
+    "y": 1317
    },
    {
     "artifact": null,
     "concentration": [
-     70,
-     99,
-     106
+     100,
+     73,
+     30
     ],
     "concentration_fraction": [
-     0,
-     0,
-     0
+     94,
+     173,
+     196
     ],
-    "defenses": 0,
+    "defenses": 10,
     "environment": [
-     16,
-     18,
-     65
+     50,
+     50,
+     50
     ],
     "environment_original": [
-     16,
-     18,
-     65
+     50,
+     50,
+     50
     ],
-    "extra_colonists": 0,
-    "factories": 0,
-    "has_scanner": false,
-    "homeworld": false,
+    "extra_colonists": 62,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
     "id": 23,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 0,
-    "mines": 0,
+    "mass_driver_warp": 4,
+    "mines": 10,
     "mod_data": {},
     "name": "Planet 23",
-    "owner": -1,
-    "population": 0,
+    "owner": 0,
+    "population": 7685,
     "queue": [],
     "route": -1,
-    "starbase": null,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
     "surface": [
-     0,
-     0,
-     0
+     816,
+     614,
+     613
     ],
-    "x": 1330,
-    "y": 1103
+    "x": 1277,
+    "y": 1233
    },
    {
     "artifact": null,
     "concentration": [
-     65,
-     71,
-     6
+     85,
+     9,
+     105
     ],
     "concentration_fraction": [
      0,
@@ -1695,14 +1347,14 @@
     ],
     "defenses": 0,
     "environment": [
-     19,
-     19,
-     10
+     28,
+     56,
+     33
     ],
     "environment_original": [
-     19,
-     19,
-     10
+     28,
+     56,
+     33
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1725,15 +1377,15 @@
      0,
      0
     ],
-    "x": 1341,
-    "y": 1071
+    "x": 1284,
+    "y": 1339
    },
    {
     "artifact": null,
     "concentration": [
-     78,
-     24,
-     99
+     83,
+     10,
+     89
     ],
     "concentration_fraction": [
      0,
@@ -1742,16 +1394,16 @@
     ],
     "defenses": 0,
     "environment": [
-     67,
-     61,
-     33
+     50,
+     32,
+     46
     ],
     "environment_original": [
-     67,
-     61,
-     33
+     47,
+     25,
+     43
     ],
-    "extra_colonists": 0,
+    "extra_colonists": 28,
     "factories": 0,
     "has_scanner": false,
     "homeworld": false,
@@ -1762,25 +1414,25 @@
     "mines": 0,
     "mod_data": {},
     "name": "Planet 25",
-    "owner": -1,
-    "population": 0,
+    "owner": 1,
+    "population": 554,
     "queue": [],
     "route": -1,
     "starbase": null,
     "surface": [
-     0,
-     0,
-     0
+     18,
+     7,
+     19
     ],
-    "x": 1350,
-    "y": 1147
+    "x": 1300,
+    "y": 1087
    },
    {
     "artifact": null,
     "concentration": [
-     82,
-     73,
-     84
+     38,
+     110,
+     55
     ],
     "concentration_fraction": [
      0,
@@ -1789,14 +1441,14 @@
     ],
     "defenses": 0,
     "environment": [
-     35,
-     50,
-     25
+     57,
+     34,
+     49
     ],
     "environment_original": [
-     35,
-     50,
-     25
+     57,
+     34,
+     49
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1819,62 +1471,65 @@
      0,
      0
     ],
-    "x": 1356,
-    "y": 1053
+    "x": 1300,
+    "y": 1137
    },
    {
     "artifact": null,
     "concentration": [
-     1,
-     92,
-     76
+     100,
+     73,
+     30
     ],
     "concentration_fraction": [
-     0,
-     0,
-     0
+     94,
+     173,
+     196
     ],
-    "defenses": 0,
+    "defenses": 10,
     "environment": [
-     88,
-     30,
-     25
+     50,
+     50,
+     50
     ],
     "environment_original": [
-     88,
-     30,
-     25
+     50,
+     50,
+     50
     ],
-    "extra_colonists": 0,
-    "factories": 0,
-    "has_scanner": false,
-    "homeworld": false,
+    "extra_colonists": 61,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
     "id": 27,
     "leftover_to_research": false,
     "mass_driver_target": -1,
-    "mass_driver_warp": 0,
-    "mines": 0,
+    "mass_driver_warp": 4,
+    "mines": 10,
     "mod_data": {},
     "name": "Planet 27",
-    "owner": -1,
-    "population": 0,
+    "owner": 1,
+    "population": 6688,
     "queue": [],
     "route": -1,
-    "starbase": null,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
     "surface": [
-     0,
-     0,
-     0
+     607,
+     483,
+     345
     ],
-    "x": 1358,
-    "y": 1171
+    "x": 1303,
+    "y": 1060
    },
    {
     "artifact": null,
     "concentration": [
-     6,
-     111,
-     80
+     16,
+     20,
+     62
     ],
     "concentration_fraction": [
      0,
@@ -1883,14 +1538,14 @@
     ],
     "defenses": 0,
     "environment": [
-     60,
-     44,
-     38
+     13,
+     27,
+     19
     ],
     "environment_original": [
-     60,
-     44,
-     38
+     13,
+     27,
+     19
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1913,15 +1568,15 @@
      0,
      0
     ],
-    "x": 1370,
-    "y": 1290
+    "x": 1305,
+    "y": 1024
    },
    {
     "artifact": null,
     "concentration": [
-     60,
-     85,
-     23
+     104,
+     92,
+     65
     ],
     "concentration_fraction": [
      0,
@@ -1930,14 +1585,14 @@
     ],
     "defenses": 0,
     "environment": [
-     74,
-     69,
-     99
+     71,
+     40,
+     32
     ],
     "environment_original": [
-     74,
-     69,
-     99
+     71,
+     40,
+     32
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -1960,15 +1615,15 @@
      0,
      0
     ],
-    "x": 1372,
-    "y": 1306
+    "x": 1318,
+    "y": 1123
    },
    {
     "artifact": null,
     "concentration": [
-     81,
-     43,
-     9
+     58,
+     62,
+     53
     ],
     "concentration_fraction": [
      0,
@@ -1977,14 +1632,14 @@
     ],
     "defenses": 0,
     "environment": [
-     55,
-     88,
-     5
+     15,
+     36,
+     77
     ],
     "environment_original": [
-     55,
-     88,
-     5
+     15,
+     36,
+     77
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2007,15 +1662,15 @@
      0,
      0
     ],
-    "x": 1373,
-    "y": 1267
+    "x": 1336,
+    "y": 1209
    },
    {
     "artifact": null,
     "concentration": [
-     63,
-     64,
-     25
+     8,
+     42,
+     72
     ],
     "concentration_fraction": [
      0,
@@ -2024,14 +1679,14 @@
     ],
     "defenses": 0,
     "environment": [
-     33,
-     32,
-     68
+     26,
+     29,
+     44
     ],
     "environment_original": [
-     33,
-     32,
-     68
+     26,
+     29,
+     44
     ],
     "extra_colonists": 0,
     "factories": 0,
@@ -2054,8 +1709,8 @@
      0,
      0
     ],
-    "x": 1390,
-    "y": 1196
+    "x": 1368,
+    "y": 1379
    }
   ],
   "players": [
@@ -2105,7 +1760,7 @@
       "tactic": 0
      }
     ],
-    "homeworld": 5,
+    "homeworld": 23,
     "index": 0,
     "knowledge": {},
     "mod_data": {},
@@ -2124,16 +1779,18 @@
      "hab_high": [
       85,
       85,
-      85
+      72
      ],
      "hab_low": [
       15,
       15,
-      15
+      28
      ],
      "leftover_points": "surface_minerals",
-     "lesser_traits": [],
-     "logo": 1,
+     "lesser_traits": [
+      "trait.lrt.TT"
+     ],
+     "logo": 15,
      "mine_cost": 5,
      "mine_output": 10,
      "mines_operated": 10,
@@ -2160,7 +1817,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     116,
+     1319,
      0,
      0,
      0,
@@ -2188,7 +1845,7 @@
        }
       ],
       "picture": 17,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 0,
       "transferred": false,
       "turn_designed": 1
@@ -2213,7 +1870,7 @@
        }
       ],
       "picture": 18,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 1,
       "transferred": false,
       "turn_designed": 1
@@ -2234,7 +1891,7 @@
        }
       ],
       "picture": 60,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 2,
       "transferred": false,
       "turn_designed": 1
@@ -2259,7 +1916,7 @@
        }
       ],
       "picture": 4,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 3,
       "transferred": false,
       "turn_designed": 1
@@ -2300,7 +1957,7 @@
        }
       ],
       "picture": 24,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 4,
       "transferred": false,
       "turn_designed": 1
@@ -2329,7 +1986,7 @@
        }
       ],
       "picture": 85,
-      "remaining": 1,
+      "remaining": 0,
       "slot": 5,
       "transferred": false,
       "turn_designed": 1
@@ -2399,7 +2056,7 @@
      }
     ],
     "tech_levels": [
-     3,
+     9,
      3,
      3,
      3,
@@ -2454,7 +2111,7 @@
       "tactic": 0
      }
     ],
-    "homeworld": 9,
+    "homeworld": 27,
     "index": 1,
     "knowledge": {},
     "mod_data": {},
@@ -2482,14 +2139,14 @@
      ],
      "leftover_points": "surface_minerals",
      "lesser_traits": [],
-     "logo": 2,
+     "logo": 1,
      "mine_cost": 5,
      "mine_output": 10,
      "mines_operated": 10,
      "mod_data": {},
      "name": "Race 1",
      "plural_name": "Races 1",
-     "primary_trait": "trait.prt.JoaT",
+     "primary_trait": "trait.prt.CA",
      "random": false,
      "research_costs": [
       1,
@@ -2509,7 +2166,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     116,
+     1032,
      0,
      0,
      0,
@@ -2522,6 +2179,81 @@
       "hull": "hull.scout",
       "mod_data": {},
       "name": "Design 0",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.bat_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 16,
+      "remaining": 1,
+      "slot": 0,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.colony_ship",
+      "mod_data": {},
+      "name": "Design 1",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.colonization_module"
+       }
+      ],
+      "picture": 60,
+      "remaining": 0,
+      "slot": 1,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.mini_miner",
+      "mod_data": {},
+      "name": "Design 2",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.bat_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mining_robot.orbital_adjuster"
+       },
+       {
+        "count": 1,
+        "part": "part.mining_robot.orbital_adjuster"
+       }
+      ],
+      "picture": 86,
+      "remaining": 1,
+      "slot": 2,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 3",
       "parts": [
        {
         "count": 1,
@@ -2538,15 +2270,15 @@
       ],
       "picture": 17,
       "remaining": 1,
-      "slot": 0,
-      "transferred": false,
+      "slot": 3,
+      "transferred": true,
       "turn_designed": 1
      },
      {
       "built": 1,
       "hull": "hull.scout",
       "mod_data": {},
-      "name": "Design 1",
+      "name": "Design 4",
       "parts": [
        {
         "count": 1,
@@ -2563,36 +2295,15 @@
       ],
       "picture": 18,
       "remaining": 1,
-      "slot": 1,
-      "transferred": false,
-      "turn_designed": 1
-     },
-     {
-      "built": 1,
-      "hull": "hull.colony_ship",
-      "mod_data": {},
-      "name": "Design 2",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.engine.long_hump_6"
-       },
-       {
-        "count": 1,
-        "part": "part.mechanical.colonization_module"
-       }
-      ],
-      "picture": 60,
-      "remaining": 1,
-      "slot": 2,
-      "transferred": false,
+      "slot": 4,
+      "transferred": true,
       "turn_designed": 1
      },
      {
       "built": 1,
       "hull": "hull.medium_freighter",
       "mod_data": {},
-      "name": "Design 3",
+      "name": "Design 5",
       "parts": [
        {
         "count": 1,
@@ -2609,15 +2320,15 @@
       ],
       "picture": 4,
       "remaining": 1,
-      "slot": 3,
-      "transferred": false,
+      "slot": 5,
+      "transferred": true,
       "turn_designed": 1
      },
      {
       "built": 1,
       "hull": "hull.destroyer",
       "mod_data": {},
-      "name": "Design 4",
+      "name": "Design 6",
       "parts": [
        {
         "count": 1,
@@ -2650,37 +2361,8 @@
       ],
       "picture": 24,
       "remaining": 1,
-      "slot": 4,
-      "transferred": false,
-      "turn_designed": 1
-     },
-     {
-      "built": 1,
-      "hull": "hull.mini_miner",
-      "mod_data": {},
-      "name": "Design 5",
-      "parts": [
-       {
-        "count": 1,
-        "part": "part.engine.long_hump_6"
-       },
-       {
-        "count": 1,
-        "part": "part.scanner.rhino_scanner"
-       },
-       {
-        "count": 1,
-        "part": "part.mining_robot.robo_mini_miner"
-       },
-       {
-        "count": 1,
-        "part": "part.mining_robot.robo_mini_miner"
-       }
-      ],
-      "picture": 85,
-      "remaining": 1,
-      "slot": 5,
-      "transferred": false,
+      "slot": 6,
+      "transferred": true,
       "turn_designed": 1
      }
     ],
@@ -2748,12 +2430,12 @@
      }
     ],
     "tech_levels": [
-     3,
-     3,
-     3,
-     3,
-     3,
-     3
+     9,
+     1,
+     1,
+     2,
+     0,
+     6
     ],
     "trader_parts": []
    }
@@ -2804,7 +2486,7 @@
    }
   },
   "traders": [],
-  "turn": 3,
+  "turn": 30,
   "wormholes": []
  }
 }

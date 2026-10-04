@@ -2,9 +2,11 @@ extends GdUnitTestSuite
 ## Golden turns (plan M4/M6): from each fixture turn and the players' orders for it
 ## (tNNN.pP.orders.json), our turn generation must give the original's next turn exactly. Only the
 ## random streams are ignored (a fixture holds the state at the start of the next turn's
-## generation, S01), plus what a game's phases not built yet would change (GAME_IGNORE).
+## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
+## design keeps the giver's name, S11), plus what a game's phases not built yet would change
+## (GAME_IGNORE).
 
-const IGNORE := ["/rng"]
+const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
 
 var _content: ContentRegistry
@@ -96,6 +98,7 @@ func test_terra1(
 		[26],
 		[27],
 		[28],
+		[29],
 	]
 ) -> void:
 	_check_turn("terra1", turn)

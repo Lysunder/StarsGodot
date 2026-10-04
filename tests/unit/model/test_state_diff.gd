@@ -61,7 +61,7 @@ func test_matches_designs_and_space_objects_by_identity() -> void:
 		. is_equal(
 			[
 				"/minefields[1:0]: added {9 fields}",
-				"/players/0/ship_designs[1]: added {9 fields}",
+				"/players/0/ship_designs[1]: added {10 fields}",
 				"/wormholes[1]/stability: 0 -> 9",
 			]
 		)

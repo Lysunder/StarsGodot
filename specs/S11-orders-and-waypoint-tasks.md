@@ -7,7 +7,8 @@ a harness game with orders given in the client. Waypoint orders, transport at th
 colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), matching the original in terra1 turns
 0-2. Fleet orders (split, ship moves, merge, repeat, rename, battle plan) added from the code (2026-10-04,
 `core/rules/fleet_orders.gd`); ship moves, split, repeat and battle plan match the original in terra1 turn 28
-(the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet.
+(the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet. Merge, scrap (at a
+planet) and transfer tasks added (2026-10-04), matching the original in terra1 turn 29.
 References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
 `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
 `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
@@ -240,7 +241,9 @@ with).
 
 ### Scrap
 
-Pass 1 only. The fleet is dismantled; per mineral, with M = Σ ships × the design's cost of that mineral:
+Pass 1 only (a scrap task at an arrival waypoint runs at the start of the next turn). Colonize shares this code
+(3/4 of M, see "Colonize"). The fleet is dismantled; per mineral, with M = Σ over stacks of ships × the design's
+cost of that mineral, divided by 4 (rounded down, per stack) for a transferred design:
 
 | Where | Minerals recovered |
 |---|---|
@@ -257,15 +260,25 @@ Pass 1 only. The fleet is dismantled; per mineral, with M = Σ ships × the desi
   the message reports R × r / (R + r), where r is the planet's resources.
 - Bleeding Edge Technology: the design's cost is recomputed with the scrapper's current tech first.
 - Designs marked as having parts the player can no longer build count at a quarter of their cost.
-- Scrapping at a planet with a starbase can give the planet's owner tech (S24).
+- Scrapping at a planet with a starbase can give the planet's owner tech (S24): once per turn per player, a 50%
+  roll, then a Mystery Trader part or tech points in a field where the scrapped designs need more tech than the
+  owner has (`TryTechBonus@10e8:6112`); it draws from the generator even when nothing is gained (S24).
+- Ultimate Recycling (trait parameter `scrap.recycling`) also banks the ships' resource cost for the planet's next
+  year; not built yet.
+- In deep space the minerals become salvage (S14); not built yet.
+- Each design's existing count drops by its ships, as for colonize.
 
 **Fix B14:** M uses the cost actually paid for each ship (stored with the ship), and never more than the scrapping
-player's own cost for that design; this removes profit from scrapping other races' cheaper ships.
+player's own cost for that design; this removes profit from scrapping other races' cheaper ships. Ships without a
+recorded amount (converted from the original, or built before production records it) count at the design cost.
 
 ### Merge with fleet
 
-Load passes only. The target fleet must exist, have ships, and belong to the same player; the fleet's ships join
-it. Otherwise the player gets a message.
+Load passes only. Waypoint 0 must target a fleet that exists, has ships, is not the fleet itself, belongs to the
+same player and is at the same position (the waypoint follows the target, so the original needs no distance check);
+otherwise the player gets a message and the task stays. The fleet's ships then move into the target exactly as a
+ship move of all its ships (cargo, fuel and damage follow, see "Fleet orders"), and the emptied fleet is deleted.
+`MergeFleets@1048:78b6`.
 
 ### Remote mining
 
@@ -300,8 +313,20 @@ Pass 3 only.
 
 ### Transfer fleet
 
-Pass 4 only. The fleet is recreated as a fleet of the receiving player (new number for that player), with messages
-to both.
+Pass 4 only. The receiving player is task data word 0, counted without the giver (a value at or above the giver's
+index means the next player). The transfer fails (message, task stays) when that player does not exist or is out of
+the game, is an enemy of the giver (its relation toward the giver), the fleet carries colonists, a design finds no
+slot, or the receiver is at the fleet limit. (The original also refuses for computer players with a "refuses gifts"
+flag; not modelled.)
+
+- Designs: each design of the fleet maps to the receiver's first transferred design with the same hull and the same
+  parts (same count per slot and, where the count is not zero, the same part), else to the receiver's next free
+  ship design slot (searching upward, each new design taking the next one) as a copy marked transferred, with zero
+  counts. No slot left: the transfer fails.
+- The receiver gets a new fleet (lowest free number) at the same place, with one waypoint there, the cargo, and the
+  ships with their damage in the mapped slots; each mapped design's built and existing counts grow by the ships.
+  The giver's fleet is deleted and its designs' existing counts drop.
+- `DoWaypointTaskPass@10a8:3ec6` (task 9), `FindIdenticalDesign@1030:4dcc`.
 
 ### Default orders
 

@@ -107,6 +107,7 @@ design empties its slot and never renumbers the others.
 | `turn_designed` | turn |
 | `built`, `remaining` | ships of this design ever built, and still existing (score and reports) |
 | `picture` | cosmetic picture index |
+| `transferred` | the design came with ships another player transferred (S11); such ships count at a quarter of their cost when scrapped or colonizing |
 
 ## Planet
 

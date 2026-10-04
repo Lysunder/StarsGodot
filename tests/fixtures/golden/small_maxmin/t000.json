@@ -8118,6 +8118,7 @@
       "picture": 17,
       "remaining": 1,
       "slot": 0,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8142,6 +8143,7 @@
       "picture": 18,
       "remaining": 1,
       "slot": 1,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8162,6 +8164,7 @@
       "picture": 60,
       "remaining": 1,
       "slot": 2,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8186,6 +8189,7 @@
       "picture": 4,
       "remaining": 1,
       "slot": 3,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8226,6 +8230,7 @@
       "picture": 24,
       "remaining": 1,
       "slot": 4,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8254,6 +8259,7 @@
       "picture": 85,
       "remaining": 1,
       "slot": 5,
+      "transferred": false,
       "turn_designed": 1
      }
     ],
@@ -8316,6 +8322,7 @@
       "picture": 136,
       "remaining": 1,
       "slot": 0,
+      "transferred": false,
       "turn_designed": 1
      }
     ],
@@ -8465,6 +8472,7 @@
       "picture": 16,
       "remaining": 1,
       "slot": 0,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8485,6 +8493,7 @@
       "picture": 60,
       "remaining": 1,
       "slot": 1,
+      "transferred": false,
       "turn_designed": 1
      },
      {
@@ -8505,6 +8514,7 @@
       "picture": 82,
       "remaining": 2,
       "slot": 2,
+      "transferred": false,
       "turn_designed": 1
      }
     ],
@@ -8567,6 +8577,7 @@
       "picture": 136,
       "remaining": 1,
       "slot": 0,
+      "transferred": false,
       "turn_designed": 1
      }
     ],

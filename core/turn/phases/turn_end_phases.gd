@@ -12,6 +12,8 @@ class Advance:
 
 	func run(ctx: TurnContext) -> void:
 		ctx.state.turn += 1
+		for p in ctx.state.players:
+			p.tech_bonus_taken = false
 
 
 ## 26: one draw the original stores in its settings word (purpose open, S02).

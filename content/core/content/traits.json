@@ -175,7 +175,10 @@
     "id": "trait.lrt.UR",
     "kind": "lesser",
     "order": 5,
-    "cost": 240
+    "cost": 240,
+    "params": {
+      "scrap.recycling": 1
+    }
   },
   {
     "type": "trait",

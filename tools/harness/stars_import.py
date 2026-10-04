@@ -349,6 +349,7 @@ class Importer:
             "built": built,
             "remaining": remaining,
             "picture": design_picture(d[3], self.legacy.pictures[hull]),
+            "transferred": bool(d[1] & 0x80),
             "mod_data": {},
         }
 

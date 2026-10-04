@@ -3,12 +3,23 @@ extends RefCounted
 ## Waypoint tasks (spec S11): the four task passes, and resolving colonization (S17).
 ##
 ## Built so far: transport to and from the fleet owner's own planet (load all, unload all, load n,
-## unload n; minerals and colonists), colonize, and colonizing empty planets. Other tasks and
-## transport partners wait for their specs; they are skipped with a warning.
+## unload n; minerals and colonists), colonize, colonizing empty planets, merge, scrap at a planet
+## and transfer (with the S24 tech bonus at a starbase). Other tasks, transport partners,
+## scrapping in deep space (salvage, S14) and Ultimate Recycling's resources wait for their specs;
+## they warn.
 
 const CARGO_COLONISTS := 3
 const COLONIZER_TAG := "colonizer"
 const MINERAL_RETURN := [3, 4]
+## Minerals recovered by scrapping (S11 "Scrap"), by planet kind and Ultimate Recycling.
+const SCRAP_RETURN := {
+	"starbase": [4, 5],
+	"starbase_recycling": [9, 10],
+	"planet": [1, 3],
+	"planet_recycling": [9, 20],
+}
+const TRANSFERRED_COST_DIVISOR := 4
+const DESIGN_SLOTS := 16
 const TROOPS_PCT_DEFAULT := 110
 const ARTIFACT_FIELDS := 6
 const ARTIFACT_MIN := 100
@@ -54,6 +65,15 @@ func run_pass(pass_number: int) -> void:
 				_transport(fleet, wp, loading)
 			"colonize":
 				_colonize(fleet, wp)
+			"merge":
+				if loading:
+					_merge(fleet, wp)
+			"scrap":
+				if pass_number == 1:
+					_scrap(fleet)
+			"transfer":
+				if pass_number == 4:
+					_transfer(fleet, wp)
 			"none", "patrol", "route":
 				pass
 			_:
@@ -124,26 +144,176 @@ func _colonize(fleet: Fleet, _wp: Waypoint) -> void:
 		return
 	var owner := _state.player(fleet.owner)
 	var colonizer := false
-	var cost: Array[int] = [0, 0, 0]
+	for stack in fleet.stacks:
+		if stack.count <= 0:
+			continue
+		for slot in owner.ship_design(stack.design).parts:
+			if not slot.part.is_empty() and slot.count > 0:
+				if (_content.part(slot.part).get("tags", []) as Array).has(COLONIZER_TAG):
+					colonizer = true
+	if not colonizer:
+		return
+	var value := _ships_value(fleet, owner)
+	for m in 3:
+		planet.surface[m] += value[m] * MINERAL_RETURN[0] / MINERAL_RETURN[1] + fleet.cargo[m]
+	_pending.append(Colonization.new(fleet.owner, planet.id, fleet.cargo[CARGO_COLONISTS]))
+	_dismantle(fleet)
+
+
+## The minerals the fleet's ships are worth when taken apart: per stack, ships x the design's
+## cost, a quarter for transferred designs, and never more than what was paid (fix B14) when that
+## is recorded.
+func _ships_value(fleet: Fleet, owner: Player) -> Array[int]:
+	var value: Array[int] = [0, 0, 0, 0]
 	for stack in fleet.stacks:
 		if stack.count <= 0:
 			continue
 		var design := owner.ship_design(stack.design)
-		for slot in design.parts:
-			if not slot.part.is_empty() and slot.count > 0:
-				if (_content.part(slot.part).get("tags", []) as Array).has(COLONIZER_TAG):
-					colonizer = true
 		var each := ProductionCosts.design_cost(design, owner, _content)
-		for m in 3:
-			cost[m] += stack.count * each[m]
-	if not colonizer:
-		return
-	for m in 3:
-		planet.surface[m] += cost[m] * MINERAL_RETURN[0] / MINERAL_RETURN[1] + fleet.cargo[m]
-	_pending.append(Colonization.new(fleet.owner, planet.id, fleet.cargo[CARGO_COLONISTS]))
+		var recorded := stack.paid.any(func(v: int) -> bool: return v != 0)
+		for m in value.size():
+			var v := stack.count * each[m]
+			if design.transferred:
+				v /= TRANSFERRED_COST_DIVISOR
+			if recorded:
+				v = mini(v, stack.paid[m])
+			value[m] += v
+	return value
+
+
+## The fleet's ships are gone: their designs' existing counts drop and the fleet is deleted.
+func _dismantle(fleet: Fleet) -> void:
+	var owner := _state.player(fleet.owner)
 	for stack in fleet.stacks:
 		owner.ship_design(stack.design).remaining -= stack.count
 	FleetOrders.delete_fleet(_state, fleet, -1)
+
+
+## S11 "Merge with fleet": the fleet's ships join the target fleet of waypoint 0, which must be the
+## same player's, have ships and be at the same place; cargo, fuel and damage follow the ships.
+func _merge(fleet: Fleet, wp: Waypoint) -> void:
+	if wp.target != "fleet":
+		return
+	var target := _state.fleet(wp.target_owner, wp.target_id)
+	if target == null or target == fleet or target.ship_count() == 0:
+		return
+	if target.owner != fleet.owner or target.x != fleet.x or target.y != fleet.y:
+		return
+	var ships := {}
+	for stack in fleet.stacks:
+		ships[stack.design] = stack.count
+	FleetOrders.move_ships(_state, _content, target, fleet, ships, -1)
+
+
+## S11 "Scrap": the fleet is taken apart at a planet; the planet gets part of the ships' minerals
+## and all minerals in the cargo, and the colonists if it is the fleet owner's.
+func _scrap(fleet: Fleet) -> void:
+	if fleet.planet < 0:
+		push_warning("scrapping in deep space (salvage, S14) is not implemented yet")
+		return
+	var planet := _state.planet(fleet.planet)
+	var owner := _state.player(fleet.owner)
+	var recycling := (
+		planet.owner >= 0
+		and RaceMath.trait_param(_state.player(planet.owner).race, _content, "scrap.recycling", 0)
+	)
+	var kind := "starbase" if planet.starbase != null else "planet"
+	var ratio: Array = SCRAP_RETURN[kind + ("_recycling" if recycling else "")]
+	var value := _ships_value(fleet, owner)
+	for m in 3:
+		planet.surface[m] += value[m] * ratio[0] / ratio[1] + fleet.cargo[m]
+	if planet.owner == fleet.owner:
+		planet.population += fleet.cargo[CARGO_COLONISTS]
+	if recycling:
+		push_warning("resources from Ultimate Recycling are not implemented yet")
+	if planet.starbase != null and planet.owner >= 0:
+		TechGain.try_bonus(
+			_state.player(planet.owner),
+			TechGain.tech_needed(fleet, owner, _content),
+			_content,
+			_rng
+		)
+	_dismantle(fleet)
+
+
+## S11 "Transfer fleet": the fleet becomes a new fleet of the receiving player (task data word 0,
+## counting players without the giver). Each design maps to an identical transferred design of the
+## receiver, else to the receiver's next free slot as a transferred copy.
+func _transfer(fleet: Fleet, wp: Waypoint) -> void:
+	var words: Array = wp.task_data.get("raw", [])
+	var to: int = words[0] if not words.is_empty() else 0
+	if to >= fleet.owner:
+		to += 1
+	if to < 0 or to >= _state.players.size():
+		return
+	var receiver := _state.player(to)
+	if not receiver.active or receiver.relations[fleet.owner] == "enemy":
+		return
+	if fleet.cargo[CARGO_COLONISTS] > 0:
+		return
+	var giver := _state.player(fleet.owner)
+	var slots := {}
+	var free := -1
+	for stack in fleet.stacks:
+		if stack.count <= 0:
+			continue
+		var slot := _identical_transferred(receiver, giver.ship_design(stack.design))
+		if slot < 0:
+			free += 1
+			while free < DESIGN_SLOTS and receiver.ship_design(free) != null:
+				free += 1
+			if free >= DESIGN_SLOTS:
+				return
+			slot = free
+		slots[stack.design] = slot
+	var created := _state.add_fleet(to, _content.constant("constant.limits.fleets_per_player"))
+	if created == null:
+		return
+	created.x = fleet.x
+	created.y = fleet.y
+	created.planet = fleet.planet
+	var here := Waypoint.new(fleet.x, fleet.y)
+	if fleet.planet >= 0:
+		here.target = "planet"
+		here.target_id = fleet.planet
+	created.waypoints.append(here)
+	created.cargo = fleet.cargo.duplicate()
+	for stack in fleet.stacks:
+		if stack.count <= 0:
+			continue
+		var slot: int = slots[stack.design]
+		var design := receiver.ship_design(slot)
+		if design == null:
+			design = giver.ship_design(stack.design).copy() as Design
+			design.slot = slot
+			design.transferred = true
+			design.built = 0
+			design.remaining = 0
+			receiver.set_design(design, false)
+		var moved := created.add_ships(slot, stack.count)
+		moved.damaged_percent = stack.damaged_percent
+		moved.damage = stack.damage
+		moved.paid = stack.paid.duplicate()
+		design.built += stack.count
+		design.remaining += stack.count
+	_dismantle(fleet)
+
+
+## The slot of a transferred design of the player with the same hull and parts, or -1.
+static func _identical_transferred(player: Player, design: Design) -> int:
+	for d in player.ship_designs:
+		if not d.transferred or d.hull != design.hull or d.parts.size() != design.parts.size():
+			continue
+		var same := true
+		for i in d.parts.size():
+			var a := d.parts[i]
+			var b := design.parts[i]
+			if a.count != b.count or (a.count != 0 and a.part != b.part):
+				same = false
+				break
+		if same:
+			return d.slot
+	return -1
 
 
 static func _task_done(wp: Waypoint) -> void:
