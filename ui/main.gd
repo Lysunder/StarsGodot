@@ -12,7 +12,7 @@ const SCALE_MAX := 4.0
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	get_tree().root.theme = ClassicTheme.build()
+	get_tree().root.theme = ClassicTheme.build(ClassicTheme.saved_font())
 	get_tree().root.size_changed.connect(_rescale)
 	_rescale()
 	var background := Panel.new()

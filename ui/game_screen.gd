@@ -15,6 +15,8 @@ const MENU_MAIN := 1
 const MENU_QUIT := 2
 const MENU_RESEARCH := 10
 const MENU_END_TURN := 20
+## View > Font items are this plus the index in ClassicTheme.FONTS.
+const MENU_FONT := 30
 
 var _year: Label
 var _resources: Label
@@ -83,6 +85,14 @@ func _build_menu() -> void:
 	commands.add_item("Research...", MENU_RESEARCH)
 	commands.id_pressed.connect(_on_menu)
 	menu.add_child(commands)
+	var view := PopupMenu.new()
+	view.name = "View"
+	var current := ClassicTheme.saved_font()
+	for i in ClassicTheme.FONTS.size():
+		view.add_radio_check_item("Font: " + ClassicTheme.FONTS[i]["name"], MENU_FONT + i)
+		view.set_item_checked(i, i == current)
+	view.id_pressed.connect(_on_font.bind(view))
+	menu.add_child(view)
 	var turn := PopupMenu.new()
 	turn.name = "Turn"
 	turn.add_item("Generate (End Turn)", MENU_END_TURN)
@@ -134,6 +144,14 @@ func _on_menu(menu_id: int) -> void:
 			_research.open()
 		MENU_END_TURN:
 			_on_end_turn()
+
+
+func _on_font(menu_id: int, view: PopupMenu) -> void:
+	var index := menu_id - MENU_FONT
+	for i in view.item_count:
+		view.set_item_checked(i, i == index)
+	ClassicTheme.save_font(index)
+	get_tree().root.theme = ClassicTheme.build(index)
 
 
 func _on_end_turn() -> void:

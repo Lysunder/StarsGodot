@@ -1,6 +1,6 @@
 # W95FA
 
-The UI font of the Classic 95 theme (decision D15).
+One of the Classic 95 theme's selectable UI fonts (decision D15; View > Font).
 
 - **Font:** W95FA Regular, version 1.002, by Alina Sava (FontsArena.com), a modern re-creation of the Windows 95
   interface font.

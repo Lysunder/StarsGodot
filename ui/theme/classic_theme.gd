@@ -1,8 +1,8 @@
 class_name ClassicTheme
 extends RefCounted
 ## The "Classic 95" theme (D15): gray bevelled controls, white sunken fields and lists, navy title
-## bars and selection, the W95FA pixel font (SIL OFL 1.1, `art/fonts/w95fa/`) with a system sans as
-## fallback. Every bevel is drawn here from our own colour constants.
+## bars and selection, one of the bundled fonts in FONTS (all SIL OFL 1.1, under `art/fonts/`)
+## with a system sans as fallback. Every bevel is drawn here from our own colour constants.
 
 const FACE := Color("c0c0c0")
 const LIGHT := Color("dfdfdf")
@@ -14,30 +14,69 @@ const NAVY := Color("000080")
 const TEXT := Color("000000")
 const TEXT_DISABLED := Color("808080")
 const TEXT_SELECTED := Color("ffffff")
-const FONT_PATH := "res://art/fonts/w95fa/W95FA.otf"
+## The bundled UI fonts. Pixel fonts are drawn without smoothing at a size that keeps their pixels
+## whole: one W95FA pixel is 80 of its 1000 units (12.5 px is exact, 13 the nearest size); Terminus
+## carries hand-drawn bitmaps at even sizes.
+const FONTS := [
+	{"name": "W95FA", "path": "res://art/fonts/w95fa/W95FA.otf", "size": 13, "pixel": true},
+	{
+		"name": "Terminus",
+		"path": "res://art/fonts/terminus/TerminusTTF-4.49.3.ttf",
+		"size": 14,
+		"pixel": true,
+	},
+	{
+		"name": "Cascadia Mono",
+		"path": "res://art/fonts/cascadia_mono/CascadiaMono-Regular.ttf",
+		"size": 13,
+		"pixel": false,
+	},
+]
+## The font used until the player picks another: Cascadia Mono.
+const DEFAULT_FONT := 2
 const FALLBACK_NAMES := ["Tahoma", "MS Sans Serif", "Microsoft Sans Serif", "Segoe UI", "Arial"]
-## One font pixel is 80 of W95FA's 1000 units, so 12.5 px is pixel-exact; 13 is the nearest size.
-const FONT_SIZE := 13
+const SETTINGS_PATH := "user://settings.cfg"
 const BEVEL := 2
 const IMAGE_SIZE := 8
 
 
-## Builds the whole theme.
-static func build() -> Theme:
+## The font the player picked last (an index into FONTS), from the settings file.
+static func saved_font() -> int:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) != OK:
+		return DEFAULT_FONT
+	return clampi(int(cfg.get_value("ui", "font", DEFAULT_FONT)), 0, FONTS.size() - 1)
+
+
+static func save_font(index: int) -> void:
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	cfg.set_value("ui", "font", index)
+	cfg.save(SETTINGS_PATH)
+
+
+## Builds the whole theme with font FONTS[font_index].
+static func build(font_index: int = DEFAULT_FONT) -> Theme:
 	var t := Theme.new()
+	var spec: Dictionary = FONTS[clampi(font_index, 0, FONTS.size() - 1)]
+	var smoothing := TextServer.FONT_ANTIALIASING_GRAY
+	if spec["pixel"]:
+		smoothing = TextServer.FONT_ANTIALIASING_NONE
 	var fallback := SystemFont.new()
 	fallback.font_names = PackedStringArray(FALLBACK_NAMES)
-	fallback.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+	fallback.antialiasing = smoothing
 	var font: Font = fallback
-	var file := load(FONT_PATH) as FontFile
+	var file := load(spec["path"]) as FontFile
 	if file != null:
-		file.antialiasing = TextServer.FONT_ANTIALIASING_NONE
-		file.hinting = TextServer.HINTING_NONE
-		file.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
+		file = file.duplicate() as FontFile
+		file.antialiasing = smoothing
+		if spec["pixel"]:
+			file.hinting = TextServer.HINTING_NONE
+			file.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_DISABLED
 		file.fallbacks = [fallback]
 		font = file
 	t.default_font = font
-	t.default_font_size = FONT_SIZE
+	t.default_font_size = spec["size"]
 	var raised := _bevel(true, FACE)
 	var sunken := _bevel(false, FACE)
 	var field := _bevel(false, FIELD)
