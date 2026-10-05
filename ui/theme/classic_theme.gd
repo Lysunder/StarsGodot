@@ -14,6 +14,17 @@ const NAVY := Color("000080")
 const TEXT := Color("000000")
 const TEXT_DISABLED := Color("808080")
 const TEXT_SELECTED := Color("ffffff")
+## Cargo colours, in cargo order (ironium, boranium, germanium, colonists, fuel): the mineral names
+## in tiles and dialogs and the segments of fuel and cargo gauges.
+const CARGO_COLORS := [
+	Color("0000ff"),
+	Color("007f00"),
+	Color("ffff00"),
+	Color("ffffff"),
+	Color("ff0000"),
+]
+## How much a bold label thickens the font (FontVariation embolden).
+const EMBOLDEN := 0.8
 ## The bundled UI fonts. Pixel fonts are drawn without smoothing at a size that keeps their pixels
 ## whole: one W95FA pixel is 80 of its 1000 units (12.5 px is exact, 13 the nearest size); Terminus
 ## carries hand-drawn bitmaps at even sizes.
@@ -41,6 +52,8 @@ const IMAGE_SIZE := 8
 ## The slider's grabber (a small raised block) and its track's height, in pixels.
 const GRABBER_SIZE := Vector2i(11, 21)
 const TRACK_HEIGHT := 4
+## Side of a dropdown's arrow button, in pixels.
+const DROPDOWN_BUTTON := 16
 
 
 ## The font the player picked last (an index into FONTS), from the settings file.
@@ -80,6 +93,13 @@ static func build(font_index: int = DEFAULT_FONT) -> Theme:
 		font = file
 	t.default_font = font
 	t.default_font_size = spec["size"]
+	var bold := FontVariation.new()
+	bold.base_font = font
+	bold.variation_embolden = EMBOLDEN
+	t.set_type_variation("BoldLabel", "Label")
+	t.set_font("font", "BoldLabel", bold)
+	t.set_type_variation("BoldButton", "Button")
+	t.set_font("font", "BoldButton", bold)
 	var raised := _bevel(true, FACE)
 	var sunken := _bevel(false, FACE)
 	var field := _bevel(false, FIELD)
@@ -145,6 +165,24 @@ static func build(font_index: int = DEFAULT_FONT) -> Theme:
 	t.set_stylebox("panel", "AcceptDialog", flat)
 	for type in ["HSplitContainer", "VSplitContainer"]:
 		t.set_constant("separation", type, 4)
+	# a dropdown is a white sunken field with a small raised arrow button at its right end
+	for st in ["normal", "hover", "pressed", "disabled", "focus"]:
+		t.set_stylebox(st, "OptionButton", field if st != "focus" else none)
+		if st != "focus":
+			t.set_stylebox(st + "_mirrored", "OptionButton", field)
+	_text_colours(t, "OptionButton")
+	t.set_icon("arrow", "OptionButton", _dropdown_arrow())
+	t.set_constant("arrow_margin", "OptionButton", 1)
+	t.set_constant("modulate_arrow", "OptionButton", 0)
+	var bar := _bevel(true, FACE)
+	bar.set_content_margin_all(1)
+	bar.set_content_margin(SIDE_LEFT, BEVEL + 2)
+	t.set_type_variation("TileBar", "PanelContainer")
+	t.set_stylebox("panel", "TileBar", bar)
+	var tile_body := _bevel(true, FACE)
+	tile_body.set_content_margin_all(BEVEL + 2)
+	t.set_type_variation("TileBody", "PanelContainer")
+	t.set_stylebox("panel", "TileBody", tile_body)
 	var track := _bevel(false, FACE)
 	track.set_content_margin(SIDE_TOP, TRACK_HEIGHT / 2)
 	track.set_content_margin(SIDE_BOTTOM, TRACK_HEIGHT / 2)
@@ -192,6 +230,36 @@ static func _bevel(raised: bool, face: Color) -> StyleBoxTexture:
 	s.set_content_margin(SIDE_TOP, BEVEL + 1)
 	s.set_content_margin(SIDE_BOTTOM, BEVEL + 1)
 	return s
+
+
+## The bold variant of the theme's font (for drawing text in custom controls).
+static func bold_font(control: Control) -> Font:
+	return control.get_theme_font("font", "BoldLabel")
+
+
+## The collapse button's arrow: a bar and an up-pointing triangle (collapse), or the same turned
+## over (expand), black on transparent.
+static func collapse_icon(collapsed: bool) -> ImageTexture:
+	var img := Image.create(9, 7, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	for x in 9:
+		img.set_pixel(x, 0, DARK)
+	for row in 4:
+		for x in range(4 - row, 5 + row):
+			img.set_pixel(x, 2 + row, DARK)
+	if collapsed:
+		img.flip_y()
+	return ImageTexture.create_from_image(img)
+
+
+## The dropdown button: a raised 16 × 16 block with a small black triangle pointing down.
+static func _dropdown_arrow() -> ImageTexture:
+	var img := _bevel_image(DROPDOWN_BUTTON, DROPDOWN_BUTTON, true, FACE)
+	var mid := DROPDOWN_BUTTON / 2 - 1
+	for row in 4:
+		for x in range(mid - 3 + row, mid + 4 - row):
+			img.set_pixel(x, 6 + row, DARK)
+	return ImageTexture.create_from_image(img)
 
 
 ## A w × h image of a two-pixel bevel: raised (light top left, dark bottom right) or sunken.

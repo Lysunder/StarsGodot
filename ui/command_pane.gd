@@ -53,6 +53,10 @@ var status_text: String = ""
 var _tiles: VBoxContainer
 var _production: ProductionDialog
 var _rename_dialog: RenameDialog
+## Per tile key: collapsed or not; per kind ("planet", "fleet"): the tile keys in pane order. Both
+## last for the session, so a tile stays where the player dragged it.
+var _collapsed := {}
+var _tile_order := {}
 var _waypoint := -1
 var _pending_rebuild := false
 ## The Fleet Waypoints list, and whether a warp slider is being dragged: while it is, warp orders
@@ -108,6 +112,7 @@ func _rebuild() -> void:
 			_planet_tiles()
 		"fleet":
 			_fleet_tiles()
+	_apply_tile_order()
 	if not status_text.is_empty():
 		var l := Label.new()
 		l.text = status_text
@@ -116,10 +121,77 @@ func _rebuild() -> void:
 		_tiles.add_child(l)
 
 
-func _tile(title: String) -> Tile:
-	var t := Tile.new(title)
+## A new tile titled `title`; `key` names the kind of tile when the title changes with the object.
+func _tile(title: String, key: String = "") -> Tile:
+	var t := Tile.new(title, key)
+	t.set_collapsed(_collapsed.get(t.key, false))
+	t.collapse_toggled.connect(func(k: String, c: bool) -> void: _collapsed[k] = c)
+	t.tile_dropped.connect(_on_tile_dropped)
 	_tiles.add_child(t)
 	return t
+
+
+## Puts the tiles in the order the player dragged them into (new kinds of tile keep their place).
+func _apply_tile_order() -> void:
+	var order: Array = _tile_order.get(kind, [])
+	var tiles: Array[Tile] = []
+	for child in _tiles.get_children():
+		if child is Tile and not child.is_queued_for_deletion():
+			tiles.append(child)
+			if not order.has(child.key):
+				order.append(child.key)
+	_tile_order[kind] = order
+	tiles.sort_custom(func(a: Tile, b: Tile) -> bool: return order.find(a.key) < order.find(b.key))
+	for i in tiles.size():
+		_tiles.move_child(tiles[i], i)
+
+
+func _on_tile_dropped(from_key: String, to_key: String) -> void:
+	var order: Array = _tile_order.get(kind, [])
+	if not order.has(from_key) or not order.has(to_key):
+		return
+	order.erase(from_key)
+	order.insert(order.find(to_key), from_key)
+	_queue_rebuild()
+
+
+## 28700 -> "28,700".
+static func thousands(n: int) -> String:
+	var digits := str(absi(n))
+	var out := ""
+	while digits.length() > 3:
+		out = "," + digits.right(3) + out
+		digits = digits.left(-3)
+	return ("-" if n < 0 else "") + digits + out
+
+
+## The fuel and cargo gauges for a fleet_info: fuel in red, cargo in mineral colours.
+static func fill_gauges(info: Dictionary, fuel: Gauge, cargo: Gauge) -> void:
+	var c: Array = info["cargo"]
+	fuel.show_amount(c[Fleet.CARGO_FUEL], info["fuel_capacity"], ClassicTheme.CARGO_COLORS[4], "mg")
+	var segments := []
+	var total := 0
+	for i in 4:
+		segments.append([c[i], ClassicTheme.CARGO_COLORS[i]])
+		total += c[i]
+	cargo.show_values(
+		segments, info["cargo_capacity"], "%d of %dkT" % [total, info["cargo_capacity"]]
+	)
+
+
+## A picture with Prev / Next (and more) buttons in a column on the right (Planet and Fleet
+## tiles).
+func _picture_row(t: Tile, picture: Control, buttons: Array) -> void:
+	var r := t.row()
+	r.add_child(picture)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	r.add_child(spacer)
+	var column := VBoxContainer.new()
+	r.add_child(column)
+	for spec: Array in buttons:
+		var b := t.button(spec[0], spec[1], column)
+		b.custom_minimum_size = Vector2(BUTTON_WIDTH, 0)
 
 
 func _order(order: Dictionary, replace := false) -> void:
@@ -133,35 +205,44 @@ func _order(order: Dictionary, replace := false) -> void:
 func _planet_tiles() -> void:
 	var view := GameSession.view
 	var info := view.planet_info(id)
-	var t := _tile("Planet")
-	t.line(info["name"] + ("  (homeworld)" if info["homeworld"] else ""))
-	var r := t.row()
-	t.button("Prev", func() -> void: _cycle_planet(-1), r)
-	t.button("Next", func() -> void: _cycle_planet(1), r)
+	var t := _tile(info["name"], "planet")
+	_picture_row(
+		t,
+		FleetIcon.new(true),
+		[["Prev", func() -> void: _cycle_planet(-1)], ["Next", func() -> void: _cycle_planet(1)]]
+	)
 	t = _tile("Minerals on Hand")
 	for i in 3:
-		t.line("%s: %d kT" % [MINERALS[i], info["surface"][i]])
-	t.line("Mines: %d of %d" % [info["operable_mines"], info["max_mines"]])
-	t.line("Factories: %d of %d" % [info["operable_factories"], info["max_factories"]])
+		t.field(MINERALS[i], "%dkT" % info["surface"][i], ClassicTheme.CARGO_COLORS[i])
+	t.field("Mines", "%d of %d" % [info["operable_mines"], info["max_mines"]])
+	t.field("Factories", "%d of %d" % [info["operable_factories"], info["max_factories"]])
 	t = _tile("Status")
-	t.line("Population: %d" % (info["population"] * 100))
-	t.line("Resources/year: %d" % info["resources"])
-	t.line("Defenses: %d of %d" % [info["defenses"], info["max_defenses"]])
+	t.field("Population", thousands(info["population"] * 100))
+	t.field("Resources/Year", thousands(info["resources"]))
+	t.field("Defenses", "%d of %d" % [info["defenses"], info["max_defenses"]])
 	t = _tile("Fleets in Orbit")
 	var numbers: Array[int] = []
 	for f in view.fleets():
 		if f.planet == id:
 			numbers.append(f.number)
-	if numbers.is_empty():
-		t.line("None")
-	else:
-		var here := OptionButton.new()
-		for n in numbers:
-			here.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
-		t.body.add_child(here)
-		t.button("Goto", func() -> void: goto.emit("fleet", numbers[here.selected]))
-	t = _tile("Starbase")
-	t.line(info["starbase"] if info["starbase"] != "" else "No starbase")
+	var here := OptionButton.new()
+	for n in numbers:
+		here.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
+	t.body.add_child(here)
+	var fuel := t.gauge("Fuel")
+	var cargo := t.gauge("Cargo")
+	var show_fleet := func(i: int) -> void:
+		if i >= 0 and i < numbers.size():
+			fill_gauges(view.fleet_info(numbers[i]), fuel, cargo)
+	here.item_selected.connect(show_fleet)
+	show_fleet.call(0)
+	var r := t.row()
+	var go := t.button("Goto", func() -> void: goto.emit("fleet", numbers[here.selected]), r)
+	go.disabled = numbers.is_empty()
+	here.disabled = numbers.is_empty()
+	t = _tile(info["starbase"] if info["starbase"] != "" else "No Starbase", "starbase")
+	if info["starbase"] == "":
+		t.line("This planet has no starbase.")
 	t = _tile("Production")
 	var queue := ItemList.new()
 	queue.custom_minimum_size = Vector2(0, LIST_HEIGHT)
@@ -203,52 +284,39 @@ func _fleet_tiles() -> void:
 	if info.is_empty():
 		_tile("Fleet").line("This fleet no longer exists.")
 		return
-	var t := _tile("Fleet")
-	t.line(info["name"])
+	var t := _tile(info["name"], "fleet")
+	_picture_row(
+		t,
+		FleetIcon.new(),
+		[
+			["Prev", func() -> void: _cycle_fleet(-1)],
+			["Next", func() -> void: _cycle_fleet(1)],
+			["Rename", _open_rename.bind(info["name"])],
+		]
+	)
+	var orbiting := view.planet_info(info["planet"]) if info["planet"] >= 0 else {}
+	t = _tile(
+		"Orbiting %s" % orbiting["name"] if info["planet"] >= 0 else "In Deep Space", "location"
+	)
 	var r := t.row()
-	r.add_child(FleetIcon.new())
+	var go := t.button("Goto", func() -> void: goto.emit("planet", info["planet"]), r)
+	go.disabled = orbiting.is_empty() or not orbiting["mine"]
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	r.add_child(spacer)
-	var buttons := VBoxContainer.new()
-	r.add_child(buttons)
-	for spec: Array in [
-		["Prev", func() -> void: _cycle_fleet(-1)],
-		["Next", func() -> void: _cycle_fleet(1)],
-		[
-			"Rename",
-			func() -> void: _rename_dialog.open("Rename Fleet", info["name"], OrderRules.NAME_MAX)
-		],
-	]:
-		var b := t.button(spec[0], spec[1], buttons)
-		b.custom_minimum_size = Vector2(BUTTON_WIDTH, 0)
-	t = _tile("Location")
-	if info["planet"] >= 0:
-		var pl := view.planet_info(info["planet"])
-		t.line("Orbiting %s" % pl["name"])
-		if pl["mine"]:
-			t.button("Goto", func() -> void: goto.emit("planet", info["planet"]))
-	else:
-		t.line("Space (%d, %d)" % [info["x"], info["y"]])
-	t = _tile("Fuel and Cargo")
-	var cargo: Array = info["cargo"]
-	t.line("Fuel: %d of %d mg" % [cargo[4], info["fuel_capacity"]])
-	(
-		t
-		. line(
-			(
-				"Cargo: %d of %d kT  (Fe %d, Bo %d, Ge %d, colonists %d)"
-				% [
-					cargo[0] + cargo[1] + cargo[2] + cargo[3],
-					info["cargo_capacity"],
-					cargo[0],
-					cargo[1],
-					cargo[2],
-					cargo[3] * 100,
-				]
-			)
-		)
+	var transfer := t.button(
+		"Xfer" if not orbiting.is_empty() else "Jettison", func() -> void: pass, r
 	)
+	transfer.disabled = true
+	transfer.tooltip_text = "Cargo transfer isn't built yet."
+	t = _tile("Fuel & Cargo")
+	var fuel := t.gauge("Fuel")
+	var cargo := t.gauge("Cargo")
+	fill_gauges(info, fuel, cargo)
+	var held: Array = info["cargo"]
+	for i in 3:
+		t.field(MINERALS[i], "%dkT" % held[i], ClassicTheme.CARGO_COLORS[i])
+	t.field("Colonists", "%dkT" % held[3], ClassicTheme.CARGO_COLORS[3])
 	t = _tile("Fleet Composition")
 	for s: Dictionary in info["ships"]:
 		t.line("%d × %s" % [s["count"], s["name"]])
@@ -520,6 +588,10 @@ func _delete_waypoint() -> void:
 		}
 	)
 	_waypoint -= 1
+
+
+func _open_rename(current: String) -> void:
+	_rename_dialog.open("Rename Fleet", current, OrderRules.NAME_MAX)
 
 
 func _rename(text: String) -> void:

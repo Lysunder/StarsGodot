@@ -241,3 +241,34 @@ func test_rename_dialog_renames_the_fleet() -> void:
 	assert_str(GameSession.view.fleet_name(renamed)).is_equal("Scouts")
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+func test_tiles_keep_their_order_and_collapse() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var pane := screen._command
+	pane.command("planet", GameSession.view.me().homeworld)
+	var keys := func() -> Array:
+		var out := []
+		for child in pane._tiles.get_children():
+			if child is Tile and not child.is_queued_for_deletion():
+				out.append(child.key)
+		return out
+	var before: Array = keys.call()
+	assert_str(before[0]).is_equal("planet")
+	# drop the Status tile on the first tile, collapse Minerals on Hand
+	var first: Tile = pane._tiles.get_child(0)
+	first.tile_dropped.emit("Status", "planet")
+	pane._collapsed["Minerals on Hand"] = true
+	pane._rebuild()
+	var after: Array = keys.call()
+	assert_str(after[0]).is_equal("Status")
+	assert_str(after[1]).is_equal("planet")
+	for child in pane._tiles.get_children():
+		if child is Tile and child.key == "Minerals on Hand" and not child.is_queued_for_deletion():
+			assert_bool(child.collapsed).is_true()
+	assert_str(CommandPane.thousands(1234567)).is_equal("1,234,567")
+	screen.queue_free()
+	await get_tree().process_frame
