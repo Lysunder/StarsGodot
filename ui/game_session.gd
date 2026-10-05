@@ -74,6 +74,23 @@ func add_order(order: Dictionary) -> String:
 	return reason
 
 
+## Adds an order, or replaces the last pending order when it is the same kind of edit of the same
+## waypoint (so a warp or amount being adjusted step by step stays one order).
+func amend_order(order: Dictionary) -> String:
+	if orders.orders.is_empty():
+		return add_order(order)
+	var last: Dictionary = orders.orders[-1]
+	for field: String in ["type", "owner", "fleet", "index"]:
+		if last.get(field) != order.get(field):
+			return add_order(order)
+	orders.orders.pop_back()
+	var reason := add_order(order)
+	if not reason.is_empty():
+		orders.orders.append(last)
+		_refresh()
+	return reason
+
+
 ## Replaces the pending order of the same kind for the same thing (a planet's queue, the research
 ## settings, the player defaults), or adds it.
 func set_order(order: Dictionary) -> String:

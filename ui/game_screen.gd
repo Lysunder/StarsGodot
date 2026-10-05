@@ -56,6 +56,8 @@ func _ready() -> void:
 	_map = GalaxyMap.new()
 	_map.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_map.selected.connect(_on_selected)
+	_map.waypoint_picked.connect(_command.select_waypoint)
+	_command.waypoint_selected.connect(_map.set_waypoint)
 	right.add_child(_map)
 	_summary = SummaryPane.new()
 	_summary.custom_minimum_size = Vector2(0, SUMMARY_HEIGHT)

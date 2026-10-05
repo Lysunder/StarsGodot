@@ -196,7 +196,8 @@ func fleet_name(f: Fleet) -> String:
 	return "%s #%d" % [first, f.number + 1]
 
 
-## The details the fleet pane shows, including each leg's distance, years and fuel estimate.
+## The details the fleet pane shows, including each leg's distance, years and fuel estimate, and
+## whether the fleet can't move (no full engine slot) or runs short of fuel on the way.
 func fleet_info(number: int) -> Dictionary:
 	var f := state.fleet(player, number)
 	if f == null:
@@ -217,6 +218,7 @@ func fleet_info(number: int) -> Dictionary:
 			"x": wp.x,
 			"y": wp.y,
 			"target": wp.target,
+			"target_owner": wp.target_owner,
 			"target_id": wp.target_id,
 			"label": _waypoint_label(wp),
 			"warp": wp.warp,
@@ -230,10 +232,24 @@ func fleet_info(number: int) -> Dictionary:
 			var need := (
 				Movement.fuel_needed(f, owner, wp.warp, whole, content) if wp.warp > 0 else 0
 			)
-			fuel -= need
+			var stuck := need >= Movement.CANNOT_MOVE
+			if not stuck:
+				fuel -= need
 			if wp.warp > 0:
 				years += ceili(distance / float(wp.warp * wp.warp))
-			row.merge({"distance": distance, "fuel": need, "fuel_left": fuel, "years": years})
+			(
+				row
+				. merge(
+					{
+						"distance": distance,
+						"fuel": 0 if stuck else need,
+						"fuel_left": fuel,
+						"years": years,
+						"cannot_move": stuck and whole > 0,
+						"short_of_fuel": fuel < 0,
+					}
+				)
+			)
 		waypoints.append(row)
 	return {
 		"number": f.number,

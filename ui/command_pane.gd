@@ -6,17 +6,23 @@ extends VBoxContainer
 ## Every edit is an order through GameSession; the tiles are rebuilt from the view afterwards.
 
 signal goto(kind: String, id: int)
+## The waypoint picked in the Fleet Waypoints tile (the map highlights it).
+signal waypoint_selected(index: int)
 
 const MINERALS := ["Ironium", "Boranium", "Germanium"]
 const CARGO := ["Ironium", "Boranium", "Germanium", "Colonists", "Fuel"]
+## Tasks: [id, label, the target it needs ("" = any)].
 const TASKS := [
-	["none", "(no task here)"],
-	["transport", "Transport"],
-	["colonize", "Colonize"],
-	["remote_mine", "Remote mining"],
-	["merge", "Merge with fleet"],
-	["scrap", "Scrap fleet"],
-	["route", "Route"],
+	["none", "(no task here)", ""],
+	["transport", "Transport", ""],
+	["colonize", "Colonize", "planet"],
+	["remote_mine", "Remote mining", "planet"],
+	["merge", "Merge with fleet", "fleet"],
+	["scrap", "Scrap fleet", ""],
+	["lay_mines", "Lay mines", ""],
+	["patrol", "Patrol", ""],
+	["route", "Route", "planet"],
+	["transfer", "Transfer fleet", ""],
 ]
 const ACTIONS := [
 	["none", "No action"],
@@ -30,7 +36,14 @@ const ACTIONS := [
 	["set_amount", "Set amount to"],
 	["set_waypoint", "Set waypoint to"],
 ]
+## Transport actions that take no amount, and those whose amount is a percentage.
+const NO_AMOUNT := ["none", "load_all", "unload_all", "load_optimal"]
+const PERCENT := ["fill_percent", "wait_percent"]
 const MAX_WARP := 10
+## Width of the Fleet tile's buttons.
+const BUTTON_WIDTH := 80
+const WARP_LABEL_WIDTH := 70
+const COLOR_WARNING := Color("800000")
 const LIST_HEIGHT := 96
 
 var kind: String = ""
@@ -39,8 +52,13 @@ var status_text: String = ""
 
 var _tiles: VBoxContainer
 var _production: ProductionDialog
+var _rename_dialog: RenameDialog
 var _waypoint := -1
 var _pending_rebuild := false
+## The Fleet Waypoints list, and whether a warp slider is being dragged: while it is, warp orders
+## go out at every step but only the list's rows are refreshed, so the slider stays under the mouse.
+var _waypoint_list: ItemList
+var _live := false
 
 
 func _ready() -> void:
@@ -49,6 +67,9 @@ func _ready() -> void:
 	add_child(_tiles)
 	_production = ProductionDialog.new()
 	add_child(_production)
+	_rename_dialog = RenameDialog.new()
+	_rename_dialog.name_entered.connect(_rename)
+	add_child(_rename_dialog)
 	GameSession.changed.connect(_queue_rebuild)
 
 
@@ -60,7 +81,17 @@ func command(p_kind: String, p_id: int) -> void:
 	_rebuild()
 
 
+## Picks a waypoint of the fleet under command (from the map).
+func select_waypoint(index: int) -> void:
+	if kind == "fleet" and index != _waypoint:
+		_waypoint = index
+		_queue_rebuild()
+
+
 func _queue_rebuild() -> void:
+	if _live:
+		_refresh_waypoint_rows()
+		return
 	if not _pending_rebuild:
 		_pending_rebuild = true
 		_rebuild.call_deferred()
@@ -175,13 +206,22 @@ func _fleet_tiles() -> void:
 	var t := _tile("Fleet")
 	t.line(info["name"])
 	var r := t.row()
-	t.button("Prev", func() -> void: _cycle_fleet(-1), r)
-	t.button("Next", func() -> void: _cycle_fleet(1), r)
-	var rename := LineEdit.new()
-	rename.placeholder_text = "New name"
-	rename.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	r.add_child(rename)
-	t.button("Rename", func() -> void: _rename(rename.text), r)
+	r.add_child(FleetIcon.new())
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	r.add_child(spacer)
+	var buttons := VBoxContainer.new()
+	r.add_child(buttons)
+	for spec: Array in [
+		["Prev", func() -> void: _cycle_fleet(-1)],
+		["Next", func() -> void: _cycle_fleet(1)],
+		[
+			"Rename",
+			func() -> void: _rename_dialog.open("Rename Fleet", info["name"], OrderRules.NAME_MAX)
+		],
+	]:
+		var b := t.button(spec[0], spec[1], buttons)
+		b.custom_minimum_size = Vector2(BUTTON_WIDTH, 0)
 	t = _tile("Location")
 	if info["planet"] >= 0:
 		var pl := view.planet_info(info["planet"])
@@ -236,16 +276,15 @@ func _waypoint_tiles(info: Dictionary) -> void:
 	var waypoints: Array = info["waypoints"]
 	if _waypoint < 0 or _waypoint >= waypoints.size():
 		_waypoint = waypoints.size() - 1
+	waypoint_selected.emit(_waypoint)
 	var t := _tile("Fleet Waypoints")
-	t.line("Shift+click in the scanner to add a waypoint.")
+	t.line("Shift+click in the scanner adds a waypoint after the selected one; drag to move it.")
 	var list := ItemList.new()
 	list.custom_minimum_size = Vector2(0, LIST_HEIGHT)
+	_waypoint_list = list
 	for i in waypoints.size():
-		var wp: Dictionary = waypoints[i]
-		var text: String = wp["label"]
-		if i > 0:
-			text += "   warp %d, %d yr, fuel %d" % [wp["warp"], wp["years"], wp["fuel"]]
-		list.add_item(text)
+		list.add_item("")
+	_fill_waypoint_rows(waypoints)
 	if _waypoint >= 0:
 		list.select(_waypoint)
 	list.item_selected.connect(
@@ -267,24 +306,19 @@ func _waypoint_tiles(info: Dictionary) -> void:
 	)
 	r.add_child(repeat)
 	t.button("Delete", _delete_waypoint, r)
-	if _waypoint <= 0:
+	if _waypoint < 0:
 		return
 	var wp: Dictionary = waypoints[_waypoint]
-	r = t.row()
-	var warp_label := Label.new()
-	warp_label.text = "Warp"
-	r.add_child(warp_label)
-	var warp := SpinBox.new()
-	warp.max_value = MAX_WARP
-	warp.value = wp["warp"]
-	warp.value_changed.connect(
-		func(v: float) -> void: _change_waypoint(wp, int(v), wp["task"], wp["task_data"])
-	)
-	r.add_child(warp)
+	if _waypoint > 0:
+		_warp_slider(t, wp)
 	t = _tile("Waypoint Task")
+	if _waypoint == 0:
+		t.line("Here, before the fleet moves:")
 	var task := OptionButton.new()
-	for task_def: Array in TASKS:
-		task.add_item(task_def[1])
+	for i in TASKS.size():
+		task.add_item(TASKS[i][1])
+		var needs: String = TASKS[i][2]
+		task.set_item_disabled(i, not needs.is_empty() and needs != wp["target"])
 	task.select(_index_of(TASKS, wp["task"]))
 	task.item_selected.connect(
 		func(i: int) -> void:
@@ -297,8 +331,78 @@ func _waypoint_tiles(info: Dictionary) -> void:
 			_change_waypoint(wp, wp["warp"], name, data)
 	)
 	t.body.add_child(task)
-	if wp["task"] == "transport":
-		_transport_grid(t, wp)
+	match wp["task"]:
+		"transport":
+			_transport_grid(t, wp)
+		"transfer":
+			_transfer_choice(t, wp)
+		"lay_mines", "patrol":
+			t.line("Not carried out yet: minefields and battles come later (M7, M9).")
+
+
+## The leg's warp as a slider (0 to 10). Every step sends the warp (amend_order keeps it one
+## order); while dragging, the label and the waypoint rows follow the slider and the pane is
+## rebuilt only when the drag ends.
+## Sets each row of the Fleet Waypoints list: label, then warp, years and fuel for each leg, with
+## a warning in red (except on the selected row, which keeps the selection colours). Color() is
+## ItemList's "no custom colour".
+func _fill_waypoint_rows(waypoints: Array) -> void:
+	for i in mini(waypoints.size(), _waypoint_list.item_count):
+		var wp: Dictionary = waypoints[i]
+		var text: String = wp["label"]
+		var warn := false
+		if i > 0:
+			text += "   warp %d, %d yr, fuel %d" % [wp["warp"], wp["years"], wp["fuel"]]
+			warn = wp["cannot_move"] or wp["short_of_fuel"]
+			if wp["cannot_move"]:
+				text += "  (can't move)"
+			elif wp["warp"] == 0:
+				text += "  (warp 0: stays)"
+			elif wp["short_of_fuel"]:
+				text += "  (not enough fuel)"
+		_waypoint_list.set_item_text(i, text)
+		var colour := COLOR_WARNING if warn and i != _waypoint else Color()
+		_waypoint_list.set_item_custom_fg_color(i, colour)
+
+
+## While a warp slider is dragged: the list's rows from the order preview.
+func _refresh_waypoint_rows() -> void:
+	var info := GameSession.view.fleet_info(id)
+	if info.is_empty() or not is_instance_valid(_waypoint_list):
+		return
+	_fill_waypoint_rows(info["waypoints"])
+
+
+func _warp_slider(t: Tile, wp: Dictionary) -> void:
+	var r := t.row()
+	var label := Label.new()
+	label.custom_minimum_size = Vector2(WARP_LABEL_WIDTH, 0)
+	label.text = _warp_text(wp["warp"])
+	r.add_child(label)
+	var slider := HSlider.new()
+	slider.max_value = MAX_WARP
+	slider.step = 1
+	slider.tick_count = MAX_WARP + 1
+	slider.ticks_on_borders = true
+	slider.value = wp["warp"]
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	r.add_child(slider)
+	slider.drag_started.connect(func() -> void: _live = true)
+	slider.drag_ended.connect(
+		func(_changed: bool) -> void:
+			_live = false
+			_queue_rebuild()
+	)
+	slider.value_changed.connect(
+		func(v: float) -> void:
+			label.text = _warp_text(int(v))
+			_change_waypoint(wp, int(v), wp["task"], wp["task_data"])
+	)
+
+
+static func _warp_text(warp: int) -> String:
+	return "Stopped" if warp == 0 else "Warp %d" % warp
 
 
 func _transport_grid(t: Tile, wp: Dictionary) -> void:
@@ -313,11 +417,14 @@ func _transport_grid(t: Tile, wp: Dictionary) -> void:
 		var action := OptionButton.new()
 		for a: Array in ACTIONS:
 			action.add_item(a[1])
-		action.select(_index_of(ACTIONS, cargo[c]["action"]))
+		var current: String = cargo[c]["action"]
+		action.select(_index_of(ACTIONS, current))
 		grid.add_child(action)
 		var amount := SpinBox.new()
-		amount.max_value = 4095
+		amount.max_value = 100 if PERCENT.has(current) else 4095
+		amount.suffix = "%" if PERCENT.has(current) else ("mg" if c == Fleet.CARGO_FUEL else "kT")
 		amount.value = cargo[c]["amount"]
+		amount.editable = not NO_AMOUNT.has(current)
 		grid.add_child(amount)
 		var cargo_type := c
 		action.item_selected.connect(
@@ -330,34 +437,72 @@ func _transport_grid(t: Tile, wp: Dictionary) -> void:
 		)
 
 
+## The transfer task's receiver: task data word 0 counts the players without the giver (S11).
+func _transfer_choice(t: Tile, wp: Dictionary) -> void:
+	var others: Array[int] = []
+	for p in GameSession.view.state.players.size():
+		if p != GameSession.PLAYER:
+			others.append(p)
+	if others.is_empty():
+		t.line("There is no other player to give the fleet to.")
+		return
+	var raw: Array = wp["task_data"].get("raw", [0, 0, 0, 0, 0])
+	var to := OptionButton.new()
+	for p in others:
+		to.add_item("To player %d" % (p + 1))
+	to.select(clampi(int(raw[0]) if not raw.is_empty() else 0, 0, others.size() - 1))
+	to.item_selected.connect(
+		func(i: int) -> void:
+			var words: Array = raw.duplicate()
+			words.resize(5)
+			for k in 5:
+				words[k] = int(words[k]) if words[k] != null else 0
+			words[0] = i
+			_change_waypoint(wp, wp["warp"], "transfer", {"raw": words})
+	)
+	t.body.add_child(to)
+
+
 func _set_cargo_action(wp: Dictionary, c: int, action: String, amount: int) -> void:
 	var data: Dictionary = wp["task_data"].duplicate(true)
 	var cargo: Array = data.get("cargo", _empty_cargo())
-	cargo[c] = {"action": action, "amount": amount}
+	if PERCENT.has(action):
+		amount = mini(amount, 100)
+	cargo[c] = {"action": action, "amount": 0 if NO_AMOUNT.has(action) else amount}
 	data["cargo"] = cargo
 	_change_waypoint(wp, wp["warp"], "transport", data)
 
 
 func _change_waypoint(wp: Dictionary, warp: int, task: String, data: Dictionary) -> void:
-	var waypoint := {
+	status_text = (
+		GameSession
+		. amend_order(
+			{
+				"type": "waypoint_change",
+				"owner": GameSession.PLAYER,
+				"fleet": id,
+				"index": _waypoint,
+				"waypoint": waypoint_order(wp, {"warp": warp, "task": task, "task_data": data}),
+			}
+		)
+	)
+	_queue_rebuild()
+
+
+## A `waypoint_change` waypoint built from a fleet_info waypoint row, with `changes` applied.
+static func waypoint_order(wp: Dictionary, changes: Dictionary) -> Dictionary:
+	var out := {
 		"x": wp["x"],
 		"y": wp["y"],
 		"target": wp["target"],
-		"target_owner": GameSession.PLAYER if wp["target"] == "fleet" else -1,
+		"target_owner": wp["target_owner"],
 		"target_id": wp["target_id"],
-		"warp": warp,
-		"task": task,
-		"task_data": data,
+		"warp": wp["warp"],
+		"task": wp["task"],
+		"task_data": wp["task_data"],
 	}
-	_order(
-		{
-			"type": "waypoint_change",
-			"owner": GameSession.PLAYER,
-			"fleet": id,
-			"index": _waypoint,
-			"waypoint": waypoint,
-		}
-	)
+	out.merge(changes, true)
+	return out
 
 
 func _delete_waypoint() -> void:

@@ -38,6 +38,9 @@ const FALLBACK_NAMES := ["Tahoma", "MS Sans Serif", "Microsoft Sans Serif", "Seg
 const SETTINGS_PATH := "user://settings.cfg"
 const BEVEL := 2
 const IMAGE_SIZE := 8
+## The slider's grabber (a small raised block) and its track's height, in pixels.
+const GRABBER_SIZE := Vector2i(11, 21)
+const TRACK_HEIGHT := 4
 
 
 ## The font the player picked last (an index into FONTS), from the settings file.
@@ -142,6 +145,20 @@ static func build(font_index: int = DEFAULT_FONT) -> Theme:
 	t.set_stylebox("panel", "AcceptDialog", flat)
 	for type in ["HSplitContainer", "VSplitContainer"]:
 		t.set_constant("separation", type, 4)
+	var track := _bevel(false, FACE)
+	track.set_content_margin(SIDE_TOP, TRACK_HEIGHT / 2)
+	track.set_content_margin(SIDE_BOTTOM, TRACK_HEIGHT / 2)
+	t.set_stylebox("slider", "HSlider", track)
+	t.set_stylebox("grabber_area", "HSlider", none)
+	t.set_stylebox("grabber_area_highlight", "HSlider", none)
+	var grabber := ImageTexture.create_from_image(
+		_bevel_image(GRABBER_SIZE.x, GRABBER_SIZE.y, true, FACE)
+	)
+	for icon in ["grabber", "grabber_highlight", "grabber_disabled"]:
+		t.set_icon(icon, "HSlider", grabber)
+	var tick := Image.create(1, 4, false, Image.FORMAT_RGBA8)
+	tick.fill(DARK)
+	t.set_icon("tick", "HSlider", ImageTexture.create_from_image(tick))
 	return t
 
 
@@ -166,25 +183,7 @@ static func _flat(colour: Color) -> StyleBoxFlat:
 
 ## A two-pixel bevel around a face: raised (light top-left, dark bottom-right) or sunken.
 static func _bevel(raised: bool, face: Color) -> StyleBoxTexture:
-	var img := Image.create(IMAGE_SIZE, IMAGE_SIZE, false, Image.FORMAT_RGBA8)
-	img.fill(face)
-	var outer_tl := HIGHLIGHT if raised else SHADOW
-	var inner_tl := LIGHT if raised else DARK
-	var outer_br := DARK if raised else HIGHLIGHT
-	var inner_br := SHADOW if raised else LIGHT
-	var last := IMAGE_SIZE - 1
-	for i in IMAGE_SIZE:
-		img.set_pixel(i, last, outer_br)
-		img.set_pixel(last, i, outer_br)
-	for i in range(1, last):
-		img.set_pixel(i, last - 1, inner_br)
-		img.set_pixel(last - 1, i, inner_br)
-	for i in last:
-		img.set_pixel(i, 0, outer_tl)
-		img.set_pixel(0, i, outer_tl)
-	for i in range(1, last - 1):
-		img.set_pixel(i, 1, inner_tl)
-		img.set_pixel(1, i, inner_tl)
+	var img := _bevel_image(IMAGE_SIZE, IMAGE_SIZE, raised, face)
 	var s := StyleBoxTexture.new()
 	s.texture = ImageTexture.create_from_image(img)
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
@@ -193,6 +192,33 @@ static func _bevel(raised: bool, face: Color) -> StyleBoxTexture:
 	s.set_content_margin(SIDE_TOP, BEVEL + 1)
 	s.set_content_margin(SIDE_BOTTOM, BEVEL + 1)
 	return s
+
+
+## A w × h image of a two-pixel bevel: raised (light top left, dark bottom right) or sunken.
+static func _bevel_image(w: int, h: int, raised: bool, face: Color) -> Image:
+	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	img.fill(face)
+	var outer_tl := HIGHLIGHT if raised else SHADOW
+	var inner_tl := LIGHT if raised else DARK
+	var outer_br := DARK if raised else HIGHLIGHT
+	var inner_br := SHADOW if raised else LIGHT
+	for x in w:
+		img.set_pixel(x, h - 1, outer_br)
+	for y in h:
+		img.set_pixel(w - 1, y, outer_br)
+	for x in range(1, w - 1):
+		img.set_pixel(x, h - 2, inner_br)
+	for y in range(1, h - 1):
+		img.set_pixel(w - 2, y, inner_br)
+	for x in w - 1:
+		img.set_pixel(x, 0, outer_tl)
+	for y in h - 1:
+		img.set_pixel(0, y, outer_tl)
+	for x in range(1, w - 2):
+		img.set_pixel(x, 1, inner_tl)
+	for y in range(1, h - 2):
+		img.set_pixel(1, y, inner_tl)
+	return img
 
 
 ## A dialog's frame: a raised border with a navy title strip.

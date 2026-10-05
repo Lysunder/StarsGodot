@@ -137,3 +137,107 @@ func test_designer_refuses_an_unnamed_design() -> void:
 	assert_bool(designer.editing).is_true()
 	designer.queue_free()
 	await get_tree().process_frame
+
+
+func test_waypoint_editing() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var map := screen._map
+	var fleet := GameSession.view.fleets()[0]
+	map.select("fleet", fleet.number)
+	map.size = Vector2(800, 600)
+	map._fit()
+	var planets := GameSession.view.planets()
+	var far: Dictionary = planets[0]
+	var near: Dictionary = planets[planets.size() - 1]
+	# a deep-space spot: no planet or fleet within the pick radius
+	var space := Vector2(map.to_screen(far["x"], far["y"]))
+	while not (
+		GameSession
+		. view
+		. objects_at(map.to_universe(space).x, map.to_universe(space).y, map.PICK_PIXELS / map.zoom)
+		. is_empty()
+	):
+		space += Vector2(7, 3)
+	# two waypoints at the end, then one inserted after waypoint 1
+	map.set_waypoint(-1)
+	map._add_waypoint(map.to_screen(far["x"], far["y"]))
+	assert_int(map.waypoint).is_equal(1)
+	map._add_waypoint(map.to_screen(near["x"], near["y"]))
+	assert_int(map.waypoint).is_equal(2)
+	map.set_waypoint(1)
+	map._add_waypoint(space)
+	var waypoints: Array = GameSession.view.fleet_info(fleet.number)["waypoints"]
+	assert_int(waypoints.size()).is_equal(4)
+	assert_str(waypoints[1]["label"]).is_equal(far["name"])
+	assert_str(waypoints[2]["target"]).is_equal("none")
+	assert_str(waypoints[3]["label"]).is_equal(near["name"])
+	for i in range(1, 4):
+		assert_bool(waypoints[i].has("short_of_fuel")).is_true()
+	# adjusting the same waypoint step by step stays one order
+	var before := GameSession.orders.orders.size()
+	var pane := screen._command
+	pane._waypoint = 3
+	for warp in [5, 4, 3]:
+		pane._change_waypoint(waypoints[3], warp, "none", {})
+	assert_int(GameSession.orders.orders.size()).is_equal(before + 1)
+	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][3]["warp"]).is_equal(3)
+	# dragging waypoint 2 onto a planet retargets it
+	map._drag_waypoint = 2
+	map._drag_from = map.to_screen(waypoints[2]["x"], waypoints[2]["y"])
+	map._release(map.to_screen(far["x"], far["y"]))
+	waypoints = GameSession.view.fleet_info(fleet.number)["waypoints"]
+	assert_str(waypoints[2]["target"]).is_equal("planet")
+	assert_int(waypoints[2]["target_id"]).is_equal(far["id"])
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_warp_slider_updates_rows_while_dragging() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var fleet := GameSession.view.fleets()[0]
+	screen._map.size = Vector2(800, 600)
+	screen._map._fit()
+	screen._map.select("fleet", fleet.number)
+	var target := GameSession.view.planets()[0]
+	screen._map._add_waypoint(screen._map.to_screen(target["x"], target["y"]))
+	await get_tree().process_frame
+	var pane := screen._command
+	var slider: HSlider = pane._tiles.find_children("*", "HSlider", true, false)[0]
+	var list := pane._waypoint_list
+	var before := GameSession.orders.orders.size()
+	slider.drag_started.emit()
+	for warp in [3, 4, 5]:
+		slider.value = warp
+		assert_bool(list.get_item_text(1).contains("warp %d," % warp)).is_true()
+		assert_object(pane._waypoint_list).is_same(list)
+	slider.drag_ended.emit(true)
+	assert_int(GameSession.orders.orders.size()).is_equal(before + 1)
+	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][1]["warp"]).is_equal(5)
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_rename_dialog_renames_the_fleet() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var fleet := GameSession.view.fleets()[0]
+	screen._map.select("fleet", fleet.number)
+	var dialog := screen._command._rename_dialog
+	var current := GameSession.view.fleet_name(fleet)
+	dialog.open("Rename Fleet", current, OrderRules.NAME_MAX)
+	assert_str(dialog._field.text).is_equal(current)
+	assert_str(dialog._field.get_selected_text()).is_equal(current)
+	dialog._field.text = "Scouts"
+	dialog.get_ok_button().pressed.emit()
+	var renamed := GameSession.view.state.fleet(GameSession.PLAYER, fleet.number)
+	assert_str(GameSession.view.fleet_name(renamed)).is_equal("Scouts")
+	screen.queue_free()
+	await get_tree().process_frame
