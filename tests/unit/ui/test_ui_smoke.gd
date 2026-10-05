@@ -81,3 +81,59 @@ func test_save_and_load_keep_pending_orders() -> void:
 	assert_int(GameSession.view.me().research_percent).is_equal(33)
 	DirAccess.remove_absolute(path)
 	DirAccess.remove_absolute(path + ".orders")
+
+
+func test_designer_saves_a_new_design() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var designer := screen._designer
+	designer.open()
+	var before := GameSession.view.designer.designs(false).size()
+	designer._on_new()
+	assert_bool(designer.editing).is_true()
+	designer._name.text = "Probe"
+	designer._on_name("Probe")
+	# put the first part the engine slot takes into it
+	var hull := GameSession.content.hull(designer.design.hull)
+	var engine_slot := -1
+	for i in (hull["slots"] as Array).size():
+		if (hull["slots"][i]["accepts"] as Array).has("engine"):
+			engine_slot = i
+			break
+	assert_int(engine_slot).is_greater_equal(0)
+	designer._slots.select(engine_slot)
+	designer._show_parts()
+	assert_int(designer._parts.item_count).is_greater(0)
+	designer._parts.select(0)
+	designer._on_add()
+	assert_str(designer.design.parts[engine_slot].part).is_not_empty()
+	designer._on_save()
+	assert_str(designer._status.text).is_empty()
+	assert_bool(designer.editing).is_false()
+	var designs := GameSession.view.designer.designs(false)
+	assert_int(designs.size()).is_equal(before + 1)
+	assert_bool(designs.any(func(d: Design) -> bool: return d.name == "Probe")).is_true()
+	# the new design can be queued straight away
+	var home := GameSession.view.me().homeworld
+	var labels := GameSession.view.production_inventory(home).map(
+		func(i: Dictionary) -> String: return i["label"]
+	)
+	assert_bool(labels.has("Probe")).is_true()
+	designer.hide()
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_designer_refuses_an_unnamed_design() -> void:
+	_new_game()
+	var designer := ShipDesigner.new()
+	add_child(designer)
+	designer.open()
+	designer._on_new()
+	designer._on_save()
+	assert_str(designer._status.text).is_not_empty()
+	assert_bool(designer.editing).is_true()
+	designer.queue_free()
+	await get_tree().process_frame

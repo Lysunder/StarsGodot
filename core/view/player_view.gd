@@ -13,12 +13,15 @@ var state: GameState
 var content: ContentRegistry
 var player: int = 0
 var reveal_all: bool = true
+## The ship designer's queries (M11 step 5).
+var designer: DesignView
 
 
 func _init(p_state: GameState, p_content: ContentRegistry, p_player: int) -> void:
 	state = p_state
 	content = p_content
 	player = p_player
+	designer = DesignView.new(p_state, p_content, p_player)
 
 
 func me() -> Player:

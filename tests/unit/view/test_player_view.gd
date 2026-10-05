@@ -67,3 +67,42 @@ func test_turn_save_and_load() -> void:
 	var loaded := SaveFile.decode(text, _content)
 	assert_bool(loaded.ok()).override_failure_message("\n".join(loaded.errors)).is_true()
 	assert_bool(loaded.state.equals(s)).is_true()
+
+
+func test_design_range_matches_a_fleet_of_one_ship() -> void:
+	var s := _new_game()
+	var view := PlayerView.new(s, _content, 0)
+	var me := s.player(0)
+	for d in me.ship_designs:
+		if not PartRules.engine(d, _content)[1]:
+			continue
+		var fleet := Fleet.new()
+		var stack := ShipStack.new()
+		stack.design = d.slot
+		stack.count = 1
+		fleet.stacks.append(stack)
+		fleet.cargo[Fleet.CARGO_FUEL] = PartRules.fuel_capacity(d, _content)
+		for warp in range(1, 11):
+			(
+				assert_int(Movement.design_range(d, me, warp, _content))
+				. override_failure_message("%s warp %d" % [d.name, warp])
+				. is_equal(Movement.fuel_range(fleet, me, warp, _content))
+			)
+		var stats := view.designer.design_stats(d, false)
+		assert_str(stats["problem"]).is_empty()
+		assert_int(stats["ranges"].size()).is_equal(10)
+
+
+func test_designer_lists() -> void:
+	var s := _new_game()
+	var view := PlayerView.new(s, _content, 0)
+	var hulls := view.designer.available_hulls(false)
+	assert_bool(hulls.is_empty()).is_false()
+	assert_bool(view.designer.available_hulls(true).is_empty()).is_false()
+	var blank := view.designer.blank_design(hulls[0])
+	assert_int(blank.parts.size()).is_equal((_content.hull(hulls[0])["slots"] as Array).size())
+	assert_str(view.designer.design_stats(blank, false)["problem"]).is_equal(
+		"the design needs a name"
+	)
+	assert_bool(view.designer.available_parts(["engine"]).is_empty()).is_false()
+	assert_int(view.designer.free_design_slot(false)).is_greater_equal(0)

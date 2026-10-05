@@ -46,14 +46,11 @@ static func _usage(
 		var engine := PartRules.engine(design, content)
 		if not engine[1]:
 			return CANNOT_MOVE
-		var f: int = (content.part(engine[0])["fuel_table"] as Array)[warp]
-		var pct := RaceMath.trait_param(owner.race, content, "movement.fuel_usage_pct", 100)
-		f += f * (pct - 100) / 100
 		(
 			rows
 			. append(
 				[
-					f,
+					_engine_usage(engine[0], owner, warp, content),
 					stack.design,
 					PartRules.mass(design, content) * stack.count,
 					PartRules.cargo_capacity(design, content) * stack.count,
@@ -81,6 +78,32 @@ static func fuel_range(fleet: Fleet, owner: Player, warp: int, content: ContentR
 	if probe >= CANNOT_MOVE:
 		return 0
 	return fleet.cargo[Fleet.CARGO_FUEL] * RANGE_PROBE / probe
+
+
+## How far one empty ship of `design` gets on a full tank at `warp` (the designer's range): the
+## same rule as fuel_range for a fleet of one such ship.
+static func design_range(design: Design, owner: Player, warp: int, content: ContentRegistry) -> int:
+	var engine := PartRules.engine(design, content)
+	if not engine[1]:
+		return 0
+	var usage := (
+		_engine_usage(engine[0], owner, warp, content)
+		* RANGE_PROBE
+		* PartRules.mass(design, content)
+		/ FUEL_DIVISOR
+	)
+	var probe := (usage + FUEL_ROUNDING - 1) / FUEL_ROUNDING
+	if probe == 0:
+		return CANNOT_MOVE
+	return PartRules.fuel_capacity(design, content) * RANGE_PROBE / probe
+
+
+## An engine's fuel use per ship at `warp` from its fuel table, with the race's
+## `movement.fuel_usage_pct`.
+static func _engine_usage(part: String, owner: Player, warp: int, content: ContentRegistry) -> int:
+	var f: int = (content.part(part)["fuel_table"] as Array)[warp]
+	var pct := RaceMath.trait_param(owner.race, content, "movement.fuel_usage_pct", 100)
+	return f + f * (pct - 100) / 100
 
 
 static func fuel_capacity(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:

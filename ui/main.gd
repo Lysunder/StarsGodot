@@ -14,6 +14,7 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	get_tree().root.theme = ClassicTheme.build(ClassicTheme.saved_font())
 	get_tree().root.size_changed.connect(_rescale)
+	get_tree().node_added.connect(_on_node_added)
 	_rescale()
 	var background := Panel.new()
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -29,6 +30,15 @@ func _rescale() -> void:
 	var factor := clampf(snappedf(ratio, SCALE_STEP), SCALE_MIN, SCALE_MAX)
 	if not is_equal_approx(root.content_scale_factor, factor):
 		root.content_scale_factor = factor
+
+
+## Dialogs are viewports of their own: draw their bevels unfiltered too, so the pixel edges stay
+## sharp (the project's default filter only reaches the main window).
+func _on_node_added(node: Node) -> void:
+	if node is Window:
+		(node as Window).canvas_item_default_texture_filter = (
+			Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+		)
 
 
 func _show_menu() -> void:

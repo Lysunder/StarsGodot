@@ -14,6 +14,7 @@ const MENU_SAVE := 0
 const MENU_MAIN := 1
 const MENU_QUIT := 2
 const MENU_RESEARCH := 10
+const MENU_DESIGN := 11
 const MENU_END_TURN := 20
 ## View > Font items are this plus the index in ClassicTheme.FONTS.
 const MENU_FONT := 30
@@ -25,6 +26,7 @@ var _command: CommandPane
 var _summary: SummaryPane
 var _messages: MessagesPane
 var _research: ResearchDialog
+var _designer: ShipDesigner
 
 
 func _ready() -> void:
@@ -60,6 +62,8 @@ func _ready() -> void:
 	right.add_child(_summary)
 	_research = ResearchDialog.new()
 	add_child(_research)
+	_designer = ShipDesigner.new()
+	add_child(_designer)
 	GameSession.changed.connect(_refresh_bar)
 	_refresh_bar()
 	_messages.add("Year %d." % GameSession.view.year())
@@ -82,6 +86,7 @@ func _build_menu() -> void:
 	menu.add_child(file)
 	var commands := PopupMenu.new()
 	commands.name = "Commands"
+	commands.add_item("Ship Design...", MENU_DESIGN)
 	commands.add_item("Research...", MENU_RESEARCH)
 	commands.id_pressed.connect(_on_menu)
 	menu.add_child(commands)
@@ -142,6 +147,8 @@ func _on_menu(menu_id: int) -> void:
 			get_tree().quit()
 		MENU_RESEARCH:
 			_research.open()
+		MENU_DESIGN:
+			_designer.open()
 		MENU_END_TURN:
 			_on_end_turn()
 
