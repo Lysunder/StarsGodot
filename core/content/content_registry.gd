@@ -86,6 +86,12 @@ func ids(type_name: String) -> PackedStringArray:
 	return result
 
 
+## All ids of a type in definition order: files in load order, entries in file order (the
+## original's catalogue order for the core parts and hulls, S21).
+func ids_in_order(type_name: String) -> PackedStringArray:
+	return PackedStringArray(_defs.get(type_name, {}).keys())
+
+
 ## The gameplay mods this content came from, as "id@version" in load order (cosmetic mods are
 ## not listed: they never change the rules).
 func gameplay_mods() -> PackedStringArray:

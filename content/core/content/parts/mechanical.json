@@ -93,7 +93,8 @@
       "cargo_capacity": 250,
       "armor": 50,
       "cloak": 20
-    }
+    },
+    "mystery_trader": true
   },
   {
     "type": "part",
@@ -187,7 +188,8 @@
     },
     "tags": [
       "jump_gate"
-    ]
+    ],
+    "mystery_trader": true
   },
   {
     "type": "part",

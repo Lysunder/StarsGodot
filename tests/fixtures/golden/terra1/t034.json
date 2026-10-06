@@ -180,7 +180,175 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 22
+     },
+     "params": [
+      22,
+      1,
+      1,
+      299
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 23
+     },
+     "params": [
+      23
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      10,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.shield.bear_neutrino_barrier"
+     },
+     "params": [
+      0,
+      "part.shield.bear_neutrino_barrier"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "item": "part.terraform.temp_terraform_11"
+     },
+     "params": [
+      0,
+      "part.terraform.temp_terraform_11"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "item": "part.planetary.laser_battery"
+     },
+     "params": [
+      0,
+      "part.planetary.laser_battery"
+     ],
+     "type": "message.research.new_defense"
+    },
+    {
+     "goto": {
+      "planet": 30
+     },
+     "params": [
+      1024,
+      41,
+      30
+     ],
+     "type": "message.fleet.scrapped"
+    },
+    {
+     "goto": {
+      "planet": 30
+     },
+     "params": [
+      30
+     ],
+     "type": "message.planet.colonized"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "planet": 27
+     },
+     "params": [
+      27
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      10,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.shield.bear_neutrino_barrier"
+     },
+     "params": [
+      0,
+      "part.shield.bear_neutrino_barrier"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "item": "part.terraform.temp_terraform_11"
+     },
+     "params": [
+      0,
+      "part.terraform.temp_terraform_11"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "item": "part.planetary.laser_battery"
+     },
+     "params": [
+      0,
+      "part.planetary.laser_battery"
+     ],
+     "type": "message.research.new_defense"
+    },
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25,
+      85
+     ],
+     "type": "message.planet.auto_terraformed"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 1
+     },
+     "params": [
+      514,
+      27,
+      100
+     ],
+     "type": "message.fleet.terraform_improved_stuck"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

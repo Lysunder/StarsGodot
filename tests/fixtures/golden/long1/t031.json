@@ -732,7 +732,154 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 0
+     },
+     "params": [
+      2,
+      36
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      74,
+      1,
+      2,
+      545
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      96
+     ],
+     "type": "message.production.factory_built"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      6,
+      96
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      6,
+      0,
+      1
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.shield.wolverine_diffuse_shield"
+     },
+     "params": [
+      0,
+      "part.shield.wolverine_diffuse_shield"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      14,
+      1,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

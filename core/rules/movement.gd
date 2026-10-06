@@ -16,6 +16,8 @@ const RANGE_PROBE := 1000
 const FAILURE_WARP := 6
 const FAILURE_CHANCE := 10
 const SCOOP_MAX_WARP := 8
+## The ram scoop message never reports more than this (S21).
+const SCOOP_MESSAGE_MAX := 0x7EF4
 ## A partial move rounds to the nearest light year, halves away from zero (S12 step 3).
 const ROUND_HALF := 0.5
 ## The distance to the target is rounded up (+ 0.9999, then truncated; S12 step 1).
@@ -122,7 +124,7 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 	for fleet in state.fleets:
 		_move(state, content, rng, fleet)
 	for fleet in state.fleets:
-		_advance_waypoints(fleet)
+		_advance_waypoints(state, content, fleet)
 
 
 static func _move(
@@ -170,6 +172,19 @@ static func _move(
 	)
 	if out_of_fuel:
 		_lower_warp(fleet, owner, next, content)
+		var word := fleet.owner * 512 + fleet.number
+		var goto := {"fleet": fleet.number, "owner": fleet.owner}
+		if next.warp == warp:
+			TurnMessages.add(state, content, fleet.owner, "message.fleet.out_of_fuel", goto, [word])
+		else:
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.out_of_fuel_slower",
+				goto,
+				[word, next.warp]
+			)
 	if move <= 0:
 		return
 	fleet.did_not_move = false
@@ -189,7 +204,17 @@ static func _move(
 	if not out_of_fuel:
 		var scooped := mini(move, int(exact - SCOOP_DISTANCE_CUT))
 		if scooped > 0:
-			_ram_scoops(fleet, owner, warp, scooped, content)
+			var room := fuel_capacity(fleet, owner, content) > fleet.cargo[Fleet.CARGO_FUEL]
+			var made := _ram_scoops(fleet, owner, warp, scooped, content)
+			if made > 0 and room:
+				TurnMessages.add(
+					state,
+					content,
+					fleet.owner,
+					"message.fleet.ram_scoop",
+					{"fleet": fleet.number, "owner": fleet.owner},
+					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
+				)
 
 
 ## Out of fuel: the next waypoint's warp drops to the highest warp that uses no fuel.
@@ -203,12 +228,12 @@ static func _lower_warp(
 		next.warp = w - 1
 
 
-## Engines that use no fuel at this warp make fuel (S12 step 6).
+## Engines that use no fuel at this warp make fuel (S12 step 6); returns the fuel made.
 static func _ram_scoops(
 	fleet: Fleet, owner: Player, warp: int, distance: int, content: ContentRegistry
-) -> void:
+) -> int:
 	if warp > SCOOP_MAX_WARP:
-		return
+		return 0
 	var made := 0
 	for stack in fleet.stacks:
 		var design := owner.ship_design(stack.design)
@@ -230,6 +255,7 @@ static func _ram_scoops(
 	if made > 0:
 		var space := fuel_capacity(fleet, owner, content) - fleet.cargo[Fleet.CARGO_FUEL]
 		fleet.cargo[Fleet.CARGO_FUEL] += clampi(made, 0, maxi(space, 0))
+	return made
 
 
 static func _engine_count(design: Design, part: String) -> int:
@@ -242,7 +268,7 @@ static func _engine_count(design: Design, part: String) -> int:
 
 ## S12 "Waypoints after movement": a fleet that reached its next waypoint makes it its current one;
 ## a fleet that moved part of the way is in deep space.
-static func _advance_waypoints(fleet: Fleet) -> void:
+static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet: Fleet) -> void:
 	if fleet.waypoints.size() < 2 or fleet.did_not_move:
 		return
 	var next := fleet.waypoints[1]
@@ -255,6 +281,15 @@ static func _advance_waypoints(fleet: Fleet) -> void:
 		fleet.waypoints[0] = next
 		if loop:
 			fleet.waypoints.append(next.copy() as Waypoint)
+		if fleet.waypoints.size() == 1 and _orders_done(state, fleet, next):
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.completed",
+				{"fleet": fleet.number, "owner": fleet.owner},
+				[fleet.owner * 512 + fleet.number]
+			)
 		return
 	var here := fleet.waypoints[0]
 	here.x = fleet.x
@@ -262,6 +297,19 @@ static func _advance_waypoints(fleet: Fleet) -> void:
 	here.target = "none"
 	here.target_owner = -1
 	here.target_id = -1
+
+
+## S21: a fleet that reached its last waypoint has completed its orders unless that waypoint's
+## task is still to do there (transport, colonize, remote mining, scrap, lay mines, patrol, or a
+## route from one of its owner's planets that has a route).
+static func _orders_done(state: GameState, fleet: Fleet, wp: Waypoint) -> bool:
+	if wp.task in ["transport", "colonize", "remote_mine", "scrap", "lay_mines", "patrol"]:
+		return false
+	if wp.task == "route" and wp.target == "planet":
+		var planet := state.planet(wp.target_id)
+		if planet != null and planet.owner == fleet.owner and planet.route >= 0:
+			return false
+	return true
 
 
 ## S02 phase 15: a fleet at a starbase with a dock that belongs to its owner or a friend is

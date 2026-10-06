@@ -200,7 +200,8 @@
     },
     "tags": [
       "normal"
-    ]
+    ],
+    "mystery_trader": true
   },
   {
     "type": "part",

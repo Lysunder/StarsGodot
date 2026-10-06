@@ -732,7 +732,178 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      2,
+      96
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      3,
+      96
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      5,
+      5,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      14,
+      1,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 7,
+      "owner": 0
+     },
+     "params": [
+      7,
+      21,
+      0,
+      -1,
+      85
+     ],
+     "type": "message.fleet.loaded"
+    },
+    {
+     "goto": {
+      "fleet": 7,
+      "owner": 0
+     },
+     "params": [
+      7,
+      21,
+      1,
+      -1,
+      85
+     ],
+     "type": "message.fleet.loaded"
+    },
+    {
+     "goto": {
+      "fleet": 7,
+      "owner": 0
+     },
+     "params": [
+      7,
+      21,
+      2,
+      -1,
+      85
+     ],
+     "type": "message.fleet.loaded"
+    },
+    {
+     "goto": {
+      "fleet": 7,
+      "owner": 0
+     },
+     "params": [
+      7,
+      21,
+      3,
+      -1,
+      85
+     ],
+     "type": "message.fleet.beamed_up"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

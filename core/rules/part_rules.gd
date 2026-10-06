@@ -5,14 +5,23 @@ extends RefCounted
 const PICTURES_PER_HULL := 4
 
 
-## True when the player's tech levels meet the item's requirements and the race's traits allow it
-## (`required_traits`: at least one; `forbidden_traits`: none). `tech_order` maps tech field ids to
+## True when the player's tech levels meet the item's requirements and the race may use it
+## (race_may_use: `required_traits` at least one, `forbidden_traits` none, a Mystery Trader item
+## only once the player has it). `tech_order` maps tech field ids to
 ## their index in the player's tech levels.
 static func available(item: Dictionary, player: Player, tech_order: Dictionary) -> bool:
 	var tech: Dictionary = item.get("tech", {})
 	for field: String in tech:
 		if player.tech_levels[tech_order[field]] < int(tech[field]):
 			return false
+	return race_may_use(item, player)
+
+
+## True when the race's traits allow the item and, for a Mystery Trader item, the player has it
+## (`Part_NeedsMysteryTraderItem`); tech levels are not checked.
+static func race_may_use(item: Dictionary, player: Player) -> bool:
+	if item.get("mystery_trader", false) and not player.trader_parts.has(item.get("id", "")):
+		return false
 	var traits := traits_of(player.race)
 	var required: Array = item.get("required_traits", [])
 	if not required.is_empty() and not required.any(func(t: String) -> bool: return traits.has(t)):

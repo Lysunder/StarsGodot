@@ -51,7 +51,7 @@ func _ready() -> void:
 	command_scroll.add_child(_command)
 	_messages = MessagesPane.new()
 	_messages.custom_minimum_size = Vector2(0, MESSAGES_HEIGHT)
-	_messages.goto.connect(_on_goto)
+	_messages.goto_target.connect(_on_message_goto)
 	left.add_child(_messages)
 	var right := VSplitContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -89,12 +89,8 @@ func _ready() -> void:
 		+ "Version %s" % GameSession.game_version
 	)
 	add_child(_about)
-	_messages.add("Year %d." % GameSession.view.year())
 	var home := GameSession.view.me().homeworld
 	if home >= 0:
-		_messages.add(
-			"Your home planet is %s." % GameSession.view.planet_info(home)["name"], "planet", home
-		)
 		_map.select("planet", home)
 
 
@@ -153,6 +149,21 @@ func _on_goto(kind: String, id: int) -> void:
 	_map.select(kind, id)
 
 
+## A message's Goto (S21): a planet or one of the player's fleets in the scanner, research in the
+## Research window, hulls in the ship designer.
+func _on_message_goto(goto: Dictionary) -> void:
+	if goto.has("planet"):
+		_map.select("planet", goto["planet"])
+	elif goto.has("fleet") and goto.get("owner", -1) == GameSession.PLAYER:
+		if GameSession.view.state.fleet(GameSession.PLAYER, goto["fleet"]) != null:
+			_map.select("fleet", goto["fleet"])
+	elif goto.has("research"):
+		_research.open()
+	elif goto.has("hulls"):
+		_designer.open()
+		_designer._set_mode(ShipDesigner.MODE_HULLS)
+
+
 ## The status bar: what is under the mouse and how far it is from the selected object.
 func _on_hovered(x: int, y: int, hit: Dictionary) -> void:
 	var from := {}
@@ -192,8 +203,7 @@ func _on_font(menu_id: int, view: PopupMenu) -> void:
 
 func _on_end_turn() -> void:
 	var rejected := GameSession.end_turn()
-	_messages.clear()
-	_messages.add("Year %d." % GameSession.view.year())
+	_messages.new_year()
 	for line in rejected:
 		_messages.add("Order rejected: " + line)
 	_map.select(_map.selection_kind, _map.selection_id)

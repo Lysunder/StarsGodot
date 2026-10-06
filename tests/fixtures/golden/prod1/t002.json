@@ -586,7 +586,41 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "fleet": 6,
+      "owner": 0
+     },
+     "params": [
+      10,
+      1
+     ],
+     "type": "message.production.ship_built"
+    },
+    {
+     "goto": {
+      "planet": 10
+     },
+     "params": [
+      10
+     ],
+     "type": "message.production.factory_built"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

@@ -69,6 +69,7 @@ static func pipeline() -> TurnPipeline:
 static func generate(
 	state: GameState, content: ContentRegistry, orders: Array[OrderSet] = []
 ) -> PackedStringArray:
+	TurnMessages.clear(state)
 	var ctx := TurnContext.new(state, content, orders)
 	pipeline().run(ctx)
 	return ctx.rejected_orders

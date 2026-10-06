@@ -407,7 +407,8 @@
       "torpedo_accuracy": 10,
       "scan_range": 150,
       "mines_standard": 40
-    }
+    },
+    "mystery_trader": true
   },
   {
     "type": "part",

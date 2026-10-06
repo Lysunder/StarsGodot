@@ -9,6 +9,26 @@ extends RefCounted
 const EXPENSIVE := 0
 const CHEAP := 2
 const FIELDS := 6
+## The original's catalogue order of item categories (its part tables by category bit), for the
+## new-technology messages (S21).
+const CATALOGUE_ORDER := [
+	"engine",
+	"scanner",
+	"shield",
+	"armor",
+	"beam",
+	"torpedo",
+	"bomb",
+	"mining_robot",
+	"mine_layer",
+	"orbital",
+	"starbase_hulls",
+	"electrical",
+	"mechanical",
+	"terraform",
+	"hulls",
+	"planetary",
+]
 
 
 ## Research points needed to raise `field` by one level (S05 "Cost of the next level").
@@ -41,7 +61,7 @@ static func update(state: GameState, content: ContentRegistry, spent: Array[int]
 	for p in state.players:
 		if p.active:
 			active += 1
-		_update_player(p, content, slow, spent[p.index] if spending else -1, added)
+		_update_player(state, p, content, slow, spent[p.index] if spending else -1, added)
 	if not spending or active < 2:
 		return
 	var spied := false
@@ -63,7 +83,7 @@ static func update(state: GameState, content: ContentRegistry, spent: Array[int]
 ## One player's update; `spent` < 0 means no new points. Adds the points this player put into
 ## each field to `added` (for spying).
 static func _update_player(
-	p: Player, content: ContentRegistry, slow: bool, spent: int, added: Array[int]
+	state: GameState, p: Player, content: ContentRegistry, slow: bool, spent: int, added: Array[int]
 ) -> void:
 	var max_level := content.constant("constant.research.max_level")
 	var current_pct := RaceMath.trait_param(p.race, content, "research.current_field_pct", 100)
@@ -105,6 +125,7 @@ static func _update_player(
 				p.tech_levels[i] += 1
 				if p.tech_levels[i] == max_level and next == Player.NEXT_FIELD_SAME:
 					next = Player.NEXT_FIELD_LOWEST
+				_level_messages(state, content, p, i, current, next)
 				if i == current and next != Player.NEXT_FIELD_SAME:
 					switched = true
 					break
@@ -121,6 +142,65 @@ static func _update_player(
 			break
 	p.research_field = current
 	p.next_research_field = next
+
+
+## S21: a field reached a new level: the level message (with the field research goes on in), then
+## one message per part, hull or planetary item the player can now use (every requirement met)
+## whose requirement in this field is that level, in the original's catalogue order.
+static func _level_messages(
+	state: GameState, content: ContentRegistry, p: Player, field: int, current: int, next: int
+) -> void:
+	var level := p.tech_levels[field]
+	var focus := current
+	if field == current and next != Player.NEXT_FIELD_SAME:
+		focus = _lowest_field(p) if next == Player.NEXT_FIELD_LOWEST else next
+	var kind := "message.research.level"
+	if RaceMath.trait_param(p.race, content, "research.focus_message", 0) != 0:
+		kind = "message.research.level_focus"
+	TurnMessages.add(state, content, p.index, kind, {"research": true}, [level, field, focus])
+	var field_id := ""
+	for id in content.ids("tech_field"):
+		if int(content.tech_field(id)["order"]) == field:
+			field_id = id
+	var quiet := RaceMath.trait_param(p.race, content, "research.quiet_basic_terraform", 0) != 0
+	var order := PartRules.tech_order(content)
+	for category: String in CATALOGUE_ORDER:
+		for item: Dictionary in _catalogue(content, category):
+			if int(item.get("tech", {}).get(field_id, 0)) != level:
+				continue
+			if not PartRules.available(item, p, order):
+				continue
+			if quiet and (item.get("tags", []) as Array).has("terraform_basic"):
+				continue
+			var id: String = item["id"]
+			var message := "message.research.new_item"
+			var goto := {"item": id}
+			if category == "hulls" or category == "starbase_hulls":
+				message = "message.research.new_starbase_hull"
+				if category == "hulls":
+					message = "message.research.new_hull"
+				goto = {"hulls": true}
+			elif category == "planetary" and item.get("stats", {}).has("defense"):
+				message = "message.research.new_defense"
+			elif category == "planetary" and item.get("stats", {}).has("scan_range"):
+				message = "message.research.new_scanner"
+			TurnMessages.add(state, content, p.index, message, goto, [field, id])
+
+
+## The parts of a catalogue category, or the ship or starbase hulls, in definition order.
+static func _catalogue(content: ContentRegistry, category: String) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if category == "hulls" or category == "starbase_hulls":
+		for id in content.ids_in_order("hull"):
+			var hull := content.hull(id)
+			if bool(hull.get("starbase", false)) == (category == "starbase_hulls"):
+				out.append(hull)
+		return out
+	for id in content.ids_in_order("part"):
+		var part := content.part(id)
+		if part["category"] == category:
+			out.append(part)
+	return out
 
 
 ## pct percent of `spent`, rounded up.

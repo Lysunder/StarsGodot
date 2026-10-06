@@ -322,7 +322,82 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 23
+     },
+     "params": [
+      23
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      5,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.terraform.temp_terraform_7"
+     },
+     "params": [
+      0,
+      "part.terraform.temp_terraform_7"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "item": "part.planetary.missile_battery"
+     },
+     "params": [
+      0,
+      "part.planetary.missile_battery"
+     ],
+     "type": "message.research.new_defense"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "planet": 27
+     },
+     "params": [
+      27
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 1
+     },
+     "params": [
+      514,
+      27,
+      100
+     ],
+     "type": "message.fleet.terraform_improved_stuck"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

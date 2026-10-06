@@ -1070,5 +1070,161 @@
   },
   "production_item.planetary_scanner": {
     "production_item": 27
+  },
+  "message.production.queue_empty": {
+    "message": 63
+  },
+  "message.production.queue_done": {
+    "message": 62
+  },
+  "message.production.factory_built": {
+    "message": 53
+  },
+  "message.production.factories_built": {
+    "message": 54
+  },
+  "message.production.mine_built": {
+    "message": 55
+  },
+  "message.production.mines_built": {
+    "message": 56
+  },
+  "message.production.defense_built": {
+    "message": 57
+  },
+  "message.production.defenses_built": {
+    "message": 58
+  },
+  "message.production.ship_built": {
+    "message": 47
+  },
+  "message.production.ships_built": {
+    "message": 48
+  },
+  "message.production.terraformed": {
+    "message": 123
+  },
+  "message.research.level": {
+    "message": 80
+  },
+  "message.research.level_focus": {
+    "message": 310
+  },
+  "message.research.new_item": {
+    "message": 95
+  },
+  "message.research.new_hull": {
+    "message": 120
+  },
+  "message.research.new_defense": {
+    "message": 325
+  },
+  "message.research.new_scanner": {
+    "message": 343
+  },
+  "message.fleet.loaded": {
+    "message": 43
+  },
+  "message.fleet.beamed_up": {
+    "message": 44
+  },
+  "message.fleet.unloaded": {
+    "message": 45
+  },
+  "message.fleet.beamed_down": {
+    "message": 46
+  },
+  "message.fleet.miner_loaded": {
+    "message": 125
+  },
+  "message.fleet.load_refused": {
+    "message": 287
+  },
+  "message.fleet.completed": {
+    "message": 78
+  },
+  "message.fleet.scrapped": {
+    "message": 89
+  },
+  "message.fleet.scrapped_starbase": {
+    "message": 90
+  },
+  "message.planet.ships_scrapped": {
+    "message": 320
+  },
+  "message.planet.ships_scrapped_starbase": {
+    "message": 321
+  },
+  "message.fleet.merged": {
+    "message": 247
+  },
+  "message.fleet.given": {
+    "message": 333
+  },
+  "message.fleet.received": {
+    "message": 334
+  },
+  "message.planet.colonized": {
+    "message": 10
+  },
+  "message.fleet.out_of_fuel": {
+    "message": 39
+  },
+  "message.fleet.out_of_fuel_slower": {
+    "message": 139
+  },
+  "message.fleet.ram_scoop": {
+    "message": 243
+  },
+  "message.planet.shrank": {
+    "message": 37
+  },
+  "message.planet.overcrowded": {
+    "message": 38
+  },
+  "message.planet.died": {
+    "message": 35
+  },
+  "message.planet.died_orbit": {
+    "message": 36
+  },
+  "message.planet.abandoned": {
+    "message": 64
+  },
+  "message.planet.abandoned_orbit": {
+    "message": 65
+  },
+  "message.planet.environment_improved": {
+    "message": 348
+  },
+  "message.planet.auto_terraformed": {
+    "message": 342
+  },
+  "message.fleet.terraform_improved": {
+    "message": 300
+  },
+  "message.fleet.terraform_improved_stuck": {
+    "message": 301
+  },
+  "message.fleet.terraform_degraded": {
+    "message": 346
+  },
+  "message.fleet.terraform_degraded_stuck": {
+    "message": 347
+  },
+  "message.game.home_planet": {
+    "message": 169
+  },
+  "message.game.tip_filters": {
+    "message": 127
+  },
+  "message.game.tip_waypoints": {
+    "message": 128
+  },
+  "message.game.tip_designs": {
+    "message": 129
+  },
+  "message.game.tip_details": {
+    "message": 130
   }
 }

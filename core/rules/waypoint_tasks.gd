@@ -22,6 +22,10 @@ const TRANSFERRED_COST_DIVISOR := 4
 const DESIGN_SLOTS := 16
 const MINING_RATE_MAX := 4000
 ## Fill and wait percentages use the capacity capped here; from 65,536 on they divide first.
+## A fleet as the "where" of a transport message: this plus the fleet's parameter value (S21).
+const FLEET_OBJECT := 32768
+## Transport actions that load (S21 "load refused").
+const LOAD_ACTIONS := ["load_all", "load", "fill_percent", "wait_percent"]
 const PERCENT_CAPACITY_MAX := 2000000
 const PERCENT_SPLIT := 65536
 const TROOPS_PCT_DEFAULT := 110
@@ -48,6 +52,8 @@ var _content: ContentRegistry
 var _rng: StarsRandom
 ## The unowned planet whose own remote miner is the transport partner, during one transport.
 var _site: Planet = null
+## The task pass being run (1..4).
+var _pass := 0
 ## Colonizations waiting for the next resolution (S11 "Colonize").
 var _pending: Array[Colonization] = []
 
@@ -60,6 +66,7 @@ func _init(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void
 
 ## Pass 1 and 3 unload, pass 2 and 4 load (S11 "Passes"), at each fleet's current waypoint.
 func run_pass(pass_number: int) -> void:
+	_pass = pass_number
 	var loading := pass_number % 2 == 0
 	var fleets: Array[Fleet] = _state.fleets.duplicate()
 	for fleet in fleets:
@@ -101,7 +108,7 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 			if other == null or other == fleet or other.x != fleet.x or other.y != fleet.y:
 				other = null
 				if loading:
-					_task_done(wp)
+					_task_done(fleet, wp)
 				return
 		"planet":
 			planet = _state.planet(fleet.planet) if fleet.planet >= 0 else null
@@ -128,6 +135,10 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 		var amount: int = cargo[c].get("amount", 0)
 		var have := fleet.cargo[c]
 		var unload := -1
+		if loading and action in LOAD_ACTIONS and _refused_load(fleet, planet, c):
+			_task_done(fleet, wp)
+			_site = null
+			return
 		match action:
 			"load_all", "load":
 				if loading:
@@ -171,7 +182,7 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 				push_warning("transport action %s is not implemented yet" % action)
 		if unload >= 0:
 			if not _unload(fleet, other, planet, c, unload):
-				_task_done(wp)
+				_task_done(fleet, wp)
 				return
 			cargo[c] = {"action": "none", "amount": 0}
 	if loading and fuel_optimal and not dunnage:
@@ -188,7 +199,53 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 		done = false
 	_site = null
 	if loading and done:
-		_task_done(wp)
+		_task_done(fleet, wp)
+
+
+## S21: in the last load pass a load action from a planet the player doesn't own sends
+## "load refused" and cancels the transport task (fuel is never loaded from planets).
+func _refused_load(fleet: Fleet, planet: Planet, c: int) -> bool:
+	if _pass != 4 or planet == null or planet.owner == fleet.owner or c == Fleet.CARGO_FUEL:
+		return false
+	_fleet_message(fleet, "fleet.load_refused", [_fleet_word(fleet), c])
+	return true
+
+
+## A fleet as a message parameter (S21 `fleet`): owner × 512 + number.
+static func _fleet_word(fleet: Fleet) -> int:
+	return fleet.owner * 512 + fleet.number
+
+
+## Sends `message.<type>` to the fleet's owner, goto the fleet.
+func _fleet_message(fleet: Fleet, type: String, params: Array) -> void:
+	TurnMessages.add(
+		_state,
+		_content,
+		fleet.owner,
+		"message." + type,
+		{"fleet": fleet.number, "owner": fleet.owner},
+		params
+	)
+
+
+## The "where" of a transport message (S21 `object_kind`, `object`): [-1, planet id] or
+## [-1, 32768 + the fleet's parameter value].
+static func _where(other: Fleet, planet: Planet) -> Array:
+	if other != null:
+		return [-1, FLEET_OBJECT + _fleet_word(other)]
+	return [-1, planet.id if planet != null else -1]
+
+
+## A load message: "loaded" for minerals and fuel, "beamed up" for colonists.
+func _load_message(fleet: Fleet, c: int, moved: int, where: Array) -> void:
+	var type := "fleet.beamed_up" if c == CARGO_COLONISTS else "fleet.loaded"
+	_fleet_message(fleet, type, [_fleet_word(fleet), moved, c] + where)
+
+
+## An unload message: "unloaded" for minerals and fuel, "beamed down" for colonists.
+func _unload_message(fleet: Fleet, c: int, moved: int, where: Array) -> void:
+	var type := "fleet.beamed_down" if c == CARGO_COLONISTS else "fleet.unloaded"
+	_fleet_message(fleet, type, [_fleet_word(fleet), moved, c] + where)
 
 
 ## The fleet owner's first remote miner resting at this unowned planet (didn't move, mining rate
@@ -222,6 +279,8 @@ func _fuel_optimal(fleet: Fleet, other: Fleet) -> bool:
 	var moved := mini(give, _free_space(other, Fleet.CARGO_FUEL))
 	fleet.cargo[Fleet.CARGO_FUEL] -= moved
 	other.cargo[Fleet.CARGO_FUEL] += moved
+	if moved > 0:
+		_unload_message(fleet, Fleet.CARGO_FUEL, moved, _where(other, null))
 	return true
 
 
@@ -283,6 +342,14 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 		else:
 			_site.surface[c] -= from_site
 		fleet.cargo[c] += from_miner + from_site
+		if from_miner > 0:
+			_load_message(fleet, c, from_miner, _where(other, null))
+		if from_site > 0:
+			_fleet_message(
+				fleet,
+				"fleet.miner_loaded",
+				[_fleet_word(fleet), from_site, c, _fleet_word(other), _site.id]
+			)
 		return from_miner + from_site
 	fleet.cargo[c] += moved
 	if other != null:
@@ -291,6 +358,7 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 		planet.population -= moved
 	else:
 		planet.surface[c] -= moved
+	_load_message(fleet, c, moved, _where(other, planet))
 	return moved
 
 
@@ -309,6 +377,7 @@ func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) ->
 		if moved > 0:
 			fleet.cargo[c] -= moved
 			other.cargo[c] += moved
+			_unload_message(fleet, c, moved, _where(other, null))
 		return true
 	if planet == null:
 		if c == CARGO_COLONISTS:
@@ -321,10 +390,12 @@ func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) ->
 	if c != CARGO_COLONISTS:
 		fleet.cargo[c] -= amount
 		planet.surface[c] += amount
+		_unload_message(fleet, c, amount, _where(null, planet))
 		return true
 	if planet.owner == fleet.owner:
 		fleet.cargo[c] -= amount
 		planet.population += amount
+		_unload_message(fleet, c, amount, _where(null, planet))
 		return true
 	var race := _state.player(fleet.owner).race
 	if (
@@ -378,9 +449,13 @@ func _colonize(fleet: Fleet, _wp: Waypoint) -> void:
 	if not colonizer:
 		return
 	var value := _ships_value(fleet, owner)
+	var deposited := 0
 	for m in 3:
-		planet.surface[m] += value[m] * MINERAL_RETURN[0] / MINERAL_RETURN[1] + fleet.cargo[m]
+		var amount := value[m] * MINERAL_RETURN[0] / MINERAL_RETURN[1] + fleet.cargo[m]
+		planet.surface[m] += amount
+		deposited += amount
 	_pending.append(Colonization.new(fleet.owner, planet.id, fleet.cargo[CARGO_COLONISTS]))
+	_scrap_messages(fleet, planet, deposited)
 	_dismantle(fleet)
 
 
@@ -405,6 +480,36 @@ func _ships_value(fleet: Fleet, owner: Player) -> Array[int]:
 	return value
 
 
+## S21: a fleet taken apart at a planet: "dismantled for n kT" to its owner (described by its main
+## design; the starbase form when the planet has a starbase), then "has been dismantled" to the
+## planet's owner (none for an unowned planet).
+func _scrap_messages(fleet: Fleet, planet: Planet, deposited: int) -> void:
+	var at_starbase := planet.starbase != null
+	var goto := {"planet": planet.id}
+	var described := FleetOrders.designs_word(fleet, _state.player(fleet.owner), _content)
+	TurnMessages.add(
+		_state,
+		_content,
+		fleet.owner,
+		"message.fleet.scrapped_starbase" if at_starbase else "message.fleet.scrapped",
+		goto,
+		[described, deposited, planet.id]
+	)
+	if planet.owner >= 0:
+		TurnMessages.add(
+			_state,
+			_content,
+			planet.owner,
+			(
+				"message.planet.ships_scrapped_starbase"
+				if at_starbase
+				else "message.planet.ships_scrapped"
+			),
+			goto,
+			[_fleet_word(fleet), deposited, planet.id]
+		)
+
+
 ## The fleet's ships are gone: their designs' existing counts drop and the fleet is deleted.
 func _dismantle(fleet: Fleet) -> void:
 	var owner := _state.player(fleet.owner)
@@ -426,6 +531,15 @@ func _merge(fleet: Fleet, wp: Waypoint) -> void:
 	var ships := {}
 	for stack in fleet.stacks:
 		ships[stack.design] = stack.count
+	var described := FleetOrders.designs_word(fleet, _state.player(fleet.owner), _content)
+	TurnMessages.add(
+		_state,
+		_content,
+		target.owner,
+		"message.fleet.merged",
+		{"fleet": target.number, "owner": target.owner},
+		[described, _fleet_word(target)]
+	)
 	FleetOrders.move_ships(_state, _content, target, fleet, ships, -1)
 
 
@@ -436,17 +550,17 @@ func _remote_mine(fleet: Fleet, wp: Waypoint) -> void:
 	if not fleet.did_not_move:
 		return
 	if fleet.planet < 0:
-		_task_done(wp)
+		_task_done(fleet, wp)
 		return
 	var planet := _state.planet(fleet.planet)
 	var rate := mining_rate(fleet, _state.player(fleet.owner), _content)
 	if rate <= 0:
-		_task_done(wp)
+		_task_done(fleet, wp)
 		return
 	if planet.owner >= 0:
 		var race := _state.player(fleet.owner).race
 		if not RaceMath.trait_param(race, _content, "transport.no_invasion", 0):
-			_task_done(wp)
+			_task_done(fleet, wp)
 		return
 	PlanetEconomy.mine_remote(planet, rate, _rng)
 
@@ -481,12 +595,16 @@ func _scrap(fleet: Fleet) -> void:
 	var kind := "starbase" if planet.starbase != null else "planet"
 	var ratio: Array = SCRAP_RETURN[kind + ("_recycling" if recycling else "")]
 	var value := _ships_value(fleet, owner)
+	var deposited := 0
 	for m in 3:
-		planet.surface[m] += value[m] * ratio[0] / ratio[1] + fleet.cargo[m]
+		var amount: int = value[m] * ratio[0] / ratio[1] + fleet.cargo[m]
+		planet.surface[m] += amount
+		deposited += amount
 	if planet.owner == fleet.owner:
 		planet.population += fleet.cargo[CARGO_COLONISTS]
 	if recycling:
 		push_warning("resources from Ultimate Recycling are not implemented yet")
+	_scrap_messages(fleet, planet, deposited)
 	if planet.starbase != null and planet.owner >= 0:
 		TechGain.try_bonus(
 			_state.player(planet.owner),
@@ -557,6 +675,11 @@ func _transfer(fleet: Fleet, wp: Waypoint) -> void:
 		moved.paid = stack.paid.duplicate()
 		design.built += stack.count
 		design.remaining += stack.count
+	var goto := {"fleet": created.number, "owner": to}
+	var given := FleetOrders.designs_word(fleet, giver, _content)
+	var got := FleetOrders.designs_word(created, receiver, _content)
+	TurnMessages.add(_state, _content, fleet.owner, "message.fleet.given", goto, [given, to])
+	TurnMessages.add(_state, _content, to, "message.fleet.received", goto, [fleet.owner, got])
 	_dismantle(fleet)
 
 
@@ -577,7 +700,22 @@ static func _identical_transferred(player: Player, design: Design) -> int:
 	return -1
 
 
-static func _task_done(wp: Waypoint) -> void:
+## Ends the task of the fleet's current waypoint. A fleet with ships and no further waypoints whose
+## waypoint had a task also gets "completed its assigned orders" (S21; an earlier one for the fleet
+## this turn is replaced).
+func _task_done(fleet: Fleet, wp: Waypoint) -> void:
+	if fleet.waypoints.size() == 1 and fleet.ship_count() > 0 and wp.task != "none":
+		var goto := {"fleet": fleet.number, "owner": fleet.owner}
+		var list: Array = (
+			_state.messages[fleet.owner] if fleet.owner < _state.messages.size() else []
+		)
+		var kept := list.filter(
+			func(m: Dictionary) -> bool:
+				return m["type"] != "message.fleet.completed" or m["goto"] != goto
+		)
+		if fleet.owner < _state.messages.size():
+			_state.messages[fleet.owner] = kept
+		_fleet_message(fleet, "fleet.completed", [_fleet_word(fleet)])
 	wp.task = "none"
 	wp.task_data = {}
 
@@ -631,6 +769,9 @@ func resolve() -> void:
 
 func _found_colony(planet: Planet, player: int, population: int) -> void:
 	var owner := _state.player(player)
+	TurnMessages.add(
+		_state, _content, player, "message.planet.colonized", {"planet": planet.id}, [planet.id]
+	)
 	planet.owner = player
 	planet.population = population
 	planet.leftover_to_research = owner.default_leftover_to_research

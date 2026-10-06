@@ -215,7 +215,8 @@
       "terraform": 3
     },
     "tags": [
-      "terraform_gravity"
+      "terraform_gravity",
+      "terraform_basic"
     ],
     "miniaturize": false
   },
@@ -307,7 +308,8 @@
       "terraform": 3
     },
     "tags": [
-      "terraform_temperature"
+      "terraform_temperature",
+      "terraform_basic"
     ],
     "miniaturize": false
   },
@@ -399,7 +401,8 @@
       "terraform": 3
     },
     "tags": [
-      "terraform_radiation"
+      "terraform_radiation",
+      "terraform_basic"
     ],
     "miniaturize": false
   },

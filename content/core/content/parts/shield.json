@@ -136,7 +136,8 @@
       "cloak": 20,
       "jamming": 5,
       "scan_range": 50
-    }
+    },
+    "mystery_trader": true
   },
   {
     "type": "part",

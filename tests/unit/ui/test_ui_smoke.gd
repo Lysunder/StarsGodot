@@ -434,3 +434,19 @@ func test_clicking_the_cargo_gauge_opens_the_transfer_window() -> void:
 	pane._cargo.hide()
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+func test_messages_pane_shows_the_turn_messages() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var pane := screen._messages
+	assert_int(pane.messages().size()).is_equal(5)
+	assert_str(pane._text.text).contains("Tip")
+	screen._on_end_turn()
+	var texts := pane.messages().map(func(m: Dictionary) -> String: return m["text"])
+	assert_bool(texts.is_empty()).is_false()
+	assert_bool(texts.any(func(t: String) -> bool: return t.contains("{"))).is_false()
+	screen.queue_free()
+	await get_tree().process_frame

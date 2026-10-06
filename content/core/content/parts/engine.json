@@ -259,7 +259,8 @@
     "stats": {
       "cloak": 20,
       "battle_move_halves": 1
-    }
+    },
+    "mystery_trader": true
   },
   {
     "type": "part",

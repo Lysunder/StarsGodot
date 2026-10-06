@@ -349,6 +349,7 @@
     },
     "tags": [
       "genesis_device"
-    ]
+    ],
+    "mystery_trader": true
   }
 ]

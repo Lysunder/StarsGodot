@@ -101,6 +101,14 @@ grid of half-slot cells (32 pixels in the original): slot *i* is a 2 × 2-cell b
 content keeps these as `at: [x, y]` on each slot and `cargo_area: [x1, y1, x2, y2]` on the hull. They change only how
 the designer looks, never a rule.
 
+### Mystery Trader items
+
+Some parts and one hull need an item from the Mystery Trader (`Part_NeedsMysteryTraderItem@10d0:4af6`): Enigma
+Pulsar, Langston Shell, Mega Poly Shell, Multi Contained Munition, Anti-Matter Torpedo, Hush-a-Boom, Alien Miner,
+Multi Function Pod, Multi Cargo Pod, Jump Gate, Genesis Device and the Mini-Morph hull. Content marks them
+`mystery_trader`; a player can use one only once it is in `trader_parts`, whatever the tech levels (S04
+`available`, built 2026-10-05; how items are given is the Mystery Trader's spec).
+
 ## Algorithm: design totals
 
 A design is a hull plus, per slot, one part type and a count. Totals are sums over the slots. All arithmetic is

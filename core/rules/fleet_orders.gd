@@ -220,3 +220,33 @@ static func delete_fleet(state: GameState, fleet: Fleet, preferred_owner: int) -
 
 static func _ceil_div(a: int, b: int) -> int:
 	return (a + b - 1) / b
+
+
+## A fleet's main design (`Fleet_MainDesign@1030:27e4`): the design with the most ships, the
+## first slot on ties; a hull tagged `fuel_transport` counts one ship less. Returns [slot, how
+## many designs the fleet has]; slot 16 for an empty fleet.
+static func main_design(fleet: Fleet, owner: Player, content: ContentRegistry) -> Array[int]:
+	var best := 16
+	var best_count := 0
+	var kinds := 0
+	for slot in 16:
+		var stack := fleet.stack_for(slot)
+		var n := 0 if stack == null else stack.count
+		if n <= 0:
+			continue
+		kinds += 1
+		if n > best_count:
+			best = slot
+			best_count = n
+			var design := owner.ship_design(slot)
+			var tags: Array = content.hull(design.hull).get("tags", []) if design != null else []
+			if tags.has("fuel_transport"):
+				best_count = n - 1
+	return [best, kinds]
+
+
+## A fleet as a "described" message parameter (S21 `fleet_designs`, `Fleet_MsgRef`): number +
+## 512 x main design slot, + 8192 when it has more than one design.
+static func designs_word(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:
+	var main := main_design(fleet, owner, content)
+	return fleet.number + 512 * main[0] + (8192 if main[1] > 1 else 0)

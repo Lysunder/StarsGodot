@@ -97,7 +97,8 @@
       "cloak": 60,
       "jamming": 10,
       "battle_move": 1
-    }
+    },
+    "mystery_trader": true
   },
   {
     "type": "part",

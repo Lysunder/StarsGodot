@@ -173,7 +173,9 @@ func _check_whole_game(game: String) -> void:
 		_content, real.settings, _input_players(game, real), GAMES[game][0]
 	)
 	var state := gen.generate()
-	var diffs := StateDiff.compare(real, state, PackedStringArray(IGNORE))
+	var ignore := PackedStringArray(IGNORE)
+	_known_messages_only(real, state, ignore)
+	var diffs := StateDiff.compare(real, state, ignore)
 	(
 		assert_array(diffs)
 		. override_failure_message(
@@ -210,3 +212,18 @@ func test_whole_game(
 	]
 ) -> void:
 	_check_whole_game(game)
+
+
+## Turn messages (S21): compared for the message types built so far, and not at all for fixtures
+## without message data (an empty list: the run kept no turn files).
+func _known_messages_only(expected: GameState, ours: GameState, ignore: PackedStringArray) -> void:
+	if expected.messages.is_empty():
+		ignore.append("/messages*")
+		return
+	for s: GameState in [expected, ours]:
+		var lists := []
+		for list: Array in s.messages:
+			lists.append(
+				list.filter(func(m: Dictionary) -> bool: return _content.has_def(m["type"]))
+			)
+		s.messages = lists

@@ -214,7 +214,100 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 22
+     },
+     "params": [
+      22,
+      0,
+      0,
+      50
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
+     "params": [
+      23,
+      2
+     ],
+     "type": "message.production.ship_built"
+    },
+    {
+     "goto": {
+      "planet": 23
+     },
+     "params": [
+      23
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": 19969,
+     "params": [
+      65535,
+      23,
+      49,
+      2,
+      4,
+      0,
+      1
+     ],
+     "type": "legacy.message.159"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "planet": 27
+     },
+     "params": [
+      27
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": 19969,
+     "params": [
+      65535,
+      23,
+      48,
+      4,
+      2,
+      1,
+      0
+     ],
+     "type": "legacy.message.159"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 1
+     },
+     "params": [
+      514,
+      27,
+      100
+     ],
+     "type": "message.fleet.terraform_improved_stuck"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

@@ -53,3 +53,9 @@ For `tiny2` this is exactly the state at the start of turn generation (S01: no d
 players), and each of its turns makes 7 draws. In `tiny3ai` the computer players draw first (S22).
 
 Regenerate these files whenever the importer or the save format changes.
+
+**Turn messages (S21):** `terra1`, `long1` and `prod1` also hold each player's messages of the turn, read from the
+players' turn files (`.m1`, `.m2`) beside each host file with `python tools/harness/add_messages.py <fixture
+folder> <run folder>`, which changes nothing else. Only numbers and content ids are stored (no text). The other
+games kept no turn files: their `messages` is an empty list and the tests skip it. A message number without a
+content id yet is kept as `legacy.message.<n>` with its raw parameters; the tests compare only the types built.

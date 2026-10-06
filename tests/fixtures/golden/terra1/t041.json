@@ -170,7 +170,115 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 22
+     },
+     "params": [
+      22
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 23
+     },
+     "params": [
+      23
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": 30,
+     "params": [
+      30,
+      10,
+      0,
+      49
+     ],
+     "type": "legacy.message.3"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "planet": 27
+     },
+     "params": [
+      27
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      11,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "fleet": 1,
+      "owner": 1
+     },
+     "params": [
+      513,
+      40,
+      0,
+      -1,
+      30
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": 30,
+     "params": [
+      10,
+      0,
+      30,
+      48
+     ],
+     "type": "legacy.message.0"
+    },
+    {
+     "goto": {
+      "fleet": 1,
+      "owner": 1
+     },
+     "params": [
+      513
+     ],
+     "type": "message.fleet.completed"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 1
+     },
+     "params": [
+      514,
+      27,
+      100
+     ],
+     "type": "message.fleet.terraform_improved_stuck"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

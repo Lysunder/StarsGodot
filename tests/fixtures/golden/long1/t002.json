@@ -492,7 +492,31 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      0
+     ],
+     "type": "message.fleet.load_refused"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

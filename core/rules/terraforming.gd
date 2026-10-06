@@ -97,6 +97,14 @@ static func max_steps(planet: Planet, owner: Player, content: ContentRegistry) -
 static func step(
 	planet: Planet, race: Race, tech: Player, improve: bool, content: ContentRegistry
 ) -> bool:
+	return step_change(planet, race, tech, improve, content) != 0
+
+
+## One step, as step(); returns which axis moved and which way: axis + 1, negative when the value
+## went down, 0 when no axis could move (the original's `Planet_TerraformStep` result, S21).
+static func step_change(
+	planet: Planet, race: Race, tech: Player, improve: bool, content: ContentRegistry
+) -> int:
 	var t := targets(planet, race, reach(tech, content), improve)
 	var h0 := Habitability.value(planet.environment, race)
 	var best := -1
@@ -114,10 +122,10 @@ static func step(
 			best_score = score
 			best = i
 	if best < 0:
-		return false
+		return 0
 	var direction := -1 if t[0][best] != NONE else 1
 	planet.environment[best] = clampi(planet.environment[best] + direction, MIN_VALUE, MAX_VALUE)
-	return true
+	return (best + 1) * direction
 
 
 ## S02 phase 19: Claim Adjuster planets change permanently now and then, and terraform at once.
@@ -140,12 +148,32 @@ static func claim_adjuster(state: GameState, content: ContentRegistry, rng: Star
 			and (planet.population >= population or rng.random(population) < planet.population)
 		):
 			planet.environment_original[a] = o - 1 if race.hab_center[a] < o else o + 1
+			TurnMessages.add(
+				state,
+				content,
+				planet.owner,
+				"message.planet.environment_improved",
+				{"planet": planet.id},
+				[planet.id, a]
+			)
 		var t := targets(planet, race, reach(owner, content), true)
+		var changed := false
 		for i in 3:
 			if t[0][i] != NONE:
 				planet.environment[i] = t[0][i]
+				changed = true
 			elif t[1][i] != NONE:
 				planet.environment[i] = t[1][i]
+				changed = true
+		if changed:
+			TurnMessages.add(
+				state,
+				content,
+				planet.owner,
+				"message.planet.auto_terraformed",
+				{"planet": planet.id},
+				[planet.id, PlanetEconomy.hab_value(planet, race)]
+			)
 
 
 ## S02 phase 20: fleets with remote terraforming parts terraform the planet they are at.
@@ -170,9 +198,41 @@ static func remote(state: GameState, content: ContentRegistry) -> void:
 		if not friendly and planet.starbase != null:
 			continue
 		var race := state.player(planet.owner).race
+		var before := PlanetEconomy.hab_value(planet, race)
 		for k in power:
 			if not step(planet, race, fleet_owner, friendly, content):
 				break
+		var after := PlanetEconomy.hab_value(planet, race)
+		var word := fleet.owner * 512 + fleet.number
+		var kind := "improved" if friendly else "degraded"
+		var goto := {"fleet": fleet.number, "owner": fleet.owner}
+		if after != before:
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.terraform_" + kind,
+				goto,
+				[word, planet.id, before, after]
+			)
+		else:
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.terraform_" + kind + "_stuck",
+				goto,
+				[word, planet.id, before]
+			)
+		if fleet.owner != planet.owner and after != before:
+			TurnMessages.add(
+				state,
+				content,
+				planet.owner,
+				"message.fleet.terraform_" + kind,
+				{"planet": planet.id},
+				[word, planet.id, before, after]
+			)
 
 
 static func _power(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:

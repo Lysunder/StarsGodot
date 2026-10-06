@@ -542,7 +542,31 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 10
+     },
+     "params": [
+      2,
+      10
+     ],
+     "type": "message.production.factories_built"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

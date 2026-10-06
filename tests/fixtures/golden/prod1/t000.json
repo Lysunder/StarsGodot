@@ -542,7 +542,70 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_filters"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_waypoints"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_designs"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_details"
+    },
+    {
+     "goto": {
+      "planet": 10
+     },
+     "params": [
+      10
+     ],
+     "type": "message.game.home_planet"
+    }
+   ],
+   [
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_filters"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_waypoints"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_designs"
+    },
+    {
+     "goto": {},
+     "params": [],
+     "type": "message.game.tip_details"
+    },
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.game.home_planet"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

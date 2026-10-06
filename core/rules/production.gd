@@ -21,6 +21,8 @@ enum Status {
 const AUTO_UNLIMITED := 1000
 const MERGE_HEADROOM := 32766
 const UNSUPPORTED := ["packet"]
+## Installation effects and their single-unit message names (S21).
+const SINGULAR := {"mines": "mine", "factories": "factory", "defenses": "defense"}
 
 
 class SpendResult:
@@ -48,6 +50,7 @@ func run_planet(planet: Planet, research: Array[int]) -> void:
 	var player := _state.player(owner)
 	var r := PlanetEconomy.resources(planet, player.race, _content)
 	if planet.queue.is_empty():
+		_message(owner, "production.queue_empty", planet, [planet.id])
 		research[owner] += r
 		return
 	if not planet.leftover_to_research:
@@ -70,6 +73,8 @@ func _build_queue(planet: Planet, player: Player, avail: Array[int]) -> void:
 	var queue := planet.queue
 	var i := 0
 	var alchemy_above := false
+	# no auto item stopped short of minerals (S21: the "queue done" message)
+	var never_short := true
 	while planet.owner >= 0 and i < queue.size():
 		var item := queue[i]
 		if item.count == 0 or not _buildable(planet, player, item):
@@ -87,6 +92,8 @@ func _build_queue(planet: Planet, player: Player, avail: Array[int]) -> void:
 				item.count = 0
 		if planet.owner < 0:
 			return
+		if result.status in [Status.AUTO_SHORT_BUILT, Status.AUTO_SHORT_NONE]:
+			never_short = false
 		if result.status == Status.DONE:
 			i = _remove(queue, i, alchemy_above)
 			alchemy_above = false
@@ -97,6 +104,8 @@ func _build_queue(planet: Planet, player: Player, avail: Array[int]) -> void:
 			if result.carry != null:
 				queue.insert(0, result.carry)
 			return
+	if planet.owner >= 0 and (queue.is_empty() or never_short):
+		_message(planet.owner, "production.queue_done", planet, [planet.id])
 
 
 ## Removes item i (and the auto alchemy item above it); returns the index of the next item.
@@ -279,6 +288,33 @@ func _alchemy_item() -> String:
 	return ""
 
 
+# --- Messages (S21) ------------------------------------------------------------------------------
+
+
+## Sends message `message.<type>` about a planet (goto the planet).
+func _message(player: int, type: String, planet: Planet, params: Array) -> void:
+	TurnMessages.add(_state, _content, player, "message." + type, {"planet": planet.id}, params)
+
+
+## "n mines (factories, defenses) built": earlier single messages of the kind for this planet are
+## removed and counted in (S21; the original merges only the single messages).
+func _installed_message(planet: Planet, effect: String, n: int) -> void:
+	var single := "message.production.%s_built" % SINGULAR[effect]
+	var list: Array = _state.messages[planet.owner] if planet.owner < _state.messages.size() else []
+	var kept := []
+	for m: Dictionary in list:
+		if m["type"] == single and m["goto"] == {"planet": planet.id}:
+			n += 1
+		else:
+			kept.append(m)
+	if planet.owner < _state.messages.size():
+		_state.messages[planet.owner] = kept
+	if n < 2:
+		_message(planet.owner, single.trim_prefix("message."), planet, [planet.id])
+	else:
+		_message(planet.owner, "production.%s_built" % effect, planet, [n, planet.id])
+
+
 # --- Step 6: completed units -------------------------------------------------------------------
 
 
@@ -302,9 +338,19 @@ func _complete(planet: Planet, player: Player, item: QueueItem, built: int) -> b
 					planet.factories += n
 				_:
 					planet.defenses += n
+			_installed_message(planet, effect, n)
 		"terraform":
 			for k in built:
-				Terraforming.step(planet, player.race, player, true, _content)
+				var change := Terraforming.step_change(planet, player.race, player, true, _content)
+				if change != 0:
+					var axis := absi(change) - 1
+					var value := planet.environment[axis]
+					_message(
+						planet.owner,
+						"production.terraformed",
+						planet,
+						[planet.id, 1 if change > 0 else 0, axis, axis * 256 + value]
+					)
 		"genesis":
 			for k in built:
 				_genesis(planet, player)
@@ -366,6 +412,26 @@ func _complete_ships(planet: Planet, player: Player, slot: int, n: int) -> bool:
 	fleet.waypoints.append(wp)
 	if planet.route >= 0:
 		push_warning("planet %d: new fleets do not follow routes yet (S11)" % planet.id)
+	var design_word := player.index * 32 + slot
+	var goto := {"fleet": fleet.number, "owner": player.index}
+	if n == 1:
+		TurnMessages.add(
+			_state,
+			_content,
+			player.index,
+			"message.production.ship_built",
+			goto,
+			[planet.id, design_word]
+		)
+	else:
+		TurnMessages.add(
+			_state,
+			_content,
+			player.index,
+			"message.production.ships_built",
+			goto,
+			[planet.id, n, design_word]
+		)
 	return true
 
 

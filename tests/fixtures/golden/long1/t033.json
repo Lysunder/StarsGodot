@@ -702,7 +702,185 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
+     "params": [
+      0,
+      1
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 0
+     },
+     "params": [
+      2,
+      75
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "fleet": 1,
+      "owner": 0
+     },
+     "params": [
+      1
+     ],
+     "type": "message.fleet.completed"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      96,
+      0,
+      1,
+      331
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      96
+     ],
+     "type": "message.production.factory_built"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      6,
+      3,
+      4
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.armor.strobnium"
+     },
+     "params": [
+      3,
+      "part.armor.strobnium"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "hulls": true
+     },
+     "params": [
+      3,
+      "hull.frigate"
+     ],
+     "type": "message.research.new_hull"
+    },
+    {
+     "goto": {
+      "hulls": true
+     },
+     "params": [
+      3,
+      "hull.b_17_bomber"
+     ],
+     "type": "message.research.new_hull"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      15,
+      1,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

@@ -12,6 +12,13 @@ extends RefCounted
 ## generate() runs everything. Steps 0-9 (setup draws, planets, homeworld choice) are here;
 ## steps 9.5-12 (starting tech, homeworlds, designs, fleets, wormholes) are in StartingSetup.
 
+## The tips every player gets at the start (S21).
+const WELCOME_TIPS := [
+	"message.game.tip_filters",
+	"message.game.tip_waypoints",
+	"message.game.tip_designs",
+	"message.game.tip_details",
+]
 const AI_PERSONALITIES := [
 	"robotoids", "turindrones", "automitrons", "rototills", "cybertrons", "macinti"
 ]
@@ -71,7 +78,25 @@ func generate() -> GameState:
 	state.players.assign(players)
 	state.planets.assign(planets)
 	StartingSetup.new(self, state).run()
+	_welcome(state)
 	return state
+
+
+## S21: each player's first messages: four tips, then the home planet.
+func _welcome(state: GameState) -> void:
+	TurnMessages.clear(state)
+	for p in state.players:
+		for tip in WELCOME_TIPS:
+			TurnMessages.add(state, content, p.index, tip, {}, [])
+		if p.homeworld >= 0:
+			TurnMessages.add(
+				state,
+				content,
+				p.index,
+				"message.game.home_planet",
+				{"planet": p.homeworld},
+				[p.homeworld]
+			)
 
 
 ## The classic stream, for StartingSetup.

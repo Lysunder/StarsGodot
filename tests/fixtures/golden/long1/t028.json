@@ -444,7 +444,187 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      1542,
+      17,
+      96
+     ],
+     "type": "message.fleet.scrapped"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      6,
+      17,
+      96
+     ],
+     "type": "message.planet.ships_scrapped"
+    },
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
+     "params": [
+      0,
+      1
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      74,
+      1,
+      2,
+      544
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      4,
+      74
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      2,
+      96
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      2,
+      96
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      5,
+      3,
+      4
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.orbital.stargate_100_250"
+     },
+     "params": [
+      3,
+      "part.orbital.stargate_100_250"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      15,
+      1,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

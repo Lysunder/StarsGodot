@@ -396,7 +396,111 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
+     "params": [
+      0,
+      1
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      74
+     ],
+     "type": "message.production.mine_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      16,
+      1,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      11,
+      2,
+      -1,
+      85
+     ],
+     "type": "message.fleet.unloaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

@@ -19,6 +19,7 @@ import struct
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import stars_messages  # noqa: E402
 import starsfile  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -81,8 +82,11 @@ class Legacy:
             self.pictures = {h["id"]: h["pictures"] for h in json.load(f)}
         self.parts, self.hulls, self.prts, self.lrts = {}, {}, {}, {}
         self.production_items = {}
+        self.messages = {}
         for cid, v in data.items():
-            if "production_item" in v:
+            if "message" in v:
+                self.messages[v["message"]] = cid
+            elif "production_item" in v:
                 self.production_items[v["production_item"]] = cid
             elif "hull" in v:
                 self.hulls[v["hull"]] = cid
@@ -593,10 +597,111 @@ class Importer:
             )
 
 
+MESSAGES_JSON = os.path.join(ROOT, "content", "core", "content", "messages.json")
+HULL_MASK = 0x4000
+STARBASE_HULL_MASK = 0x0400
+PLANETARY_MASK = 0x8000
+STARBASE_HULL_FIRST = 32
+
+
+def message_kinds():
+    """Parameter kinds per message content id (S21), from content/core/content/messages.json."""
+    with open(MESSAGES_JSON, encoding="utf-8") as f:
+        return {d["id"]: d["params"] for d in json.load(f)}
+
+
+def legacy_item(legacy, mask, item):
+    """A part, hull or planetary item as a content id, from the category mask and item number the
+    original's message code uses: 0x4000 ship hulls, 0x0400 starbase hulls, 0x8000 planetary items
+    (which legacy_ids.json lists under the hull-slot code 0x0400)."""
+    if mask == HULL_MASK:
+        return legacy.hulls[item]
+    if mask == STARBASE_HULL_MASK:
+        return legacy.hulls[STARBASE_HULL_FIRST + item]
+    if mask == PLANETARY_MASK:
+        return legacy.part(STARBASE_HULL_MASK, item)
+    return legacy.part(mask, item)
+
+
+def message_goto(word, legacy):
+    """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code."""
+    if word == 0xFFFF:
+        return {}
+    if word == 0xFFFE:
+        return {"research": True}
+    if word == 0xFFFD:
+        return {"hulls": True}
+    if word >= 0xC000:
+        return {"item": legacy_item(legacy, 1 << ((word >> 8) & 0x3F), word & 0xFF)}
+    if word & 0x8000:
+        return {"fleet": word & 0x1FF, "owner": (word >> 9) & 0x3F}
+    return {"planet": word}
+
+
+def message_params(raw, kinds, legacy):
+    """The original's raw parameters as our parameter kinds (S21): an amount joins two words, an item
+    turns (category mask, item number) into a content id, a planet's object kind 65535 is -1, a
+    player drops the display flags above its low four bits."""
+    out = []
+    i = 0
+    for kind in kinds:
+        if kind in ("amount", "population"):
+            out.append(raw[i] | (raw[i + 1] << 16))
+            i += 2
+        elif kind == "item":
+            out.append(legacy_item(legacy, raw[i], raw[i + 1]))
+            i += 2
+        elif kind == "player":
+            out.append(raw[i] & 0x0F)
+            i += 1
+        elif kind == "object_kind":
+            out.append(-1 if raw[i] == 0xFFFF else raw[i])
+            i += 1
+        else:
+            out.append(raw[i])
+            i += 1
+    if i != len(raw):
+        raise StarsImportError("message parameters %r don't fit kinds %r" % (raw, kinds))
+    return out
+
+
+def player_messages(hst_path, players, legacy):
+    """Each player's messages of this turn (S21), from the turn files beside the host file
+    (<name>.m1 for player 0 ...): [{type, goto, params}] per player. A message number without a
+    content id becomes "legacy.message.<number>"."""
+    base = os.path.splitext(hst_path)[0]
+    kinds = message_kinds()
+    out = []
+    for p in range(players):
+        path = "%s.m%d" % (base, p + 1)
+        messages = []
+        if os.path.exists(path):
+            for number, goto, params in stars_messages.read(path):
+                kind = legacy.messages.get(number)
+                if kind is None or kind not in kinds:
+                    messages.append(
+                        {"type": "legacy.message.%d" % number, "goto": goto, "params": params}
+                    )
+                    continue
+                messages.append(
+                    {
+                        "type": kind,
+                        "goto": message_goto(goto, legacy),
+                        "params": message_params(params, kinds[kind], legacy),
+                    }
+                )
+        out.append(messages)
+    return out
+
+
 def import_game(xy_path, hst_path, rng=DEFAULT_RNG, keep_names=False):
     xy = starsfile.StarsFile.read(xy_path)
     hst = starsfile.StarsFile.read(hst_path)
-    return Importer(xy, hst, Legacy(), keep_names).run(rng)
+    legacy = Legacy()
+    save = Importer(xy, hst, legacy, keep_names).run(rng)
+    state = save["state"]
+    state["messages"] = player_messages(hst_path, len(state["players"]), legacy)
+    return save
 
 
 def main(argv=None):

@@ -30,6 +30,25 @@ const PART_CATEGORIES: Array[String] = [
 ]
 
 const _INT0 := {"t": "int", "min": 0}
+## What a turn message's parameter is (S21 "Parameter kinds").
+const MESSAGE_PARAMS := [
+	"number",
+	"amount",
+	"population",
+	"planet",
+	"fleet",
+	"fleet_designs",
+	"design",
+	"player",
+	"cargo",
+	"field",
+	"item",
+	"flag",
+	"axis",
+	"axis_value",
+	"object_kind",
+	"object",
+]
 const _TAGS := {"t": "list", "of": {"t": "string"}}
 const _TRAIT_LIST := {"t": "list", "of": {"t": "ref", "to": "trait"}}
 const _TECH_REQ := {"t": "map", "key": {"t": "ref", "to": "tech_field"}, "value": _INT0}
@@ -133,6 +152,8 @@ const TYPES := {
 			"miniaturize": {"t": "bool"},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
+			# needs the Mystery Trader's item for this part (Player.trader_parts)
+			"mystery_trader": {"t": "bool"},
 		},
 		"required": ["category", "mass", "cost"],
 	},
@@ -155,6 +176,8 @@ const TYPES := {
 			"slots": {"t": "list", "of": _SLOT, "min": 1},
 			# the cargo bay in the designer's hull picture: [x1, y1, x2, y2], half-slot grid units
 			"cargo_area": {"t": "list", "of": _INT0, "min": 4, "max": 4},
+			# needs the Mystery Trader's item for this hull (Player.trader_parts)
+			"mystery_trader": {"t": "bool"},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
 		},
@@ -205,6 +228,17 @@ const TYPES := {
 			"candidates": {"t": "list", "of": _UPGRADE_CANDIDATE, "min": 1},
 		},
 		"required": ["from", "candidates"],
+	},
+	"message":
+	{
+		"fields":
+		{
+			# one kind per parameter, in order (S21 "Parameter kinds")
+			"params": {"t": "list", "of": {"t": "enum", "values": MESSAGE_PARAMS}},
+			# computer players get it too
+			"ai": {"t": "bool"},
+		},
+		"required": ["params"],
 	},
 	"battle_plan_default":
 	{

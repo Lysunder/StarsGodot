@@ -2117,6 +2117,9 @@
     ],
     "required_traits": [
       "trait.prt.IS"
+    ],
+    "tags": [
+      "fuel_transport"
     ]
   },
   {
@@ -2167,6 +2170,9 @@
           3
         ]
       }
+    ],
+    "tags": [
+      "fuel_transport"
     ]
   },
   {
@@ -2696,7 +2702,8 @@
       2,
       6,
       6
-    ]
+    ],
+    "mystery_trader": true
   },
   {
     "type": "hull",

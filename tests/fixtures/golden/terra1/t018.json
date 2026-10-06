@@ -322,7 +322,93 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 23
+     },
+     "params": [
+      23
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      6,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.shield.wolverine_diffuse_shield"
+     },
+     "params": [
+      0,
+      "part.shield.wolverine_diffuse_shield"
+     ],
+     "type": "message.research.new_item"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "planet": 25
+     },
+     "params": [
+      25
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "planet": 27
+     },
+     "params": [
+      27
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      6,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.shield.wolverine_diffuse_shield"
+     },
+     "params": [
+      0,
+      "part.shield.wolverine_diffuse_shield"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 1
+     },
+     "params": [
+      514,
+      27,
+      100
+     ],
+     "type": "message.fleet.terraform_improved_stuck"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

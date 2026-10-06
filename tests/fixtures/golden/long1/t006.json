@@ -408,7 +408,92 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      3,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      1026,
+      41,
+      74
+     ],
+     "type": "message.fleet.scrapped"
+    },
+    {
+     "goto": {
+      "planet": 74
+     },
+     "params": [
+      74
+     ],
+     "type": "message.planet.colonized"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      16,
+      1,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

@@ -1,0 +1,432 @@
+[
+  {
+    "type": "message",
+    "id": "message.production.queue_empty",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.queue_done",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.factory_built",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.factories_built",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.mine_built",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.mines_built",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.defense_built",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.defenses_built",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ship_built",
+    "params": [
+      "planet",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ships_built",
+    "params": [
+      "planet",
+      "number",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.terraformed",
+    "params": [
+      "planet",
+      "flag",
+      "axis",
+      "axis_value"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.level",
+    "params": [
+      "number",
+      "field",
+      "field"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.level_focus",
+    "params": [
+      "number",
+      "field",
+      "field"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.new_item",
+    "params": [
+      "field",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.new_hull",
+    "params": [
+      "field",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.new_starbase_hull",
+    "params": [
+      "field",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.new_defense",
+    "params": [
+      "field",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.new_scanner",
+    "params": [
+      "field",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.loaded",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.beamed_up",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.unloaded",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.beamed_down",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.miner_loaded",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.load_refused",
+    "params": [
+      "fleet",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.completed",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.scrapped",
+    "params": [
+      "fleet_designs",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.scrapped_starbase",
+    "params": [
+      "fleet_designs",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped",
+    "params": [
+      "fleet",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_starbase",
+    "params": [
+      "fleet",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.merged",
+    "params": [
+      "fleet_designs",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.given",
+    "params": [
+      "fleet_designs",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.received",
+    "params": [
+      "player",
+      "fleet_designs"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.colonized",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.out_of_fuel",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.out_of_fuel_slower",
+    "params": [
+      "fleet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.ram_scoop",
+    "params": [
+      "fleet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.shrank",
+    "params": [
+      "planet",
+      "population",
+      "population"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.overcrowded",
+    "params": [
+      "planet",
+      "population"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.died",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.died_orbit",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.abandoned",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.abandoned_orbit",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.environment_improved",
+    "params": [
+      "planet",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.auto_terraformed",
+    "params": [
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.terraform_improved",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.terraform_improved_stuck",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.terraform_degraded",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.terraform_degraded_stuck",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.home_planet",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.tip_filters",
+    "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.game.tip_waypoints",
+    "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.game.tip_designs",
+    "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.game.tip_details",
+    "params": []
+  }
+]

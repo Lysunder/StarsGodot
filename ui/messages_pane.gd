@@ -2,19 +2,21 @@ class_name MessagesPane
 extends PanelContainer
 ## The Messages pane (D15): a raised title bar with the filter box and "Year: 2400*  Messages:
 ## 1 of 3" (* while there are unsaved changes), the message in large text, and Prev, Goto and Next
-## in a column on the right (Shift+Prev / Shift+Next jump to the first / last). There is no turn
-## message system yet (S21): the messages are the notes the UI makes (the new year, orders the
-## host rejected), some with an object to go to.
+## in a column on the right (Shift+Prev / Shift+Next jump to the first / last). It shows the
+## player's turn messages (S21, from the game state, in our wording) and then the notes the UI
+## adds (a save, orders the host rejected).
 
-signal goto(kind: String, id: int)
+## Goto: what the current message is about ({"planet": id}, {"fleet": n, "owner": p},
+## {"research": true}, {"hulls": true}, {"item": id}).
+signal goto_target(goto: Dictionary)
 
 const TEXT_SIZE := 16
 const BUTTON_WIDTH := 64
 
-## Each: {text, kind, id}; kind "" when there is nothing to go to.
-var messages: Array[Dictionary] = []
 var current: int = 0
 
+## The UI's own notes, after the turn messages: {text, goto}.
+var _notes: Array[Dictionary] = []
 var _header: Label
 var _filter: CheckBox
 var _text: Label
@@ -33,7 +35,7 @@ func _ready() -> void:
 	bar.add_child(bar_row)
 	_filter = CheckBox.new()
 	_filter.disabled = true
-	_filter.tooltip_text = "Message filters come with the turn messages."
+	_filter.tooltip_text = "Message filters come later."
 	bar_row.add_child(_filter)
 	_header = Label.new()
 	_header.theme_type_variation = "BoldLabel"
@@ -52,6 +54,7 @@ func _ready() -> void:
 	_text.add_theme_font_size_override("font_size", TEXT_SIZE)
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_text.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	frame.add_child(_text)
 	var column := VBoxContainer.new()
 	row.add_child(column)
@@ -71,43 +74,68 @@ func _button(parent: Control, text: String, action: Callable) -> Button:
 	return b
 
 
-func clear() -> void:
-	messages.clear()
+## A new year: back to the first message, the UI's notes dropped.
+func new_year() -> void:
+	_notes.clear()
 	current = 0
 	_show()
 
 
-## Adds a message; `kind` and `id` name the object Goto shows ("planet", "fleet").
-func add(text: String, kind: String = "", id: int = -1) -> void:
-	messages.append({"text": text, "kind": kind, "id": id})
+## Adds a note of the UI's own after the turn messages; `goto` as for messages.
+func add(text: String, goto: Dictionary = {}) -> void:
+	_notes.append({"text": text, "goto": goto})
 	_show()
 
 
+## Every message shown: the turn messages, then the notes.
+func messages() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if GameSession.has_game():
+		var view := GameSession.view
+		var lists: Array = view.state.messages
+		if view.player < lists.size():
+			for m: Dictionary in lists[view.player]:
+				(
+					out
+					. append(
+						{
+							"text": MessageText.format(view, view.player, m),
+							"goto": m.get("goto", {}),
+						}
+					)
+				)
+	out.append_array(_notes)
+	return out
+
+
 func _step(direction: int) -> void:
-	if messages.is_empty():
+	var count := messages().size()
+	if count == 0:
 		return
 	if Input.is_key_pressed(KEY_SHIFT):
-		current = 0 if direction < 0 else messages.size() - 1
+		current = 0 if direction < 0 else count - 1
 	else:
-		current = clampi(current + direction, 0, messages.size() - 1)
+		current = clampi(current + direction, 0, count - 1)
 	_show()
 
 
 func _on_goto() -> void:
-	if current < messages.size() and messages[current]["kind"] != "":
-		goto.emit(messages[current]["kind"], messages[current]["id"])
+	var list := messages()
+	if current < list.size() and not (list[current]["goto"] as Dictionary).is_empty():
+		goto_target.emit(list[current]["goto"])
 
 
 func _show() -> void:
 	if _header == null:
 		return
+	var list := messages()
 	var year := ""
 	if GameSession.has_game():
 		year = "Year: %d%s" % [GameSession.view.year(), "*" if GameSession.dirty else ""]
-	var count := messages.size()
+	var count := list.size()
 	current = clampi(current, 0, maxi(count - 1, 0))
 	_header.text = "%s   Messages: %d of %d" % [year, current + 1 if count > 0 else 0, count]
-	_text.text = messages[current]["text"] if count > 0 else ""
+	_text.text = list[current]["text"] if count > 0 else ""
 	_prev.disabled = current <= 0
 	_next.disabled = current >= count - 1
-	_goto.disabled = count == 0 or messages[current]["kind"] == ""
+	_goto.disabled = count == 0 or (list[current]["goto"] as Dictionary).is_empty()

@@ -64,6 +64,7 @@ func _check_turn(game: String, turn: int) -> void:
 	var ignore := PackedStringArray(IGNORE)
 	ignore.append_array(GAME_IGNORE.get(game, []))
 	ignore.append_array(TURN_IGNORE.get(game, {}).get(turn, []))
+	_known_messages_only(expected, state, ignore)
 	var diffs := StateDiff.compare(expected, state, ignore)
 	(
 		assert_array(diffs)
@@ -181,3 +182,19 @@ func test_long1(
 	]
 ) -> void:
 	_check_turn("long1", turn)
+
+
+## Turn messages (S21) are compared only for the message types built so far (a fixture lists every
+## message the original sent, as "legacy.message.<n>" when we have no content id for it), and not
+## at all for fixtures without message data (an empty list: the run kept no turn files).
+func _known_messages_only(expected: GameState, ours: GameState, ignore: PackedStringArray) -> void:
+	if expected.messages.is_empty():
+		ignore.append("/messages*")
+		return
+	for s: GameState in [expected, ours]:
+		var lists := []
+		for list: Array in s.messages:
+			lists.append(
+				list.filter(func(m: Dictionary) -> bool: return _content.has_def(m["type"]))
+			)
+		s.messages = lists

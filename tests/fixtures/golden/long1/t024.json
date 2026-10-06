@@ -464,7 +464,165 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
+     "params": [
+      0,
+      1
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 0
+     },
+     "params": [
+      85,
+      6
+     ],
+     "type": "message.production.ship_built"
+    },
+    {
+     "goto": {
+      "fleet": 6,
+      "owner": 0
+     },
+     "params": [
+      85,
+      2,
+      3
+     ],
+     "type": "message.production.ships_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      5,
+      85
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      85
+     ],
+     "type": "message.production.queue_done"
+    },
+    {
+     "goto": {
+      "planet": 96
+     },
+     "params": [
+      96
+     ],
+     "type": "message.production.mine_built"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      4,
+      3,
+      4
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "item": "part.mining_robot.robo_miner"
+     },
+     "params": [
+      3,
+      "part.mining_robot.robo_miner"
+     ],
+     "type": "message.research.new_item"
+    },
+    {
+     "goto": {
+      "hulls": true
+     },
+     "params": [
+      3,
+      "hull.privateer"
+     ],
+     "type": "message.research.new_hull"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      0,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      14,
+      1,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    },
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      12,
+      2,
+      5,
+      93
+     ],
+     "type": "message.fleet.miner_loaded"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

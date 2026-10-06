@@ -428,7 +428,20 @@
    }
   ],
   "history": [],
-  "messages": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "planet": 85
+     },
+     "params": [
+      2,
+      85
+     ],
+     "type": "message.production.factories_built"
+    }
+   ]
+  ],
   "minefields": [],
   "mod_data": {},
   "packets": [],

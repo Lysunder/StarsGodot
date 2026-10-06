@@ -111,7 +111,8 @@
       "transport.no_invasion": 1,
       "colony.skips_auto_mines": 1,
       "colony.skips_auto_factories": 1,
-      "colony.skips_auto_defenses": 1
+      "colony.skips_auto_defenses": 1,
+      "message.orbital_colony": 1
     }
   },
   {
@@ -145,7 +146,8 @@
     "params": {
       "race.hab_terraform_reach_1": 8,
       "race.hab_terraform_reach_2": 17,
-      "production.terraform_cost": 70
+      "production.terraform_cost": 70,
+      "research.quiet_basic_terraform": 1
     }
   },
   {
@@ -173,7 +175,8 @@
     "cost": -40,
     "params": {
       "research.current_field_pct": 50,
-      "research.other_field_pct": 15
+      "research.other_field_pct": 15,
+      "research.focus_message": 1
     }
   },
   {
