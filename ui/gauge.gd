@@ -7,12 +7,16 @@ extends Control
 const HEIGHT := 16
 const FRAME := Color.BLACK
 const EMPTY := Color.WHITE
+## The empty part of a gauge that can hold colonists (white), so their bar shows.
+const COLONISTS_EMPTY := Color("808080")
 const CAPTION := Color.BLACK
 
 ## [[amount, colour], ...] drawn left to right.
 var segments: Array = []
 var maximum: int = 0
 var caption: String = ""
+## The colour of the empty part (grey under a white colonists bar).
+var empty_colour: Color = EMPTY
 
 
 func _init() -> void:
@@ -47,7 +51,7 @@ func _draw() -> void:
 				draw_rect(Rect2(x, inner.position.y, right - x, inner.size.y), seg[1])
 				x = right
 	if x < inner.end.x:
-		draw_rect(Rect2(x, inner.position.y, inner.end.x - x, inner.size.y), EMPTY)
+		draw_rect(Rect2(x, inner.position.y, inner.end.x - x, inner.size.y), empty_colour)
 	var font := ClassicTheme.bold_font(self)
 	var font_size := get_theme_default_font_size()
 	var width := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x

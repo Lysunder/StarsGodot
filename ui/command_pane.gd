@@ -61,6 +61,7 @@ var status_text: String = ""
 var _tiles: VBoxContainer
 var _production: ProductionDialog
 var _rename_dialog: RenameDialog
+var _cargo: CargoDialog
 ## Per tile key: collapsed or not; per kind ("planet", "fleet"): the tile keys in pane order. Both
 ## last for the session, so a tile stays where the player dragged it.
 var _collapsed := {}
@@ -91,6 +92,8 @@ func _ready() -> void:
 	_split_dialog = SplitDialog.new()
 	_split_dialog.split_chosen.connect(_split_off)
 	add_child(_split_dialog)
+	_cargo = CargoDialog.new()
+	add_child(_cargo)
 	_rename_dialog = RenameDialog.new()
 	_rename_dialog.name_entered.connect(_rename)
 	add_child(_rename_dialog)
@@ -185,7 +188,8 @@ static func thousands(n: int) -> String:
 	return ("-" if n < 0 else "") + digits + out
 
 
-## The fuel and cargo gauges for a fleet_info: fuel in red, cargo in mineral colours.
+## The fuel and cargo gauges for a fleet_info: fuel in red, cargo in mineral colours (colonists
+## white, so the cargo gauge is grey where empty).
 static func fill_gauges(info: Dictionary, fuel: Gauge, cargo: Gauge) -> void:
 	var c: Array = info["cargo"]
 	fuel.show_amount(c[Fleet.CARGO_FUEL], info["fuel_capacity"], ClassicTheme.CARGO_COLORS[4], "mg")
@@ -194,6 +198,7 @@ static func fill_gauges(info: Dictionary, fuel: Gauge, cargo: Gauge) -> void:
 	for i in 4:
 		segments.append([c[i], ClassicTheme.CARGO_COLORS[i]])
 		total += c[i]
+	cargo.empty_colour = Gauge.COLONISTS_EMPTY
 	cargo.show_values(
 		segments, info["cargo_capacity"], "%d of %dkT" % [total, info["cargo_capacity"]]
 	)
@@ -270,7 +275,13 @@ func _planet_tiles() -> void:
 	var go := t.button("Goto", func() -> void: goto.emit("fleet", numbers[here.selected]), r)
 	go.disabled = numbers.is_empty()
 	here.disabled = numbers.is_empty()
-	_right_aligned_button(r, "Cargo")
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	r.add_child(spacer)
+	var load := t.button(
+		"Cargo", func() -> void: _cargo.open_with_planet(numbers[here.selected], id), r
+	)
+	load.disabled = numbers.is_empty()
 	_starbase_tile(info)
 	_production_tile(info)
 
@@ -345,18 +356,6 @@ func _production_tile(info: Dictionary) -> void:
 	t.button("Route", _pick_route.bind(info), r)
 
 
-## A disabled button pushed to the right end of a row (for actions not built yet).
-func _right_aligned_button(r: HBoxContainer, text: String) -> void:
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	r.add_child(spacer)
-	var b := Button.new()
-	b.text = text
-	b.disabled = true
-	b.tooltip_text = "Cargo transfer isn't built yet."
-	r.add_child(b)
-
-
 func _pick_route(info: Dictionary) -> void:
 	status_text = "Click the planet new ships should go to (Escape cancels)."
 	_queue_rebuild()
@@ -426,15 +425,23 @@ func _fleet_tiles() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	r.add_child(spacer)
-	var transfer := t.button(
-		"Xfer" if not orbiting.is_empty() else "Jettison", func() -> void: pass, r
-	)
-	transfer.disabled = true
-	transfer.tooltip_text = "Cargo transfer isn't built yet."
+	if not orbiting.is_empty():
+		var xfer := t.button("Xfer", func() -> void: _cargo.open_with_planet(id, info["planet"]), r)
+		xfer.disabled = not orbiting["mine"]
+		if not orbiting["mine"]:
+			xfer.tooltip_text = "Transfers with other players' planets come later."
+	else:
+		var jettison := t.button("Jettison", func() -> void: pass, r)
+		jettison.disabled = true
+		jettison.tooltip_text = "Jettisoning cargo comes with salvage (S14)."
 	t = _tile("Fuel & Cargo")
 	var fuel := t.gauge("Fuel")
 	var cargo := t.gauge("Cargo")
 	fill_gauges(info, fuel, cargo)
+	for g: Gauge in [fuel, cargo]:
+		g.mouse_filter = Control.MOUSE_FILTER_STOP
+		g.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		g.gui_input.connect(_on_cargo_gauge_input.bind(info))
 	var held: Array = info["cargo"]
 	for i in 3:
 		t.field(MINERALS[i], "%dkT" % held[i], ClassicTheme.CARGO_COLORS[i])
@@ -505,10 +512,8 @@ func _fleet_tiles() -> void:
 	var buttons: Array[Button] = [
 		t.button("Goto", func() -> void: goto.emit("fleet", numbers[others.selected]), r),
 		t.button("Merge", func() -> void: _merge_with([numbers[others.selected]]), r),
+		t.button("Cargo", func() -> void: _cargo.open_with_fleet(id, numbers[others.selected]), r),
 	]
-	var cargo_button := t.button("Cargo", func() -> void: pass, r)
-	cargo_button.disabled = true
-	cargo_button.tooltip_text = "Cargo transfer isn't built yet."
 	for b in buttons:
 		b.disabled = numbers.is_empty()
 	_waypoint_tiles(info)
@@ -788,6 +793,26 @@ func _rename(text: String) -> void:
 		},
 		true
 	)
+
+
+## A click in the Fuel & Cargo tile's gauges opens the transfer window: with the planet the fleet
+## orbits if it is the player's, else with another of the player's fleets here.
+func _on_cargo_gauge_input(event: InputEvent, info: Dictionary) -> void:
+	var click: bool = (
+		event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
+	)
+	if not click:
+		return
+	var planet: int = info["planet"]
+	if planet >= 0 and GameSession.view.planet_info(planet)["mine"]:
+		_cargo.open_with_planet(id, planet)
+		return
+	for f in GameSession.view.fleets():
+		if f.number != id and f.x == info["x"] and f.y == info["y"]:
+			_cargo.open_with_fleet(id, f.number)
+			return
+	status_text = "There is nothing here to transfer cargo with."
+	_queue_rebuild()
 
 
 func _open_merge(info: Dictionary) -> void:

@@ -381,3 +381,56 @@ func test_scanner_views_and_status_bar() -> void:
 	assert_str(screen._status._distance.text).contains("light years from")
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+func test_cargo_window_moves_cargo() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var home := GameSession.view.me().homeworld
+	var hauler := -1
+	var most := 0
+	for f in GameSession.view.fleets():
+		var info := GameSession.view.fleet_info(f.number)
+		if info["cargo_capacity"] > most and info["planet"] == home:
+			hauler = f.number
+			most = info["cargo_capacity"]
+	assert_int(hauler).is_greater_equal(0)
+	var dialog := screen._command._cargo
+	dialog.open_with_planet(hauler, home)
+	var surface: int = GameSession.view.planet_info(home)["surface"][0]
+	dialog.move(Fleet.CARGO_IRONIUM, 50)
+	dialog.move(Fleet.CARGO_FUEL, 10)
+	# a planet takes no fuel
+	assert_int(dialog._fleet[Fleet.CARGO_FUEL]).is_equal(dialog._start[Fleet.CARGO_FUEL])
+	dialog.move(Fleet.CARGO_BORANIUM, 1 << 20)
+	var capacity: int = GameSession.view.fleet_info(hauler)["cargo_capacity"]
+	assert_int(dialog._fleet[0] + dialog._fleet[1]).is_equal(capacity)
+	dialog._on_ok()
+	var after := GameSession.view.fleet_info(hauler)
+	assert_int(after["cargo"][0]).is_equal(50)
+	assert_int(after["cargo"][1]).is_equal(capacity - 50)
+	assert_int(GameSession.view.planet_info(home)["surface"][0]).is_equal(surface - 50)
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_clicking_the_cargo_gauge_opens_the_transfer_window() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var fleet := GameSession.view.fleets()[0]
+	screen._map.select("fleet", fleet.number)
+	var pane := screen._command
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	pane._on_cargo_gauge_input(click, GameSession.view.fleet_info(fleet.number))
+	assert_bool(pane._cargo.visible).is_true()
+	assert_int(pane._cargo.fleet_number).is_equal(fleet.number)
+	assert_bool(pane._cargo.other.has("planet")).is_true()
+	pane._cargo.hide()
+	screen.queue_free()
+	await get_tree().process_frame
