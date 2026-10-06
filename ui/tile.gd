@@ -127,11 +127,13 @@ func field(label: String, value: String, colour: Color = Color()) -> Label:
 	return value_label
 
 
-## A labelled gauge row ("Fuel [=====]"), in the label / value table.
-func gauge(label: String) -> Gauge:
+## A labelled gauge row ("Fuel [=====]"), in the label / value table; `g` for a gauge of
+## another kind (the warp gauge).
+func gauge(label: String, g: Gauge = null) -> Gauge:
 	field(label, "")
 	var spot := _grid.get_child(-1)
-	var g := Gauge.new()
+	if g == null:
+		g = Gauge.new()
 	_grid.remove_child(spot)
 	spot.queue_free()
 	_grid.add_child(g)

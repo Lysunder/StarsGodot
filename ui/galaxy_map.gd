@@ -10,6 +10,11 @@ extends Control
 signal selected(kind: String, id: int)
 ## A waypoint of the selected fleet was clicked or added.
 signal waypoint_picked(index: int)
+## The mouse moved over the map: the universe position, and the nearest object there ({} if none).
+signal hovered(x: int, y: int, hit: Dictionary)
+
+## Scanner views (the toolbar's exclusive buttons).
+enum View { NORMAL, SURFACE_MINERALS, CONCENTRATION, VALUE, POPULATION }
 
 const UNIVERSE_MARGIN := 1000
 const ZOOM_STEP := 1.15
@@ -25,6 +30,10 @@ const COLOR_OTHER := Color(0.9, 0.3, 0.25)
 const COLOR_FLEET := Color(0.45, 0.75, 1.0)
 const COLOR_PATH := Color(0.45, 0.75, 1.0, 0.6)
 const COLOR_SELECTED := Color(1.0, 0.9, 0.3)
+const VALUE_GOOD := Color(0.2, 0.85, 0.3)
+const VALUE_BAD := Color(0.9, 0.2, 0.2)
+## Tallest mineral bar in the minerals views, in pixels.
+const MINERAL_BAR := 16.0
 const COLOR_SHORT := Color(1.0, 0.35, 0.3, 0.8)
 ## A press that moves less than this is a click, not a drag.
 const DRAG_PIXELS := 4.0
@@ -37,11 +46,16 @@ var selection_kind: String = ""
 var selection_id: int = -1
 ## The selected fleet's selected waypoint, or -1.
 var waypoint: int = -1
+var view_mode: View = View.NORMAL
+## Planet names overlay: on always shows the names; off shows them only when zoomed in.
+var show_names: bool = false
 
 var _dragging := false
 var _last_pick: Array[Dictionary] = []
 var _pick_index := 0
 ## The waypoint being dragged (-1: none), where the press started and where the mouse is.
+## While set, the next click on a planet is passed to it (Route, Set Dest); Escape cancels.
+var _planet_pick := Callable()
 var _drag_waypoint := -1
 var _drag_from := Vector2.ZERO
 var _drag_to := Vector2.ZERO
@@ -66,7 +80,7 @@ func _input(event: InputEvent) -> void:
 		shift = event.shift_pressed
 	else:
 		return
-	var shape := Control.CURSOR_CROSS if shift else Control.CURSOR_ARROW
+	var shape := Control.CURSOR_CROSS if shift or is_picking() else Control.CURSOR_ARROW
 	if shape == mouse_default_cursor_shape:
 		return
 	mouse_default_cursor_shape = shape
@@ -117,6 +131,38 @@ func select(kind: String, id: int) -> void:
 	queue_redraw()
 
 
+## Waits for the player to click a planet, then calls `done` with its id (Route, Set Dest). The
+## cursor is a crosshair meanwhile; Escape or a right click cancels.
+func pick_planet(done: Callable) -> void:
+	_planet_pick = done
+	mouse_default_cursor_shape = Control.CURSOR_CROSS
+	grab_focus()
+
+
+func cancel_pick() -> void:
+	_planet_pick = Callable()
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+
+func is_picking() -> bool:
+	return _planet_pick.is_valid()
+
+
+## The toolbar's view.
+func set_view(mode: View) -> void:
+	view_mode = mode
+	queue_redraw()
+
+
+func set_show_names(on: bool) -> void:
+	show_names = on
+	queue_redraw()
+
+
+func zoom_by(factor: float) -> void:
+	_zoom_at(size / 2.0, factor)
+
+
 ## Highlights a waypoint of the selected fleet (from the Command pane).
 func set_waypoint(index: int) -> void:
 	if index != waypoint:
@@ -141,12 +187,15 @@ func _draw() -> void:
 			colour = COLOR_MINE if pl["mine"] else COLOR_OTHER
 		var radius := PLANET_RADIUS + (2.0 if pl["population"] > 0 else 0.0)
 		var at := to_screen(pl["x"], pl["y"])
-		draw_circle(at, radius, colour)
+		if view_mode == View.NORMAL:
+			draw_circle(at, radius, colour)
+		else:
+			radius = _draw_view(at, pl)
 		if pl["starbase"]:
 			draw_arc(at, radius + 3.0, 0.0, TAU, 16, colour, 1.0)
 		if selection_kind == "planet" and selection_id == pl["id"]:
 			draw_arc(at, radius + 6.0, 0.0, TAU, 24, COLOR_SELECTED, 1.5)
-		if zoom > 1.2:
+		if show_names or zoom > 1.2:
 			draw_string(
 				get_theme_default_font(),
 				at + Vector2(6, -6),
@@ -165,6 +214,40 @@ func _draw() -> void:
 		if selection_kind == "fleet" and selection_id == f.number:
 			draw_arc(at, 7.0, 0.0, TAU, 16, COLOR_SELECTED, 1.5)
 			_draw_path(f)
+
+
+## A planet in one of the toolbar's views; returns the radius drawn. Value: a green circle sized
+## by the value for a planet the player could live on, red for a hostile one. Population: a circle
+## sized by population in the owner's colour. Surface minerals / concentration: three small bars in
+## the mineral colours. Planets the player knows nothing about are small grey dots.
+func _draw_view(at: Vector2, pl: Dictionary) -> float:
+	var info := GameSession.view.planet_info(pl["id"])
+	if not info.get("known", false):
+		draw_circle(at, 1.5, COLOR_UNOWNED)
+		return 1.5
+	match view_mode:
+		View.VALUE:
+			var v: int = info["habitability"]
+			var r := 2.0 + 8.0 * absi(v) / 100.0
+			draw_circle(at, r, VALUE_GOOD if v > 0 else VALUE_BAD)
+			return r
+		View.POPULATION:
+			if info["population"] <= 0:
+				draw_circle(at, 1.5, COLOR_UNOWNED)
+				return 1.5
+			var r := 2.0 + sqrt(float(info["population"])) / 4.0
+			draw_circle(at, minf(r, 14.0), COLOR_MINE if info["mine"] else COLOR_OTHER)
+			return minf(r, 14.0)
+		View.SURFACE_MINERALS, View.CONCENTRATION:
+			var key := "surface" if view_mode == View.SURFACE_MINERALS else "concentration"
+			var full := 5000.0 if view_mode == View.SURFACE_MINERALS else 100.0
+			for m in 3:
+				var h := clampf(info[key][m] / full, 0.0, 1.0) * MINERAL_BAR
+				var x := at.x - 4.0 + m * 3.0
+				draw_rect(Rect2(x, at.y - h, 2.0, h), ClassicTheme.CARGO_COLORS[m])
+			draw_circle(at, 1.5, COLOR_UNOWNED)
+			return 3.0
+	return PLANET_RADIUS
 
 
 func _draw_path(f: Fleet) -> void:
@@ -186,6 +269,19 @@ func _draw_path(f: Fleet) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+	if is_picking():
+		var cancel: bool = (
+			(event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE)
+			or (
+				event is InputEventMouseButton
+				and event.pressed
+				and event.button_index == MOUSE_BUTTON_RIGHT
+			)
+		)
+		if cancel:
+			cancel_pick()
+			accept_event()
+			return
 	if not GameSession.has_game():
 		return
 	if event is InputEventMouseButton and event.pressed:
@@ -206,7 +302,11 @@ func _gui_input(event: InputEvent) -> void:
 			_dragging = false
 		elif event.button_index == MOUSE_BUTTON_LEFT and _drag_waypoint > 0:
 			_release(event.position)
-	elif event is InputEventMouseMotion and _dragging:
+	if event is InputEventMouseMotion:
+		var u := to_universe(event.position)
+		var hits := GameSession.view.objects_at(u.x, u.y, PICK_PIXELS / zoom)
+		hovered.emit(int(round(u.x)), int(round(u.y)), hits[0] if not hits.is_empty() else {})
+	if event is InputEventMouseMotion and _dragging:
 		offset += event.relative
 		queue_redraw()
 	elif event is InputEventMouseMotion and _drag_waypoint > 0:
@@ -239,6 +339,15 @@ func _pick(at: Vector2) -> void:
 ## A left press on one of the selected fleet's waypoints picks it (and may start a drag);
 ## anywhere else it selects what is there.
 func _press(at: Vector2) -> void:
+	if is_picking():
+		var u := to_universe(at)
+		for hit in GameSession.view.objects_at(u.x, u.y, PICK_PIXELS / zoom):
+			if hit["kind"] == "planet":
+				var done := _planet_pick
+				cancel_pick()
+				done.call(hit["id"])
+				return
+		return
 	var hit := _waypoint_at(at)
 	if hit > 0:
 		waypoint = hit

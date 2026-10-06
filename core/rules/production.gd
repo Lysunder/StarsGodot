@@ -447,15 +447,4 @@ static func _drop_ship_items(planet: Planet) -> void:
 ## The best mass driver warp of a starbase design, plus one when two slots hold drivers of that
 ## warp.
 func _driver_warp(design: Design) -> int:
-	var best := 0
-	var pair := 0
-	for s in design.parts:
-		if s.count == 0 or s.part.is_empty():
-			continue
-		var w: int = _content.part(s.part).get("stats", {}).get("driver_warp", 0)
-		if w > best:
-			best = w
-			pair = 0
-		elif w == best and w > 0:
-			pair = 1
-	return best + pair if best > 0 else 0
+	return PartRules.driver_warp(design, _content)

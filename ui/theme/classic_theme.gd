@@ -54,6 +54,8 @@ const GRABBER_SIZE := Vector2i(11, 21)
 const TRACK_HEIGHT := 4
 ## Side of a dropdown's arrow button, in pixels.
 const DROPDOWN_BUTTON := 16
+## Side of a check box or radio button, in pixels.
+const CHECK_SIZE := 13
 
 
 ## The font the player picked last (an index into FONTS), from the settings file.
@@ -174,6 +176,24 @@ static func build(font_index: int = DEFAULT_FONT) -> Theme:
 	t.set_icon("arrow", "OptionButton", _dropdown_arrow())
 	t.set_constant("arrow_margin", "OptionButton", 1)
 	t.set_constant("modulate_arrow", "OptionButton", 0)
+	var check_off := ImageTexture.create_from_image(_check_image(false, false))
+	var check_on := ImageTexture.create_from_image(_check_image(true, false))
+	var radio_off := ImageTexture.create_from_image(_check_image(false, true))
+	var radio_on := ImageTexture.create_from_image(_check_image(true, true))
+	for type in ["CheckBox", "CheckButton"]:
+		for suffix in ["", "_disabled"]:
+			t.set_icon("unchecked" + suffix, type, check_off)
+			t.set_icon("checked" + suffix, type, check_on)
+			t.set_icon("radio_unchecked" + suffix, type, radio_off)
+			t.set_icon("radio_checked" + suffix, type, radio_on)
+	var sunken_field := _bevel(false, FACE)
+	sunken_field.set_content_margin_all(BEVEL + 1)
+	t.set_type_variation("SunkenField", "PanelContainer")
+	t.set_stylebox("panel", "SunkenField", sunken_field)
+	var list_box := _bevel(false, FIELD)
+	list_box.set_content_margin_all(BEVEL)
+	t.set_type_variation("RowListBox", "ScrollContainer")
+	t.set_stylebox("panel", "RowListBox", list_box)
 	var bar := _bevel(true, FACE)
 	bar.set_content_margin_all(1)
 	bar.set_content_margin(SIDE_LEFT, BEVEL + 2)
@@ -250,6 +270,37 @@ static func collapse_icon(collapsed: bool) -> ImageTexture:
 	if collapsed:
 		img.flip_y()
 	return ImageTexture.create_from_image(img)
+
+
+## A 13 × 13 check box (a white sunken square, with a black tick when on) or radio button (a
+## sunken white circle, with a black dot when on).
+static func _check_image(on: bool, radio: bool) -> Image:
+	if not radio:
+		var img := _bevel_image(CHECK_SIZE, CHECK_SIZE, false, FIELD)
+		if on:
+			# a tick: down-right from (3, 5) to (5, 7), then up-right to (9, 3), three pixels thick
+			for i in 3:
+				for k in 3:
+					img.set_pixel(3 + i, 5 + i + k - 1, DARK)
+			for i in 5:
+				for k in 3:
+					img.set_pixel(5 + i, 7 - i + k - 1, DARK)
+		return img
+	var img := Image.create(CHECK_SIZE, CHECK_SIZE, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	var c := (CHECK_SIZE - 1) / 2.0
+	for y in CHECK_SIZE:
+		for x in CHECK_SIZE:
+			var d := Vector2(x - c, y - c)
+			var r := d.length()
+			if r <= c - 1.0:
+				img.set_pixel(x, y, FIELD)
+			elif r <= c + 0.3:
+				# the rim: dark on the upper left, light on the lower right, like a sunken bevel
+				img.set_pixel(x, y, SHADOW if d.x + d.y < 0 else HIGHLIGHT)
+			if on and r <= 2.0:
+				img.set_pixel(x, y, DARK)
+	return img
 
 
 ## The dropdown button: a raised 16 × 16 block with a small black triangle pointing down.

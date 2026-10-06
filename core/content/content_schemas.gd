@@ -46,6 +46,8 @@ const _SLOT := {
 		"accepts": {"t": "list", "of": {"t": "enum", "values": PART_CATEGORIES}, "min": 1},
 		"max": {"t": "int", "min": 1},
 		"required": {"t": "bool"},
+		# where the slot sits in the designer's hull picture: [x, y] in half-slot grid units
+		"at": {"t": "list", "of": _INT0, "min": 2, "max": 2},
 	},
 	"required": ["accepts", "max"],
 }
@@ -151,6 +153,8 @@ const TYPES := {
 			"dock": {"t": "int", "min": -1},
 			"stats": _INT_MAP,
 			"slots": {"t": "list", "of": _SLOT, "min": 1},
+			# the cargo bay in the designer's hull picture: [x1, y1, x2, y2], half-slot grid units
+			"cargo_area": {"t": "list", "of": _INT0, "min": 4, "max": 4},
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
 		},

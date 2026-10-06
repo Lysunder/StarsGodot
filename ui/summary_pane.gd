@@ -1,23 +1,69 @@
 class_name SummaryPane
 extends PanelContainer
-## The Selection Summary pane (D15): what the object selected in the scanner is like, for any
-## planet or the player's fleets.
+## The Selection Summary pane (D15): a raised title bar "<name> Summary", then for a planet its
+## value, how current the report is and its population over the environment and mineral graphs,
+## and for a fleet its picture beside ship count, fuel and cargo gauges, mass, next waypoint, task
+## and warp.
 
-const ENVIRONMENT := ["Gravity", "Temperature", "Radiation"]
-const MINERALS := ["Ironium", "Boranium", "Germanium"]
+const ROW_GAP := 2
 
 var kind: String = ""
 var id: int = -1
 
-var _text: Label
+var _title: Label
+var _planet_box: VBoxContainer
+var _value: Label
+var _report: Label
+var _population: Label
+var _environment: EnvironmentGraph
+var _minerals: MineralGraph
+var _fleet_box: HBoxContainer
+var _fleet_fields: GridContainer
+var _fuel: Gauge
+var _cargo: Gauge
 
 
 func _ready() -> void:
-	_text = Label.new()
-	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_text.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-	add_child(_text)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", ROW_GAP)
+	add_child(box)
+	var bar := PanelContainer.new()
+	bar.theme_type_variation = "TileBar"
+	box.add_child(bar)
+	_title = Label.new()
+	_title.theme_type_variation = "BoldLabel"
+	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	bar.add_child(_title)
+	_planet_box = VBoxContainer.new()
+	box.add_child(_planet_box)
+	var line := HBoxContainer.new()
+	_planet_box.add_child(line)
+	var left := VBoxContainer.new()
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	line.add_child(left)
+	_value = _bold(left)
+	_report = _bold(left)
+	_population = _bold(line)
+	_environment = EnvironmentGraph.new()
+	_planet_box.add_child(_environment)
+	_minerals = MineralGraph.new()
+	_planet_box.add_child(_minerals)
+	_fleet_box = HBoxContainer.new()
+	box.add_child(_fleet_box)
+	_fleet_box.add_child(FleetIcon.new())
+	_fleet_fields = GridContainer.new()
+	_fleet_fields.columns = 2
+	_fleet_fields.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_fleet_box.add_child(_fleet_fields)
 	GameSession.changed.connect(refresh)
+	refresh()
+
+
+func _bold(parent: Control) -> Label:
+	var l := Label.new()
+	l.theme_type_variation = "BoldLabel"
+	parent.add_child(l)
+	return l
 
 
 func show_object(p_kind: String, p_id: int) -> void:
@@ -27,55 +73,83 @@ func show_object(p_kind: String, p_id: int) -> void:
 
 
 func refresh() -> void:
+	_planet_box.visible = false
+	_fleet_box.visible = false
 	if not GameSession.has_game() or id < 0:
-		_text.text = ""
+		_title.text = ""
 		return
-	_text.text = _planet() if kind == "planet" else _fleet()
+	if kind == "planet":
+		_show_planet()
+	else:
+		_show_fleet()
 
 
-func _planet() -> String:
+func _show_planet() -> void:
 	var info := GameSession.view.planet_info(id)
-	var lines := PackedStringArray()
-	var owner := "Uninhabited"
-	if info["owner"] >= 0:
-		owner = "Yours" if info["mine"] else "Player %d" % (info["owner"] + 1)
-	lines.append("%s   %s" % [info["name"], owner])
+	_title.text = "%s Summary" % info["name"]
+	_planet_box.visible = true
 	if not info["known"]:
-		lines.append("No data.")
-		return "\n".join(lines)
-	lines.append(
-		(
-			"Value: %d%%   Population: %d of %d"
-			% [info["habitability"], info["population"] * 100, info["max_population"] * 100]
-		)
+		_value.text = "No information."
+		_report.text = ""
+		_population.text = ""
+		_environment.show_planet({})
+		_minerals.show_planet({})
+		return
+	_value.text = "Value: %d%%" % info["habitability"]
+	_report.text = "Report is current"
+	_population.text = (
+		"Population: %s" % CommandPane.thousands(info["population"] * 100)
+		if info["population"] > 0
+		else ""
 	)
-	var env := PackedStringArray()
-	for i in 3:
-		env.append("%s %d" % [ENVIRONMENT[i], info["environment"][i]])
-	lines.append("   ".join(env))
-	var minerals := PackedStringArray()
-	for i in 3:
-		minerals.append(
-			(
-				"%s %d kT, concentration %d"
-				% [MINERALS[i], info["surface"][i], info["concentration"][i]]
-			)
-		)
-	lines.append("\n".join(minerals))
-	return "\n".join(lines)
+	_environment.show_planet(info)
+	_minerals.show_planet(info)
 
 
-func _fleet() -> String:
+func _show_fleet() -> void:
 	var info := GameSession.view.fleet_info(id)
 	if info.is_empty():
-		return ""
-	var lines := PackedStringArray([info["name"]])
+		_title.text = ""
+		return
+	_title.text = "%s Summary" % info["name"]
+	_fleet_box.visible = true
+	for child in _fleet_fields.get_children():
+		child.queue_free()
+	var count := 0
 	for s: Dictionary in info["ships"]:
-		lines.append("%d × %s" % [s["count"], s["name"]])
-	lines.append("At (%d, %d)" % [info["x"], info["y"]])
+		count += s["count"]
+	_field("Ship Count:", str(count))
+	_fuel = Gauge.new()
+	_cargo = Gauge.new()
+	_field("Fuel:", "", _fuel)
+	_field("Cargo:", "", _cargo)
+	CommandPane.fill_gauges(info, _fuel, _cargo)
+	_field("Mass:", "%skT" % CommandPane.thousands(info["mass"]))
 	var waypoints: Array = info["waypoints"]
 	if waypoints.size() > 1:
-		lines.append(
-			"Heading for %s, arriving in %d yr" % [waypoints[1]["label"], waypoints[1]["years"]]
-		)
-	return "\n".join(lines)
+		var next: Dictionary = waypoints[1]
+		_field("WP:", next["label"])
+		_field("Task:", _task_name(next["task"]))
+		_field("Warp:", str(next["warp"]))
+	else:
+		_field("Task:", _task_name(waypoints[0]["task"]) if not waypoints.is_empty() else "None")
+
+
+func _field(label: String, value: String, control: Control = null) -> void:
+	var l := Label.new()
+	l.text = label
+	l.theme_type_variation = "BoldLabel"
+	_fleet_fields.add_child(l)
+	if control == null:
+		control = Label.new()
+		(control as Label).text = value
+		(control as Label).theme_type_variation = "BoldLabel"
+	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_fleet_fields.add_child(control)
+
+
+static func _task_name(task: String) -> String:
+	for t: Array in CommandPane.TASKS:
+		if t[0] == task:
+			return "None" if task == "none" else t[1]
+	return task

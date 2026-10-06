@@ -91,11 +91,13 @@ func test_designer_saves_a_new_design() -> void:
 	var designer := screen._designer
 	designer.open()
 	var before := GameSession.view.designer.designs(false).size()
-	designer._on_new()
+	designer._set_mode(ShipDesigner.MODE_HULLS)
+	assert_object(designer.design).is_not_null()
+	designer._on_copy()
 	assert_bool(designer.editing).is_true()
 	designer._name.text = "Probe"
 	designer._on_name("Probe")
-	# put the first part the engine slot takes into it
+	# an engine in the slot that takes one, through the schematic
 	var hull := GameSession.content.hull(designer.design.hull)
 	var engine_slot := -1
 	for i in (hull["slots"] as Array).size():
@@ -103,13 +105,10 @@ func test_designer_saves_a_new_design() -> void:
 			engine_slot = i
 			break
 	assert_int(engine_slot).is_greater_equal(0)
-	designer._slots.select(engine_slot)
-	designer._show_parts()
-	assert_int(designer._parts.item_count).is_greater(0)
-	designer._parts.select(0)
-	designer._on_add()
-	assert_str(designer.design.parts[engine_slot].part).is_not_empty()
-	designer._on_save()
+	var engine := GameSession.view.designer.available_parts(["engine"])[0]
+	assert_bool(designer._schematic.add_part(engine_slot, engine, 1)).is_true()
+	assert_str(designer.design.parts[engine_slot].part).is_equal(engine)
+	designer._on_done()
 	assert_str(designer._status.text).is_empty()
 	assert_bool(designer.editing).is_false()
 	var designs := GameSession.view.designer.designs(false)
@@ -131,10 +130,22 @@ func test_designer_refuses_an_unnamed_design() -> void:
 	var designer := ShipDesigner.new()
 	add_child(designer)
 	designer.open()
-	designer._on_new()
-	designer._on_save()
+	designer._set_mode(ShipDesigner.MODE_HULLS)
+	designer._on_copy()
+	designer._on_done()
 	assert_str(designer._status.text).is_not_empty()
 	assert_bool(designer.editing).is_true()
+	# a part dragged back to the list leaves its slot
+	var slot := 0
+	var part := (
+		GameSession
+		. view
+		. designer
+		. available_parts(GameSession.content.hull(designer.design.hull)["slots"][0]["accepts"])[0]
+	)
+	designer._schematic.add_part(slot, part, 1)
+	designer._take_back({"from_slot": slot})
+	assert_str(designer.design.parts[slot].part).is_empty()
 	designer.queue_free()
 	await get_tree().process_frame
 
@@ -195,7 +206,7 @@ func test_waypoint_editing() -> void:
 	await get_tree().process_frame
 
 
-func test_warp_slider_updates_rows_while_dragging() -> void:
+func test_warp_gauge_updates_the_leg_while_dragging() -> void:
 	_new_game()
 	var screen := GameScreen.new()
 	add_child(screen)
@@ -208,17 +219,18 @@ func test_warp_slider_updates_rows_while_dragging() -> void:
 	screen._map._add_waypoint(screen._map.to_screen(target["x"], target["y"]))
 	await get_tree().process_frame
 	var pane := screen._command
-	var slider: HSlider = pane._tiles.find_children("*", "HSlider", true, false)[0]
-	var list := pane._waypoint_list
+	var gauge: WarpGauge = pane._tiles.find_children("*", "WarpGauge", true, false)[0]
 	var before := GameSession.orders.orders.size()
-	slider.drag_started.emit()
-	for warp in [3, 4, 5]:
-		slider.value = warp
-		assert_bool(list.get_item_text(1).contains("warp %d," % warp)).is_true()
-		assert_object(pane._waypoint_list).is_same(list)
-	slider.drag_ended.emit(true)
+	var times := []
+	for warp in [2, 5, 9]:
+		gauge.set_value(warp)
+		gauge.value_dragged.emit(warp)
+		assert_object(pane._tiles.find_children("*", "WarpGauge", true, false)[0]).is_same(gauge)
+		times.append((pane._leg_fields["time"] as Label).text)
+	assert_str(times[0]).is_not_equal(times[2])
+	gauge.value_set.emit(9)
 	assert_int(GameSession.orders.orders.size()).is_equal(before + 1)
-	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][1]["warp"]).is_equal(5)
+	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][1]["warp"]).is_equal(9)
 	screen.queue_free()
 	await get_tree().process_frame
 
@@ -270,5 +282,102 @@ func test_tiles_keep_their_order_and_collapse() -> void:
 		if child is Tile and child.key == "Minerals on Hand" and not child.is_queued_for_deletion():
 			assert_bool(child.collapsed).is_true()
 	assert_str(CommandPane.thousands(1234567)).is_equal("1,234,567")
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_route_is_picked_on_the_map() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var map := screen._map
+	map.size = Vector2(800, 600)
+	map._fit()
+	var home := GameSession.view.me().homeworld
+	map.select("planet", home)
+	var info := GameSession.view.planet_info(home)
+	screen._command._pick_route(info)
+	assert_bool(map.is_picking()).is_true()
+	var target: Dictionary = GameSession.view.planets()[0]
+	map._press(map.to_screen(target["x"], target["y"]))
+	assert_bool(map.is_picking()).is_false()
+	assert_int(GameSession.view.planet_info(home)["route"]).is_equal(target["id"])
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_production_window_applies_on_ok() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var home := GameSession.view.me().homeworld
+	var dialog := screen._command._production
+	dialog.open(home)
+	var before := GameSession.orders.orders.size()
+	dialog._inventory.select(0)
+	dialog._on_add()
+	dialog._on_add()
+	assert_int(dialog._items.size()).is_equal(1)
+	assert_int(GameSession.orders.orders.size()).is_equal(before)
+	dialog._on_cancel_like()
+	assert_int(GameSession.view.planet_info(home)["queue"].size()).is_equal(0)
+	dialog.open(home)
+	dialog._inventory.select(0)
+	dialog._on_add()
+	assert_bool(dialog._commit()).is_true()
+	assert_int(GameSession.view.planet_info(home)["queue"].size()).is_equal(1)
+	dialog.hide()
+	screen.queue_free()
+	await get_tree().process_frame
+
+
+func test_research_window_sends_the_field() -> void:
+	_new_game()
+	var dialog := ResearchDialog.new()
+	add_child(dialog)
+	dialog.open()
+	dialog._fields[3].button_pressed = true
+	assert_int(GameSession.view.research_info()["field"]).is_equal(3)
+	assert_str(dialog._title.text).contains(GameSession.view.research_info()["fields"][3]["name"])
+	dialog.queue_free()
+	await get_tree().process_frame
+
+
+func test_new_game_window_starts_a_game() -> void:
+	var dialog := NewGameDialog.new()
+	add_child(dialog)
+	var chosen: Array = []
+	dialog.game_chosen.connect(func(o: NewGame.Options) -> void: chosen.append(o))
+	(dialog._size_group.get_buttons()[0] as CheckBox).button_pressed = true
+	dialog._flags[1].button_pressed = true
+	dialog._on_ok()
+	assert_int(chosen.size()).is_equal(1)
+	var options: NewGame.Options = chosen[0]
+	assert_int(options.size).is_equal(0)
+	assert_array(options.flags).contains(["slow_tech"])
+	GameSession.new_game(options)
+	assert_bool(GameSession.state.settings.slow_tech).is_true()
+	dialog.queue_free()
+	await get_tree().process_frame
+
+
+func test_scanner_views_and_status_bar() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var map := screen._map
+	map.size = Vector2(800, 600)
+	map._fit()
+	for v in GalaxyMap.View.values():
+		map.set_view(v)
+		map.queue_redraw()
+		await get_tree().process_frame
+	var home := GameSession.view.planet_info(GameSession.view.me().homeworld)
+	screen._on_hovered(home["x"], home["y"], {"kind": "planet", "id": home["id"]})
+	assert_str(screen._status._name.text).is_equal(home["name"])
+	assert_str(screen._status._distance.text).contains("light years from")
 	screen.queue_free()
 	await get_tree().process_frame

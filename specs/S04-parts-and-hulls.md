@@ -91,7 +91,15 @@ All part records share a 52-byte head. Categories with more numbers add words af
 | 58 | 16 × 4 bytes | slots: category mask (word), an unused byte, capacity (byte); unused slots are zero |
 | 122 | byte | number of slots in use |
 | 123 | byte | low 6 bits: initiative. Bits 6–7: hull role flags (open item) |
-| 124 … | bytes | a hull class byte and designer layout data (cosmetic) |
+| 124 | byte | a hull class byte (open item) |
+| 125 | word | designer layout of the cargo bay (or a starbase's dock), used when offset 52 is not 0: high byte one corner, low byte the opposite corner, each as below |
+| 127 … | 1 byte per slot | designer layout of each slot: low nibble x, high nibble y |
+
+**Designer layout (cosmetic, `Designer_LayoutSlots@10c0:450c`).** The ship designer draws a hull as boxes on a
+grid of half-slot cells (32 pixels in the original): slot *i* is a 2 × 2-cell box whose top-left cell is the slot's
+(x, y) byte, and the cargo bay (dock) is the box between its two corner cells (the second corner is exclusive). Our
+content keeps these as `at: [x, y]` on each slot and `cargo_area: [x1, y1, x2, y2]` on the hull. They change only how
+the designer looks, never a rule.
 
 ## Algorithm: design totals
 

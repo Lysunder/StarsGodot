@@ -358,3 +358,14 @@ Random 50/50/50.
 4. The race file format is our own (D6); nothing here depends on the original's race files.
 5. Random races: when the repair gives up (251 attempts), the original copies the whole default player record,
    including its logo; we keep the player's logo. Not yet seen in a harness game.
+
+## Display units
+
+Rules use 0–100 for each environment axis. The game shows them as follows (`FormatHabValue@1040:3e72`,
+`HabValueToDisplay@1040:3ebe`); this is display only:
+
+- **Temperature:** (v − 50) × 4 degrees C.
+- **Radiation:** v mR.
+- **Gravity:** with d = |v − 50|, take h = (d + 25) × 4 when d < 26, else h = d × 24 − 400; below the middle
+  (v < 50) h becomes 10000 div h. h is in hundredths of a g, shown as `h div 100` "." `h mod 100` (two digits) "g".
+  So 50 is 1.00g, 0 is 0.12g, 100 is 8.00g.

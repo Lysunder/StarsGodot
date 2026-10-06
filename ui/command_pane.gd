@@ -8,6 +8,8 @@ extends VBoxContainer
 signal goto(kind: String, id: int)
 ## The waypoint picked in the Fleet Waypoints tile (the map highlights it).
 signal waypoint_selected(index: int)
+## A tile wants the player to click a planet in the scanner; `done` gets its id.
+signal pick_planet_requested(done: Callable)
 
 const MINERALS := ["Ironium", "Boranium", "Germanium"]
 const CARGO := ["Ironium", "Boranium", "Germanium", "Colonists", "Fuel"]
@@ -39,11 +41,17 @@ const ACTIONS := [
 ## Transport actions that take no amount, and those whose amount is a percentage.
 const NO_AMOUNT := ["none", "load_all", "unload_all", "load_optimal"]
 const PERCENT := ["fill_percent", "wait_percent"]
-const MAX_WARP := 10
 ## Width of the Fleet tile's buttons.
 const BUTTON_WIDTH := 80
-const WARP_LABEL_WIDTH := 70
-const COLOR_WARNING := Color("800000")
+const AMOUNT_WIDTH := 56
+## A cargo type with a transport action is shown in green; a damaged ship's bar is red.
+const ACTION_SET := Color("007f00")
+const DAMAGE := Color("ff0000")
+## Production queue text by ProductionEstimate.When: all this year, some this year, later, never,
+## skipped this year.
+const QUEUE_COLORS := [
+	Color("007f00"), Color("0000ff"), Color("000000"), Color("ff0000"), Color("808080")
+]
 const LIST_HEIGHT := 96
 
 var kind: String = ""
@@ -61,7 +69,13 @@ var _waypoint := -1
 var _pending_rebuild := false
 ## The Fleet Waypoints list, and whether a warp slider is being dragged: while it is, warp orders
 ## go out at every step but only the list's rows are refreshed, so the slider stays under the mouse.
-var _waypoint_list: ItemList
+var _waypoint_list: RowList
+## The Fleet Waypoints details that follow the warp gauge: {leg, time, fuel}.
+var _leg_fields := {}
+## The cargo type the transport task shows (0..4).
+var _cargo_shown := 0
+var _merge_dialog: MergeDialog
+var _split_dialog: SplitDialog
 var _live := false
 
 
@@ -71,6 +85,12 @@ func _ready() -> void:
 	add_child(_tiles)
 	_production = ProductionDialog.new()
 	add_child(_production)
+	_merge_dialog = MergeDialog.new()
+	_merge_dialog.merge_chosen.connect(_merge_with)
+	add_child(_merge_dialog)
+	_split_dialog = SplitDialog.new()
+	_split_dialog.split_chosen.connect(_split_off)
+	add_child(_split_dialog)
 	_rename_dialog = RenameDialog.new()
 	_rename_dialog.name_entered.connect(_rename)
 	add_child(_rename_dialog)
@@ -218,8 +238,18 @@ func _planet_tiles() -> void:
 	t.field("Factories", "%d of %d" % [info["operable_factories"], info["max_factories"]])
 	t = _tile("Status")
 	t.field("Population", thousands(info["population"] * 100))
-	t.field("Resources/Year", thousands(info["resources"]))
+	t.field(
+		"Resources/Year",
+		"%s of %s" % [thousands(info["resources_production"]), thousands(info["resources"])]
+	)
+	var scanner: String = info["scanner"]
+	t.field("Scanner Type", GameSession.content.display_name(scanner) if scanner != "" else "None")
+	if scanner != "":
+		var reach: int = GameSession.content.part(scanner)["stats"]["scan_range"]
+		t.field("Scanner Range", "%d light years" % reach)
 	t.field("Defenses", "%d of %d" % [info["defenses"], info["max_defenses"]])
+	var defense: String = info["defense_type"]
+	t.field("Defense Type", GameSession.content.display_name(defense) if defense != "" else "None")
 	t = _tile("Fleets in Orbit")
 	var numbers: Array[int] = []
 	for f in view.fleets():
@@ -240,28 +270,120 @@ func _planet_tiles() -> void:
 	var go := t.button("Goto", func() -> void: goto.emit("fleet", numbers[here.selected]), r)
 	go.disabled = numbers.is_empty()
 	here.disabled = numbers.is_empty()
-	t = _tile(info["starbase"] if info["starbase"] != "" else "No Starbase", "starbase")
-	if info["starbase"] == "":
+	_right_aligned_button(r, "Cargo")
+	_starbase_tile(info)
+	_production_tile(info)
+
+
+## The Starbase tile: the starbase's name as the title, its dock, armor, shields and damage, then
+## the mass driver: its speed, the destination, Set Dest and the packet speed gauge.
+func _starbase_tile(info: Dictionary) -> void:
+	var base: Dictionary = info.get("starbase_info", {})
+	var t := _tile(base.get("name", "No Starbase"), "starbase")
+	if base.is_empty():
 		t.line("This planet has no starbase.")
-	t = _tile("Production")
-	var queue := ItemList.new()
-	queue.custom_minimum_size = Vector2(0, LIST_HEIGHT)
-	for row: Dictionary in info["queue"]:
-		queue.add_item(
-			(
-				"%s (auto) up to %d" % [row["name"], row["count"]]
-				if row["auto"]
-				else "%s × %d" % [row["name"], row["count"]]
-			)
-		)
-	t.body.add_child(queue)
-	r = t.row()
+		return
+	var dock: int = base["dock"]
+	t.field("Dock Capacity", "Unlimited" if dock < 0 else ("None" if dock == 0 else "%dkT" % dock))
+	t.field("Armor", "%sdp" % thousands(base["armor"]))
+	t.field("Shields", "%sdp" % thousands(base["shields"]))
+	t.field("Damage", "None" if base["damage"] == 0 else "%sdp" % thousands(base["damage"]))
+	var driver: int = base["driver_warp"]
+	t.field("Mass Driver", "Warp %d" % driver if driver > 0 else "None")
+	if driver <= 0:
+		return
+	var target: int = info["mass_driver_target"]
+	var dest: String = GameSession.view.planet_info(target)["name"] if target >= 0 else "None"
+	t.field("Destination", dest)
+	var r := t.row()
+	t.button("Set Dest", _pick_driver_target.bind(info), r)
+	var speed := WarpGauge.new()
+	speed.set_value(info["mass_driver_warp"] if info["mass_driver_warp"] > 0 else driver)
+	speed.value_set.connect(func(v: int) -> void: _set_planet(info, {"mass_driver_warp": v}))
+	r.add_child(speed)
+
+
+## The Production tile: the queue coloured by when each item will be built (green: all of it this
+## year; blue: some this year; black: later; red: not within a century; grey: an auto item that
+## builds nothing this year), auto items in italics, then Completion and Route to, and Change,
+## Clear and Route.
+func _production_tile(info: Dictionary) -> void:
+	var t := _tile("Production")
+	var estimate := ProductionEstimate.estimate(GameSession.view.state, GameSession.content, id)
+	var when: Array = estimate["items"]
+	var rows: Array[Dictionary] = []
+	var queue: Array = info["queue"]
+	for i in queue.size():
+		var q: Dictionary = queue[i]
+		var right := "Up to %d" % q["count"] if q["auto"] else str(q["count"])
+		var colour := ClassicTheme.TEXT
+		if i < when.size():
+			colour = QUEUE_COLORS[when[i]]
+		rows.append({"left": q["name"], "right": right, "colour": colour, "italic": q["auto"]})
+	var list := RowList.new(LIST_HEIGHT)
+	list.set_rows(rows, -1)
+	list.row_activated.connect(func(_i: int) -> void: _production.open(id))
+	t.body.add_child(list)
+	var years: int = estimate["years"]
+	var done := "Never"
+	if queue.is_empty() or years == 0:
+		done = "-"
+	elif years == 1:
+		done = "1 year"
+	elif years > 0:
+		done = "%d years" % years
+	t.field("Completion", done)
+	var route: int = info["route"]
+	t.field("Route to", GameSession.view.planet_info(route)["name"] if route >= 0 else "None")
+	var r := t.row()
 	t.button("Change", func() -> void: _production.open(id), r)
 	t.button(
 		"Clear",
 		func() -> void: _order({"type": "production_queue", "planet": id, "items": []}, true),
 		r
 	)
+	t.button("Route", _pick_route.bind(info), r)
+
+
+## A disabled button pushed to the right end of a row (for actions not built yet).
+func _right_aligned_button(r: HBoxContainer, text: String) -> void:
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	r.add_child(spacer)
+	var b := Button.new()
+	b.text = text
+	b.disabled = true
+	b.tooltip_text = "Cargo transfer isn't built yet."
+	r.add_child(b)
+
+
+func _pick_route(info: Dictionary) -> void:
+	status_text = "Click the planet new ships should go to (Escape cancels)."
+	_queue_rebuild()
+	pick_planet_requested.emit(func(target: int) -> void: _set_planet(info, {"route": target}))
+
+
+func _pick_driver_target(info: Dictionary) -> void:
+	status_text = "Click the planet to send packets to (Escape cancels)."
+	_queue_rebuild()
+	pick_planet_requested.emit(
+		func(target: int) -> void: _set_planet(info, {"mass_driver_target": target})
+	)
+
+
+## A `planet_settings` order: the planet's current settings with `changes`.
+func _set_planet(info: Dictionary, changes: Dictionary) -> void:
+	var order := {
+		"type": "planet_settings",
+		"planet": info["id"],
+		"leftover_to_research": info["leftover_to_research"],
+		"mass_driver_target": info["mass_driver_target"],
+		"mass_driver_warp": info["mass_driver_warp"],
+		"route": info["route"],
+	}
+	order.merge(changes, true)
+	status_text = ""
+	_order(order, true)
 
 
 func _cycle_planet(delta: int) -> void:
@@ -318,25 +440,77 @@ func _fleet_tiles() -> void:
 		t.field(MINERALS[i], "%dkT" % held[i], ClassicTheme.CARGO_COLORS[i])
 	t.field("Colonists", "%dkT" % held[3], ClassicTheme.CARGO_COLORS[3])
 	t = _tile("Fleet Composition")
+	var ships := RowList.new(LIST_HEIGHT)
+	var ship_rows: Array[Dictionary] = []
 	for s: Dictionary in info["ships"]:
-		t.line("%d × %s" % [s["count"], s["name"]])
+		ship_rows.append(
+			{"left": s["name"], "right": str(s["count"]), "bar": s["damage"], "bar_colour": DAMAGE}
+		)
+	ships.set_rows(ship_rows, -1)
+	t.body.add_child(ships)
+	var plans: Array = view.me().battle_plans
+	var plan := OptionButton.new()
+	for p: Dictionary in plans:
+		plan.add_item(p["name"])
+	if info["battle_plan"] < plan.item_count:
+		plan.select(info["battle_plan"])
+	plan.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	plan.item_selected.connect(
+		func(i: int) -> void:
+			_order(
+				{
+					"type": "fleet_battle_plan",
+					"owner": GameSession.PLAYER,
+					"fleet": id,
+					"plan": i,
+				},
+				true
+			)
+	)
 	r = t.row()
-	t.button("Split off one", _split, r)
+	var plan_label := Label.new()
+	plan_label.text = "Battle Plan:"
+	plan_label.theme_type_variation = "BoldLabel"
+	r.add_child(plan_label)
+	r.add_child(plan)
+	var est: int = info["est_range"]
+	var range_text := "-"
+	if est >= Movement.CANNOT_MOVE:
+		range_text = "Infinite"
+	elif est >= 0:
+		range_text = "%s l.y." % thousands(est)
+	t.field("Est. Range", range_text)
+	r = t.row()
+	t.button("Split", _open_split.bind(info), r)
+	t.button("Split All", _split_all.bind(info), r)
+	t.button("Merge", _open_merge.bind(info), r)
 	t = _tile("Other Fleets Here")
 	var numbers: Array[int] = []
 	for f in view.fleets():
 		if f.number != id and f.x == info["x"] and f.y == info["y"]:
 			numbers.append(f.number)
-	if numbers.is_empty():
-		t.line("None")
-	else:
-		var others := OptionButton.new()
-		for n in numbers:
-			others.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
-		t.body.add_child(others)
-		r = t.row()
-		t.button("Goto", func() -> void: goto.emit("fleet", numbers[others.selected]), r)
-		t.button("Merge all here", _merge, r)
+	var others := OptionButton.new()
+	for n in numbers:
+		others.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
+	others.disabled = numbers.is_empty()
+	t.body.add_child(others)
+	var other_fuel := t.gauge("Fuel")
+	var other_cargo := t.gauge("Cargo")
+	var show_other := func(i: int) -> void:
+		if i >= 0 and i < numbers.size():
+			fill_gauges(view.fleet_info(numbers[i]), other_fuel, other_cargo)
+	others.item_selected.connect(show_other)
+	show_other.call(0)
+	r = t.row()
+	var buttons: Array[Button] = [
+		t.button("Goto", func() -> void: goto.emit("fleet", numbers[others.selected]), r),
+		t.button("Merge", func() -> void: _merge_with([numbers[others.selected]]), r),
+	]
+	var cargo_button := t.button("Cargo", func() -> void: pass, r)
+	cargo_button.disabled = true
+	cargo_button.tooltip_text = "Cargo transfer isn't built yet."
+	for b in buttons:
+		b.disabled = numbers.is_empty()
 	_waypoint_tiles(info)
 
 
@@ -346,24 +520,53 @@ func _waypoint_tiles(info: Dictionary) -> void:
 		_waypoint = waypoints.size() - 1
 	waypoint_selected.emit(_waypoint)
 	var t := _tile("Fleet Waypoints")
-	t.line("Shift+click in the scanner adds a waypoint after the selected one; drag to move it.")
-	var list := ItemList.new()
-	list.custom_minimum_size = Vector2(0, LIST_HEIGHT)
+	var list := RowList.new(LIST_HEIGHT)
 	_waypoint_list = list
-	for i in waypoints.size():
-		list.add_item("")
-	_fill_waypoint_rows(waypoints)
-	if _waypoint >= 0:
-		list.select(_waypoint)
-	list.item_selected.connect(
+	var rows: Array[Dictionary] = []
+	for wp: Dictionary in waypoints:
+		rows.append({"left": wp["label"]})
+	list.set_rows(rows, _waypoint)
+	list.row_selected.connect(
 		func(i: int) -> void:
 			_waypoint = i
 			_queue_rebuild()
 	)
+	list.key_pressed.connect(
+		func(key: Key) -> void:
+			if key == KEY_DELETE or key == KEY_BACKSPACE:
+				_delete_waypoint()
+	)
 	t.body.add_child(list)
-	var r := t.row()
+	# the leg the details describe: the selected waypoint's, or the next one from waypoint 0
+	var leg := _waypoint if _waypoint > 0 else 1
+	_leg_fields.clear()
+	if leg < waypoints.size():
+		var wp: Dictionary = waypoints[leg]
+		if _waypoint > 0:
+			t.field("Coming From", waypoints[leg - 1]["label"])
+		else:
+			t.field("Next Way Pt", wp["label"])
+		t.field("Distance", "%.2f Light Years" % wp["distance"])
+		var gauge := t.gauge("Warp Factor", WarpGauge.new()) as WarpGauge
+		gauge.set_value(wp["warp"])
+		gauge.value_dragged.connect(
+			func(v: int) -> void:
+				_live = true
+				_change_waypoint_at(leg, wp, v, wp["task"], wp["task_data"])
+		)
+		gauge.value_set.connect(
+			func(v: int) -> void:
+				_live = false
+				_change_waypoint_at(leg, wp, v, wp["task"], wp["task_data"])
+		)
+		_leg_fields["time"] = t.field("Travel Time", "")
+		_leg_fields["fuel"] = t.field("Est Fuel Usage", "")
+		_leg_fields["leg"] = leg
+		_fill_leg_fields(waypoints)
+	else:
+		t.field("Next Way Pt", "None")
 	var repeat := CheckBox.new()
-	repeat.text = "Repeat orders"
+	repeat.text = "Repeat Orders"
 	repeat.button_pressed = info["repeat"]
 	repeat.toggled.connect(
 		func(on: bool) -> void:
@@ -372,22 +575,17 @@ func _waypoint_tiles(info: Dictionary) -> void:
 				true
 			)
 	)
-	r.add_child(repeat)
-	t.button("Delete", _delete_waypoint, r)
+	t.body.add_child(repeat)
 	if _waypoint < 0:
 		return
-	var wp: Dictionary = waypoints[_waypoint]
-	if _waypoint > 0:
-		_warp_slider(t, wp)
+	var wp_here: Dictionary = waypoints[_waypoint]
 	t = _tile("Waypoint Task")
-	if _waypoint == 0:
-		t.line("Here, before the fleet moves:")
 	var task := OptionButton.new()
 	for i in TASKS.size():
 		task.add_item(TASKS[i][1])
 		var needs: String = TASKS[i][2]
-		task.set_item_disabled(i, not needs.is_empty() and needs != wp["target"])
-	task.select(_index_of(TASKS, wp["task"]))
+		task.set_item_disabled(i, not needs.is_empty() and needs != wp_here["target"])
+	task.select(_index_of(TASKS, wp_here["task"]))
 	task.item_selected.connect(
 		func(i: int) -> void:
 			var name: String = TASKS[i][0]
@@ -396,113 +594,92 @@ func _waypoint_tiles(info: Dictionary) -> void:
 				data = {"cargo": _empty_cargo()}
 			elif name != "none":
 				data = {"raw": [0, 0, 0, 0, 0]}
-			_change_waypoint(wp, wp["warp"], name, data)
+			_change_waypoint(wp_here, wp_here["warp"], name, data)
 	)
 	t.body.add_child(task)
-	match wp["task"]:
+	match wp_here["task"]:
 		"transport":
-			_transport_grid(t, wp)
+			_transport_task(t, wp_here)
 		"transfer":
-			_transfer_choice(t, wp)
+			_transfer_choice(t, wp_here)
 		"lay_mines", "patrol":
 			t.line("Not carried out yet: minefields and battles come later (M7, M9).")
 
 
-## The leg's warp as a slider (0 to 10). Every step sends the warp (amend_order keeps it one
-## order); while dragging, the label and the waypoint rows follow the slider and the pane is
-## rebuilt only when the drag ends.
-## Sets each row of the Fleet Waypoints list: label, then warp, years and fuel for each leg, with
-## a warning in red (except on the selected row, which keeps the selection colours). Color() is
-## ItemList's "no custom colour".
-func _fill_waypoint_rows(waypoints: Array) -> void:
-	for i in mini(waypoints.size(), _waypoint_list.item_count):
-		var wp: Dictionary = waypoints[i]
-		var text: String = wp["label"]
-		var warn := false
-		if i > 0:
-			text += "   warp %d, %d yr, fuel %d" % [wp["warp"], wp["years"], wp["fuel"]]
-			warn = wp["cannot_move"] or wp["short_of_fuel"]
-			if wp["cannot_move"]:
-				text += "  (can't move)"
-			elif wp["warp"] == 0:
-				text += "  (warp 0: stays)"
-			elif wp["short_of_fuel"]:
-				text += "  (not enough fuel)"
-		_waypoint_list.set_item_text(i, text)
-		var colour := COLOR_WARNING if warn and i != _waypoint else Color()
-		_waypoint_list.set_item_custom_fg_color(i, colour)
+## The leg's travel time (years for that leg) and fuel, the fuel in red when the fleet runs short.
+func _fill_leg_fields(waypoints: Array) -> void:
+	var leg: int = _leg_fields.get("leg", -1)
+	if leg < 1 or leg >= waypoints.size():
+		return
+	var wp: Dictionary = waypoints[leg]
+	var years: int = wp["years"] - (waypoints[leg - 1].get("years", 0) if leg > 1 else 0)
+	var time: Label = _leg_fields["time"]
+	time.text = "Never" if wp["warp"] == 0 or wp["cannot_move"] else "%d years" % years
+	if years == 1 and wp["warp"] > 0 and not wp["cannot_move"]:
+		time.text = "1 year"
+	var fuel: Label = _leg_fields["fuel"]
+	fuel.text = "%dmg" % wp["fuel"]
+	var short: bool = wp["short_of_fuel"] or wp["cannot_move"]
+	if short:
+		fuel.add_theme_color_override("font_color", ClassicTheme.CARGO_COLORS[4])
+	else:
+		fuel.remove_theme_color_override("font_color")
 
 
-## While a warp slider is dragged: the list's rows from the order preview.
+## While the warp gauge is dragged: the leg's fields from the order preview.
 func _refresh_waypoint_rows() -> void:
 	var info := GameSession.view.fleet_info(id)
-	if info.is_empty() or not is_instance_valid(_waypoint_list):
+	if info.is_empty() or _leg_fields.is_empty():
 		return
-	_fill_waypoint_rows(info["waypoints"])
+	var time: Variant = _leg_fields.get("time")
+	if time == null or not is_instance_valid(time):
+		return
+	_fill_leg_fields(info["waypoints"])
 
 
-func _warp_slider(t: Tile, wp: Dictionary) -> void:
-	var r := t.row()
-	var label := Label.new()
-	label.custom_minimum_size = Vector2(WARP_LABEL_WIDTH, 0)
-	label.text = _warp_text(wp["warp"])
-	r.add_child(label)
-	var slider := HSlider.new()
-	slider.max_value = MAX_WARP
-	slider.step = 1
-	slider.tick_count = MAX_WARP + 1
-	slider.ticks_on_borders = true
-	slider.value = wp["warp"]
-	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	r.add_child(slider)
-	slider.drag_started.connect(func() -> void: _live = true)
-	slider.drag_ended.connect(
-		func(_changed: bool) -> void:
-			_live = false
+## The transport task, as in the original: a cargo type dropdown (green when that type has an
+## action), then that type's action and amount with its unit.
+func _transport_task(t: Tile, wp: Dictionary) -> void:
+	var cargo: Array = wp["task_data"].get("cargo", _empty_cargo())
+	var kind_choice := OptionButton.new()
+	for c in CARGO.size():
+		kind_choice.add_item(CARGO[c])
+	_cargo_shown = clampi(_cargo_shown, 0, CARGO.size() - 1)
+	kind_choice.select(_cargo_shown)
+	if cargo[_cargo_shown]["action"] != "none":
+		kind_choice.add_theme_color_override("font_color", ACTION_SET)
+		kind_choice.add_theme_color_override("font_hover_color", ACTION_SET)
+	kind_choice.item_selected.connect(
+		func(i: int) -> void:
+			_cargo_shown = i
 			_queue_rebuild()
 	)
-	slider.value_changed.connect(
-		func(v: float) -> void:
-			label.text = _warp_text(int(v))
-			_change_waypoint(wp, int(v), wp["task"], wp["task_data"])
+	t.body.add_child(kind_choice)
+	var r := t.row()
+	var c := _cargo_shown
+	var current: String = cargo[c]["action"]
+	var action := OptionButton.new()
+	for a: Array in ACTIONS:
+		action.add_item(a[1])
+	action.select(_index_of(ACTIONS, current))
+	action.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	r.add_child(action)
+	var amount := LineEdit.new()
+	amount.text = str(cargo[c]["amount"])
+	amount.custom_minimum_size = Vector2(AMOUNT_WIDTH, 0)
+	amount.editable = not NO_AMOUNT.has(current)
+	amount.alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	r.add_child(amount)
+	var unit := Label.new()
+	unit.text = "%" if PERCENT.has(current) else ("mg" if c == Fleet.CARGO_FUEL else "kT")
+	r.add_child(unit)
+	action.item_selected.connect(
+		func(i: int) -> void: _set_cargo_action(wp, c, ACTIONS[i][0], amount.text.to_int())
 	)
-
-
-static func _warp_text(warp: int) -> String:
-	return "Stopped" if warp == 0 else "Warp %d" % warp
-
-
-func _transport_grid(t: Tile, wp: Dictionary) -> void:
-	var grid := GridContainer.new()
-	grid.columns = 3
-	t.body.add_child(grid)
-	var cargo: Array = wp["task_data"].get("cargo", _empty_cargo())
-	for c in CARGO.size():
-		var label := Label.new()
-		label.text = CARGO[c]
-		grid.add_child(label)
-		var action := OptionButton.new()
-		for a: Array in ACTIONS:
-			action.add_item(a[1])
-		var current: String = cargo[c]["action"]
-		action.select(_index_of(ACTIONS, current))
-		grid.add_child(action)
-		var amount := SpinBox.new()
-		amount.max_value = 100 if PERCENT.has(current) else 4095
-		amount.suffix = "%" if PERCENT.has(current) else ("mg" if c == Fleet.CARGO_FUEL else "kT")
-		amount.value = cargo[c]["amount"]
-		amount.editable = not NO_AMOUNT.has(current)
-		grid.add_child(amount)
-		var cargo_type := c
-		action.item_selected.connect(
-			func(i: int) -> void:
-				_set_cargo_action(wp, cargo_type, ACTIONS[i][0], int(amount.value))
-		)
-		amount.value_changed.connect(
-			func(v: float) -> void:
-				_set_cargo_action(wp, cargo_type, ACTIONS[action.selected][0], int(v))
-		)
+	var send_amount := func(_text: String = "") -> void:
+		_set_cargo_action(wp, c, ACTIONS[action.selected][0], clampi(amount.text.to_int(), 0, 4095))
+	amount.text_submitted.connect(send_amount)
+	amount.focus_exited.connect(send_amount)
 
 
 ## The transfer task's receiver: task data word 0 counts the players without the giver (S11).
@@ -542,6 +719,13 @@ func _set_cargo_action(wp: Dictionary, c: int, action: String, amount: int) -> v
 
 
 func _change_waypoint(wp: Dictionary, warp: int, task: String, data: Dictionary) -> void:
+	_change_waypoint_at(_waypoint, wp, warp, task, data)
+
+
+## Changes waypoint `index` (from its fleet_info row `wp`); repeated edits stay one order.
+func _change_waypoint_at(
+	index: int, wp: Dictionary, warp: int, task: String, data: Dictionary
+) -> void:
 	status_text = (
 		GameSession
 		. amend_order(
@@ -549,7 +733,7 @@ func _change_waypoint(wp: Dictionary, warp: int, task: String, data: Dictionary)
 				"type": "waypoint_change",
 				"owner": GameSession.PLAYER,
 				"fleet": id,
-				"index": _waypoint,
+				"index": index,
 				"waypoint": waypoint_order(wp, {"warp": warp, "task": task, "task_data": data}),
 			}
 		)
@@ -606,13 +790,25 @@ func _rename(text: String) -> void:
 	)
 
 
-func _merge() -> void:
-	_order({"type": "fleet_merge", "owner": GameSession.PLAYER, "fleet": id, "fleets": []})
+func _open_merge(info: Dictionary) -> void:
+	var numbers: Array[int] = []
+	var names := PackedStringArray()
+	for f in GameSession.view.fleets():
+		if f.number != id and f.x == info["x"] and f.y == info["y"]:
+			numbers.append(f.number)
+			names.append(GameSession.view.fleet_name(f))
+	if numbers.is_empty():
+		status_text = "No other fleet of yours is here."
+		_queue_rebuild()
+		return
+	_merge_dialog.open(numbers, names)
 
 
-## Splits one ship of the first design off into a new fleet.
-func _split() -> void:
-	var info := GameSession.view.fleet_info(id)
+func _merge_with(fleets: Array[int]) -> void:
+	_order({"type": "fleet_merge", "owner": GameSession.PLAYER, "fleet": id, "fleets": fleets})
+
+
+func _open_split(info: Dictionary) -> void:
 	var total := 0
 	for s: Dictionary in info["ships"]:
 		total += s["count"]
@@ -620,6 +816,11 @@ func _split() -> void:
 		status_text = "A fleet of one ship can't be split."
 		_queue_rebuild()
 		return
+	_split_dialog.open(info["name"], info["ships"])
+
+
+## A new fleet (the lowest free number) gets `ships` ([{design, count}]) from this one.
+func _split_off(ships: Array) -> void:
 	var used := {}
 	for f in GameSession.view.fleets():
 		used[f.number] = true
@@ -634,9 +835,22 @@ func _split() -> void:
 				"owner": GameSession.PLAYER,
 				"fleet": free,
 				"other": id,
-				"ships": [{"design": info["ships"][0]["design"], "count": 1}],
+				"ships": ships,
 			}
 		)
+
+
+## Split All: every ship design after the first goes to a fleet of its own.
+func _split_all(info: Dictionary) -> void:
+	var ships: Array = info["ships"]
+	if ships.size() < 2:
+		status_text = "This fleet has only one kind of ship."
+		_queue_rebuild()
+		return
+	for i in range(1, ships.size()):
+		_split_off([{"design": ships[i]["design"], "count": ships[i]["count"]}])
+		if not status_text.is_empty():
+			return
 
 
 func _cycle_fleet(delta: int) -> void:

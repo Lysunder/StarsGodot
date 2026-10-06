@@ -127,6 +127,39 @@ static func armor(design: Design, content: ContentRegistry, race: Race = null) -
 	return total
 
 
+## A starbase design's mass driver speed (S09, S14): the best `driver_warp` among its parts, one
+## more when two parts share that best speed; 0 without a driver.
+static func driver_warp(design: Design, content: ContentRegistry) -> int:
+	var best := 0
+	var pair := 0
+	for s in design.parts:
+		if s.count == 0 or s.part.is_empty():
+			continue
+		var w: int = content.part(s.part).get("stats", {}).get("driver_warp", 0)
+		if w > best:
+			best = w
+			pair = 0
+		elif w == best and w > 0:
+			pair = 1
+	return best + pair if best > 0 else 0
+
+
+## The best part of `category` with `stat` the player can use (highest stat), or "".
+static func best_part(
+	category: String, stat: String, player: Player, content: ContentRegistry
+) -> String:
+	var order := tech_order(content)
+	var best := ""
+	var best_value := 0
+	for id in content.ids("part"):
+		var part := content.part(id)
+		var value: int = part.get("stats", {}).get(stat, 0)
+		if part["category"] == category and value > best_value and available(part, player, order):
+			best = id
+			best_value = value
+	return best
+
+
 ## Tech field id -> index in tech level arrays (the fields' `order`).
 static func tech_order(content: ContentRegistry) -> Dictionary:
 	var out := {}

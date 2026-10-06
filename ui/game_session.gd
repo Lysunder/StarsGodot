@@ -15,6 +15,8 @@ var orders: OrderSet = null
 var preview: OrderPreview = null
 var view: PlayerView = null
 var game_version: String = "0.1.0"
+## Orders changed since the game was last saved or loaded (the Messages pane's "*").
+var dirty: bool = false
 
 
 func _ready() -> void:
@@ -56,6 +58,9 @@ func save_game(path: String) -> Error:
 	var err := SaveStore.write(path, state, game_version)
 	if err == OK:
 		err = OrderFile.write(path + ".orders", orders, game_version)
+	if err == OK:
+		dirty = false
+		changed.emit()
 	return err
 
 
@@ -66,6 +71,7 @@ func default_save_path() -> String:
 ## Adds an order; returns "" or why it was rejected (a rejected order is not kept).
 func add_order(order: Dictionary) -> String:
 	orders.add(order)
+	dirty = true
 	_refresh()
 	var reason := _rejection_of(orders.orders.size() - 1)
 	if not reason.is_empty():
@@ -108,12 +114,14 @@ func end_turn() -> PackedStringArray:
 	var sets: Array[OrderSet] = [orders]
 	var rejected := StandardTurn.generate(state, content, sets)
 	orders = OrderSet.new(PLAYER, state.turn)
+	dirty = true
 	_refresh()
 	return rejected
 
 
 func _start(s: GameState) -> void:
 	state = s
+	dirty = false
 	orders = OrderSet.new(PLAYER, state.turn)
 	_refresh()
 

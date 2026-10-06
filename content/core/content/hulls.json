@@ -19,7 +19,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -27,15 +31,29 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          3
+        ]
       }
+    ],
+    "cargo_area": [
+      3,
+      3,
+      5,
+      5
     ]
   },
   {
@@ -61,7 +79,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
@@ -69,15 +91,29 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          8,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       }
+    ],
+    "cargo_area": [
+      2,
+      3,
+      6,
+      5
     ]
   },
   {
@@ -103,7 +139,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
@@ -111,15 +151,29 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          4
+        ]
       }
+    ],
+    "cargo_area": [
+      2,
+      2,
+      6,
+      6
     ]
   },
   {
@@ -145,7 +199,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          0,
+          4
+        ]
       },
       {
         "accepts": [
@@ -153,24 +211,42 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          8,
+          2
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 5
+        "max": 5,
+        "at": [
+          8,
+          4
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          8,
+          6
+        ]
       }
     ],
     "required_traits": [
       "trait.prt.IS"
+    ],
+    "cargo_area": [
+      2,
+      2,
+      8,
+      8
     ]
   },
   {
@@ -192,13 +268,21 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "scanner"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       },
       {
         "accepts": [
@@ -211,7 +295,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          3
+        ]
       }
     ]
   },
@@ -237,13 +325,21 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
           "scanner"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
@@ -256,14 +352,22 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          3
+        ]
       }
     ]
   },
@@ -289,21 +393,33 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          7
+        ]
       },
       {
         "accepts": [
@@ -316,25 +432,41 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          6
+        ]
       }
     ]
   },
@@ -360,7 +492,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -368,7 +504,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
@@ -376,21 +516,33 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          5
+        ]
       },
       {
         "accepts": [
@@ -403,14 +555,22 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          3
+        ]
       }
     ]
   },
@@ -436,7 +596,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -444,7 +608,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
@@ -452,21 +620,33 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          5
+        ]
       },
       {
         "accepts": [
@@ -479,14 +659,22 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          5,
+          3
+        ]
       }
     ],
     "required_traits": [
@@ -515,7 +703,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
@@ -523,66 +715,106 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          8,
+          3
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 6
+        "max": 6,
+        "at": [
+          4,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 6
+        "max": 6,
+        "at": [
+          4,
+          5
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          0
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          6
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
           "armor"
         ],
-        "max": 6
+        "max": 6,
+        "at": [
+          4,
+          3
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          4
+        ]
       }
     ]
   },
@@ -608,67 +840,107 @@
         "accepts": [
           "engine"
         ],
-        "max": 5
+        "max": 5,
+        "at": [
+          0,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          0,
+          2
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          0,
+          6
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 6
+        "max": 6,
+        "at": [
+          2,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 6
+        "max": 6,
+        "at": [
+          2,
+          7
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          2,
+          5
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          4,
+          6
+        ]
       },
       {
         "accepts": [
           "armor"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
@@ -676,7 +948,11 @@
           "beam",
           "torpedo"
         ],
-        "max": 5
+        "max": 5,
+        "at": [
+          6,
+          3
+        ]
       },
       {
         "accepts": [
@@ -684,7 +960,11 @@
           "beam",
           "torpedo"
         ],
-        "max": 5
+        "max": 5,
+        "at": [
+          6,
+          5
+        ]
       },
       {
         "accepts": [
@@ -697,7 +977,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          8,
+          4
+        ]
       }
     ],
     "required_traits": [
@@ -727,14 +1011,22 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          1,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
@@ -742,20 +1034,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
-      },
-      {
-        "accepts": [
-          "scanner",
-          "shield",
-          "armor",
-          "beam",
-          "torpedo",
-          "mine_layer",
-          "electrical",
-          "mechanical"
-        ],
-        "max": 1
+        "max": 1,
+        "at": [
+          7,
+          5
+        ]
       },
       {
         "accepts": [
@@ -768,8 +1051,35 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          2
+        ]
+      },
+      {
+        "accepts": [
+          "scanner",
+          "shield",
+          "armor",
+          "beam",
+          "torpedo",
+          "mine_layer",
+          "electrical",
+          "mechanical"
+        ],
+        "max": 1,
+        "at": [
+          5,
+          6
+        ]
       }
+    ],
+    "cargo_area": [
+      3,
+      4,
+      7,
+      6
     ]
   },
   {
@@ -795,14 +1105,22 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
@@ -810,13 +1128,21 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          6
+        ]
       },
       {
         "accepts": [
           "scanner"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          8,
+          4
+        ]
       },
       {
         "accepts": [
@@ -829,7 +1155,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          1
+        ]
       },
       {
         "accepts": [
@@ -842,7 +1172,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          7
+        ]
       },
       {
         "accepts": [
@@ -850,23 +1184,41 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          1
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          7
+        ]
       }
     ],
     "required_traits": [
       "trait.prt.SS"
+    ],
+    "cargo_area": [
+      3,
+      3,
+      6,
+      7
     ]
   },
   {
@@ -892,21 +1244,33 @@
         "accepts": [
           "engine"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          0,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          1
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          7
+        ]
       },
       {
         "accepts": [
@@ -919,7 +1283,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          1
+        ]
       },
       {
         "accepts": [
@@ -932,7 +1300,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          7
+        ]
       },
       {
         "accepts": [
@@ -940,21 +1312,39 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          3
+        ]
       },
       {
         "accepts": [
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          5
+        ]
       },
       {
         "accepts": [
           "scanner"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          8,
+          4
+        ]
       }
+    ],
+    "cargo_area": [
+      2,
+      3,
+      6,
+      7
     ]
   },
   {
@@ -977,17 +1367,31 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       }
     ],
     "required_traits": [
       "trait.prt.HE"
+    ],
+    "cargo_area": [
+      4,
+      3,
+      6,
+      5
     ]
   },
   {
@@ -1010,14 +1414,28 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       }
+    ],
+    "cargo_area": [
+      4,
+      3,
+      6,
+      5
     ]
   },
   {
@@ -1042,13 +1460,21 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          3
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          3
+        ]
       }
     ]
   },
@@ -1074,19 +1500,31 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          3
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          5,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1094,7 +1532,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          7,
+          3
+        ]
       }
     ]
   },
@@ -1120,19 +1562,31 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1140,13 +1594,21 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          6,
+          4
+        ]
       }
     ],
     "required_traits": [
@@ -1175,31 +1637,51 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          1
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          5
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          5,
+          2
+        ]
       },
       {
         "accepts": [
           "bomb"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          5,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1207,13 +1689,21 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          3
+        ]
       }
     ]
   },
@@ -1236,13 +1726,21 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          3
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          3
+        ]
       }
     ],
     "required_traits": [
@@ -1274,7 +1772,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1282,19 +1784,31 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          4
+        ]
       }
     ]
   },
@@ -1320,7 +1834,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1329,31 +1847,51 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          4
+        ]
       }
     ],
     "required_traits": [
@@ -1385,7 +1923,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1394,31 +1936,51 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          4
+        ]
       }
     ],
     "forbidden_traits": [
@@ -1447,7 +2009,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1456,31 +2022,51 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          7,
+          3
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          2
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "mining_robot"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          5,
+          4
+        ]
       }
     ],
     "required_traits": [
@@ -1512,13 +2098,21 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          3,
+          3
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          5,
+          3
+        ]
       }
     ],
     "required_traits": [
@@ -1547,19 +2141,31 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          3
+        ]
       },
       {
         "accepts": [
           "scanner"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       }
     ]
   },
@@ -1585,19 +2191,31 @@
         "accepts": [
           "engine"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
           "mine_layer"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "mine_layer"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1605,7 +2223,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          3
+        ]
       }
     ],
     "required_traits": [
@@ -1637,26 +2259,42 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          1,
+          3
+        ]
       },
       {
         "accepts": [
           "mine_layer"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          3,
+          2
+        ]
       },
       {
         "accepts": [
           "mine_layer"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          3,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1664,7 +2302,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          7,
+          2
+        ]
       },
       {
         "accepts": [
@@ -1672,7 +2314,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          7,
+          4
+        ]
       }
     ],
     "required_traits": [
@@ -1701,7 +2347,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          0,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1714,7 +2364,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          0,
+          2
+        ]
       },
       {
         "accepts": [
@@ -1727,7 +2381,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          0,
+          6
+        ]
       },
       {
         "accepts": [
@@ -1740,7 +2398,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          1
+        ]
       },
       {
         "accepts": [
@@ -1753,7 +2415,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          7
+        ]
       },
       {
         "accepts": [
@@ -1766,7 +2432,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1779,7 +2449,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          5
+        ]
       },
       {
         "accepts": [
@@ -1792,7 +2466,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
@@ -1805,7 +2483,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          4,
+          6
+        ]
       },
       {
         "accepts": [
@@ -1818,7 +2500,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1831,7 +2517,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          6,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1844,7 +2534,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          6,
+          5
+        ]
       },
       {
         "accepts": [
@@ -1857,7 +2551,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          8,
+          4
+        ]
       }
     ]
   },
@@ -1884,7 +2582,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1897,7 +2599,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1910,7 +2616,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
@@ -1923,7 +2633,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
@@ -1936,7 +2650,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          8,
+          3
+        ]
       },
       {
         "accepts": [
@@ -1949,7 +2667,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          1
+        ]
       },
       {
         "accepts": [
@@ -1962,8 +2684,18 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          5
+        ]
       }
+    ],
+    "cargo_area": [
+      4,
+      2,
+      6,
+      6
     ]
   },
   {
@@ -1989,7 +2721,11 @@
         "accepts": [
           "engine"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
@@ -2002,7 +2738,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 8
+        "max": 8,
+        "at": [
+          2,
+          3
+        ]
       },
       {
         "accepts": [
@@ -2015,7 +2755,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
@@ -2028,7 +2772,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
@@ -2041,7 +2789,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          8,
+          3
+        ]
       },
       {
         "accepts": [
@@ -2054,7 +2806,11 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          1
+        ]
       },
       {
         "accepts": [
@@ -2067,11 +2823,21 @@
           "electrical",
           "mechanical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          2,
+          5
+        ]
       }
     ],
     "required_traits": [
       "trait.prt.HE"
+    ],
+    "cargo_area": [
+      4,
+      2,
+      6,
+      6
     ]
   },
   {
@@ -2095,35 +2861,55 @@
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 12
+        "max": 12,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 12
+        "max": 12,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 12
+        "max": 12,
+        "at": [
+          4,
+          6
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 12
+        "max": 12,
+        "at": [
+          2,
+          4
+        ]
       }
     ]
   },
@@ -2152,57 +2938,95 @@
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          2
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          4,
+          1
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 24
+        "max": 24,
+        "at": [
+          1,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          7,
+          4
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 24
+        "max": 24,
+        "at": [
+          4,
+          7
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 2
+        "max": 2,
+        "at": [
+          6,
+          6
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          2,
+          6
+        ]
       }
     ],
     "required_traits": [
       "trait.lrt.ISB"
+    ],
+    "cargo_area": [
+      4,
+      4,
+      6,
+      6
     ]
   },
   {
@@ -2227,81 +3051,135 @@
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          2,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          5,
+          0
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          3,
+          0
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          8,
+          5
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          0,
+          5
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          5,
+          8
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          4,
+          6
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          3,
+          8
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          8,
+          3
+        ]
       }
+    ],
+    "cargo_area": [
+      4,
+      4,
+      6,
+      6
     ]
   },
   {
@@ -2329,110 +3207,180 @@
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          2
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          0,
+          5
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          2,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          8,
+          5
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          2,
+          6
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          6,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          3,
+          0
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          3,
+          8
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          8,
+          3
+        ]
       },
       {
         "accepts": [
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          6
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          6,
+          6
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          0,
+          3
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          2,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 3
+        "max": 3,
+        "at": [
+          5,
+          0
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 16
+        "max": 16,
+        "at": [
+          5,
+          8
+        ]
       }
     ],
     "required_traits": [
       "trait.lrt.ISB"
+    ],
+    "cargo_area": [
+      4,
+      4,
+      6,
+      6
     ]
   },
   {
@@ -2460,108 +3408,178 @@
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          1
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 32
+        "max": 32,
+        "at": [
+          0,
+          6
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          1,
+          4
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          8,
+          6
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 30
+        "max": 30,
+        "at": [
+          2,
+          6
+        ]
       },
       {
         "accepts": [
           "shield"
         ],
-        "max": 30
+        "max": 30,
+        "at": [
+          6,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          7,
+          4
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 32
+        "max": 32,
+        "at": [
+          2,
+          0
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          2,
+          8
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 32
+        "max": 32,
+        "at": [
+          8,
+          2
+        ]
       },
       {
         "accepts": [
           "orbital",
           "electrical"
         ],
-        "max": 1
+        "max": 1,
+        "at": [
+          4,
+          7
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          6,
+          6
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          0,
+          2
+        ]
       },
       {
         "accepts": [
           "shield",
           "armor"
         ],
-        "max": 20
+        "max": 20,
+        "at": [
+          2,
+          2
+        ]
       },
       {
         "accepts": [
           "electrical"
         ],
-        "max": 4
+        "max": 4,
+        "at": [
+          6,
+          0
+        ]
       },
       {
         "accepts": [
           "beam",
           "torpedo"
         ],
-        "max": 32
+        "max": 32,
+        "at": [
+          6,
+          8
+        ]
       }
     ],
     "required_traits": [
       "trait.prt.AR"
+    ],
+    "cargo_area": [
+      4,
+      4,
+      6,
+      6
     ]
   }
 ]

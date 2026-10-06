@@ -87,6 +87,9 @@ func planet_info(id: int) -> Dictionary:
 				"population": pl.population,
 				"surface": pl.surface.duplicate(),
 				"concentration": pl.concentration.duplicate(),
+				"hab_low": race.hab_low.duplicate(),
+				"hab_high": race.hab_high.duplicate(),
+				"terraform_best": _terraform_best(pl),
 			}
 		)
 	)
@@ -111,10 +114,81 @@ func planet_info(id: int) -> Dictionary:
 				"leftover_to_research": pl.leftover_to_research,
 				"route": pl.route,
 				"queue": queue_info(pl),
+				"mined_next_year": _mined_next_year(pl, owner_race),
+				"resources_production": _production_resources(pl, owner_race),
+				"scanner":
+				(
+					PartRules.best_part("planetary", "scan_range", state.player(pl.owner), content)
+					if pl.has_scanner
+					else ""
+				),
+				"defense_type":
+				PartRules.best_part("planetary", "defense", state.player(pl.owner), content),
+				"mass_driver_target": pl.mass_driver_target,
+				"mass_driver_warp": pl.mass_driver_warp,
 			}
 		)
 	)
+	if pl.starbase != null:
+		info["starbase_info"] = _starbase_info(pl)
 	return info
+
+
+## Per axis, how close to the viewer's ideal terraforming could bring the planet with the
+## viewer's tech (S10): its original value moved toward the centre by up to the reach.
+func _terraform_best(pl: Planet) -> Array[int]:
+	var race := me().race
+	var reach := Terraforming.reach(me(), content)
+	var out: Array[int] = []
+	for axis in 3:
+		var from := pl.environment_original[axis]
+		var centre := race.hab_center[axis]
+		if centre < 0:
+			out.append(pl.environment[axis])
+		elif from < centre:
+			out.append(mini(from + reach[axis], centre))
+		else:
+			out.append(maxi(from - reach[axis], centre))
+	return out
+
+
+## Minerals the planet's mines dig up next year (S08), per mineral.
+func _mined_next_year(pl: Planet, race: Race) -> Array[int]:
+	var copy := pl.copy() as Planet
+	PlanetEconomy.mine(copy, race, content, null)
+	var out: Array[int] = []
+	for m in 3:
+		out.append(copy.surface[m] - pl.surface[m])
+	return out
+
+
+## Resources the planet's queue gets this year (S09 step 3): all of them with "leftover to
+## research" or an empty queue, else what the research share leaves.
+func _production_resources(pl: Planet, race: Race) -> int:
+	var r := PlanetEconomy.resources(pl, race, content)
+	if pl.leftover_to_research or pl.queue.is_empty():
+		return r
+	return r - r * state.player(pl.owner).research_percent / 100
+
+
+## A starbase's dock (largest ship mass, -1 unlimited, 0 none), armor, shields, damage (armor
+## points) and mass driver speed.
+func _starbase_info(pl: Planet) -> Dictionary:
+	var d := state.player(pl.owner).starbase_design(pl.starbase.design)
+	if d == null:
+		return {}
+	var shields := 0
+	for slot in d.parts:
+		if not slot.part.is_empty():
+			shields += slot.count * int(content.part(slot.part).get("stats", {}).get("shield", 0))
+	return {
+		"name": d.name,
+		"dock": int(content.hull(d.hull).get("dock", 0)),
+		"armor": PartRules.armor(d, content, state.player(pl.owner).race),
+		"shields": shields,
+		"damage": pl.starbase.damage,
+		"driver_warp": PartRules.driver_warp(d, content),
+	}
 
 
 ## The planet's production queue as display rows.
@@ -176,6 +250,15 @@ func production_inventory(id: int) -> Array[Dictionary]:
 	return out
 
 
+## The cost of one unit of a production_inventory item at the planet (S09 step 1):
+## [ironium, boranium, germanium, resources].
+func unit_cost(id: int, item: Dictionary) -> Array[int]:
+	var q := QueueItem.new(item["item"], 1)
+	if item["item"] == "":
+		q = QueueItem.of_design(item["design"], item["starbase"], 1)
+	return ProductionCosts.unit_cost(state.planet(id), q, me(), content)
+
+
 func design_name(owner: int, slot: int, starbase: bool) -> String:
 	var p := state.player(owner)
 	var d := p.starbase_design(slot) if starbase else p.ship_design(slot)
@@ -207,7 +290,19 @@ func fleet_info(number: int) -> Dictionary:
 	var cargo_capacity := 0
 	for stack in f.stacks:
 		var d := owner.ship_design(stack.design)
-		ships.append({"design": stack.design, "name": d.name, "count": stack.count})
+		(
+			ships
+			. append(
+				{
+					"design": stack.design,
+					"name": d.name,
+					"count": stack.count,
+					# share of the stack's armor lost: damaged_percent of the ships, each by
+					# damage / 500 of its armor (S03)
+					"damage": float(stack.damaged_percent) * stack.damage / (100.0 * 500.0),
+				}
+			)
+		)
 		cargo_capacity += stack.count * PartRules.cargo_capacity(d, content)
 	var waypoints: Array[Dictionary] = []
 	var fuel := f.cargo[Fleet.CARGO_FUEL]
@@ -264,7 +359,29 @@ func fleet_info(number: int) -> Dictionary:
 		"waypoints": waypoints,
 		"repeat": f.repeat,
 		"battle_plan": f.battle_plan,
+		"est_range": _est_range(f, owner),
+		"mass": _fleet_mass(f, owner),
 	}
+
+
+## The fleet's mass: its ships' and its cargo's (fuel weighs nothing).
+func _fleet_mass(f: Fleet, owner: Player) -> int:
+	var total := 0
+	for stack in f.stacks:
+		var d := owner.ship_design(stack.design)
+		if d != null:
+			total += stack.count * PartRules.mass(d, content)
+	for c in Fleet.CARGO_FUEL:
+		total += f.cargo[c]
+	return total
+
+
+## How far the fleet gets on its fuel at the warp of its next waypoint (S12): -1 with no next
+## waypoint or warp 0, Movement.CANNOT_MOVE for no fuel use.
+func _est_range(f: Fleet, owner: Player) -> int:
+	if f.waypoints.size() < 2 or f.waypoints[1].warp <= 0:
+		return -1
+	return Movement.fuel_range(f, owner, mini(f.waypoints[1].warp, 10), content)
 
 
 func _waypoint_label(wp: Waypoint) -> String:
@@ -311,6 +428,7 @@ func research_info() -> Dictionary:
 					"level": p.tech_levels[i],
 					"points": p.research_points[i],
 					"cost": ResearchRules.level_cost(p, i, content, state.settings.slow_tech),
+					"benefits": _next_level_benefits(p, field_id, i),
 				}
 			)
 		)
@@ -321,6 +439,24 @@ func research_info() -> Dictionary:
 		"next": p.next_research_field,
 		"fields": fields,
 	}
+
+
+## Names of the hulls and parts the player can use once `field` reaches its next level and not
+## before (S04 availability), by name.
+func _next_level_benefits(p: Player, field_id: String, index: int) -> PackedStringArray:
+	var order := PartRules.tech_order(content)
+	var later := p.copy() as Player
+	later.tech_levels[index] += 1
+	var out := PackedStringArray()
+	for type_name: String in ["hull", "part"]:
+		for id in content.ids(type_name):
+			var def := content.get_def(type_name, id)
+			if int(def.get("tech", {}).get(field_id, 0)) != later.tech_levels[index]:
+				continue
+			if PartRules.available(def, later, order) and not PartRules.available(def, p, order):
+				out.append(content.display_name(id))
+	out.sort()
+	return out
 
 
 ## Total resources of the player's planets this year.
