@@ -159,9 +159,21 @@ func _on_icon_input(event: InputEvent) -> void:
 	accept_event()
 
 
-## The fleet's ships: each design with how many.
 func _ships_view() -> Control:
-	var info := GameSession.view.fleet_info(id)
+	return ships_view(GameSession.view.fleet_info(id))
+
+
+func _design_view() -> Control:
+	var view := GameSession.view
+	var fleet := view.state.fleet(GameSession.PLAYER, id)
+	if fleet == null:
+		return null
+	var slot: int = FleetOrders.main_design(fleet, view.me(), GameSession.content)[0]
+	return design_view(view.me().ship_design(slot), false)
+
+
+## A fleet's ships (`info` from PlayerView.fleet_info): each design with how many.
+static func ships_view(info: Dictionary) -> Control:
 	if info.is_empty():
 		return null
 	var box := VBoxContainer.new()
@@ -184,14 +196,9 @@ func _ships_view() -> Control:
 	return box
 
 
-## The fleet's main design: its hull picture with the parts in place, and its totals.
-func _design_view() -> Control:
+## A design: its hull picture with the parts in place, and its totals.
+static func design_view(design: Design, starbase: bool) -> Control:
 	var view := GameSession.view
-	var fleet := view.state.fleet(GameSession.PLAYER, id)
-	if fleet == null:
-		return null
-	var slot: int = FleetOrders.main_design(fleet, view.me(), GameSession.content)[0]
-	var design := view.me().ship_design(slot)
 	if design == null:
 		return null
 	var box := VBoxContainer.new()
@@ -207,7 +214,7 @@ func _design_view() -> Control:
 	schematic.fit_to_hull()
 	schematic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(schematic)
-	var stats := view.designer.design_stats(design, false)
+	var stats := view.designer.design_stats(design, starbase)
 	var grid := GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 16)

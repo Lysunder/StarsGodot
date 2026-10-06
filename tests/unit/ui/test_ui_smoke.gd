@@ -489,6 +489,56 @@ func test_message_filters_hide_a_type_until_shown() -> void:
 	await get_tree().process_frame
 
 
+func test_reports_window_cycles_sorts_and_goes_to_rows() -> void:
+	_new_game()
+	ReportSettings.path = "user://test_report_settings.cfg"
+	DirAccess.remove_absolute(ReportSettings.path)
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var reports := screen._reports
+	reports.cycle()
+	assert_bool(reports.visible).is_true()
+	assert_str(reports.title).is_equal("Planet Summary Report -- 1 Planet")
+	reports.cycle()
+	assert_str(reports.title).starts_with("Fleet Summary Report -- ")
+	var count := GameSession.view.fleets().size()
+	assert_int(reports.table.rows.size()).is_equal(count)
+	# sort by name in reverse through the column menu; the fleet Prev / Next follow it
+	reports._on_header_clicked("name", Vector2.ZERO)
+	reports._on_menu_item(1)
+	var first: int = reports.table.rows[0]["number"]
+	assert_array(ReportSettings.fleet_order()).contains_exactly(
+		reports.table.rows.map(func(r: Dictionary) -> int: return r["number"])
+	)
+	# hide a column, then show it again
+	reports._on_header_clicked("mass", Vector2.ZERO)
+	reports._on_menu_item(reports._menu_actions.size() - 1)
+	assert_bool(reports.table.columns.has("mass")).is_false()
+	reports._on_header_clicked("name", Vector2.ZERO)
+	reports._on_menu_item(reports._menu_actions.size() - 1)
+	assert_bool(reports.table.columns.has("mass")).is_true()
+	# clicking a row puts the fleet under command; Composition shows its ships while held
+	reports._on_cell_pressed(reports.table.rows[0], "name", MOUSE_BUTTON_LEFT, Vector2(10, 10))
+	assert_str(screen._command.kind).is_equal("fleet")
+	assert_int(screen._command.id).is_equal(first)
+	reports._on_cell_pressed(
+		reports.table.rows[0], "composition", MOUSE_BUTTON_LEFT, Vector2(10, 10)
+	)
+	assert_bool(reports._popup.visible).is_true()
+	reports.table.released.emit()
+	assert_bool(reports._popup.visible).is_false()
+	reports.cycle()
+	reports.cycle()
+	assert_str(reports.title).is_equal("Battle Summary Report -- 0 Battles")
+	reports.cycle()
+	assert_bool(reports.visible).is_false()
+	DirAccess.remove_absolute(ReportSettings.path)
+	ReportSettings.path = ClassicTheme.SETTINGS_PATH
+	screen.queue_free()
+	await get_tree().process_frame
+
+
 func test_summary_fleet_popups_show_while_held() -> void:
 	_new_game()
 	var screen := GameScreen.new()

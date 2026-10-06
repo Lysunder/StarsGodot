@@ -385,11 +385,14 @@ func _set_planet(info: Dictionary, changes: Dictionary) -> void:
 	_order(order, true)
 
 
+## Opens the Production dialog for one of the player's planets.
+func open_production(planet: int) -> void:
+	_production.open(planet)
+
+
+## Prev / Next: the player's planets in the Planet report's order.
 func _cycle_planet(delta: int) -> void:
-	var ids: Array[int] = []
-	for pl in GameSession.view.planets():
-		if pl["mine"]:
-			ids.append(pl["id"])
+	var ids := ReportSettings.planet_order()
 	if ids.is_empty():
 		return
 	var at := maxi(ids.find(id), 0)
@@ -801,8 +804,13 @@ func _on_cargo_gauge_input(event: InputEvent, info: Dictionary) -> void:
 	var click: bool = (
 		event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
 	)
-	if not click:
-		return
+	if click:
+		open_cargo(info)
+
+
+## Opens the cargo transfer of the fleet under command (`info` its fleet_info) with its planet if
+## it is the player's, else with another of the player's fleets here.
+func open_cargo(info: Dictionary) -> void:
 	var planet: int = info["planet"]
 	if planet >= 0 and GameSession.view.planet_info(planet)["mine"]:
 		_cargo.open_with_planet(id, planet)
@@ -878,10 +886,9 @@ func _split_all(info: Dictionary) -> void:
 			return
 
 
+## Prev / Next: the player's fleets in the Fleet report's order.
 func _cycle_fleet(delta: int) -> void:
-	var numbers: Array[int] = []
-	for f in GameSession.view.fleets():
-		numbers.append(f.number)
+	var numbers := ReportSettings.fleet_order()
 	if numbers.is_empty():
 		return
 	var at := maxi(numbers.find(id), 0)

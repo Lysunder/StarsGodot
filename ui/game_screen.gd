@@ -18,6 +18,8 @@ const MENU_RESEARCH := 10
 const MENU_DESIGN := 11
 const MENU_END_TURN := 20
 const MENU_ABOUT := 40
+## Report menu items are this plus the index in ReportView.REPORTS.
+const MENU_REPORT := 50
 ## View > Font items are this plus the index in ClassicTheme.FONTS.
 const MENU_FONT := 30
 
@@ -28,6 +30,7 @@ var _messages: MessagesPane
 var _status: ScannerStatus
 var _research: ResearchDialog
 var _designer: ShipDesigner
+var _reports: ReportsWindow
 var _about: AcceptDialog
 
 
@@ -82,6 +85,13 @@ func _ready() -> void:
 	add_child(_research)
 	_designer = ShipDesigner.new()
 	add_child(_designer)
+	_reports = ReportsWindow.new()
+	_reports.goto.connect(_on_goto)
+	_reports.production_requested.connect(_command.open_production)
+	_reports.cargo_requested.connect(
+		func(number: int) -> void: _command.open_cargo(GameSession.view.fleet_info(number))
+	)
+	add_child(_reports)
 	_about = AcceptDialog.new()
 	_about.title = "About StarsGodot"
 	_about.dialog_text = (
@@ -126,8 +136,11 @@ func _build_menu() -> void:
 	menu.add_child(commands)
 	var report := PopupMenu.new()
 	report.name = "Report"
-	report.add_item("(reports come later)")
-	report.set_item_disabled(0, true)
+	report.add_item("Planets...", MENU_REPORT, KEY_F3)
+	report.add_item("Fleets...", MENU_REPORT + 1)
+	report.add_item("Others' Fleets...", MENU_REPORT + 2)
+	report.add_item("Battles...", MENU_REPORT + 3)
+	report.id_pressed.connect(_on_menu)
 	menu.add_child(report)
 	var help := PopupMenu.new()
 	help.name = "Help"
@@ -138,6 +151,7 @@ func _build_menu() -> void:
 
 func _on_selected(kind: String, id: int) -> void:
 	_summary.show_object(kind, id)
+	_reports.set_highlight(kind, id)
 	var own := kind == "fleet"
 	if kind == "planet":
 		own = GameSession.view.planet_info(id)["mine"]
@@ -191,6 +205,15 @@ func _on_menu(menu_id: int) -> void:
 			_on_end_turn()
 		MENU_ABOUT:
 			_about.popup_centered()
+		MENU_REPORT:
+			# F3: the Planet report, then each report in turn, then closed; the menu item itself
+			# opens the Planet report
+			if Input.is_key_pressed(KEY_F3):
+				_reports.cycle()
+			else:
+				_reports.open(ReportView.PLANETS)
+		MENU_REPORT + 1, MENU_REPORT + 2, MENU_REPORT + 3:
+			_reports.open(ReportView.REPORTS[menu_id - MENU_REPORT])
 
 
 func _on_font(menu_id: int, view: PopupMenu) -> void:

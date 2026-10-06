@@ -315,14 +315,12 @@ func _commit() -> bool:
 	return true
 
 
-## Prev / Next: keep the edits, then show the player's previous or next planet.
+## Prev / Next: keep the edits, then show the player's previous or next planet (in the Planet
+## report's order).
 func _switch(step: int) -> void:
 	if not _commit():
 		return
-	var ids: Array[int] = []
-	for pl in GameSession.view.planets():
-		if pl["mine"]:
-			ids.append(pl["id"])
+	var ids := ReportSettings.planet_order()
 	if ids.is_empty():
 		return
 	var at := maxi(ids.find(planet_id), 0)
