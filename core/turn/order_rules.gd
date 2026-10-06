@@ -21,6 +21,7 @@ const TYPES := [
 	"design_change",
 	"design_delete",
 	"cargo_transfer",
+	"message_filters",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -66,6 +67,8 @@ static func apply(
 			return _design(state, content, player, order)
 		"cargo_transfer":
 			return _cargo_transfer(state, content, player, order)
+		"message_filters":
+			return _message_filters(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -226,6 +229,25 @@ static func _player_defaults(
 	var p := state.player(player)
 	p.default_queue = fresh
 	p.default_leftover_to_research = leftover
+	return ""
+
+
+## The message types the player has filtered out (S11 `message_filters`, S21 "Filters"): replaces
+## the list; each type once, stored sorted.
+static func _message_filters(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var types: Variant = order.get("filtered")
+	if not types is Array:
+		return "filtered must be a list"
+	var fresh: Array[String] = []
+	for t: Variant in types:
+		if not t is String or not content.ids("message").has(t):
+			return "no such message type"
+		if not fresh.has(t):
+			fresh.append(t)
+	fresh.sort()
+	state.player(player).message_filters = fresh
 	return ""
 
 

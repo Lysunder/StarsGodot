@@ -1558,6 +1558,7 @@
     "homeworld": 20,
     "index": 0,
     "knowledge": {},
+    "message_filters": [],
     "mod_data": {},
     "next_research_field": 6,
     "race": {
@@ -1909,6 +1910,7 @@
     "homeworld": 21,
     "index": 1,
     "knowledge": {},
+    "message_filters": [],
     "mod_data": {},
     "next_research_field": 6,
     "race": {

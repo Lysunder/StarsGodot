@@ -18,7 +18,8 @@
     "id": "message.production.factory_built",
     "params": [
       "planet"
-    ]
+    ],
+    "filter_group": "production.factories"
   },
   {
     "type": "message",
@@ -26,14 +27,16 @@
     "params": [
       "number",
       "planet"
-    ]
+    ],
+    "filter_group": "production.factories"
   },
   {
     "type": "message",
     "id": "message.production.mine_built",
     "params": [
       "planet"
-    ]
+    ],
+    "filter_group": "production.mines"
   },
   {
     "type": "message",
@@ -41,14 +44,16 @@
     "params": [
       "number",
       "planet"
-    ]
+    ],
+    "filter_group": "production.mines"
   },
   {
     "type": "message",
     "id": "message.production.defense_built",
     "params": [
       "planet"
-    ]
+    ],
+    "filter_group": "production.defenses"
   },
   {
     "type": "message",
@@ -56,7 +61,8 @@
     "params": [
       "number",
       "planet"
-    ]
+    ],
+    "filter_group": "production.defenses"
   },
   {
     "type": "message",
@@ -64,7 +70,8 @@
     "params": [
       "planet",
       "design"
-    ]
+    ],
+    "filter_group": "production.ships"
   },
   {
     "type": "message",
@@ -73,7 +80,8 @@
       "planet",
       "number",
       "design"
-    ]
+    ],
+    "filter_group": "production.ships"
   },
   {
     "type": "message",
@@ -152,7 +160,8 @@
       "cargo",
       "object_kind",
       "object"
-    ]
+    ],
+    "filter_group": "fleet.cargo"
   },
   {
     "type": "message",
@@ -163,7 +172,8 @@
       "cargo",
       "object_kind",
       "object"
-    ]
+    ],
+    "filter_group": "fleet.cargo"
   },
   {
     "type": "message",
@@ -174,7 +184,8 @@
       "cargo",
       "object_kind",
       "object"
-    ]
+    ],
+    "filter_group": "fleet.cargo"
   },
   {
     "type": "message",
@@ -185,7 +196,8 @@
       "cargo",
       "object_kind",
       "object"
-    ]
+    ],
+    "filter_group": "fleet.cargo"
   },
   {
     "type": "message",

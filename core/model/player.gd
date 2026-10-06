@@ -36,6 +36,8 @@ var starbase_designs: Array[Design] = []
 var default_queue: Array[QueueItem] = []
 ## The "contribute only leftover resources to research" setting of a new colony.
 var default_leftover_to_research: bool = false
+## Message types the player has filtered out (S21 "Filters"), sorted.
+var message_filters: Array[String] = []
 ## Mystery Trader part content ids obtained (S18), sorted.
 var trader_parts: Array[String] = []
 ## What this player knows of objects it does not own (S15).
@@ -66,6 +68,7 @@ func _schema() -> Array:
 		["starbase_designs", Kind.OBJECT_LIST, Design],
 		["default_queue", Kind.OBJECT_LIST, QueueItem],
 		["default_leftover_to_research", Kind.BOOL],
+		["message_filters", Kind.STRING_LIST],
 		["trader_parts", Kind.STRING_LIST],
 		["knowledge", Kind.JSON],
 		["mod_data", Kind.JSON],

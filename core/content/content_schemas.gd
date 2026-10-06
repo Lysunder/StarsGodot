@@ -237,6 +237,8 @@ const TYPES := {
 			"params": {"t": "list", "of": {"t": "enum", "values": MESSAGE_PARAMS}},
 			# computer players get it too
 			"ai": {"t": "bool"},
+			# types with the same group are filtered together (S21 "Filters")
+			"filter_group": {"t": "string"},
 		},
 		"required": ["params"],
 	},

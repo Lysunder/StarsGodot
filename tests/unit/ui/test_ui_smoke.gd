@@ -452,6 +452,43 @@ func test_messages_pane_shows_the_turn_messages() -> void:
 	await get_tree().process_frame
 
 
+func test_message_filters_hide_a_type_until_shown() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var pane := screen._messages
+	var count := pane.messages().size()
+	var type: String = pane.messages()[0]["type"]
+	assert_int(pane.current).is_equal(0)
+	assert_bool(pane._glass.visible).is_false()
+	pane._toggle_filter()
+	assert_array(pane.filters()).contains([type])
+	assert_int(pane.current).is_equal(0)
+	assert_str(pane._text.text).is_equal(MessagesPane.FILTERED_TEXT)
+	assert_bool(pane._goto.disabled).is_true()
+	assert_bool(pane._glass.visible).is_true()
+	pane._step(1)
+	assert_int(pane.current).is_equal(1)
+	assert_bool(pane._prev.disabled).is_true()
+	pane.new_year()
+	assert_int(pane.current).is_equal(1)
+	pane.toggle_show_all()
+	assert_int(pane.current).is_equal(0)
+	assert_bool(pane._prev.disabled).is_true()
+	assert_str(pane._text.text).is_not_equal(MessagesPane.FILTERED_TEXT)
+	pane.toggle_show_all()
+	assert_int(pane.current).is_equal(1)
+	pane.current = 0
+	pane.show_all = true
+	pane._toggle_filter()
+	assert_array(pane.filters()).is_empty()
+	assert_bool(pane._glass.visible).is_false()
+	assert_int(pane.messages().size()).is_equal(count)
+	screen.queue_free()
+	await get_tree().process_frame
+
+
 func test_summary_fleet_popups_show_while_held() -> void:
 	_new_game()
 	var screen := GameScreen.new()

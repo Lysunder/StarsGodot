@@ -302,6 +302,7 @@ class Importer:
             "starbase_designs": [],
             "default_queue": self.default_queue(index, d[0x57], d[0x58:0x70]),
             "default_leftover_to_research": bool(d[0x56] & 1),
+            "message_filters": [],
             "trader_parts": [],
             "knowledge": {},
             "mod_data": {},

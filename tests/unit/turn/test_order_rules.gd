@@ -113,6 +113,19 @@ func test_planet_settings_keep_driver_only_with_a_starbase() -> void:
 	assert_str(_apply(s, 0, order)).is_equal("no such planet")
 
 
+func test_message_filters_replace_the_list() -> void:
+	var s := _state()
+	var types := ["message.production.mines_built", "message.game.tip_filters"]
+	assert_str(_apply(s, 0, {"type": "message_filters", "filtered": types + types})).is_empty()
+	assert_array(s.player(0).message_filters).is_equal(
+		["message.game.tip_filters", "message.production.mines_built"]
+	)
+	var bad := {"type": "message_filters", "filtered": ["message.nothing"]}
+	assert_str(_apply(s, 0, bad)).is_equal("no such message type")
+	assert_str(_apply(s, 0, {"type": "message_filters", "filtered": []})).is_empty()
+	assert_array(s.player(0).message_filters).is_empty()
+
+
 func test_players_apply_in_order_and_rejections_are_reported() -> void:
 	var s := _state()
 	var later := OrderSet.new(1, 0)

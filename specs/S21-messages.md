@@ -171,6 +171,34 @@ planet to planet, as in the original.
 Battles, ground combat and bombing, fleets following fleets, packets, minefields, wormholes, the Mystery Trader and
 random events: their messages come with their rules.
 
+## Filters
+
+A player can mark message types as filtered out ("not important"); the list (`Player.message_filters`, type ids,
+sorted, empty at the start) belongs to the player's game state and lasts for the rest of the game. It changes only
+what the Messages pane shows: every message is still sent. The original keeps it as a bitmap of message numbers
+(`SetMessageFilter@1028:8960`, DS:5508), saved in the player's files as block 33. The `message_filters` order (S11)
+replaces the list.
+
+- Some types are filtered together (content field `filter_group`, from the pairs and ranges in `SetMessageFilter`):
+  the four cargo messages (loaded, beamed up, unloaded, beamed down); ship(s) built; factory/factories, mine(s) and
+  defense(s) built. The original also groups some types we don't send yet (numbers 66-77 in pairs, 96-100, 106-110,
+  121-122 and 145-168); add `filter_group` to them as they are built.
+- Messages pane (`MESSAGEWNDPROC@1028:0000`, `Message_NextIndex@1028:6ef4`, `Message_PrevIndex@1028:6f66`,
+  `MessagePane_DrawButtons@1028:6fc6`):
+  - The year starts on the first message not filtered out; with none, the pane says so and shows "FILTERED"
+    diagonally. The header counts every message ("n of total"; "0 of total" when all are filtered out).
+  - The title bar's box shows a check (type shown) or an X (filtered out) for a turn message; clicking it (or "+")
+    toggles the type and its group. The message stays on screen: while filtered and hidden it is replaced by a note
+    that the type is now filtered, and Goto is disabled.
+  - Prev and Next skip filtered messages, unless showing all.
+  - While any of this year's messages is filtered, a magnifying glass at the right of the title bar ("-" key)
+    switches between hiding them (minus) and showing them too (plus). Turning it on moves to the next filtered
+    message (else the previous one); turning it off moves from a filtered message to the next one that is not (else
+    the previous one). A filtered message shown this way has "FILTERED" diagonally behind its text.
+  - The UI's own notes (after the turn messages) are never filtered.
+- Not built yet: the "+" and "-" keys (with Up/Down and Enter for Prev/Next/Goto), and importing block 33 in the
+  harness (fixtures have no filtered types).
+
 ## Edge cases
 
 - A planet with no resources this year works no queue: only `queue_empty` (if its queue is empty).

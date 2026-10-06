@@ -120,6 +120,8 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`message_filters`** `{filtered}`: replaces the list of message types the player has filtered out (S21
+  "Filters"); each must be a message type; stored once each, sorted. Block 33 (a bitmap of message numbers).
 - **`cargo_transfer`** `{owner, fleet, other, amounts}`: a transfer by hand, applied at once with the orders (before
   any waypoint task). `other` is `{"planet": id}` or `{"fleet": number, "owner": o}`; `amounts` gives five signed
   amounts (ironium, boranium, germanium, colonists, fuel), positive into the fleet. Unloads (negative) go first, then

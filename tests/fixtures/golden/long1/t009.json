@@ -6652,6 +6652,7 @@
     "homeworld": 85,
     "index": 0,
     "knowledge": {},
+    "message_filters": [],
     "mod_data": {},
     "next_research_field": 7,
     "race": {
