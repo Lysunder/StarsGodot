@@ -450,3 +450,27 @@ func test_messages_pane_shows_the_turn_messages() -> void:
 	assert_bool(texts.any(func(t: String) -> bool: return t.contains("{"))).is_false()
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+func test_summary_fleet_popups_show_while_held() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var fleet := GameSession.view.fleets()[0]
+	screen._map.select("fleet", fleet.number)
+	var summary := screen._summary
+	for button in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+		var press := InputEventMouseButton.new()
+		press.button_index = button
+		press.pressed = true
+		summary._on_icon_input(press)
+		assert_bool(summary._popup.visible).is_true()
+		assert_int(summary._popup.get_child_count()).is_greater(0)
+		var release := InputEventMouseButton.new()
+		release.button_index = button
+		release.pressed = false
+		summary._on_icon_input(release)
+		assert_bool(summary._popup.visible).is_false()
+	screen.queue_free()
+	await get_tree().process_frame

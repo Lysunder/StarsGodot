@@ -49,6 +49,26 @@ func show_design(p_design: Design, p_editing: bool) -> void:
 	queue_redraw()
 
 
+## Shrinks the control to the hull's own extent plus `margin` (for a popup).
+func fit_to_hull(margin: float = 4.0) -> void:
+	if design == null:
+		return
+	var hull := GameSession.content.hull(design.hull)
+	var bounds := Rect2()
+	var first := true
+	for slot: Dictionary in hull["slots"]:
+		var at: Array = slot.get("at", [0, 0])
+		var r := Rect2(at[0] * CELL, at[1] * CELL, CELL * 2, CELL * 2)
+		bounds = r if first else bounds.merge(r)
+		first = false
+	if hull.has("cargo_area"):
+		var a: Array = hull["cargo_area"]
+		bounds = bounds.merge(
+			Rect2(a[0] * CELL, a[1] * CELL, (a[2] - a[0]) * CELL, (a[3] - a[1]) * CELL)
+		)
+	custom_minimum_size = bounds.size + Vector2(margin, margin) * 2.0
+
+
 ## The hull's slot boxes and cargo box, centred: {slots: [Rect2], cargo: Rect2 or null}.
 func _layout() -> Dictionary:
 	var hull := GameSession.content.hull(design.hull)
