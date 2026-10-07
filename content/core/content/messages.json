@@ -595,5 +595,12 @@
       "fleet",
       "planet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.wormhole_vanished",
+    "params": [
+      "fleet"
+    ]
   }
 ]

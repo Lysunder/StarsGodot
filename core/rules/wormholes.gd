@@ -53,9 +53,9 @@ static func shift_all(state: GameState, rng: StarsRandom) -> void:
 	for w in state.wormholes:
 		var jump := rng.random(100) < jump_chance(w)
 		if jump:
-			# The original also clears the players-who-have-been-through mask, which is not in our
-			# model yet (S15).
+			# nobody knows where it went
 			w.age = 0
+			w.tracked_by.clear()
 		else:
 			w.age += 1
 		var old := [w.x, w.y]

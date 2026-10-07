@@ -6708,6 +6708,7 @@
     "other_end": 1,
     "seen_by": [],
     "stability": 2,
+    "tracked_by": [],
     "x": 1311,
     "y": 1707
    },
@@ -6718,6 +6719,7 @@
     "other_end": 0,
     "seen_by": [],
     "stability": 1,
+    "tracked_by": [],
     "x": 1634,
     "y": 1627
    },
@@ -6728,6 +6730,7 @@
     "other_end": 3,
     "seen_by": [],
     "stability": 2,
+    "tracked_by": [],
     "x": 1378,
     "y": 1038
    },
@@ -6738,6 +6741,7 @@
     "other_end": 2,
     "seen_by": [],
     "stability": 1,
+    "tracked_by": [],
     "x": 1483,
     "y": 1615
    },
@@ -6748,6 +6752,7 @@
     "other_end": 5,
     "seen_by": [],
     "stability": 1,
+    "tracked_by": [],
     "x": 1346,
     "y": 1505
    },
@@ -6758,6 +6763,7 @@
     "other_end": 4,
     "seen_by": [],
     "stability": 2,
+    "tracked_by": [],
     "x": 1013,
     "y": 1373
    }

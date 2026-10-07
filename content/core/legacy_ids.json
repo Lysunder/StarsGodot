@@ -1277,5 +1277,8 @@
   },
   "message.fleet.gate_colonists": {
     "message": 350
+  },
+  "message.fleet.wormhole_vanished": {
+    "message": 248
   }
 }

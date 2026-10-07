@@ -8653,6 +8653,7 @@
     "other_end": 1,
     "seen_by": [],
     "stability": 0,
+    "tracked_by": [],
     "x": 1221,
     "y": 1058
    },
@@ -8663,6 +8664,7 @@
     "other_end": 0,
     "seen_by": [],
     "stability": 2,
+    "tracked_by": [],
     "x": 1341,
     "y": 1688
    },
@@ -8673,6 +8675,7 @@
     "other_end": 3,
     "seen_by": [],
     "stability": 2,
+    "tracked_by": [],
     "x": 1699,
     "y": 1594
    },
@@ -8683,6 +8686,7 @@
     "other_end": 2,
     "seen_by": [],
     "stability": 0,
+    "tracked_by": [],
     "x": 1401,
     "y": 1368
    }

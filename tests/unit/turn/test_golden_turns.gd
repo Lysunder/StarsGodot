@@ -202,9 +202,10 @@ func _known_messages_only(expected: GameState, ours: GameState, ignore: PackedSt
 
 ## M7: following and chasing fleets (S12), orders given in the original client: turn 0 three
 ## follow orders on waypoint 0 (a chain of two, and one whose fleet isn't going anywhere); turn 1
-## chasing a moving fleet; turn 2 a fleet chasing a chaser, in steps; turn 3 a chased fleet merged.
+## chasing a moving fleet; turn 2 a fleet chasing a chaser, in steps; turn 3 a chased fleet merged;
+## turns 4-5 plain moves; turn 13 a jump through a wormhole.
 # gdlint: ignore=unused-argument
-func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3]]) -> void:
+func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3], [4], [5], [13]]) -> void:
 	_check_turn("follow1", turn)
 
 

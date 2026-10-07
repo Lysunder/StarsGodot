@@ -1,0 +1,32 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "wormhole",
+    "target_id": 1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 4,
+    "x": 1037,
+    "y": 1688
+   }
+  },
+  {
+   "count": 1,
+   "fleet": 1,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_delete"
+  }
+ ],
+ "player": 0,
+ "turn": 13
+}

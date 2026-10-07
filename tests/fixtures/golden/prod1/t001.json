@@ -2865,6 +2865,7 @@
     "other_end": 1,
     "seen_by": [],
     "stability": 1,
+    "tracked_by": [],
     "x": 1385,
     "y": 1302
    },
@@ -2875,6 +2876,7 @@
     "other_end": 0,
     "seen_by": [],
     "stability": 0,
+    "tracked_by": [],
     "x": 1052,
     "y": 1354
    }

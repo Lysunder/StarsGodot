@@ -82,6 +82,8 @@ static func update(state: GameState, content: ContentRegistry, rng: StarsRandom)
 			var wp := fleet.waypoints[i]
 			if wp.target == "fleet" and not wp.frozen:
 				_check_target(state, content, rng, fleet, wp)
+			elif wp.target == "wormhole":
+				_check_wormhole(state, content, fleet, wp)
 
 
 ## A waypoint's fleet target: still there (claimed), or retargeted among the fleets at the
@@ -117,6 +119,41 @@ static func _check_target(
 	wp.x = chosen.x
 	wp.y = chosen.y
 	chosen.claimed = true
+
+
+## A waypoint's wormhole: its position is followed while the owner knows where it is; one that
+## moved out of sight (S15) leaves the waypoint at its last known position, with a message.
+static func _check_wormhole(
+	state: GameState, content: ContentRegistry, fleet: Fleet, wp: Waypoint
+) -> void:
+	var w := state.wormhole(wp.target_id)
+	if w != null and (w.tracked_by.has(fleet.owner) or (w.x == wp.x and w.y == wp.y)):
+		wp.x = w.x
+		wp.y = w.y
+		return
+	if w != null:
+		_message(state, content, fleet, "message.fleet.wormhole_vanished")
+	wp.target = "none"
+	wp.target_owner = -1
+	wp.target_id = -1
+
+
+## Other players' waypoints that target `fleet` stay where it is now (frozen), when it jumps
+## through a stargate or a wormhole (`RetargetFollowers@1078:133e`).
+static func freeze_followers(state: GameState, fleet: Fleet) -> void:
+	for other in state.fleets:
+		if other.owner == fleet.owner:
+			continue
+		for i in range(1, other.waypoints.size()):
+			var wp := other.waypoints[i]
+			if (
+				wp.target == "fleet"
+				and wp.target_owner == fleet.owner
+				and wp.target_id == fleet.number
+			):
+				wp.frozen = true
+				wp.x = fleet.x
+				wp.y = fleet.y
 
 
 static func _primary_target(state: GameState, fleet: Fleet) -> int:

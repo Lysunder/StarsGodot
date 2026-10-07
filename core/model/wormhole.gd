@@ -13,6 +13,9 @@ var stability: int = 0
 var age: int = 0
 ## Player indices that have seen it, sorted.
 var seen_by: Array[int] = []
+## Player indices that know where it is now: their scanners have it in view (S15) or a fleet of
+## theirs came out of it (S12); cleared when it jumps. Sorted.
+var tracked_by: Array[int] = []
 var mod_data: Dictionary = {}
 
 
@@ -25,5 +28,6 @@ func _schema() -> Array:
 		["stability", Kind.INT],
 		["age", Kind.INT],
 		["seen_by", Kind.INT_LIST],
+		["tracked_by", Kind.INT_LIST],
 		["mod_data", Kind.JSON],
 	]

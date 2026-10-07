@@ -579,5 +579,7 @@
   "message.fleet.gate_no_destination.text": "{0} couldn't jump to {2}: no stargate was found there.",
   "message.fleet.gate_no_destination.name": "No stargate at the destination",
   "message.fleet.gate_colonists.text": "{0} couldn't use the stargate at {1}: it has colonists aboard and the planet isn't yours.",
-  "message.fleet.gate_colonists.name": "Colonists can't use the stargate"
+  "message.fleet.gate_colonists.name": "Colonists can't use the stargate",
+  "message.fleet.wormhole_vanished.text": "The wormhole {0} was heading for has moved out of sight. It is now heading for the place the wormhole was last seen.",
+  "message.fleet.wormhole_vanished.name": "Wormhole lost from sight"
 }

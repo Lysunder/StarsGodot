@@ -6,8 +6,8 @@ extends RefCounted
 ## Trait parameters: `movement.fuel_usage_pct` (Improved Fuel Efficiency 85),
 ## `movement.engine_failure` (Cheap Engines: 1 in 10 above warp 6).
 ##
-## Stargates are in Stargates (S12 "Stargates"). Not yet: wormhole jumps on arrival, minefield hits
-## (S13), warp-10 engine damage and Alternate Reality colonists in transit.
+## Stargates are in Stargates (S12 "Stargates"). Not yet: minefield hits (S13), warp-10 engine
+## damage and Alternate Reality colonists in transit.
 
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
@@ -271,6 +271,8 @@ static func _step(
 		var landed := fleet.x == next.x and fleet.y == next.y
 		fleet.planet = next.target_id if landed and next.target == "planet" else -1
 		arrived = landed
+	if arrived and next.target == "wormhole":
+		_through_wormhole(state, fleet, next)
 	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel
 	if not out_of_fuel:
 		var scooped := mini(move, int(exact - SCOOP_DISTANCE_CUT))
@@ -287,6 +289,35 @@ static func _step(
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
 	return not chase.is_empty() and not arrived and not out_of_fuel
+
+
+## A fleet arriving on a wormhole its waypoint targets comes out at the other end (S12 step 8): both
+## ends are seen by its owner, who also knows where the far end is; other players' waypoints that
+## target the fleet stay at the near end.
+static func _through_wormhole(state: GameState, fleet: Fleet, next: Waypoint) -> void:
+	var near := state.wormhole(next.target_id)
+	if near == null:
+		return
+	var far := state.wormhole(near.other_end)
+	if far == null:
+		return
+	FleetTargets.freeze_followers(state, fleet)
+	for w: Wormhole in [near, far]:
+		if not w.seen_by.has(fleet.owner):
+			w.seen_by.append(fleet.owner)
+			w.seen_by.sort()
+	if not far.tracked_by.has(fleet.owner):
+		far.tracked_by.append(fleet.owner)
+		far.tracked_by.sort()
+	fleet.x = far.x
+	fleet.y = far.y
+	fleet.planet = -1
+	for pl in state.planets:
+		if pl.x == far.x and pl.y == far.y:
+			fleet.planet = pl.id
+			break
+	next.x = far.x
+	next.y = far.y
 
 
 ## Out of fuel: the next waypoint's warp drops to the highest warp that uses no fuel.

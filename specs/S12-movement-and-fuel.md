@@ -14,6 +14,10 @@ Stargates (2026-10-06) implemented in `core/rules/stargates.gd` and verified by 
 Traveler race, turns 0-1: a jump within the limits, jumps over both gates' mass limit with damage, damage adding
 up on a second jump, a ship destroyed by its old and new damage, a jump to a planet without a gate); not yet seen:
 ship losses and cargo left behind (other races), out of range, too massive, Jump Gates, other players' gates.
+Wormhole jumps (2026-10-07) implemented in `core/rules/movement.gd` and verified by follow1 turn 13 (a scout with
+a waypoint on a wormhole jumps to the far end; both ends seen, the far end tracked). The tracked mark is also set by
+scanning (`Visibility_FleetScanners@1068:5d44`, S15): until visibility is built, a waypoint on a wormhole that the
+player only sees through scanners can be lost sooner than in the original.
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
@@ -70,7 +74,10 @@ in phase 14 when a wormhole has vanished (not built yet). For each fleet in flee
    - The heaviest matching fleet wins, else the random pick; the waypoint takes it (and its position), and it is
      marked claimed. With no candidate the waypoint is left as it is.
    Claimed marks last for the turn's start (they are cleared when the first waypoint-task pass reaches the fleet).
-4. Waypoints that target wormholes follow them (with jumps, not built yet).
+4. A waypoint that targets a wormhole takes its current position while the fleet's owner tracks it (scanners,
+   S15, or having come out of it). A wormhole that has moved while not tracked is lost: the waypoint stays at its
+   last known position as deep space, with **`fleet.wormhole_vanished`** `[fleet]` (none when the wormhole no
+   longer exists).
 
 ### Following a fleet (S02 phase 4, `GenerateTurn@10a8:0000`)
 
@@ -176,7 +183,11 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 7. **Radiating Hydro-Ram Scoop:** a fleet using it, carrying colonists of a race that isn't immune to radiation and
    whose radiation range center c = (low + high) div 2 is below 85, loses colonists × ((86 − c) div 2) div 100 (at
    least 1).
-8. **Wormholes:** a fleet arriving on a wormhole is moved to the other end; both ends become known to its owner.
+8. **Wormholes:** a fleet that arrives on its waypoint's position when that waypoint targets a wormhole (merely
+   passing over one does nothing) comes out at the other end: both ends are marked seen by its owner, the far end
+   is marked known (tracked) by its owner, other players' waypoints that target the fleet are frozen at the near
+   end (`RetargetFollowers`), and the fleet and its waypoint are placed on the far end. The rest of the step
+   (ram scoops, waypoints) then sees it there. A wormhole that jumps (phase 14) is no longer tracked by anyone.
 9. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
 
 ### Waypoints after movement

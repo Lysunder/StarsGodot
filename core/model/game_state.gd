@@ -93,6 +93,14 @@ func fleet(owner: int, number: int) -> Fleet:
 	return fleets[at] if at < fleets.size() and _key_of(fleets[at]) == [owner, number] else null
 
 
+## The wormhole end with this number, or null.
+func wormhole(number: int) -> Wormhole:
+	for w in wormholes:
+		if w.number == number:
+			return w
+	return null
+
+
 ## Fleets of one player, in number order.
 func fleets_of(owner: int) -> Array[Fleet]:
 	var out: Array[Fleet] = []

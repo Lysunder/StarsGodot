@@ -163,3 +163,54 @@ func test_hull_classes_for_battle_plan_targets() -> void:
 		. is_true()
 	)
 	assert_bool(FleetTargets.has_class(colony, owner, 1, _content)).is_false()
+
+
+func _wormholes(s: GameState) -> Array[Wormhole]:
+	var near := s.add_wormhole(100)
+	near.x = 1220
+	near.y = 1200
+	var far := s.add_wormhole(100)
+	far.x = 1500
+	far.y = 1500
+	near.other_end = far.number
+	far.other_end = near.number
+	return [near, far]
+
+
+func test_a_fleet_arriving_on_its_wormhole_comes_out_at_the_far_end() -> void:
+	var s := _game()
+	var ends := _wormholes(s)
+	var f := _fleet(s)
+	var wp := _to(f, 1220, 1200, 5)
+	wp.target = "wormhole"
+	wp.target_id = ends[0].number
+	TurnMessages.clear(s)
+	Movement.move_all(s, _content, StarsRandom.new())
+	assert_int(f.x).is_equal(1500)
+	assert_int(f.y).is_equal(1500)
+	assert_int(f.waypoints.size()).is_equal(1)
+	assert_array(ends[0].seen_by).is_equal([0])
+	assert_array(ends[1].seen_by).is_equal([0])
+	assert_array(ends[0].tracked_by).is_empty()
+	assert_array(ends[1].tracked_by).is_equal([0])
+
+
+func test_a_wormhole_that_moved_out_of_sight_leaves_its_waypoint_behind() -> void:
+	var s := _game()
+	var ends := _wormholes(s)
+	var f := _fleet(s)
+	var wp := _to(f, 1220, 1200, 5)
+	wp.target = "wormhole"
+	wp.target_id = ends[0].number
+	ends[0].x = 1230
+	TurnMessages.clear(s)
+	FleetTargets.update(s, _content, StarsRandom.new())
+	assert_str(wp.target).is_equal("none")
+	assert_int(wp.x).is_equal(1220)
+	assert_array(_types(s)).is_equal(["message.fleet.wormhole_vanished"])
+	# a wormhole the owner keeps track of is followed
+	wp.target = "wormhole"
+	wp.target_id = ends[0].number
+	ends[0].tracked_by.assign([0])
+	FleetTargets.update(s, _content, StarsRandom.new())
+	assert_int(wp.x).is_equal(1230)

@@ -100,20 +100,7 @@ static func jump(
 			type = "gate_lost_most"
 		_message(state, content, fleet, type, [source_id, destination.id, total])
 		_cargo_after_losses(fleet, owner, content, lost)
-	# other players' waypoints that target the fleet stay where it was (frozen)
-	for other in state.fleets:
-		if other.owner == fleet.owner:
-			continue
-		for i in range(1, other.waypoints.size()):
-			var wp := other.waypoints[i]
-			if (
-				wp.target == "fleet"
-				and wp.target_owner == fleet.owner
-				and wp.target_id == fleet.number
-			):
-				wp.frozen = true
-				wp.x = fleet.x
-				wp.y = fleet.y
+	FleetTargets.freeze_followers(state, fleet)
 	fleet.x = next.x
 	fleet.y = next.y
 	fleet.planet = destination.id
