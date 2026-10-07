@@ -43,6 +43,7 @@ static func pipeline() -> TurnPipeline:
 	var built := {}
 	for p: Phase in [
 		OrderPhases.Apply.new(),
+		FleetPhases.ResolveTargets.new(),
 		FleetPhases.Waypoint0Tasks.new(),
 		FleetPhases.Move.new(),
 		FleetPhases.Refuel.new(),
@@ -54,6 +55,7 @@ static func pipeline() -> TurnPipeline:
 		SpacePhases.MoveAfterProduction.new(),
 		PlanetPhases.ClaimAdjusterTerraform.new(),
 		PlanetPhases.RemoteTerraform.new(),
+		FleetPhases.Retarget.new(),
 		TurnEndPhases.Advance.new(),
 		TurnEndPhases.RandomSettings.new(),
 		TurnEndPhases.FileDraws.new(),

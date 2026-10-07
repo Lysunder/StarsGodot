@@ -1,0 +1,33 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 5,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "fleet",
+    "target_id": 0,
+    "target_owner": 0,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1247,
+    "y": 1592
+   }
+  },
+  {
+   "fleet": 4,
+   "fleets": [
+    0
+   ],
+   "owner": 0,
+   "type": "fleet_merge"
+  }
+ ],
+ "player": 0,
+ "turn": 3
+}

@@ -5,7 +5,11 @@ wormholes, arrival, waypoint advancing with repeat orders, and refueling read fr
 details remain open. The wormhole shift (added 2026-10-03) is implemented in `core/rules/wormholes.gd` and matches
 the original's drift in golden turns (no jump seen yet). Movement, fuel use, ram scoops, waypoints after movement
 and refueling implemented in `core/rules/movement.gd` (2026-10-04), matching the original in terra1 turns 0-2;
-following fleets, stargates, wormhole jumps, minefields and warp-10 damage not yet.
+following fleets, stargates, wormhole jumps, minefields and warp-10 damage not yet. Third pass (2026-10-06):
+waypoint targets, following and chasing fleets read from `GenerateTurn`, `UpdateWaypointTargets`, `MoveFleets` and
+`UpdateFleetTargetPositions`; implemented and verified by the follow1 game (turns 0-3: follow orders with a chain
+and a failure, chasing a moving fleet, a chaser chasing a chaser in steps, a chased fleet merged away); the
+retargeting draws are not seen there (a merged fleet's chasers are retargeted by the fleet deletion, S11).
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
@@ -37,6 +41,71 @@ At the start of movement every fleet is marked "didn't move" (S11 uses this mark
 
 Fleets are handled in fleet order (S11). Movement repeats for up to 11 passes so that fleets whose waypoint targets
 another fleet move after their target; a pass only handles fleets not yet settled.
+
+### Waypoint targets (S02 phases 4 and 21; `UpdateWaypointTargets@1030:42c8`)
+
+Run at the start of the turn (phase 4, before following, below), after the turn's terraforming (phase 21), and
+in phase 14 when a wormhole has vanished (not built yet). For each fleet in fleet order:
+
+1. **Waypoint 0:** unless it targets a planet, its task is transport or merge, or the fleet is following (below),
+   it becomes the planet the fleet orbits, else deep space.
+2. The fleet's position (and waypoint 0's) is kept inside the universe: 1000 … width + 1000 on each axis.
+3. For each later waypoint (from waypoint 0 for a following fleet) that targets a fleet and isn't frozen (a target
+   that jumped through a gate, S12 stargates): if the target still exists, is at the waypoint's position, and isn't
+   another player's fleet that went through a gate this turn, the target is marked **claimed**. Otherwise the
+   waypoint is **retargeted** among the fleets at the waypoint's position owned by the old target's owner, in fleet
+   order (the fleet itself can be one):
+   - The heaviest one (ships' mass plus cargo, not fuel) with a ship of the class the moving fleet's battle plan
+     prefers as its primary target: a later one replaces the best so far when heavier, or when equal and
+     `random(2)` = 0. Classes by hull: 0 colony ships, 1 freighters, 2 scouts, frigates and destroyers, 3 cruisers
+     and larger warships, 4 privateers, rogues, galleons, mine layers, Nubian and morphs, 5 bombers, 6 miners,
+     7 fuel transports. Primary target 3 (armed ships) takes classes 2–4, 4 classes 1 and 5, 5 (unarmed) a fleet
+     with no ship of classes 2–4, 6 class 7, 7 class 1; targets 0–2 match nothing.
+   - Meanwhile one candidate is picked at random: with n the count so far, it replaces the pick when
+     `random(n)` = 0, and, if n > 1 and it is already claimed, also `random(2)` ≠ 0.
+   - The heaviest matching fleet wins, else the random pick; the waypoint takes it (and its position), and it is
+     marked claimed. With no candidate the waypoint is left as it is.
+   Claimed marks last for the turn's start (they are cleared when the first waypoint-task pass reaches the fleet).
+4. Waypoints that target wormholes follow them (with jumps, not built yet).
+
+### Following a fleet (S02 phase 4, `GenerateTurn@10a8:0000`)
+
+A fleet whose only waypoint (waypoint 0) targets a fleet is **following** it (the player sets this by choosing a
+fleet at its position as waypoint 0):
+
+1. At the start of the turn every fleet's following mark is set or cleared by that rule, then the waypoint targets
+   are updated (above).
+2. Then up to 8 rounds, while any follower changed in the previous round; each round goes over the fleets in fleet
+   order. For a follower F with its target T:
+   - T has a next waypoint: F gets a waypoint 1 copied from T's waypoint 1 (position, target, warp and task) but
+     keeping F's own waypoint-0 task details (transport amounts and so on), and stays marked.
+   - T exists with only a waypoint 0 that itself targets a fleet (a chain): F waits for a later round.
+   - Otherwise (T gone, or not going anywhere): message **`fleet.follow_failed`** `[fleet]`, goto the fleet, and F
+     is no longer following.
+3. F moves normally toward its copied waypoint. At the end of movement a following fleet doesn't advance its
+   waypoints: its waypoint 1 is dropped and it gets **`fleet.follow_done`** `[fleet]`, goto the fleet. Its
+   waypoint 0 has become its new position (as for any fleet that moved), so the follow order ends, unless it
+   didn't move.
+
+### Chasing a fleet (`MoveFleets@10a8:1f18`, passes)
+
+A fleet whose waypoint 1 targets a fleet that exists **chases** it: in the first movement pass it does everything up
+to the move (Cheap Engines, warp-10 damage, Alternate Reality losses) and then waits, remembering its budget
+B = w². Later passes (up to 11 in all) repeat while any chaser has budget left:
+
+1. Its waypoint 1 takes the target's current position (unless frozen).
+2. The step is the remaining budget when the target has finished moving this turn; otherwise the smaller of the
+   remaining budget and (B + 4) div 5 (B the whole budget: remaining plus moved).
+3. The move toward the target's position is made as for any fleet (distance rounded up, arrival, rounding, ram
+   scoops for this step), except that fuel is charged for the whole distance chased so far: the fuel already used
+   this turn is put back and the use for (moved + step) is taken. The fuel range used to cut the move short is the
+   range with the fuel left, less what was moved.
+4. If it didn't arrive, the step is added to what was moved and taken from the budget; with budget left (and fuel),
+   it takes part in the next pass.
+5. A fleet arriving on its target in a later pass marks the target as finished moving (the original then stops a
+   target that was itself chasing: B12; our engine doesn't).
+
+Each fleet's first-pass work happens once; only chasers take part in later passes, in fleet order.
 
 ### Cheap Engines failure
 
@@ -110,8 +179,9 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
 
 After all movement passes:
 
-1. Waypoints that target a fleet are moved to that fleet's position (unless frozen because the target jumped through
-   a gate); if the target no longer exists the waypoint becomes a deep-space waypoint.
+1. Waypoints that target a fleet (from waypoint 1) are moved to that fleet's position (unless frozen because the
+   target jumped through a gate); if the target no longer exists the waypoint becomes a deep-space waypoint
+   (`UpdateFleetTargetPositions@1078:1060`). A following fleet only drops its waypoint 1 (above).
 2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
    the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
    only part of the way has its current waypoint moved to its position as a deep-space waypoint; the waypoint keeps
@@ -204,9 +274,11 @@ per position try.
 
 ## Open questions
 
-1. Intercepting and following: the retarget rules in `UpdateWaypointTargets` for fleets that become invisible, and
-   the fix for B12 (a fleet "stuck" while a lower-numbered fleet targets it): our engine resolves follow chains in
-   dependency order with cycle handling.
+1. Retargeting a waypoint whose fleet is gone or moved (`UpdateWaypointTargets`) is read from the code but not yet
+   seen in a fixture: a fleet deleted by an order or task already has its chasers retargeted (S11), so it mostly
+   matters for other players' fleets going out of sight (S15). Also unconfirmed: whether "other player's fleet
+   that went through a gate" is the flag read there, and the effect of B12 (a chaser reached by another chaser
+   stops: our engine doesn't stop it).
 2. Which gate's range applies to a jump (source or destination).
 3. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
    planned usage; purpose unclear).

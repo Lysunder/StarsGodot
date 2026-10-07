@@ -3,6 +3,28 @@ extends RefCounted
 ## Fleet phases (spec S02 5, 9, 15, 16).
 
 
+## 4: following fleets and waypoints that target fleets (S12).
+class ResolveTargets:
+	extends Phase
+
+	func _init() -> void:
+		super("fleets.resolve_targets")
+
+	func run(ctx: TurnContext) -> void:
+		FleetTargets.resolve(ctx.state, ctx.content, ctx.rng())
+
+
+## 21: waypoints that target fleets, again after the turn's changes (S12).
+class Retarget:
+	extends Phase
+
+	func _init() -> void:
+		super("fleets.retarget")
+
+	func run(ctx: TurnContext) -> void:
+		FleetTargets.update(ctx.state, ctx.content, ctx.rng())
+
+
 ## 5: waypoint-0 tasks: task pass 1, colonization, tech update, task pass 2 (S11).
 class Waypoint0Tasks:
 	extends Phase
@@ -11,6 +33,9 @@ class Waypoint0Tasks:
 		super("wp0.tasks")
 
 	func run(ctx: TurnContext) -> void:
+		# the first task pass clears the marks the start of the turn left (S12 "Waypoint targets")
+		for fleet in ctx.state.fleets:
+			fleet.claimed = false
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
 		tasks.run_pass(1)
 		tasks.resolve()

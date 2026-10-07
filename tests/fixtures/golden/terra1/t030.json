@@ -185,11 +185,14 @@
   "messages": [
    [
     {
-     "goto": 32768,
+     "goto": {
+      "fleet": 0,
+      "owner": 0
+     },
      "params": [
       0
      ],
-     "type": "legacy.message.312"
+     "type": "message.fleet.follow_failed"
     },
     {
      "goto": {

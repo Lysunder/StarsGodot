@@ -172,6 +172,9 @@ const TYPES := {
 			"pictures": _INT0,
 			"rank": _INT0,
 			"dock": {"t": "int", "min": -1},
+			# the hull's class for battle-plan targets and reports: 0 colony, 1 freighter, 2 escort,
+			# 3 capital, 4 utility, 5 bomber, 6 miner, 7 fuel transport (S12, S16)
+			"class": {"t": "int", "min": 0, "max": 7},
 			"stats": _INT_MAP,
 			"slots": {"t": "list", "of": _SLOT, "min": 1},
 			# the cargo bay in the designer's hull picture: [x1, y1, x2, y2], half-slot grid units

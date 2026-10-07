@@ -1226,5 +1226,11 @@
   },
   "message.game.tip_details": {
     "message": 130
+  },
+  "message.fleet.follow_done": {
+    "message": 311
+  },
+  "message.fleet.follow_failed": {
+    "message": 312
   }
 }

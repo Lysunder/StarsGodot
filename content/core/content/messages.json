@@ -440,5 +440,19 @@
     "type": "message",
     "id": "message.game.tip_details",
     "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.follow_done",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.follow_failed",
+    "params": [
+      "fleet"
+    ]
   }
 ]

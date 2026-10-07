@@ -545,5 +545,9 @@
   "message.game.tip_designs.text": "Tip: press F4 for the ship designer, choose Available Hull Types, pick a hull and press Copy to start a design.",
   "message.game.tip_designs.name": "Tip",
   "message.game.tip_details.text": "Tip: many figures in the panes show more when clicked.",
-  "message.game.tip_details.name": "Tip"
+  "message.game.tip_details.name": "Tip",
+  "message.fleet.follow_done.text": "{0} has followed its fleet as far as ordered and is waiting for new orders.",
+  "message.fleet.follow_failed.text": "{0} was told to follow a fleet that isn't going anywhere. It is waiting for new orders.",
+  "message.fleet.follow_done.name": "Finished following a fleet",
+  "message.fleet.follow_failed.name": "Followed fleet didn't move"
 }

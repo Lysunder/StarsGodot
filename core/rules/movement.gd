@@ -6,8 +6,8 @@ extends RefCounted
 ## Trait parameters: `movement.fuel_usage_pct` (Improved Fuel Efficiency 85),
 ## `movement.engine_failure` (Cheap Engines: 1 in 10 above warp 6).
 ##
-## Not yet: fleets following fleets, stargates (warp 11), wormhole jumps on arrival, minefield
-## hits (S13), warp-10 engine damage and Alternate Reality colonists in transit.
+## Not yet: stargates (warp 11), wormhole jumps on arrival, minefield hits (S13), warp-10 engine
+## damage and Alternate Reality colonists in transit.
 
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
@@ -24,6 +24,10 @@ const ROUND_HALF := 0.5
 const DISTANCE_ROUND_UP := 0.9999
 ## Ram scoops count the distance less this (S12 step 6).
 const SCOOP_DISTANCE_CUT := 0.99999
+## Movement passes in all: the first, then passes for fleets chasing fleets (S12 "Chasing").
+const PASSES := 11
+## A chaser's step while its target is still moving: a fifth of its budget, rounded up.
+const CHASE_STEPS := 5
 
 
 ## Fuel (mg) the fleet needs to move `distance` light years at `warp` (S12 "Fuel use"); a huge value
@@ -117,18 +121,31 @@ static func fuel_capacity(fleet: Fleet, owner: Player, content: ContentRegistry)
 	return total
 
 
-## S02 phase 9: every fleet with a next waypoint moves toward it, in fleet order.
+## S02 phase 9: every fleet with a next waypoint moves toward it, in fleet order; fleets chasing a
+## fleet wait for the first pass and then close in over later passes (S12 "Chasing a fleet").
 static func move_all(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void:
 	for fleet in state.fleets:
 		fleet.did_not_move = true
+	# chaser -> {budget (left), moved, fuel (used so far this turn)}
+	var chasers := {}
 	for fleet in state.fleets:
-		_move(state, content, rng, fleet)
+		_move(state, content, rng, fleet, chasers)
+	var passes := 1
+	while not chasers.is_empty() and passes < PASSES:
+		passes += 1
+		for fleet in state.fleets:
+			if chasers.has(fleet):
+				_chase(state, content, fleet, chasers)
 	for fleet in state.fleets:
 		_advance_waypoints(state, content, fleet)
 
 
 static func _move(
-	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet
+	state: GameState,
+	content: ContentRegistry,
+	rng: StarsRandom,
+	fleet: Fleet,
+	chasers: Dictionary,
 ) -> void:
 	if fleet.ship_count() == 0 or fleet.waypoints.size() < 2:
 		return
@@ -148,21 +165,62 @@ static func _move(
 		and rng.random(FAILURE_CHANCE) == 0
 	):
 		return
+	if next.target == "fleet" and state.fleet(next.target_owner, next.target_id) != null:
+		chasers[fleet] = {"budget": next.warp * next.warp, "moved": 0, "fuel": 0}
+		return
+	_step(state, content, fleet, next.warp * next.warp, {})
+
+
+## A later pass for a chaser: its waypoint takes the target's position, and it moves the rest of
+## its budget if the target has stopped, else a fifth of its whole budget (rounded up).
+static func _chase(
+	state: GameState, content: ContentRegistry, fleet: Fleet, chasers: Dictionary
+) -> void:
+	var chase: Dictionary = chasers[fleet]
+	var next := fleet.waypoints[1]
+	var target := state.fleet(next.target_owner, next.target_id)
+	if target != null and not next.frozen:
+		next.x = target.x
+		next.y = target.y
+	var left: int = chase["budget"]
+	var step := left
+	if target != null and chasers.has(target):
+		step = mini(left, (left + int(chase["moved"]) + CHASE_STEPS - 1) / CHASE_STEPS)
+	var going := _step(state, content, fleet, step, chase)
+	if going:
+		chase["moved"] += step
+		chase["budget"] = left - step
+	if not going or chase["budget"] <= 0:
+		chasers.erase(fleet)
+
+
+## Moves the fleet up to `budget` light years toward its next waypoint (S12 "Moving"). `chase` is
+## a chaser's state ({} otherwise): its fuel is charged for the whole distance chased so far.
+## Returns true when a chaser moved without arriving and can go on.
+static func _step(
+	state: GameState, content: ContentRegistry, fleet: Fleet, budget: int, chase: Dictionary
+) -> bool:
+	var owner := state.player(fleet.owner)
+	var next := fleet.waypoints[1]
 	var dx := next.x - fleet.x
 	var dy := next.y - fleet.y
 	var exact := sqrt(float(dx * dx + dy * dy))
 	var whole := int(exact + DISTANCE_ROUND_UP)
 	var warp := next.warp
-	var budget := warp * warp
 	var move := mini(budget, whole)
-	var reach := fuel_range(fleet, owner, warp, content)
+	var moved: int = chase.get("moved", 0)
+	var reach := maxi(fuel_range(fleet, owner, warp, content) - moved, 0)
 	var used := 0
 	if reach < move:
 		fleet.cargo[Fleet.CARGO_FUEL] = 0
 		move = reach
 		used = 1
 	else:
-		used = fuel_needed(fleet, owner, warp, move, content)
+		# a chaser's fuel is charged for the whole distance chased so far
+		fleet.cargo[Fleet.CARGO_FUEL] += int(chase.get("fuel", 0))
+		used = fuel_needed(fleet, owner, warp, moved + move, content)
+		if not chase.is_empty():
+			chase["fuel"] = used
 		fleet.cargo[Fleet.CARGO_FUEL] = maxi(fleet.cargo[Fleet.CARGO_FUEL] - used, 0)
 	# out of fuel: the tank ran dry short of the target (or the fleet could not move at all)
 	var out_of_fuel := (
@@ -186,10 +244,11 @@ static func _move(
 				[word, next.warp]
 			)
 	if move <= 0:
-		return
+		return false
 	fleet.did_not_move = false
+	var arrived := move >= int(exact)
 	# the move reaches the target when it covers the distance rounded down (fuel counts it rounded up)
-	if move >= int(exact):
+	if arrived:
 		fleet.x = next.x
 		fleet.y = next.y
 		fleet.planet = next.target_id if next.target == "planet" else -1
@@ -200,6 +259,7 @@ static func _move(
 		# rounding can land the fleet on its target: then it has arrived
 		var landed := fleet.x == next.x and fleet.y == next.y
 		fleet.planet = next.target_id if landed and next.target == "planet" else -1
+		arrived = landed
 	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel
 	if not out_of_fuel:
 		var scooped := mini(move, int(exact - SCOOP_DISTANCE_CUT))
@@ -215,6 +275,7 @@ static func _move(
 					{"fleet": fleet.number, "owner": fleet.owner},
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
+	return not chase.is_empty() and not arrived and not out_of_fuel
 
 
 ## Out of fuel: the next waypoint's warp drops to the highest warp that uses no fuel.
@@ -266,10 +327,38 @@ static func _engine_count(design: Design, part: String) -> int:
 	return n
 
 
-## S12 "Waypoints after movement": a fleet that reached its next waypoint makes it its current one;
-## a fleet that moved part of the way is in deep space.
+## S12 "Waypoints after movement": waypoints targeting fleets take their positions; a fleet that
+## reached its next waypoint makes it its current one; a fleet that moved part of the way is in deep
+## space; a following fleet drops the waypoint it copied (S12 "Following a fleet").
 static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet: Fleet) -> void:
-	if fleet.waypoints.size() < 2 or fleet.did_not_move:
+	if fleet.waypoints.size() < 2:
+		return
+	if fleet.following:
+		if not fleet.did_not_move:
+			_settle_here(fleet)
+		fleet.waypoints.resize(1)
+		TurnMessages.add(
+			state,
+			content,
+			fleet.owner,
+			"message.fleet.follow_done",
+			{"fleet": fleet.number, "owner": fleet.owner},
+			[fleet.owner * 512 + fleet.number]
+		)
+		return
+	for i in range(1, fleet.waypoints.size()):
+		var wp := fleet.waypoints[i]
+		if wp.target != "fleet":
+			continue
+		var target := state.fleet(wp.target_owner, wp.target_id)
+		if target == null:
+			wp.target = "none"
+			wp.target_owner = -1
+			wp.target_id = -1
+		elif not wp.frozen:
+			wp.x = target.x
+			wp.y = target.y
+	if fleet.did_not_move:
 		return
 	var next := fleet.waypoints[1]
 	if fleet.x == next.x and fleet.y == next.y:
@@ -279,6 +368,11 @@ static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet
 		)
 		fleet.waypoints.remove_at(1)
 		fleet.waypoints[0] = next
+		# a reached fleet becomes the place it was, unless a transport or merge is to be done with it
+		if next.target == "fleet" and next.task != "transport" and next.task != "merge":
+			next = next.copy() as Waypoint
+			fleet.waypoints[0] = next
+			_settle_here(fleet)
 		if loop:
 			fleet.waypoints.append(next.copy() as Waypoint)
 		if fleet.waypoints.size() == 1 and _orders_done(state, fleet, next):
@@ -291,12 +385,17 @@ static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet
 				[fleet.owner * 512 + fleet.number]
 			)
 		return
+	_settle_here(fleet)
+
+
+## Waypoint 0 becomes where the fleet is: its planet, or deep space.
+static func _settle_here(fleet: Fleet) -> void:
 	var here := fleet.waypoints[0]
 	here.x = fleet.x
 	here.y = fleet.y
-	here.target = "none"
+	here.target = "planet" if fleet.planet >= 0 else "none"
 	here.target_owner = -1
-	here.target_id = -1
+	here.target_id = fleet.planet
 
 
 ## S21: a fleet that reached its last waypoint has completed its orders unless that waypoint's

@@ -29,6 +29,10 @@ var mod_data: Dictionary = {}
 
 ## Turn-only mark: the fleet didn't move this turn (S12).
 var did_not_move: bool = false
+## Turn-only mark: the fleet is following a fleet this turn (S12 "Following a fleet").
+var following: bool = false
+## Turn-only mark: a waypoint targets this fleet (S12 "Waypoint targets").
+var claimed: bool = false
 
 
 func _schema() -> Array:

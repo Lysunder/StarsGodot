@@ -198,3 +198,11 @@ func _known_messages_only(expected: GameState, ours: GameState, ignore: PackedSt
 				list.filter(func(m: Dictionary) -> bool: return _content.has_def(m["type"]))
 			)
 		s.messages = lists
+
+
+## M7: following and chasing fleets (S12), orders given in the original client: turn 0 three
+## follow orders on waypoint 0 (a chain of two, and one whose fleet isn't going anywhere); turn 1
+## chasing a moving fleet; turn 2 a fleet chasing a chaser, in steps; turn 3 a chased fleet merged.
+# gdlint: ignore=unused-argument
+func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3]]) -> void:
+	_check_turn("follow1", turn)
