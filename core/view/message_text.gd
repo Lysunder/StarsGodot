@@ -13,6 +13,8 @@ const FLEET_OBJECT := 32768
 const OWNER_SHIFT := 512
 const DESIGNS_MANY := 8192
 const DESIGN_SHIFT := 32
+## The first word of a "where" that names an object rather than a position (-1 as a word).
+const NOT_A_POSITION := 65535
 
 
 ## The text of a message `m` received by `player`.
@@ -30,6 +32,11 @@ static func format(view: PlayerView, player: int, m: Dictionary) -> String:
 	var text := content.string_for(type + ".text")
 	for i in mini(kinds.size(), params.size()):
 		var value := _value(view, player, type, kinds[i], params[i], cargo)
+		# a "where" whose first word isn't -1 is a position: x, then y
+		if kinds[i] == "object" and i > 0 and kinds[i - 1] == "object_kind":
+			var x := int(params[i - 1])
+			if x != -1 and x != NOT_A_POSITION:
+				value = "Space (%d, %d)" % [x, int(params[i])]
 		text = text.replace("{%d}" % i, value)
 	return text
 
@@ -66,6 +73,9 @@ static func _value(
 			var owner := view.state.player(int(v) / DESIGN_SHIFT)
 			var d := owner.ship_design(int(v) % DESIGN_SHIFT) if owner != null else null
 			return d.name if d != null else "a design"
+		"own_design":
+			var mine := view.state.player(player).ship_design(int(v))
+			return mine.name if mine != null else "a design"
 		"player":
 			var p := view.state.player(int(v))
 			return p.race.plural_name if p != null else "player %d" % (int(v) + 1)

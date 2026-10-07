@@ -6,8 +6,8 @@ extends RefCounted
 ## Trait parameters: `movement.fuel_usage_pct` (Improved Fuel Efficiency 85),
 ## `movement.engine_failure` (Cheap Engines: 1 in 10 above warp 6).
 ##
-## Not yet: stargates (warp 11), wormhole jumps on arrival, minefield hits (S13), warp-10 engine
-## damage and Alternate Reality colonists in transit.
+## Stargates are in Stargates (S12 "Stargates"). Not yet: wormhole jumps on arrival, minefield hits
+## (S13), warp-10 engine damage and Alternate Reality colonists in transit.
 
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
@@ -128,7 +128,21 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 		fleet.did_not_move = true
 	# chaser -> {budget (left), moved, fuel (used so far this turn)}
 	var chasers := {}
+	# fleets lost in stargates, deleted after movement
+	var lost: Array[Fleet] = []
 	for fleet in state.fleets:
+		if (
+			fleet.ship_count() > 0
+			and fleet.waypoints.size() > 1
+			and fleet.waypoints[1].warp == Waypoint.WARP_STARGATE
+			and fleet.waypoints[0].task != "transport"
+		):
+			match Stargates.jump(state, content, rng, fleet):
+				"jumped":
+					fleet.did_not_move = false
+				"lost":
+					lost.append(fleet)
+			continue
 		_move(state, content, rng, fleet, chasers)
 	var passes := 1
 	while not chasers.is_empty() and passes < PASSES:
@@ -138,6 +152,8 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 				_chase(state, content, fleet, chasers)
 	for fleet in state.fleets:
 		_advance_waypoints(state, content, fleet)
+	for fleet in lost:
+		FleetOrders.delete_fleet(state, fleet, fleet.owner)
 
 
 static func _move(
@@ -152,11 +168,6 @@ static func _move(
 	var current := fleet.waypoints[0]
 	var next := fleet.waypoints[1]
 	if next.warp == 0 or current.task == "transport":
-		return
-	if next.warp == Waypoint.WARP_STARGATE:
-		push_warning(
-			"fleet %d/%d: stargate travel is not implemented yet" % [fleet.owner, fleet.number]
-		)
 		return
 	var owner := state.player(fleet.owner)
 	if (

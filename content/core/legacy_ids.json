@@ -1232,5 +1232,50 @@
   },
   "message.fleet.follow_failed": {
     "message": 312
+  },
+  "message.fleet.gate_none_here": {
+    "message": 222
+  },
+  "message.fleet.gate_none_there": {
+    "message": 226
+  },
+  "message.fleet.gate_out_of_range": {
+    "message": 227
+  },
+  "message.fleet.gate_too_massive": {
+    "message": 228
+  },
+  "message.fleet.gate_blocked": {
+    "message": 229
+  },
+  "message.fleet.gate_source_not_ours": {
+    "message": 230
+  },
+  "message.fleet.gate_lost": {
+    "message": 231
+  },
+  "message.fleet.gate_lost_few": {
+    "message": 232
+  },
+  "message.fleet.gate_lost_some": {
+    "message": 233
+  },
+  "message.fleet.gate_lost_most": {
+    "message": 234
+  },
+  "message.fleet.gate_unloaded_minerals": {
+    "message": 236
+  },
+  "message.fleet.gate_unloaded_colonists": {
+    "message": 237
+  },
+  "message.fleet.gate_unloaded_both": {
+    "message": 238
+  },
+  "message.fleet.gate_no_destination": {
+    "message": 327
+  },
+  "message.fleet.gate_colonists": {
+    "message": 350
   }
 }

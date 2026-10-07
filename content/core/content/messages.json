@@ -454,5 +454,146 @@
     "params": [
       "fleet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_none_here",
+    "params": [
+      "fleet",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_none_there",
+    "params": [
+      "fleet",
+      "planet",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_out_of_range",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_too_massive",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "own_design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_blocked",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_source_not_ours",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_lost",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_lost_few",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_lost_some",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_lost_most",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_unloaded_minerals",
+    "params": [
+      "fleet",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_unloaded_colonists",
+    "params": [
+      "fleet",
+      "population",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_unloaded_both",
+    "params": [
+      "fleet",
+      "population",
+      "amount",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_no_destination",
+    "params": [
+      "fleet",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_colonists",
+    "params": [
+      "fleet",
+      "planet"
+    ]
   }
 ]

@@ -10,6 +10,10 @@ waypoint targets, following and chasing fleets read from `GenerateTurn`, `Update
 `UpdateFleetTargetPositions`; implemented and verified by the follow1 game (turns 0-3: follow orders with a chain
 and a failure, chasing a moving fleet, a chaser chasing a chaser in steps, a chased fleet merged away); the
 retargeting draws are not seen there (a merged fleet's chasers are retargeted by the fleet deletion, S11).
+Stargates (2026-10-06) implemented in `core/rules/stargates.gd` and verified by the gate1 game (an Inter-stellar
+Traveler race, turns 0-1: a jump within the limits, jumps over both gates' mass limit with damage, damage adding
+up on a second jump, a ship destroyed by its old and new damage, a jump to a planet without a gate); not yet seen:
+ship losses and cargo left behind (other races), out of range, too massive, Jump Gates, other players' gates.
 References: `MoveFleets@10a8:1f18`, `Fleet_CalcFuelUsage@1048:6312`, `Fleet_RamScoopFuel@1030:3726`,
 `Fleet_UseStargate@1078:0962`, `Fleet_AllHaveJumpGate`, `UpdateWaypointTargets@1030:42c8`,
 `UpdateFleetTargetPositions@1078:1060`, `RetargetFollowers`, `Fleet_CheckMinefields@10a8:30b6`,
@@ -198,29 +202,58 @@ After all movement passes:
 2. Otherwise the fleet makes fuel: 50 mg per Anti-Matter Generator and 200 mg per ship with the Fuel Transport or
    Super-Fuel Xport hull, up to its capacity.
 
-### Stargates (warp 11)
+### Stargates (warp 11; `MoveFleets@10a8:1f18`, `Fleet_UseStargate@1078:0962`, `Fleet_StargateRange@1078:0e10`)
 
-1. The fleet must be at a planet with a stargate owned by its owner or a friend, or every ship must have a Jump
-   Gate.
-2. The destination must be a planet with a stargate owned by the owner or a friend.
-3. Races other than Inter-stellar Traveler can't take cargo through a gate: minerals and colonists are left on the
-   source planet first; if colonists are aboard and the source planet isn't the owner's, the jump is refused.
-4. **Limits, per design in the fleet**, with R the gate's range and L₁, L₂ the two gates' mass limits (−1 =
-   unlimited; an unlimited range counts as 8000), d the jump distance and m the ship's mass:
-   - d > 5R, or m > 5L for either gate: the jump is refused with a message ("out of range" / "too massive").
-   - Survival S starts at 10000. For each limit exceeded (d > R, m > L₁, m > L₂) multiply by the factor
-     (5X − x) × 2500 div X (X the limit, x the value), dividing by 10000 after the first: the factor falls linearly
-     from 10000 at the limit to 0 at five times the limit. A factor below 1 destroys the design's ships outright.
-   - Damage D = (10000 − S) div 100 percent.
-5. **Applying damage D to a design's ships (n ships, armor A):**
-   - Races other than Inter-stellar Traveler lose ships: for each ship draw `random(100)`; below D div 3 the ship is
-     lost, and if already-damaged ships remain, a second draw `random(500)` against their damage level decides whether
-     the lost ship was one of them.
-   - The survivors take d = D × A div 100 damage each (at least 1). If already-damaged ships would reach their armor
-     (d + their existing damage ≥ A) they are destroyed. The rest share the new average damage, and all count as
-     damaged.
-   - The player is told how many ships were lost (few, many, most).
-6. The rule for which gate's range applies (source or destination) is to be confirmed; mass limits apply for both.
+A fleet whose next waypoint has warp 11 jumps through stargates in the first movement pass. It makes no Cheap
+Engines roll, no warp-10 damage roll, uses no fuel and isn't checked against minefields. A planet's stargate is the
+first stargate part on its starbase's design (`Planet_GetStargate@1030:0af8`). "Owned by the fleet's owner or a
+friend" means the planet's owner is the fleet's owner or has the fleet's owner as a friend. Each refusal below is a
+message and the fleet stays where it is.
+
+1. **Source:** if waypoint 0 is a planet with a stargate, the planet must be owned by the owner or a friend
+   (**`fleet.gate_source_not_ours`** `[fleet, planet, planet]`, goto the fleet; every refusal message's goto is the fleet). With no stargate there, every ship must
+   carry a Jump Gate (`Fleet_AllHaveJumpGate@1030:4bde`), else **`fleet.gate_none_here`** `[fleet, where]` (where is a pair:
+   −1 and the planet, or the position's x and y).
+2. **Destination:** waypoint 1's planet (or the planet at its position): none, **`fleet.gate_no_destination`**
+   `[fleet, where]` (the position); no stargate there, **`fleet.gate_none_there`** `[fleet, destination, where]` (the original passes the
+   destination where the text has the source);
+   not owned by the owner or a friend, **`fleet.gate_blocked`** `[fleet, destination, destination, destination]` (likewise).
+3. With a Jump Gate and no source stargate, the destination's gate stands for the source gate too.
+4. **Cargo:** races other than Inter-stellar Traveler can't take cargo through a gate (not with a Jump Gate): with
+   colonists aboard at a planet that isn't the owner's the jump is refused (**`fleet.gate_colonists`**
+   `[fleet, planet]`); otherwise all minerals and colonists are put on the source planet first, with a message to
+   the fleet's owner, and the same to the planet's owner if that is another player (goto the planet):
+   **`fleet.gate_unloaded_minerals`** `[fleet, kT, planet]`, **`fleet.gate_unloaded_colonists`**
+   `[fleet, colonists, planet]` or **`fleet.gate_unloaded_both`** `[fleet, colonists, kT, planet]` (colonists in
+   units of 100). The cargo stays unloaded even if the jump is then refused.
+5. **Limits, per design in the fleet** (in slot order), with d the distance (truncated), m the design's mass (the
+   ship, not its cargo), R the **source** gate's range (unlimited = 8000) and L₁, L₂ the source and destination
+   gates' mass limits (unlimited: no limit):
+   - d > 5R: refused, **`fleet.gate_out_of_range`** `[fleet, source, destination]`; m > 5L₁ or m > 5L₂: refused,
+     **`fleet.gate_too_massive`** `[fleet, source, destination, design slot]`. The first design that fails stops the
+     check.
+   - Survival S starts at 10000. For each limit exceeded, in the order range, L₁, L₂, the factor is
+     (5X − x) × 2500 div X (X the limit, x the value); S becomes the factor for the range and S × factor div 10000
+     for a mass limit. A factor below 1 means the design's ships are all lost (damage 100%).
+   - The design's damage D = (10000 − S) div 100 percent.
+6. **Applying D to a design** with n ships, armor A, and before the jump p% of them damaged by e/500 of A
+   (k = p × n div 100 damaged ships, at least 1 if p > 0):
+   - D = 100: all n ships are lost.
+   - Races other than Inter-stellar Traveler: for each of the n ships draw `random(100)`; below D div 3 the ship is
+     lost, and then, while damaged ships remain (k > 0), a draw `random(500)` below e makes the lost ship one of
+     them (k − 1).
+   - Survivors: the old damage is c = e × A div 500 (at least 1 when e > 0), the new d′ = D × A div 100 (at
+     least 1). If k > 0 and c + d′ ≥ A, the k damaged ships are destroyed. The survivors' damage becomes
+     ((d′ × survivors + c × k) div survivors) × 500 div A (at least 1) with 100% of them damaged. **B33:** the
+     original keeps k after destroying the damaged ships, so their old damage still counts; our engine sets k to 0
+     first.
+7. Lost ships leave their design's count of ships in service. If no design has ships left the fleet is lost (**`fleet.gate_lost`** `[fleet, source, destination]`, goto the
+   fleet). Otherwise, when ships were lost, the cargo the lost ships' capacity held is lost as for a ship move (S11
+   "Cargo after a ship move", the lost ships moving to a fleet that vanishes), and the owner is told:
+   **`fleet.gate_lost_few`** (fewer than a quarter of the ships), **`fleet.gate_lost_most`** (more than half) or
+   **`fleet.gate_lost_some`**, each `[fleet, source, destination, ships lost]`.
+8. The fleet is placed on the destination. Other players' waypoints that target it are frozen at its old position
+   (`RetargetFollowers@1078:133e`). The fleet is marked as gated this turn (no repair, S19).
 
 ### Wormholes shift (S02 phase 14)
 
@@ -240,7 +273,7 @@ The two ends move independently. Packets launched this year move in the same pha
 ## Randomness
 
 In fleet order: Cheap Engines (`random(10)` per fleet above warp 6), warp-10 damage (`random(10)` per ship at
-risk), overgating (`random(100)` per ship, plus `random(500)` for lost ships while damaged ships remain), minefield
+risk), overgating (`random(100)` per ship, plus `random(500)` for each lost ship while damaged ships remain), minefield
 hits (S13). After production (phase 14), per wormhole in number order: `random(100)` for the jump, then 2 draws
 per position try.
 
@@ -279,6 +312,5 @@ per position try.
    matters for other players' fleets going out of sight (S15). Also unconfirmed: whether "other player's fleet
    that went through a gate" is the flag read there, and the effect of B12 (a chaser reached by another chaser
    stops: our engine doesn't stop it).
-2. Which gate's range applies to a jump (source or destination).
-3. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
+2. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
    planned usage; purpose unclear).

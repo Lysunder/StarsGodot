@@ -93,7 +93,8 @@
     "params": {
       "production.packet_mineral_cost": 120,
       "production.mixed_packet_mineral_cost": 48,
-      "cost.tag.stargate_adjust_pct": 75
+      "cost.tag.stargate_adjust_pct": 75,
+      "movement.gate_cargo": 1
     }
   },
   {

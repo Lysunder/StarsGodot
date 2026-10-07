@@ -33,6 +33,8 @@ var did_not_move: bool = false
 var following: bool = false
 ## Turn-only mark: a waypoint targets this fleet (S12 "Waypoint targets").
 var claimed: bool = false
+## Turn-only mark: the fleet went through a stargate this turn (S12; no repair, S19).
+var gated: bool = false
 
 
 func _schema() -> Array:

@@ -206,3 +206,12 @@ func _known_messages_only(expected: GameState, ours: GameState, ignore: PackedSt
 # gdlint: ignore=unused-argument
 func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3]]) -> void:
 	_check_turn("follow1", turn)
+
+
+## M7: stargates (S12) with an Inter-stellar Traveler race (gates at its homeworld and extra
+## planet), orders given in the original client: turn 0 a jump within the limits, two ships over
+## the gates' mass limit (damage), and a jump to a planet without a gate; turn 1 the damaged ships
+## jump back (damage adds up, one is destroyed).
+# gdlint: ignore=unused-argument
+func test_gate1(turn: int, test_parameters := [[0], [1]]) -> void:
+	_check_turn("gate1", turn)

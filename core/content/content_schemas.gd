@@ -33,6 +33,8 @@ const _INT0 := {"t": "int", "min": 0}
 ## What a turn message's parameter is (S21 "Parameter kinds").
 const MESSAGE_PARAMS := [
 	"number",
+	# a design slot of the player who gets the message
+	"own_design",
 	"amount",
 	"population",
 	"planet",
