@@ -1,0 +1,33 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 2,
+   "index": 0,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 94,
+    "target_owner": -1,
+    "task": "lay_mines",
+    "task_data": {
+     "raw": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 0,
+    "x": 1592,
+    "y": 1228
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 2
+}

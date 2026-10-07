@@ -22,6 +22,7 @@ const TYPES := [
 	"design_delete",
 	"cargo_transfer",
 	"message_filters",
+	"player_relations",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -69,6 +70,8 @@ static func apply(
 			return _cargo_transfer(state, content, player, order)
 		"message_filters":
 			return _message_filters(state, content, player, order)
+		"player_relations":
+			return _player_relations(state, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -248,6 +251,19 @@ static func _message_filters(
 			fresh.append(t)
 	fresh.sort()
 	state.player(player).message_filters = fresh
+	return ""
+
+
+## The player's relation toward every player (S11 `player_relations`, block 38): one entry per
+## player, each "neutral", "friend" or "enemy".
+static func _player_relations(state: GameState, player: int, order: Dictionary) -> String:
+	var relations: Variant = order.get("relations")
+	if not relations is Array or relations.size() != state.players.size():
+		return "relations must list every player"
+	for r: Variant in relations:
+		if not r is String or not Player.RELATIONS.has(r):
+			return "bad relation"
+	state.player(player).relations.assign(relations)
 	return ""
 
 

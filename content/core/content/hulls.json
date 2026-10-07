@@ -2266,7 +2266,10 @@
     "required_traits": [
       "trait.prt.SD"
     ],
-    "class": 4
+    "class": 4,
+    "tags": [
+      "mine_layer"
+    ]
   },
   {
     "type": "hull",
@@ -2358,7 +2361,10 @@
     "required_traits": [
       "trait.prt.SD"
     ],
-    "class": 4
+    "class": 4,
+    "tags": [
+      "mine_layer"
+    ]
   },
   {
     "type": "hull",

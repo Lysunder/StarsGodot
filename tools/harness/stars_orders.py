@@ -38,6 +38,8 @@ QUEUE_CHANGE = 29
 RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
 MERGE_FLEETS = 37
+PLAYER_RELATIONS = 38
+RELATIONS = ["neutral", "friend", "enemy"]
 FLEET_BATTLE_PLAN = 42
 RENAME_FLEET = 44
 PLAYER_DEFAULTS = 46
@@ -162,6 +164,9 @@ def convert_block(importer, b, keep_names=False):
             "mass_driver_warp": ((v >> 11) & 15) + 4,
             "route": ((v >> 15) & 0x3FF) - 1,
         }
+    if b.type == PLAYER_RELATIONS:
+        # one byte per player: 0 neutral, 1 friend, 2 enemy (the player's own entry included)
+        return {"type": "player_relations", "relations": [RELATIONS[v] for v in d]}
     raise StarsOrdersError("order block type %d is not converted yet" % b.type)
 
 

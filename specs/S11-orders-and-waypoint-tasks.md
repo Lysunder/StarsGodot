@@ -120,6 +120,8 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`player_relations`** `{relations}`: the player's relation toward each player, one entry per player
+  ("neutral", "friend" or "enemy"; the player's own entry is kept as given). Block 38 (one byte per player).
 - **`message_filters`** `{filtered}`: replaces the list of message types the player has filtered out (S21
   "Filters"); each must be a message type; stored once each, sorted. Block 33 (a bitmap of message numbers).
 - **`cargo_transfer`** `{owner, fleet, other, amounts}`: a transfer by hand, applied at once with the orders (before
@@ -381,8 +383,10 @@ Pass 3 only.
 1. The fleet must not have moved this turn, except for Space Demolition races, whose moving fleets lay half.
 2. The fleet's rate per mine type (standard, heavy, speed bump) is Σ ships × the design's `mines_…` stats, doubled
    for the Mini and Super Mine Layer hulls (S04). With no rate at all the player gets a message.
-3. The task's number is how many more years to lay: 0 means this year only (the task then ends), the "indefinitely"
-   value keeps it forever, any other number counts down.
+3. The task's number is how many more years to lay: 0 means this year only (the task then ends, its details
+   cleared), 5 ("indefinitely") keeps it forever, any other number counts down (the client stores "2 years" as 1;
+   seen in mine1 turn 0). Verified in mine1 (laying in place, merging into a field, laying while moving at half
+   rate, full rate after arriving).
 4. For each mine type with mines to lay: find the player's minefield of that type that already contains the fleet
    (distance² ≤ the field's mine count) and is nearest. If there is one and it holds at most 999,999 mines, the new
    mines join it and its center moves to the mine-weighted average of the two positions (integer division);

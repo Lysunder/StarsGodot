@@ -250,3 +250,26 @@ static func main_design(fleet: Fleet, owner: Player, content: ContentRegistry) -
 static func designs_word(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:
 	var main := main_design(fleet, owner, content)
 	return fleet.number + 512 * main[0] + (8192 if main[1] > 1 else 0)
+
+
+## The cargo the lost ships' capacity held is lost, as when ships move to another fleet (S11).
+static func cargo_after_losses(
+	fleet: Fleet, owner: Player, content: ContentRegistry, lost: Dictionary
+) -> void:
+	var caps := [0, 0, 0, 0]
+	var counts := {}
+	for stack in fleet.stacks:
+		counts[stack.design] = stack.count
+	for slot: int in lost:
+		counts[slot] = counts.get(slot, 0) + int(lost[slot])
+	for slot: int in counts:
+		var design := owner.ship_design(slot)
+		var n: int = counts[slot]
+		var gone: int = lost.get(slot, 0)
+		caps[0] += n * PartRules.fuel_capacity(design, content)
+		caps[1] += n * PartRules.cargo_capacity(design, content)
+		caps[2] += gone * PartRules.fuel_capacity(design, content)
+		caps[3] += gone * PartRules.cargo_capacity(design, content)
+	var losses := _cargo_lost(fleet, caps)
+	for c in Fleet.CARGO_FUEL + 1:
+		fleet.cargo[c] -= losses[c]

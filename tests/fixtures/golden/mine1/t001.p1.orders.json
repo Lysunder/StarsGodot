@@ -1,0 +1,114 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 4,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 94,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1592,
+    "y": 1228
+   }
+  },
+  {
+   "fleet": 4,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 94,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 9,
+    "x": 1592,
+    "y": 1228
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 94,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1592,
+    "y": 1228
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 94,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 9,
+    "x": 1592,
+    "y": 1228
+   }
+  },
+  {
+   "relations": [
+    "enemy",
+    "neutral"
+   ],
+   "type": "player_relations"
+  },
+  {
+   "leftover_to_research": true,
+   "queue": [
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_defenses",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_max_terraform",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "type": "player_defaults"
+  }
+ ],
+ "player": 1,
+ "turn": 1
+}

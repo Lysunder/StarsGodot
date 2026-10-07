@@ -2,6 +2,8 @@ class_name PartRules
 extends RefCounted
 ## Which parts and hulls a player can use, and simple design totals (spec S04, S06).
 
+const SHIELD_MAX := 65535
+
 const PICTURES_PER_HULL := 4
 
 
@@ -134,6 +136,18 @@ static func armor(design: Design, content: ContentRegistry, race: Race = null) -
 			each = each * pct / 100
 		total += slot.count * each
 	return total
+
+
+## A design's shields per ship (`Design_GetShields@1030:0a0e`): every part's `shield` stat times its
+## count, scaled by the race's `design.shield_pct` (Regenerating Shields 140), at most 65,535.
+static func shields(design: Design, content: ContentRegistry, race: Race = null) -> int:
+	var total := 0
+	for slot in design.parts:
+		if slot.count > 0 and not slot.part.is_empty():
+			total += slot.count * int(content.part(slot.part).get("stats", {}).get("shield", 0))
+	if race != null:
+		total = total * RaceMath.trait_param(race, content, "design.shield_pct", 100) / 100
+	return mini(total, SHIELD_MAX)
 
 
 ## A starbase design's mass driver speed (S09, S14): the best `driver_warp` among its parts, one

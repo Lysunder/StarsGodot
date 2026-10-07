@@ -35,6 +35,8 @@ const MESSAGE_PARAMS := [
 	"number",
 	# a design slot of the player who gets the message
 	"own_design",
+	# a minefield type: 0 standard, 1 heavy, 2 speed bump
+	"minefield_type",
 	"amount",
 	"population",
 	"planet",

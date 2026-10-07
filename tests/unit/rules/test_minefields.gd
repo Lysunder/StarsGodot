@@ -1,0 +1,178 @@
+extends GdUnitTestSuite
+## Spec S13 (and S11 "Lay mines"): laying, merging into a field, the years count and decay.
+
+var _content: ContentRegistry
+
+
+func before() -> void:
+	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
+	_content = r.registry
+
+
+func _game() -> GameState:
+	var s := GameState.new()
+	s.settings.universe_width = 400
+	var p := Player.new()
+	p.relations.assign(["neutral"])
+	p.race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+	var d := Design.new()
+	d.slot = 0
+	d.hull = "hull.mini_mine_layer"
+	(
+		d
+		. parts
+		. assign(
+			[
+				DesignSlot.new("part.engine.long_hump_6", 1),
+				DesignSlot.new("part.mine_layer.mine_dispenser_40", 2),
+			]
+		)
+	)
+	p.set_design(d, false)
+	s.players.append(p)
+	var pl := Planet.new()
+	pl.x = 1300
+	pl.y = 1300
+	s.planets.append(pl)
+	return s
+
+
+func _layer(s: GameState, years: int) -> Fleet:
+	var f := s.add_fleet(0, 512)
+	f.x = 1200
+	f.y = 1200
+	f.add_ships(0, 2)
+	var wp := Waypoint.new(1200, 1200)
+	wp.task = "lay_mines"
+	wp.task_data = {"raw": [years, 0, 0, 0, 0]}
+	f.waypoints.append(wp)
+	f.did_not_move = true
+	return f
+
+
+func test_rate_doubles_on_mine_layer_hulls() -> void:
+	var s := _game()
+	var f := _layer(s, 0)
+	# 2 ships x 2 dispensers x 40, doubled on the Mini Mine Layer
+	assert_int(Minefields.lay_rate(f, s.players[0], "standard", _content)).is_equal(320)
+	assert_int(Minefields.lay_rate(f, s.players[0], "heavy", _content)).is_equal(0)
+
+
+func test_laying_makes_a_field_then_adds_to_it() -> void:
+	var s := _game()
+	var f := _layer(s, 2)
+	TurnMessages.clear(s)
+	Minefields.lay(s, _content, f, f.waypoints[0], false)
+	assert_int(s.minefields.size()).is_equal(1)
+	var field := s.minefields[0]
+	assert_int(field.mines).is_equal(320)
+	assert_int(field.x).is_equal(1200)
+	assert_array(f.waypoints[0].task_data["raw"]).is_equal([1, 0, 0, 0, 0])
+	# moved inside the field: the new mines join it and its center moves toward the fleet
+	f.x = 1210
+	Minefields.lay(s, _content, f, f.waypoints[0], false)
+	assert_int(s.minefields.size()).is_equal(1)
+	assert_int(field.mines).is_equal(640)
+	assert_int(field.x).is_equal(1205)
+	assert_array(f.waypoints[0].task_data["raw"]).is_equal([0, 0, 0, 0, 0])
+	# with 0 years left it lays once more and the task ends
+	Minefields.lay(s, _content, f, f.waypoints[0], false)
+	assert_str(f.waypoints[0].task).is_equal("none")
+	var types := (s.messages[0] as Array).map(func(m: Dictionary) -> String: return m["type"])
+	assert_array(types).is_equal(
+		["message.fleet.mines_laid", "message.fleet.mines_added", "message.fleet.mines_added"]
+	)
+
+
+func test_decay_grows_with_planets_inside_and_removes_empty_fields() -> void:
+	var s := _game()
+	var field := s.add_minefield(0, 512)
+	field.x = 1300
+	field.y = 1300
+	field.mines = 2500
+	# one planet inside: 4 + 2 = 6%
+	Minefields.decay_all(s, _content)
+	assert_int(field.mines).is_equal(2350)
+	var small := s.add_minefield(0, 512)
+	small.x = 1000
+	small.y = 1000
+	small.mines = 10
+	Minefields.decay_all(s, _content)
+	assert_bool(s.minefields.has(small)).is_false()
+
+
+func _field(s: GameState, owner: int, x: int, y: int, mines: int, type := "standard") -> Minefield:
+	var f := s.add_minefield(owner, 512)
+	f.x = x
+	f.y = y
+	f.mines = mines
+	f.type = type
+	return f
+
+
+func test_crossing_a_field_and_merging_stretches() -> void:
+	var s := _game()
+	var field := _field(s, 1, 1250, 1200, 400)
+	# along the x axis: the field (radius 20) is crossed from 30 to 70 ly, cut at the move
+	assert_array(Minefields._crossing(1200, 1200, 1400, 1200, field, 100)).is_equal([30, 70])
+	assert_array(Minefields._crossing(1200, 1200, 1400, 1200, field, 50)).is_equal([30, 50])
+	assert_array(Minefields._crossing(1200, 1200, 1000, 1200, field, 100)).is_empty()
+	# fix B01: a straight vertical path still finds a field ahead of it
+	var north := _field(s, 1, 1200, 1250, 400)
+	assert_array(Minefields._crossing(1200, 1200, 1200, 1400, north, 100)).is_equal([30, 70])
+	var list := []
+	Minefields._add_stretch(list, 30, 50)
+	Minefields._add_stretch(list, 80, 90)
+	Minefields._add_stretch(list, 10, 40)
+	assert_array(list).is_equal([[10, 50], [80, 90]])
+	Minefields._add_stretch(list, 45, 85)
+	assert_array(list).is_equal([[10, 50], [45, 90]])
+
+
+func test_a_speed_bump_stops_a_fast_fleet() -> void:
+	var s := _game()
+	var other := Player.new()
+	other.index = 1
+	other.relations.assign(["neutral", "neutral"])
+	s.players.append(other)
+	s.players[0].relations.assign(["neutral", "neutral"])
+	_field(s, 1, 1240, 1200, 900, "speed_bump")
+	var f := _layer(s, 0)
+	f.waypoints[0].task = "none"
+	var wp := Waypoint.new(1300, 1200)
+	wp.warp = 10
+	f.waypoints.append(wp)
+	f.cargo[Fleet.CARGO_FUEL] = 500
+	TurnMessages.clear(s)
+	Movement.move_all(s, _content, StarsRandom.new())
+	# speed 10 against a safe 5: 175 in 1000 per light year inside (10 to 70)
+	assert_int(f.x).is_less(1270)
+	assert_int(f.ship_count()).is_equal(2)
+	var types := (s.messages[0] as Array).map(func(m: Dictionary) -> String: return m["type"])
+	assert_array(types).contains(["message.fleet.mine_stopped"])
+	(
+		assert_array((s.messages[1] as Array).map(func(m: Dictionary) -> String: return m["type"]))
+		. is_equal(["message.fleet.mine_stopped_yours"])
+	)
+
+
+func test_damage_matches_the_worked_example() -> void:
+	var s := _game()
+	var other := Player.new()
+	other.index = 1
+	other.relations.assign(["neutral", "neutral"])
+	s.players.append(other)
+	var field := _field(s, 1, 1200, 1200, 10000)
+	var f := _layer(s, 0)
+	var wp := Waypoint.new(1300, 1200)
+	f.waypoints.append(wp)
+	TurnMessages.clear(s)
+	# 2 ships with 1 engine: (2 x 100 + 300) x 1 = 500, 250 a ship: more than a Mini Mine
+	# Layer's armor, so the stack is destroyed and the fleet with it
+	Minefields._hit(s, _content, f, 0, 10)
+	assert_bool(f.stacks.is_empty()).is_true()
+	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.mine_annihilated")
+	assert_int(s.players[0].ship_design(0).remaining).is_equal(-2)
+	# the field loses 10000 div 100 = 100 mines
+	assert_int(field.mines).is_equal(9900)

@@ -6,8 +6,8 @@ extends RefCounted
 ## Trait parameters: `movement.fuel_usage_pct` (Improved Fuel Efficiency 85),
 ## `movement.engine_failure` (Cheap Engines: 1 in 10 above warp 6).
 ##
-## Stargates are in Stargates (S12 "Stargates"). Not yet: minefield hits (S13), warp-10 engine
-## damage and Alternate Reality colonists in transit.
+## Stargates are in Stargates (S12 "Stargates"), mine hits in Minefields (S13). Not yet: warp-10
+## engine damage and Alternate Reality colonists in transit.
 
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
@@ -149,11 +149,15 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 		passes += 1
 		for fleet in state.fleets:
 			if chasers.has(fleet):
-				_chase(state, content, fleet, chasers)
+				_chase(state, content, rng, fleet, chasers)
 	for fleet in state.fleets:
 		_advance_waypoints(state, content, fleet)
 	for fleet in lost:
 		FleetOrders.delete_fleet(state, fleet, fleet.owner)
+	# fleets destroyed by mines
+	for fleet in state.fleets.duplicate():
+		if fleet.stacks.is_empty():
+			FleetOrders.delete_fleet(state, fleet, fleet.owner)
 
 
 static func _move(
@@ -179,13 +183,13 @@ static func _move(
 	if next.target == "fleet" and state.fleet(next.target_owner, next.target_id) != null:
 		chasers[fleet] = {"budget": next.warp * next.warp, "moved": 0, "fuel": 0}
 		return
-	_step(state, content, fleet, next.warp * next.warp, {})
+	_step(state, content, rng, fleet, next.warp * next.warp, {})
 
 
 ## A later pass for a chaser: its waypoint takes the target's position, and it moves the rest of
 ## its budget if the target has stopped, else a fifth of its whole budget (rounded up).
 static func _chase(
-	state: GameState, content: ContentRegistry, fleet: Fleet, chasers: Dictionary
+	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, chasers: Dictionary
 ) -> void:
 	var chase: Dictionary = chasers[fleet]
 	var next := fleet.waypoints[1]
@@ -197,7 +201,7 @@ static func _chase(
 	var step := left
 	if target != null and chasers.has(target):
 		step = mini(left, (left + int(chase["moved"]) + CHASE_STEPS - 1) / CHASE_STEPS)
-	var going := _step(state, content, fleet, step, chase)
+	var going := _step(state, content, rng, fleet, step, chase)
 	if going:
 		chase["moved"] += step
 		chase["budget"] = left - step
@@ -209,7 +213,12 @@ static func _chase(
 ## a chaser's state ({} otherwise): its fuel is charged for the whole distance chased so far.
 ## Returns true when a chaser moved without arriving and can go on.
 static func _step(
-	state: GameState, content: ContentRegistry, fleet: Fleet, budget: int, chase: Dictionary
+	state: GameState,
+	content: ContentRegistry,
+	rng: StarsRandom,
+	fleet: Fleet,
+	budget: int,
+	chase: Dictionary,
 ) -> bool:
 	var owner := state.player(fleet.owner)
 	var next := fleet.waypoints[1]
@@ -257,6 +266,13 @@ static func _step(
 	if move <= 0:
 		return false
 	fleet.did_not_move = false
+	# minefields on the way (S13): a hit stops the fleet where it happened
+	var hit := Minefields.check_path(state, content, rng, fleet, mini(move, int(exact)))
+	if hit >= 0:
+		if fleet.stacks.is_empty():
+			return false
+		if hit < int(exact):
+			move = hit
 	var arrived := move >= int(exact)
 	# the move reaches the target when it covers the distance rounded down (fuel counts it rounded up)
 	if arrived:
@@ -273,8 +289,9 @@ static func _step(
 		arrived = landed
 	if arrived and next.target == "wormhole":
 		_through_wormhole(state, fleet, next)
-	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel
-	if not out_of_fuel:
+	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel or a
+	# mine hit
+	if not out_of_fuel and hit < 0:
 		var scooped := mini(move, int(exact - SCOOP_DISTANCE_CUT))
 		if scooped > 0:
 			var room := fuel_capacity(fleet, owner, content) > fleet.cargo[Fleet.CARGO_FUEL]
@@ -288,7 +305,7 @@ static func _step(
 					{"fleet": fleet.number, "owner": fleet.owner},
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
-	return not chase.is_empty() and not arrived and not out_of_fuel
+	return not chase.is_empty() and not arrived and not out_of_fuel and hit < 0
 
 
 ## A fleet arriving on a wormhole its waypoint targets comes out at the other end (S12 step 8): both

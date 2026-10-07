@@ -1,8 +1,10 @@
 # S13 Minefields
 
-Status: draft (2026-09-30). Hits during movement, damage, decay, sweeping and detonation read from the code; the
-constant tables are in the code segment and match the community "Guts of Minefields" page. Bugs B01–B04 traced to
-their code where possible.
+Status: draft (2026-09-30); second pass 2026-10-07. Laying (S11), decay and hits during movement implemented
+(`core/rules/minefields.gd`) and verified by the mine1 game (turns 0-31: a Space Demolition race laying in place
+and while moving, fields merging, decay, two speed-bump hits); damage from standard and heavy fields is unit-tested
+only. Sweeping and detonation not built yet. The constant tables are in the code segment (10a8:0e6e-0e8c) and match
+the community "Guts of Minefields" page.
 References: `Fleet_CheckMinefields@10a8:30b6`, `SegmentCircleIntersect@1038:ae30`,
 `ProcessMinefieldHits@10b0:42a0` (decay and detonation), `SweepMinefields@10b0:45c4`, `Fleet_SweepRate@1078:1ca2`,
 `Design_SweepRate@1078:1d1c`, `Fleet_MineLayRate@1078:1aea`, `ResetMinefieldTurnState@10b0:4592`,
@@ -32,8 +34,8 @@ its standard fields.
 | Heavy | 6 | 1% | 500 (600) | 2000 (2500) |
 | Speed bump | 5 | 3.5% | 0 | 0 |
 
-The values in brackets are a second column the code selects for some fleets (the community page gives both; the
-condition is an open question).
+The values in brackets are the second column, used when any ship in the fleet has an engine that burns no fuel at
+warp 4 (the engine's fuel table entry for warp 4 is 0: ram scoops and the like).
 
 ## Algorithm
 
@@ -41,27 +43,59 @@ condition is an open question).
 
 For a fleet moving from A to B this turn:
 
-1. **Speed:** c = the smallest of 3 … 10 with (move distance − 1) ≤ c². Bonus b = 2 for Space Demolition, 1 for
-   Super-Stealth, else 0. If c ≤ 3 + b the fleet can't hit anything.
-2. **Fields on the path:** every minefield of a player who isn't the fleet's owner or the owner's friend, whose
-   circle the segment A–B crosses; for each, the distance along the path where the fleet enters and leaves it.
-   Overlapping fields of the same type are merged into one stretch. Up to 8 stretches per type.
-3. **Rolling:** take the stretches in order of entry distance. For a stretch of type t, if c > safe(t) + b:
-   chance = (c − b − safe(t)) × rate(t) per 1000; for each light year inside the stretch draw `random(1000)`; the
-   first draw below the chance is a hit at that light year. No hit: go to the next stretch.
-4. **On a hit:** damage (below), and the fleet stops at the hit point.
+The check runs in each movement step after fuel is charged, over d = min(the move, the distance to the waypoint
+truncated) light years, along the line from the fleet to its next waypoint (not to where it will stop).
+
+1. **Speed:** c = the smallest of 3 … 10 with (d − 1) ≤ c². Bonus b = 2 for Space Demolition, 1 for
+   Super-Stealth, else 0. If c ≤ 3 + b the fleet can't hit anything. Nothing happens when the waypoint is where
+   the fleet is.
+2. **Fields on the path:** every minefield of another player who doesn't count the fleet's owner as a friend, in
+   field order. For each: the point P of the line nearest the field's center (integer projection, divisions
+   truncated); if its squared distance from the center is at least the mine count, nothing. Otherwise a = the
+   distance from the fleet to P (truncated, negative when P is behind the fleet), h = √(mines − that squared
+   distance) truncated; the stretch is enter = max(a − h, 0) to leave = min(a + h, d), kept when leave > 0 and
+   enter < d. **B01:** for a vertical path the original takes the fleet's own position as P (fix: the proper
+   projection).
+   Stretches of one type are kept sorted by enter (at most 8): a new stretch goes before the first one it doesn't
+   start after; if it ends more than 1 ly before that one starts it is inserted, otherwise the two join (the
+   earlier enter, the later leave) and the joined stretch takes in the following stretches it reaches.
+3. **Rolling:** take the stretches in order of entry distance (on equal entries the lower type first). For a
+   stretch of type t, if c > safe(t) + b: chance = (c − b − safe(t)) × rate(t) per 1000; for each light year inside
+   the stretch draw `random(1000)`; the first draw below the chance is a hit at enter + that light year. No hit: go
+   to the next stretch. (Seen: two speed-bump hits at warp 6, mine1 turns 30 and 31.)
+4. **On a hit:** damage (below); the move becomes the hit distance (when shorter than the truncated distance) and
+   the fleet's position is computed from it as for any partial move (S12); no ram-scoop fuel that step; a chasing
+   fleet stops chasing. The hit point reported is the fleet's position plus (dx, dy) × hit ÷ L, with L the path
+   length rounded to the nearest light year and each coordinate rounded to the nearest (halves away from zero;
+   seen: 37.6 counts as 38).
+5. **The field hit** is the field of that type (another player's, not a friend's) whose squared distance from the
+   hit point minus its mine count is smallest. It loses mines div 20 (at least 10), or, when that is more than 50,
+   mines div 100 (at least 50); a field left with nothing disappears. The fleet's owner now knows the field.
+6. **Messages** (goto the fleet; the fleet given as its "where", 32768 + fleet): no damage (speed bumps)
+   **`fleet.mine_stopped`** `[fleet, field owner, type, x, y]` to the fleet's owner and
+   **`fleet.mine_stopped_yours`** `[fleet, type, x, y]` to the field's owner; damage without losses
+   **`fleet.mine_damaged`** / **`fleet.mine_damaged_yours`** (plus the damage, the raw total before shields, at
+   most 32,760); ships lost **`fleet.mine_destroyed_some`** / **`…_yours`** (plus the ships lost); the whole fleet
+   lost **`fleet.mine_annihilated`** `[fleet described, field owner, type, x, y]` (no goto; the original's message
+   to the field's owner then involves the salvage left behind, S14, not built yet).
 
 ### Damage from one hit
 
 Per design stack in the fleet (n ships, e engines per ship, armor A, shields s per ship):
 
-1. Space Demolition Mini and Super Mine Layer hulls take nothing from their owner's own fields.
+1. (Detonation only) Space Demolition's Mini and Super Mine Layer hulls take nothing from their owner's own
+   fields.
 2. Raw damage D = (n × perEngine(t) + E) × e, where E = minimum(t) − perEngine(t) × (ships in the fleet) if the fleet
-   has at most 4 ships and that is positive, else 0. **E is added for the first design stack only** (see B04).
+   has at most 4 ships and that is positive, else 0. **The original adds E for the first design stack only (B04);
+   our engine gives each stack E × n div (ships in the fleet).** e is the design's engine count.
 3. Shields take at most half: absorbed = min(s × n, D div 2).
-4. Damage per ship = (existing damage of the stack + D − absorbed) div n. If it exceeds A, **all n ships of the stack
-   are destroyed**; otherwise every ship in the stack is now damaged by that amount.
-5. If no ships are left the fleet is destroyed. Speed-bump fields do no damage but still stop the fleet.
+4. Damage per ship = (existing damage of the stack + D − absorbed) div n, where the existing damage is (damaged
+   percent × n div 100) × A × damage div 500. If it exceeds A, **all n ships of the stack are destroyed** (they
+   leave their design's count of ships in service); otherwise every ship in the stack is now damaged:
+   damage = per ship × 500 div A (at least 1), 100% of them.
+5. Lost ships take the cargo their capacity held with them (S11 "Cargo after a ship move"). If no ships are left
+   the fleet is destroyed. Speed-bump fields do no damage but still stop the fleet. Destroyed ships leave salvage
+   (S14, not built yet).
 
 ### Decay and detonation (S02 phase 11)
 
@@ -122,8 +156,8 @@ field order during detonation.
 
 ## Open questions
 
-1. What selects the second damage column (the community page lists both values; candidate: fleets with ram-scoop
-   engines).
-2. B02 root cause in the code.
-3. The exact way stretches of the same type are merged and the 8-stretch limit.
-4. Detonation details (which fields detonate: standard only; damage column used).
+1. B02 root cause in the code.
+2. Detonation details (which fields detonate: standard only; damage column used).
+3. The words at +10 (players who know the field) and +16 of a field's record, and which players scanning marks as
+   seeing it this turn (S15): the mine1 fixtures ignore `seen_by`.
+4. The argument of the square root for a (assumed the distance from the fleet to P).

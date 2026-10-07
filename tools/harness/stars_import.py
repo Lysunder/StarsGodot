@@ -547,7 +547,9 @@ class Importer:
             wp["target_owner"] = (target_id >> 9) & 15 if kind in ("minefield", "packet") else -1
         if wp["task"] != "none":
             # Missing task data words are zero, as the original fills them (order blocks 4, 5).
-            words = list(struct.unpack("<%dH" % ((len(d) - 8) // 2), d[8:])) + [0] * 5
+            # The lay-mines task sends an odd number of bytes (its years and a byte): pad to words.
+            data = bytes(d[8:]) + (b"\x00" if (len(d) - 8) % 2 else b"")
+            words = list(struct.unpack("<%dH" % (len(data) // 2), data)) + [0] * 5
             wp["task_data"] = task_data(wp["task"], words[:5])
         return wp
 

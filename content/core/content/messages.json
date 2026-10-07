@@ -602,5 +602,115 @@
     "params": [
       "fleet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.no_mine_layers",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mines_laid",
+    "params": [
+      "fleet",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mines_added",
+    "params": [
+      "fleet",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.lay_failed",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_stopped",
+    "params": [
+      "object",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_damaged",
+    "params": [
+      "object",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_destroyed_some",
+    "params": [
+      "object",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_stopped_yours",
+    "params": [
+      "object",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_damaged_yours",
+    "params": [
+      "object",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_destroyed_some_yours",
+    "params": [
+      "object",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_annihilated",
+    "params": [
+      "fleet_designs",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
   }
 ]

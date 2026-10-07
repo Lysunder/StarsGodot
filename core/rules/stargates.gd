@@ -99,7 +99,7 @@ static func jump(
 		elif total > before / 2:
 			type = "gate_lost_most"
 		_message(state, content, fleet, type, [source_id, destination.id, total])
-		_cargo_after_losses(fleet, owner, content, lost)
+		FleetOrders.cargo_after_losses(fleet, owner, content, lost)
 	FleetTargets.freeze_followers(state, fleet)
 	fleet.x = next.x
 	fleet.y = next.y
@@ -264,29 +264,6 @@ static func _apply_damage(
 		if survivors == 0:
 			fleet.stacks.erase(stack)
 	return lost
-
-
-## The cargo the lost ships' capacity held is lost, as when ships move to another fleet (S11).
-static func _cargo_after_losses(
-	fleet: Fleet, owner: Player, content: ContentRegistry, lost: Dictionary
-) -> void:
-	var caps := [0, 0, 0, 0]
-	var counts := {}
-	for stack in fleet.stacks:
-		counts[stack.design] = stack.count
-	for slot: int in lost:
-		counts[slot] = counts.get(slot, 0) + int(lost[slot])
-	for slot: int in counts:
-		var design := owner.ship_design(slot)
-		var n: int = counts[slot]
-		var gone: int = lost.get(slot, 0)
-		caps[0] += n * PartRules.fuel_capacity(design, content)
-		caps[1] += n * PartRules.cargo_capacity(design, content)
-		caps[2] += gone * PartRules.fuel_capacity(design, content)
-		caps[3] += gone * PartRules.cargo_capacity(design, content)
-	var losses := FleetOrders._cargo_lost(fleet, caps)
-	for c in Fleet.CARGO_FUEL + 1:
-		fleet.cargo[c] -= losses[c]
 
 
 static func _refuse(

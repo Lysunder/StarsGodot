@@ -19,7 +19,8 @@
     "cost": 95,
     "params": {
       "research.spy_pct": 50,
-      "race.ap_nas_penalty": 200
+      "race.ap_nas_penalty": 200,
+      "minefield.speed_bonus": 1
     }
   },
   {
@@ -67,7 +68,12 @@
     "id": "trait.prt.SD",
     "kind": "primary",
     "order": 5,
-    "cost": -150
+    "cost": -150,
+    "params": {
+      "minefield.decay_per_planet": 1,
+      "minefield.lay_while_moving": 1,
+      "minefield.speed_bonus": 2
+    }
   },
   {
     "type": "trait",

@@ -90,7 +90,15 @@ func run_pass(pass_number: int) -> void:
 			"remote_mine":
 				if pass_number == 3:
 					_remote_mine(fleet, wp)
-			"none", "patrol", "route":
+			"lay_mines":
+				if pass_number == 3:
+					_lay_mines(fleet, wp)
+			"none":
+				# a Space Demolition fleet lays mines on its way to a lay-mines waypoint
+				if pass_number == 3 and fleet.waypoints.size() > 1:
+					if fleet.waypoints[1].task == "lay_mines" and _lays_while_moving(fleet):
+						Minefields.lay(_state, _content, fleet, fleet.waypoints[1], true)
+			"patrol", "route":
 				pass
 			_:
 				push_warning("waypoint task %s is not implemented yet" % wp.task)
@@ -546,6 +554,19 @@ func _merge(fleet: Fleet, wp: Waypoint) -> void:
 ## S11 "Remote mining" (pass 3, fleets that didn't move): an unowned planet is mined at the
 ## fleet's mining rate; the task stays. In deep space, at another player's planet (unless the race
 ## lives in space) or without mining robots the task is cleared.
+## S11 "Lay mines": a fleet that moved this turn lays only if its race lays while moving (half).
+func _lay_mines(fleet: Fleet, wp: Waypoint) -> void:
+	var moved := not fleet.did_not_move
+	if moved and not _lays_while_moving(fleet):
+		return
+	Minefields.lay(_state, _content, fleet, wp, moved)
+
+
+func _lays_while_moving(fleet: Fleet) -> bool:
+	var race := _state.player(fleet.owner).race
+	return RaceMath.trait_param(race, _content, "minefield.lay_while_moving", 0) != 0
+
+
 func _remote_mine(fleet: Fleet, wp: Waypoint) -> void:
 	if not fleet.did_not_move:
 		return

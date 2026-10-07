@@ -144,7 +144,7 @@ static func _key(order: Dictionary) -> String:
 	match order.get("type"):
 		"production_queue", "planet_settings":
 			return "%s/%s" % [order["type"], order.get("planet")]
-		"research", "player_defaults", "message_filters":
+		"research", "player_defaults", "message_filters", "player_relations":
 			return order["type"]
 		"fleet_repeat", "fleet_rename", "fleet_battle_plan":
 			return "%s/%s" % [order["type"], order.get("fleet")]

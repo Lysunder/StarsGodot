@@ -1280,5 +1280,38 @@
   },
   "message.fleet.wormhole_vanished": {
     "message": 248
+  },
+  "message.fleet.no_mine_layers": {
+    "message": 191
+  },
+  "message.fleet.mines_laid": {
+    "message": 195
+  },
+  "message.fleet.mines_added": {
+    "message": 196
+  },
+  "message.fleet.lay_failed": {
+    "message": 382
+  },
+  "message.fleet.mine_stopped": {
+    "message": 197
+  },
+  "message.fleet.mine_damaged": {
+    "message": 198
+  },
+  "message.fleet.mine_destroyed_some": {
+    "message": 199
+  },
+  "message.fleet.mine_stopped_yours": {
+    "message": 201
+  },
+  "message.fleet.mine_damaged_yours": {
+    "message": 202
+  },
+  "message.fleet.mine_destroyed_some_yours": {
+    "message": 203
+  },
+  "message.fleet.mine_annihilated": {
+    "message": 351
   }
 }

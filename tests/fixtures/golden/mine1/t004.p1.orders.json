@@ -1,0 +1,41 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1459,
+    "y": 1288
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1459,
+    "y": 1288
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 4
+}
