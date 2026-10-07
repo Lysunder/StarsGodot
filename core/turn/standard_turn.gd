@@ -50,6 +50,7 @@ static func pipeline() -> TurnPipeline:
 		SpacePhases.DecayAndDetonate.new(),
 		FleetPhases.Refuel.new(),
 		FleetPhases.Waypoint1Tasks.new(),
+		SpacePhases.Sweep.new(),
 		EconomyPhases.Mining.new(),
 		EconomyPhases.Planets.new(),
 		EconomyPhases.Growth.new(),

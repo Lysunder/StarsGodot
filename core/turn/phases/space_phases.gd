@@ -1,6 +1,6 @@
 class_name SpacePhases
 extends RefCounted
-## Space object phases (spec S02 8, 14).
+## Space object phases (spec S02 7, 11, 14, 17).
 
 
 ## 7: minefields' "seen this turn" records start empty (S13).
@@ -34,3 +34,14 @@ class MoveAfterProduction:
 
 	func run(ctx: TurnContext) -> void:
 		Wormholes.shift_all(ctx.state, ctx.rng())
+
+
+## 17: fleets and starbases with beam weapons sweep other players' minefields (S13).
+class Sweep:
+	extends Phase
+
+	func _init() -> void:
+		super("minefields.sweep")
+
+	func run(ctx: TurnContext) -> void:
+		Minefields.sweep_all(ctx.state, ctx.content)

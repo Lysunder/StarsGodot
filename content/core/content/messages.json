@@ -712,5 +712,40 @@
       "object_kind",
       "object"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.swept_mines",
+    "params": [
+      "fleet",
+      "amount",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.swept_mines",
+    "params": [
+      "planet",
+      "amount",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.minefield.swept",
+    "params": [
+      "minefield",
+      "amount",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
   }
 ]

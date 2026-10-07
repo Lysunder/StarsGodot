@@ -603,5 +603,11 @@
   "message.fleet.mine_destroyed_some_yours.text": "{0} was stopped in your {1} minefield at {3}, took {4} damage points and lost {5} ships.",
   "message.fleet.mine_destroyed_some_yours.name": "Fleet damaged in your minefield",
   "message.fleet.mine_annihilated.text": "{0} was destroyed in a {1} {2} minefield at {4}.",
-  "message.fleet.mine_annihilated.name": "Fleet lost in a minefield"
+  "message.fleet.mine_annihilated.name": "Fleet lost in a minefield",
+  "message.fleet.swept_mines.text": "{0} cleared {1} mines from a {2} {3} minefield at {5}.",
+  "message.fleet.swept_mines.name": "Mines swept",
+  "message.planet.swept_mines.text": "The starbase at {0} cleared {1} mines from a {2} {3} minefield at {5}.",
+  "message.planet.swept_mines.name": "Mines swept",
+  "message.minefield.swept.text": "An unknown sweeper cleared {1} mines from your {2} minefield at {4}.",
+  "message.minefield.swept.name": "Your minefield swept"
 }

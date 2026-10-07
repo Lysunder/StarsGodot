@@ -633,6 +633,10 @@
   "minefields": [
    {
     "detonate": false,
+    "known_by": [
+     0,
+     1
+    ],
     "mines": 5253,
     "mod_data": {},
     "number": 0,
@@ -647,6 +651,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 30,
     "mod_data": {},
     "number": 1,
@@ -660,6 +667,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 32,
     "mod_data": {},
     "number": 2,
@@ -671,6 +681,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 34,
     "mod_data": {},
     "number": 3,
@@ -682,6 +695,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 36,
     "mod_data": {},
     "number": 4,
@@ -693,6 +709,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 38,
     "mod_data": {},
     "number": 5,
@@ -704,6 +723,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 40,
     "mod_data": {},
     "number": 6,
@@ -715,6 +737,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 42,
     "mod_data": {},
     "number": 7,
@@ -726,6 +751,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 2106,
     "mod_data": {},
     "number": 8,

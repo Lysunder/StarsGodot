@@ -73,6 +73,8 @@ static func _value(
 			var owner := view.state.player(int(v) / DESIGN_SHIFT)
 			var d := owner.ship_design(int(v) % DESIGN_SHIFT) if owner != null else null
 			return d.name if d != null else "a design"
+		"minefield":
+			return "minefield #%d" % (int(v) % OWNER_SHIFT + 1)
 		"minefield_type":
 			return ["standard", "heavy", "speed bump"][clampi(int(v), 0, 2)]
 		"own_design":

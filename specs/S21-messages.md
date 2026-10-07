@@ -35,6 +35,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `{"research": true}` | the research dialog |
 | `{"item": id}` | a part or planetary item (the technology browser) |
 | `{"hulls": true}` | the ship designer's hull list |
+| `{"minefield": number, "owner": player}` | a minefield |
 
 ### Parameter kinds
 
@@ -52,8 +53,9 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `flag` | 0 or 1, as the type says |
 | `axis` | an environment axis: 0 gravity, 1 temperature, 2 radiation |
 | `axis_value` | an environment value with its axis: axis × 256 + value |
-| `object_kind` | the first half of a "where": always -1 (65535) in the messages seen so far |
-| `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value |
+| `minefield` | a minefield: owner × 512 + its number |
+| `object_kind` | the first half of a "where": -1 (65535) when the second half names an object, else a position's x |
+| `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value; or the position's y |
 
 In the original's files every parameter is a byte or a word, a 32-bit amount takes two (low word, high word) and an
 item takes two (category mask, item number); the harness importer (`tools/harness/stars_messages.py`,

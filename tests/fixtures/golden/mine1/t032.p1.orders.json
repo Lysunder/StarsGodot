@@ -1,0 +1,71 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "fleet",
+    "target_id": 3,
+    "target_owner": 0,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1415,
+    "y": 1292
+   }
+  },
+  {
+   "count": 1,
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_delete"
+  },
+  {
+   "count": 1,
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_delete"
+  },
+  {
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1409,
+    "y": 1296
+   }
+  },
+  {
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1409,
+    "y": 1296
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 32
+}

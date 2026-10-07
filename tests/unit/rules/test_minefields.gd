@@ -176,3 +176,100 @@ func test_damage_matches_the_worked_example() -> void:
 	assert_int(s.players[0].ship_design(0).remaining).is_equal(-2)
 	# the field loses 10000 div 100 = 100 mines
 	assert_int(field.mines).is_equal(9900)
+
+
+func _laser_design(slot: int, hull: String, lasers: int) -> Design:
+	var d := Design.new()
+	d.slot = slot
+	d.hull = hull
+	d.parts.assign([DesignSlot.new("part.beam.laser", lasers)])
+	return d
+
+
+## Player 1 with a fleet of 2 ships carrying 2 lasers each (sweep rate 40) at (1200, 1210), and a
+## battle plan attacking `attack`.
+func _sweeper(s: GameState, attack: int) -> Fleet:
+	var other := Player.new()
+	other.index = 1
+	other.relations.assign(["neutral", "neutral"])
+	other.battle_plans = [{"number": 0, "name": "Plan 0", "attack": attack}]
+	other.set_design(_laser_design(0, "hull.scout", 2), false)
+	s.players.append(other)
+	s.players[0].relations.assign(["neutral", "neutral"])
+	var f := s.add_fleet(1, 512)
+	f.x = 1200
+	f.y = 1210
+	f.add_ships(0, 2)
+	f.waypoints.append(Waypoint.new(1200, 1210))
+	return f
+
+
+func test_sweep_rates() -> void:
+	# count x power x range squared; starbases count one more range; gatlings range 4
+	assert_int(PartRules.sweep_rate(_laser_design(0, "hull.scout", 2), _content)).is_equal(20)
+	assert_int(PartRules.sweep_rate(_laser_design(0, "hull.space_station", 2), _content)).is_equal(
+		80
+	)
+	var gun := _laser_design(0, "hull.scout", 0)
+	gun.parts.assign(
+		[DesignSlot.new("part.beam.mini_gun", 1), DesignSlot.new("part.beam.pulsed_sapper", 1)]
+	)
+	assert_int(PartRules.sweep_rate(gun, _content)).is_equal(13 * 16)
+
+
+func test_a_fleet_sweeps_a_field_its_plan_attacks() -> void:
+	var s := _game()
+	var f := _sweeper(s, BattlePlans.ATTACK_NOT_FRIENDS)
+	var field := _field(s, 0, 1200, 1200, 1000)
+	TurnMessages.clear(s)
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(960)
+	assert_array(field.known_by).is_equal([1])
+	assert_str(s.messages[1][0]["type"]).is_equal("message.fleet.swept_mines")
+	assert_array(s.messages[1][0]["params"]).is_equal([512, 40, 0, 0, 1200, 1200])
+	assert_str(s.messages[0][0]["type"]).is_equal("message.minefield.swept")
+	assert_dict(s.messages[0][0]["goto"]).is_equal({"minefield": 0, "owner": 0})
+	# a plan attacking enemies only leaves a neutral's field alone
+	s.players[1].battle_plans[0]["attack"] = BattlePlans.ATTACK_ENEMIES
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(960)
+	s.players[1].relations[0] = "enemy"
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(920)
+	assert_int(f.ship_count()).is_equal(2)
+
+
+func test_a_sweep_stops_at_the_sweeper_and_speed_bumps_take_a_third() -> void:
+	var s := _game()
+	_sweeper(s, BattlePlans.ATTACK_EVERYONE)
+	# 10 ly from the center: the field keeps 99 mines, just leaving the fleet outside
+	var field := _field(s, 0, 1200, 1200, 120)
+	var bump := _field(s, 0, 1200, 1220, 1000, "speed_bump")
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(99)
+	assert_int(bump.mines).is_equal(1000 - 40 / 3)
+	# at the very center a field smaller than the rate goes completely
+	field.y = 1210
+	field.mines = 30
+	Minefields.sweep_all(s, _content)
+	assert_bool(s.minefields.has(field)).is_false()
+
+
+func test_starbases_sweep_fields_of_players_who_are_not_friends() -> void:
+	var s := _game()
+	_sweeper(s, 0)
+	s.players[1].set_design(_laser_design(0, "hull.space_station", 2), true)
+	var pl := s.planets[0]
+	pl.owner = 1
+	pl.starbase = Starbase.new()
+	var field := _field(s, 0, 1300, 1290, 1000)
+	TurnMessages.clear(s)
+	# plan 0 attacks nobody, so only the starbase sweeps: 80 mines
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(920)
+	assert_array(field.known_by).is_equal([1])
+	assert_str(s.messages[1][0]["type"]).is_equal("message.planet.swept_mines")
+	assert_dict(s.messages[1][0]["goto"]).is_equal({"planet": pl.id})
+	s.players[1].relations[0] = "friend"
+	Minefields.sweep_all(s, _content)
+	assert_int(field.mines).is_equal(920)

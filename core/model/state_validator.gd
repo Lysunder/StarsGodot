@@ -268,6 +268,7 @@ func _check_space_objects() -> void:
 		var path := "/minefields/%d" % i
 		_numbered(m.owner, m.number, numbers, path)
 		_range(m.mines, 0, 1 << 53, path + "/mines")
+		_players(m.known_by, path + "/known_by")
 		_players(m.seen_by, path + "/seen_by")
 	for i in _state.packets.size():
 		var pk := _state.packets[i]

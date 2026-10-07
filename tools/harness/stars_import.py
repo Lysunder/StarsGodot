@@ -564,6 +564,7 @@ class Importer:
                 {
                     "owner": owner, "number": number, "x": x, "y": y, "mines": mines,
                     "type": MINEFIELD_TYPES[d[12]], "detonate": d[13] == 1,
+                    "known_by": mask_bits(struct.unpack_from("<H", d, 10)[0]),
                     "seen_by": mask_bits(struct.unpack_from("<H", d, 14)[0]), "mod_data": {},
                 }
             )
@@ -627,8 +628,11 @@ def legacy_item(legacy, mask, item):
     return legacy.part(mask, item)
 
 
-def message_goto(word, legacy):
-    """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code."""
+def message_goto(word, legacy, params=()):
+    """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code.
+    0xFFFA shows the minefield named by the first parameter."""
+    if word == 0xFFFA and params:
+        return {"minefield": params[0] & 0x1FF, "owner": (params[0] >> 9) & 15}
     if word == 0xFFFF:
         return {}
     if word == 0xFFFE:
@@ -690,7 +694,7 @@ def player_messages(hst_path, players, legacy):
                 messages.append(
                     {
                         "type": kind,
-                        "goto": message_goto(goto, legacy),
+                        "goto": message_goto(goto, legacy, params),
                         "params": message_params(params, kinds[kind], legacy),
                     }
                 )

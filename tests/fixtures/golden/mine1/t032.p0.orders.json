@@ -1,0 +1,73 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "lay_mines",
+    "task_data": {
+     "raw": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 5,
+    "x": 1418,
+    "y": 1493
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 0,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1415,
+    "y": 1292
+   }
+  },
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "lay_mines",
+    "task_data": {
+     "raw": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1418,
+    "y": 1493
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 32
+}

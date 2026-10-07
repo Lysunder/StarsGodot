@@ -7,12 +7,15 @@ extends GdUnitTestSuite
 ## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
-## mine1: which players see a minefield this turn comes from scanning (visibility, S15).
-const GAME_IGNORE := {"mine1": ["/minefields*/seen_by*"]}
+## mine1: which players see a minefield this turn, and most of who knows it, comes from scanning
+## (visibility, S15).
+const GAME_IGNORE := {"mine1": ["/minefields*/seen_by*", "/minefields*/known_by*"]}
 ## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9);
 ## turn 31: the starbase repaired that damage (repair, S19); turn 40: player 2's colonists unloaded
-## onto player 1's colony fought its ground troops (ground combat, S17).
+## onto player 1's colony fought its ground troops (ground combat, S17). mine1 turn 36: player 2's
+## scanners tracked a wormhole that had just moved (S15).
 const TURN_IGNORE := {
+	"mine1": {36: ["/wormholes[3]/tracked_by*"]},
 	"terra1":
 	{
 		30:
@@ -257,7 +260,21 @@ func test_mine1(
 		[28],
 		[29],
 		[30],
-		[31]
+		[31],
+		[32],
+		[33],
+		[34],
+		[35],
+		[36],
+		[37],
+		[38],
+		[39],
+		[40],
+		[41],
+		[42],
+		[43],
+		[44],
+		[45]
 	]
 ) -> void:
 	_check_turn("mine1", turn)

@@ -529,6 +529,9 @@
   "minefields": [
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 320,
     "mod_data": {},
     "number": 0,
@@ -542,6 +545,9 @@
    },
    {
     "detonate": false,
+    "known_by": [
+     0
+    ],
     "mines": 80,
     "mod_data": {},
     "number": 1,

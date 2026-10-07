@@ -266,12 +266,14 @@ static func _step(
 	if move <= 0:
 		return false
 	fleet.did_not_move = false
-	# minefields on the way (S13): a hit stops the fleet where it happened
-	var hit := Minefields.check_path(state, content, rng, fleet, mini(move, int(exact)))
+	# minefields on the way (S13) over min(move, trunc(distance - 0.99999)), as for scoops: a hit
+	# stops the fleet where it happened
+	var cut := int(exact - SCOOP_DISTANCE_CUT)
+	var hit := Minefields.check_path(state, content, rng, fleet, mini(move, cut))
 	if hit >= 0:
 		if fleet.stacks.is_empty():
 			return false
-		if hit < int(exact):
+		if hit < cut:
 			move = hit
 	var arrived := move >= int(exact)
 	# the move reaches the target when it covers the distance rounded down (fuel counts it rounded up)

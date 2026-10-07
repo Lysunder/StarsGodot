@@ -107,13 +107,13 @@
      0,
      0,
      0,
-     400
+     62
     ],
     "mod_data": {},
     "name": "",
     "number": 2,
     "owner": 0,
-    "planet": 94,
+    "planet": -1,
     "repeat": false,
     "stacks": [
      {
@@ -131,8 +131,8 @@
     ],
     "waypoints": [
      {
-      "target": "planet",
-      "target_id": 94,
+      "target": "none",
+      "target_id": -1,
       "target_owner": -1,
       "task": "lay_mines",
       "task_data": {
@@ -144,13 +144,13 @@
         0
        ]
       },
-      "warp": 0,
-      "x": 1592,
-      "y": 1228
+      "warp": 6,
+      "x": 1420,
+      "y": 1494
      }
     ],
-    "x": 1592,
-    "y": 1228
+    "x": 1420,
+    "y": 1494
    },
    {
     "battle_plan": 0,
@@ -159,7 +159,7 @@
      0,
      0,
      0,
-     9
+     10
     ],
     "mod_data": {},
     "name": "",
@@ -186,6 +186,16 @@
       "target": "none",
       "target_id": -1,
       "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 5,
+      "x": 1415,
+      "y": 1304
+     },
+     {
+      "target": "none",
+      "target_id": -1,
+      "target_owner": -1,
       "task": "lay_mines",
       "task_data": {
        "raw": [
@@ -196,13 +206,13 @@
         0
        ]
       },
-      "warp": 5,
-      "x": 1415,
-      "y": 1292
+      "warp": 1,
+      "x": 1418,
+      "y": 1493
      }
     ],
     "x": 1415,
-    "y": 1292
+    "y": 1304
    },
    {
     "battle_plan": 0,
@@ -211,7 +221,7 @@
      0,
      0,
      0,
-     41
+     21
     ],
     "mod_data": {},
     "name": "",
@@ -240,23 +250,13 @@
       "target_owner": -1,
       "task": "none",
       "task_data": {},
-      "warp": 0,
-      "x": 1435,
-      "y": 1433
-     },
-     {
-      "target": "none",
-      "target_id": -1,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
-      "warp": 3,
-      "x": 1474,
-      "y": 1268
+      "warp": 5,
+      "x": 1409,
+      "y": 1296
      }
     ],
-    "x": 1435,
-    "y": 1433
+    "x": 1409,
+    "y": 1296
    },
    {
     "battle_plan": 0,
@@ -265,7 +265,7 @@
      0,
      0,
      0,
-     14
+     38
     ],
     "mod_data": {},
     "name": "",
@@ -295,8 +295,8 @@
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1565,
-      "y": 1275
+      "x": 1579,
+      "y": 1251
      },
      {
       "target": "planet",
@@ -309,8 +309,8 @@
       "y": 1228
      }
     ],
-    "x": 1565,
-    "y": 1275
+    "x": 1579,
+    "y": 1251
    },
    {
     "battle_plan": 0,
@@ -319,7 +319,7 @@
      0,
      0,
      0,
-     164
+     8
     ],
     "mod_data": {},
     "name": "",
@@ -348,23 +348,13 @@
       "target_owner": -1,
       "task": "none",
       "task_data": {},
-      "warp": 0,
-      "x": 1474,
-      "y": 1421
-     },
-     {
-      "target": "planet",
-      "target_id": 94,
-      "target_owner": -1,
-      "task": "none",
-      "task_data": {},
       "warp": 6,
-      "x": 1592,
-      "y": 1228
+      "x": 1406,
+      "y": 1282
      }
     ],
-    "x": 1474,
-    "y": 1421
+    "x": 1406,
+    "y": 1282
    },
    {
     "battle_plan": 0,
@@ -373,7 +363,7 @@
      0,
      0,
      0,
-     8
+     32
     ],
     "mod_data": {},
     "name": "",
@@ -404,7 +394,7 @@
       "task_data": {},
       "warp": 0,
       "x": 1466,
-      "y": 1362
+      "y": 1338
      },
      {
       "target": "none",
@@ -428,7 +418,7 @@
      }
     ],
     "x": 1466,
-    "y": 1362
+    "y": 1338
    },
    {
     "battle_plan": 0,
@@ -437,7 +427,7 @@
      0,
      0,
      0,
-     17
+     41
     ],
     "mod_data": {},
     "name": "",
@@ -467,8 +457,8 @@
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1467,
-      "y": 1443
+      "x": 1482,
+      "y": 1419
      },
      {
       "target": "planet",
@@ -481,8 +471,8 @@
       "y": 1228
      }
     ],
-    "x": 1467,
-    "y": 1443
+    "x": 1482,
+    "y": 1419
    },
    {
     "battle_plan": 0,
@@ -491,7 +481,7 @@
      0,
      0,
      0,
-     1
+     25
     ],
     "mod_data": {},
     "name": "",
@@ -521,8 +511,8 @@
       "task": "none",
       "task_data": {},
       "warp": 0,
-      "x": 1454,
-      "y": 1454
+      "x": 1475,
+      "y": 1430
      },
      {
       "target": "planet",
@@ -535,13 +525,24 @@
       "y": 1228
      }
     ],
-    "x": 1454,
-    "y": 1454
+    "x": 1475,
+    "y": 1430
    }
   ],
   "history": [],
   "messages": [
    [
+    {
+     "goto": {
+      "fleet": 3,
+      "owner": 0
+     },
+     "params": [
+      3,
+      1
+     ],
+     "type": "message.fleet.ram_scoop"
+    },
     {
      "goto": {
       "planet": 94
@@ -569,9 +570,37 @@
      },
      "params": [
       3,
-      160
+      80
      ],
      "type": "message.fleet.mines_added"
+    },
+    {
+     "goto": {
+      "minefield": 8,
+      "owner": 0
+     },
+     "params": [
+      8,
+      5,
+      2,
+      1415,
+      1292
+     ],
+     "type": "message.minefield.swept"
+    },
+    {
+     "goto": {
+      "minefield": 2,
+      "owner": 0
+     },
+     "params": [
+      2,
+      62,
+      0,
+      1420,
+      1494
+     ],
+     "type": "message.minefield.swept"
     }
    ],
    [
@@ -627,6 +656,35 @@
       68
      ],
      "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "fleet": 0,
+      "owner": 1
+     },
+     "params": [
+      512,
+      5,
+      0,
+      2,
+      1415,
+      1292
+     ],
+     "type": "message.fleet.swept_mines"
+    },
+    {
+     "goto": {
+      "planet": 68
+     },
+     "params": [
+      68,
+      62,
+      0,
+      0,
+      1420,
+      1494
+     ],
+     "type": "message.planet.swept_mines"
     }
    ]
   ],
@@ -637,7 +695,7 @@
      0,
      1
     ],
-    "mines": 4340,
+    "mines": 4179,
     "mod_data": {},
     "number": 0,
     "owner": 0,
@@ -646,59 +704,47 @@
      1
     ],
     "type": "standard",
-    "x": 1592,
-    "y": 1228
+    "x": 1589,
+    "y": 1229
    },
    {
     "detonate": false,
     "known_by": [
      0
     ],
-    "mines": 44,
+    "mines": 140,
     "mod_data": {},
     "number": 1,
     "owner": 0,
-    "seen_by": [
-     0
-    ],
-    "type": "speed_bump",
-    "x": 1568,
-    "y": 1237
+    "seen_by": [],
+    "type": "standard",
+    "x": 1437,
+    "y": 1468
    },
    {
     "detonate": false,
     "known_by": [
-     0
+     0,
+     1
     ],
-    "mines": 46,
+    "mines": 408,
     "mod_data": {},
     "number": 2,
     "owner": 0,
-    "seen_by": [],
-    "type": "speed_bump",
-    "x": 1544,
-    "y": 1245
+    "seen_by": [
+     0,
+     1
+    ],
+    "type": "standard",
+    "x": 1420,
+    "y": 1494
    },
    {
     "detonate": false,
     "known_by": [
      0
     ],
-    "mines": 48,
-    "mod_data": {},
-    "number": 3,
-    "owner": 0,
-    "seen_by": [],
-    "type": "speed_bump",
-    "x": 1521,
-    "y": 1254
-   },
-   {
-    "detonate": false,
-    "known_by": [
-     0
-    ],
-    "mines": 50,
+    "mines": 2,
     "mod_data": {},
     "number": 4,
     "owner": 0,
@@ -712,7 +758,7 @@
     "known_by": [
      0
     ],
-    "mines": 52,
+    "mines": 4,
     "mod_data": {},
     "number": 5,
     "owner": 0,
@@ -726,7 +772,7 @@
     "known_by": [
      0
     ],
-    "mines": 54,
+    "mines": 6,
     "mod_data": {},
     "number": 6,
     "owner": 0,
@@ -738,13 +784,16 @@
    {
     "detonate": false,
     "known_by": [
-     0
+     0,
+     1
     ],
-    "mines": 56,
+    "mines": 8,
     "mod_data": {},
     "number": 7,
     "owner": 0,
-    "seen_by": [],
+    "seen_by": [
+     1
+    ],
     "type": "speed_bump",
     "x": 1427,
     "y": 1288
@@ -752,18 +801,96 @@
    {
     "detonate": false,
     "known_by": [
-     0
+     0,
+     1
     ],
-    "mines": 1596,
+    "mines": 1916,
     "mod_data": {},
     "number": 8,
     "owner": 0,
     "seen_by": [
-     0
+     0,
+     1
     ],
     "type": "speed_bump",
     "x": 1415,
     "y": 1292
+   },
+   {
+    "detonate": false,
+    "known_by": [
+     0
+    ],
+    "mines": 90,
+    "mod_data": {},
+    "number": 9,
+    "owner": 0,
+    "seen_by": [],
+    "type": "standard",
+    "x": 1533,
+    "y": 1318
+   },
+   {
+    "detonate": false,
+    "known_by": [
+     0
+    ],
+    "mines": 100,
+    "mod_data": {},
+    "number": 10,
+    "owner": 0,
+    "seen_by": [],
+    "type": "standard",
+    "x": 1514,
+    "y": 1348
+   },
+   {
+    "detonate": false,
+    "known_by": [
+     0
+    ],
+    "mines": 110,
+    "mod_data": {},
+    "number": 11,
+    "owner": 0,
+    "seen_by": [],
+    "type": "standard",
+    "x": 1495,
+    "y": 1378
+   },
+   {
+    "detonate": false,
+    "known_by": [
+     0,
+     1
+    ],
+    "mines": 120,
+    "mod_data": {},
+    "number": 12,
+    "owner": 0,
+    "seen_by": [
+     1
+    ],
+    "type": "standard",
+    "x": 1475,
+    "y": 1408
+   },
+   {
+    "detonate": false,
+    "known_by": [
+     0,
+     1
+    ],
+    "mines": 130,
+    "mod_data": {},
+    "number": 13,
+    "owner": 0,
+    "seen_by": [
+     1
+    ],
+    "type": "standard",
+    "x": 1456,
+    "y": 1438
    }
   ],
   "mod_data": {},
@@ -3968,14 +4095,14 @@
    {
     "artifact": null,
     "concentration": [
-     64,
+     63,
      30,
-     61
+     60
     ],
     "concentration_fraction": [
-     97,
-     218,
-     112
+     143,
+     164,
+     171
     ],
     "defenses": 10,
     "environment": [
@@ -3988,7 +4115,7 @@
      50,
      50
     ],
-    "extra_colonists": 35,
+    "extra_colonists": 1,
     "factories": 10,
     "has_scanner": true,
     "homeworld": true,
@@ -4000,7 +4127,7 @@
     "mod_data": {},
     "name": "Planet 68",
     "owner": 1,
-    "population": 3544,
+    "population": 9877,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -4008,9 +4135,9 @@
      "design": 0
     },
     "surface": [
-     691,
-     498,
-     622
+     853,
+     570,
+     769
     ],
     "x": 1417,
     "y": 1514
@@ -5193,14 +5320,14 @@
    {
     "artifact": null,
     "concentration": [
-     64,
+     63,
      30,
-     61
+     60
     ],
     "concentration_fraction": [
-     97,
-     218,
-     112
+     143,
+     164,
+     171
     ],
     "defenses": 10,
     "environment": [
@@ -5213,7 +5340,7 @@
      50,
      50
     ],
-    "extra_colonists": 27,
+    "extra_colonists": 33,
     "factories": 10,
     "has_scanner": true,
     "homeworld": true,
@@ -5225,7 +5352,7 @@
     "mod_data": {},
     "name": "Planet 94",
     "owner": 0,
-    "population": 3463,
+    "population": 8319,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -5233,9 +5360,9 @@
      "design": 0
     },
     "surface": [
-     672,
-     498,
-     622
+     817,
+     570,
+     766
     ],
     "x": 1592,
     "y": 1228
@@ -6926,7 +7053,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     633,
+     1405,
      0,
      0,
      0,
@@ -7103,7 +7230,7 @@
      }
     ],
     "tech_levels": [
-     6,
+     11,
      0,
      2,
      0,
@@ -7247,7 +7374,7 @@
     "research_field": 0,
     "research_percent": 15,
     "research_points": [
-     714,
+     3252,
      0,
      0,
      0,
@@ -7486,7 +7613,7 @@
      }
     ],
     "tech_levels": [
-     6,
+     11,
      3,
      3,
      3,
@@ -7542,51 +7669,53 @@
    }
   },
   "traders": [],
-  "turn": 19,
+  "turn": 43,
   "wormholes": [
    {
-    "age": 19,
+    "age": 14,
     "mod_data": {},
     "number": 0,
     "other_end": 1,
     "seen_by": [],
     "stability": 1,
     "tracked_by": [],
-    "x": 1513,
-    "y": 1548
+    "x": 1099,
+    "y": 1027
    },
    {
-    "age": 19,
+    "age": 13,
     "mod_data": {},
     "number": 1,
     "other_end": 0,
     "seen_by": [],
     "stability": 1,
     "tracked_by": [],
-    "x": 1453,
-    "y": 1105
+    "x": 1293,
+    "y": 1581
    },
    {
-    "age": 19,
+    "age": 43,
     "mod_data": {},
     "number": 2,
     "other_end": 3,
     "seen_by": [],
     "stability": 1,
     "tracked_by": [],
-    "x": 1284,
-    "y": 1252
+    "x": 1247,
+    "y": 1219
    },
    {
-    "age": 19,
+    "age": 14,
     "mod_data": {},
     "number": 3,
     "other_end": 2,
     "seen_by": [],
     "stability": 0,
-    "tracked_by": [],
-    "x": 1386,
-    "y": 1169
+    "tracked_by": [
+     1
+    ],
+    "x": 1393,
+    "y": 1286
    }
   ]
  }

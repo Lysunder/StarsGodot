@@ -4,7 +4,7 @@ extends RefCounted
 ## A field's radius is the square root of its mine count: a point is inside when its squared
 ## distance from the center is at most the mine count.
 ##
-## Not yet: sweeping, detonation, and the salvage a destroyed ship leaves (S14).
+## Not yet: detonation, and the salvage a destroyed ship leaves (S14).
 
 const TYPES := ["standard", "heavy", "speed_bump"]
 ## A field holding more than this takes no more mines: a new field is started instead.
@@ -39,6 +39,9 @@ const MESSAGE_DAMAGE_MAX := 0x7FF8
 ## A field hit loses mines div 20 (at least 10), or from 51 on mines div 100 (at least 50).
 const HIT_LOSS := [20, 10, 51, 100, 50]
 const FREE_WARP := 4
+## Sweeping a speed-bump field takes this fraction of the rate; a sweep takes at least SWEEP_MIN.
+const SPEED_BUMP_SWEEP := 3
+const SWEEP_MIN := 2
 
 
 ## Mines a year the fleet lays of one type (`Fleet_MineLayRate@1078:1aea`): Σ ships × the design's
@@ -104,6 +107,7 @@ static func lay(
 			field.y = fleet.y
 			field.mines = rate
 			field.type = TYPES[t]
+			field.known_by.assign([fleet.owner])
 		else:
 			field.x = (fleet.x * rate + field.x * field.mines) / (rate + field.mines)
 			field.y = (fleet.y * rate + field.y * field.mines) / (rate + field.mines)
@@ -348,9 +352,8 @@ static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: in
 		state.minefields.erase(field)
 	else:
 		field.mines -= loss
-		if not field.seen_by.has(fleet.owner):
-			field.seen_by.append(fleet.owner)
-			field.seen_by.sort()
+		_mark(field.known_by, fleet.owner)
+		_mark(field.seen_by, fleet.owner)
 
 
 ## The field of this type, of another player and not a friend, the hit point is deepest inside.
@@ -409,6 +412,112 @@ static func _nearest_own_field(state: GameState, fleet: Fleet, type: String) -> 
 			best = field
 			best_d2 = d2
 	return best
+
+
+## S02 phase 17 (S13 "Sweeping", `SweepMinefields@10b0:45c4`): every fleet with a sweep rate, in
+## fleet order, sweeps each field (in field order) of another player that it is inside and that
+## its battle plan attacks; then every starbase with a sweep rate does the same from its planet,
+## for the fields of players its owner doesn't count as friends.
+static func sweep_all(state: GameState, content: ContentRegistry) -> void:
+	for fleet in state.fleets:
+		var rate := fleet_sweep_rate(fleet, state.player(fleet.owner), content)
+		if rate <= 0:
+			continue
+		var word := fleet.owner * 512 + fleet.number
+		var goto := {"fleet": fleet.number, "owner": fleet.owner}
+		for field in state.minefields.duplicate():
+			if field.owner == fleet.owner:
+				continue
+			if not BattlePlans.attacks(state, fleet, field.owner):
+				continue
+			var d2 := _distance2(fleet.x, fleet.y, field)
+			if d2 > field.mines:
+				continue
+			var swept := _swept(field, rate, d2)
+			var t := TYPES.find(field.type)
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.swept_mines",
+				goto,
+				[word, swept, field.owner, t, field.x, field.y]
+			)
+			_sweep(state, content, field, swept, t, fleet.owner)
+	for pl in state.planets:
+		if pl.starbase == null or pl.owner < 0:
+			continue
+		var owner := state.player(pl.owner)
+		var design := owner.starbase_design(pl.starbase.design)
+		var rate := PartRules.sweep_rate(design, content) if design != null else 0
+		if rate <= 0:
+			continue
+		for field in state.minefields.duplicate():
+			if field.owner == pl.owner or _friendly(state, pl.owner, field.owner):
+				continue
+			var d2 := _distance2(pl.x, pl.y, field)
+			if d2 > field.mines:
+				continue
+			var swept := _swept(field, rate, d2)
+			var t := TYPES.find(field.type)
+			TurnMessages.add(
+				state,
+				content,
+				pl.owner,
+				"message.planet.swept_mines",
+				{"planet": pl.id},
+				[pl.id, swept, field.owner, t, field.x, field.y]
+			)
+			# fix B34: the original marks the last fleet's owner as knowing the field
+			_sweep(state, content, field, swept, t, pl.owner)
+
+
+## A fleet's sweep rate (`Fleet_SweepRate@1078:1ca2`): Σ ships × the design's sweep rate (S04).
+static func fleet_sweep_rate(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:
+	var total := 0
+	for stack in fleet.stacks:
+		var design := owner.ship_design(stack.design)
+		if design != null and stack.count > 0:
+			total += stack.count * PartRules.sweep_rate(design, content)
+	return total
+
+
+## Mines one sweep at `rate` takes from `field`, the sweeper at squared distance `d2` from its
+## center: a third of the rate in a speed-bump field, at least SWEEP_MIN; never so many that the
+## sweeper ends up outside (the field keeps d2 − 1), never more than the field has.
+static func _swept(field: Minefield, rate: int, d2: int) -> int:
+	var amount := rate / SPEED_BUMP_SWEEP if field.type == "speed_bump" else rate
+	amount = maxi(amount, SWEEP_MIN)
+	if field.mines - amount < d2 - 1:
+		amount = field.mines - d2 + 1
+	return mini(amount, field.mines)
+
+
+## The field loses `swept` mines (telling its owner); a field left with none disappears, else the
+## sweeper's owner now knows it.
+static func _sweep(
+	state: GameState, content: ContentRegistry, field: Minefield, swept: int, t: int, by: int
+) -> void:
+	TurnMessages.add(
+		state,
+		content,
+		field.owner,
+		"message.minefield.swept",
+		{"minefield": field.number, "owner": field.owner},
+		[field.owner * 512 + field.number, swept, t, field.x, field.y]
+	)
+	field.mines -= swept
+	if field.mines < 1:
+		state.minefields.erase(field)
+	else:
+		_mark(field.known_by, by)
+
+
+## Adds a player to a sorted player list.
+static func _mark(players: Array[int], player: int) -> void:
+	if not players.has(player):
+		players.append(player)
+		players.sort()
 
 
 ## S02 phase 7: each field's "seen this turn" record starts empty (scanning sets it, S15).

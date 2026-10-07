@@ -37,6 +37,8 @@ const MESSAGE_PARAMS := [
 	"own_design",
 	# a minefield type: 0 standard, 1 heavy, 2 speed bump
 	"minefield_type",
+	# a minefield: its owner × 512 + its number
+	"minefield",
 	"amount",
 	"population",
 	"planet",

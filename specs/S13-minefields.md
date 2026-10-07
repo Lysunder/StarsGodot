@@ -1,9 +1,10 @@
 # S13 Minefields
 
-Status: draft (2026-09-30); second pass 2026-10-07. Laying (S11), decay and hits during movement implemented
-(`core/rules/minefields.gd`) and verified by the mine1 game (turns 0-31: a Space Demolition race laying in place
-and while moving, fields merging, decay, two speed-bump hits); damage from standard and heavy fields is unit-tested
-only. Sweeping and detonation not built yet. The constant tables are in the code segment (10a8:0e6e-0e8c) and match
+Status: draft (2026-09-30); second pass 2026-10-07. Laying (S11), decay, hits during movement and sweeping
+implemented (`core/rules/minefields.gd`) and verified by the mine1 game (turns 0-46: a Space Demolition race laying
+in place and while moving, fields merging, decay, two speed-bump hits, a fleet sweeping a speed-bump field, a
+starbase sweeping a standard field back to its edge each turn); damage from standard and heavy fields and the
+unclamped starbase rate are unit-tested only. Detonation not built yet. The constant tables are in the code segment (10a8:0e6e-0e8c) and match
 the community "Guts of Minefields" page.
 References: `Fleet_CheckMinefields@10a8:30b6`, `SegmentCircleIntersect@1038:ae30`,
 `ProcessMinefieldHits@10b0:42a0` (decay and detonation), `SweepMinefields@10b0:45c4`, `Fleet_SweepRate@1078:1ca2`,
@@ -43,8 +44,9 @@ warp 4 (the engine's fuel table entry for warp 4 is 0: ram scoops and the like).
 
 For a fleet moving from A to B this turn:
 
-The check runs in each movement step after fuel is charged, over d = min(the move, the distance to the waypoint
-truncated) light years, along the line from the fleet to its next waypoint (not to where it will stop).
+The check runs in each movement step after fuel is charged, over d = min(the move, trunc(the distance to the
+waypoint − 0.99999)) light years (the same cut as ram scoops, S12; seen: a fleet 27.2 ly from its waypoint at warp 6
+counts 26 ly, speed 5, and isn't checked against a speed-bump field, mine1 turn 32), along the line from the fleet to its next waypoint (not to where it will stop).
 
 1. **Speed:** c = the smallest of 3 … 10 with (d − 1) ≤ c². Bonus b = 2 for Space Demolition, 1 for
    Super-Stealth, else 0. If c ≤ 3 + b the fleet can't hit anything. Nothing happens when the waypoint is where
@@ -63,7 +65,7 @@ truncated) light years, along the line from the fleet to its next waypoint (not 
    stretch of type t, if c > safe(t) + b: chance = (c − b − safe(t)) × rate(t) per 1000; for each light year inside
    the stretch draw `random(1000)`; the first draw below the chance is a hit at enter + that light year. No hit: go
    to the next stretch. (Seen: two speed-bump hits at warp 6, mine1 turns 30 and 31.)
-4. **On a hit:** damage (below); the move becomes the hit distance (when shorter than the truncated distance) and
+4. **On a hit:** damage (below); the move becomes the hit distance (when shorter than that cut distance) and
    the fleet's position is computed from it as for any partial move (S12); no ram-scoop fuel that step; a chasing
    fleet stops chasing. The hit point reported is the fleet's position plus (dx, dy) × hit ÷ L, with L the path
    length rounded to the nearest light year and each coordinate rounded to the nearest (halves away from zero;
@@ -110,12 +112,26 @@ Each year, for each minefield:
 
 ### Sweeping (S02 phase 17)
 
-1. **Fleets:** each fleet with a sweep rate (S04: Σ ships × power × range², gatlings count range 4, sappers don't
-   sweep) sweeps every field of another player that it is inside and whose owner its battle plan attacks:
-   amount = rate (one third in a speed-bump field), at least 2. The field is never reduced below distance² − 1
-   (so it just stops containing the fleet), and never below 0. Both players are told; a field reduced to nothing
-   disappears; the sweeping player now knows the field.
-2. **Starbases** with beam weapons sweep the same way from their planet (starbases count beam range + 1).
+1. **Fleets,** in fleet order: a fleet with a sweep rate R > 0 (Σ ships × the design's rate, S04 9: per beam slot
+   count × power × r², r the range, 4 for gatlings, sappers nothing; 32-bit sums) sweeps, in field order, every
+   field of another player
+   - that its battle plan attacks (`Fleet_WillAttackPlayer@10e8:6db6`: the plan's attack setting 1 attacks
+     players the fleet's owner calls enemies, 2 anyone not a friend, 3 everyone, 4 + n player n alone, 0 nobody),
+   - and that contains the fleet (squared distance d² from the center at most the mine count M).
+
+   Amount: A = R, or R div 3 in a speed-bump field; at least 2. When M − A < d² − 1, A = M − d² + 1 (the field
+   keeps d² − 1 mines, just leaving the fleet outside; a fleet at the very center can sweep it all); at most M.
+2. **Starbases,** in planet order: an owned planet with a starbase whose design has a sweep rate (the same sum,
+   with every beam's r one more on a starbase hull) sweeps, the same way from the planet's position, every field
+   of a player other than the planet's owner whom the owner doesn't count as a friend (the battle plan plays no
+   part).
+3. **Each sweep:** messages (below); the field loses A; a field left with less than 1 mine disappears, otherwise
+   the sweeping player now knows it. **B34:** for a starbase the original marks the owner of the last fleet in
+   the fleet list instead (fix: the starbase's owner).
+4. **Messages:** to the sweeper's owner, a fleet: **`fleet.swept_mines`** `[fleet, A, field owner, type, x, y]`
+   (goto the fleet), a starbase: **`planet.swept_mines`** `[planet, A, field owner, type, x, y]` (goto the planet);
+   then to the field's owner **`minefield.swept`** `[field, A, type, x, y]` (goto the field; it doesn't say who),
+   x and y the field's center.
 
 ## Randomness
 

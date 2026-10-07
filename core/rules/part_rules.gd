@@ -3,6 +3,8 @@ extends RefCounted
 ## Which parts and hulls a player can use, and simple design totals (spec S04, S06).
 
 const SHIELD_MAX := 65535
+## Gatling beams sweep mines as if their range were this.
+const GATLING_SWEEP_RANGE := 4
 
 const PICTURES_PER_HULL := 4
 
@@ -148,6 +150,30 @@ static func shields(design: Design, content: ContentRegistry, race: Race = null)
 	if race != null:
 		total = total * RaceMath.trait_param(race, content, "design.shield_pct", 100) / 100
 	return mini(total, SHIELD_MAX)
+
+
+## A design's mine sweep rate per ship (S04 9, `Design_SweepRate@1078:1d1c`): over its beam parts,
+## count × power × r², r the beam's range (gatlings GATLING_SWEEP_RANGE), plus 1 on starbase
+## hulls. Sappers don't sweep.
+static func sweep_rate(design: Design, content: ContentRegistry) -> int:
+	var extra := 1 if bool(content.hull(design.hull).get("starbase", false)) else 0
+	var total := 0
+	for slot in design.parts:
+		if slot.count <= 0 or slot.part.is_empty():
+			continue
+		var part := content.part(slot.part)
+		if part.get("category", "") != "beam":
+			continue
+		var tags: Array = part.get("tags", [])
+		var stats: Dictionary = part.get("stats", {})
+		var r := int(stats.get("range", 0))
+		if tags.has("gatling"):
+			r = GATLING_SWEEP_RANGE
+		elif tags.has("sapper"):
+			continue
+		r += extra
+		total += slot.count * int(stats.get("power", 0)) * r * r
+	return total
 
 
 ## A starbase design's mass driver speed (S09, S14): the best `driver_warp` among its parts, one

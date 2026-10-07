@@ -1313,5 +1313,14 @@
   },
   "message.fleet.mine_annihilated": {
     "message": 351
+  },
+  "message.fleet.swept_mines": {
+    "message": 194
+  },
+  "message.planet.swept_mines": {
+    "message": 244
+  },
+  "message.minefield.swept": {
+    "message": 190
   }
 }
