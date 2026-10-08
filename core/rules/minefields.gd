@@ -244,6 +244,7 @@ static func _hit(
 	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, t: int, at: int
 ) -> void:
 	var owner := state.player(fleet.owner)
+	fleet.mine_hit = true
 	var to := fleet.waypoints[1]
 	var dx := to.x - fleet.x
 	var dy := to.y - fleet.y
@@ -434,6 +435,7 @@ static func _detonate(state: GameState, content: ContentRegistry, field: Minefie
 		var destroyed: int = result[1]
 		if total == 0:
 			continue
+		fleet.mine_hit = true
 		var word := fleet.owner * 512 + fleet.number
 		var obj := 32768 + word
 		var goto := {"fleet": fleet.number, "owner": fleet.owner}

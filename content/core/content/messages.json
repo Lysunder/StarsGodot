@@ -941,5 +941,22 @@
       "object_kind",
       "object"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_grew",
+    "params": [
+      "fleet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_overflowed",
+    "params": [
+      "fleet",
+      "population",
+      "planet"
+    ]
   }
 ]

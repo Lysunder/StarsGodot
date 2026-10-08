@@ -1,0 +1,25 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 0,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 68,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 4,
+    "x": 1417,
+    "y": 1514
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 57
+}

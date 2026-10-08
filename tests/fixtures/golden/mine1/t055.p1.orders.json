@@ -1,0 +1,22 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "items": [
+    {
+     "count": 2,
+     "design": 4,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 68,
+   "type": "production_queue"
+  }
+ ],
+ "player": 1,
+ "turn": 55
+}

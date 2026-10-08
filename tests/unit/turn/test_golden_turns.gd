@@ -11,7 +11,7 @@ const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 ## (visibility, S15).
 const GAME_IGNORE := {"mine1": ["/minefields*/seen_by*", "/minefields*/known_by*"]}
 ## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9);
-## turn 31: the starbase repaired that damage (repair, S19); turn 40: player 2's colonists unloaded
+## turn 40: player 2's colonists unloaded
 ## onto player 1's colony fought its ground troops (ground combat, S17). mine1 turn 36: player 2's
 ## scanners tracked a wormhole that had just moved (S15).
 const TURN_IGNORE := {
@@ -25,7 +25,6 @@ const TURN_IGNORE := {
 			"/planets/23/surface*",
 			"/players/1/ship_designs[3]/remaining",
 		],
-		31: ["/planets/23/starbase/damage"],
 		40: ["/planets/30/population"],
 	},
 }
@@ -283,7 +282,11 @@ func test_mine1(
 		[51],
 		[52],
 		[53],
-		[54]
+		[54],
+		[55],
+		[56],
+		[57],
+		[58]
 	]
 ) -> void:
 	_check_turn("mine1", turn)

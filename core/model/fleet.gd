@@ -35,6 +35,8 @@ var following: bool = false
 var claimed: bool = false
 ## Turn-only mark: the fleet went through a stargate this turn (S12; no repair, S19).
 var gated: bool = false
+## Turn-only mark: a minefield hit or damaged the fleet this turn (S13; no repair, S19).
+var mine_hit: bool = false
 
 
 func _schema() -> Array:

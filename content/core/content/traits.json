@@ -60,7 +60,10 @@
       "production.defense_cost_pct": 60,
       "cost.beam_adjust_pct": 125,
       "cost.torpedo_adjust_pct": 125,
-      "cost.bomb_adjust_pct": 125
+      "cost.bomb_adjust_pct": 125,
+      "repair.fleet_pct": 200,
+      "repair.starbase_pct": 150,
+      "fleet.colonist_growth": 1
     }
   },
   {

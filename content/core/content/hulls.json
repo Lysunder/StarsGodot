@@ -2146,7 +2146,11 @@
     "tags": [
       "fuel_transport"
     ],
-    "class": 7
+    "class": 7,
+    "stats": {
+      "fuel_generation": 200,
+      "repair_bonus": 25
+    }
   },
   {
     "type": "hull",
@@ -2200,7 +2204,11 @@
     "tags": [
       "fuel_transport"
     ],
-    "class": 7
+    "class": 7,
+    "stats": {
+      "fuel_generation": 200,
+      "repair_bonus": 50
+    }
   },
   {
     "type": "hull",

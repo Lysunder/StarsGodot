@@ -80,3 +80,25 @@ class Waypoint1Tasks:
 		ResearchRules.update(ctx.state, ctx.content, [])
 		tasks.run_pass(4)
 		tasks.resolve()
+
+
+## 12: colonists grow in Inner-Strength fleets (S19).
+class ColonistGrowth:
+	extends Phase
+
+	func _init() -> void:
+		super("fleets.is_growth")
+
+	func run(ctx: TurnContext) -> void:
+		Repair.grow_colonists(ctx.state, ctx.content, ctx.rng())
+
+
+## 18: fleets and starbases repair (S19).
+class RepairPhase:
+	extends Phase
+
+	func _init() -> void:
+		super("fleets.repair")
+
+	func run(ctx: TurnContext) -> void:
+		Repair.repair_all(ctx.state, ctx.content)

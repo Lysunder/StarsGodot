@@ -649,5 +649,9 @@
   "message.fleet.scrapped_in_space.text": "{1} was taken apart in deep space; the scrap was left there as salvage.",
   "message.fleet.scrapped_in_space.name": "Scrapped in space",
   "message.fleet.mine_annihilated_salvage.text": "{1} was destroyed in a {2} {3} minefield at {5}.",
-  "message.fleet.mine_annihilated_salvage.name": "Fleet lost in a minefield"
+  "message.fleet.mine_annihilated_salvage.name": "Fleet lost in a minefield",
+  "message.fleet.colonists_grew.text": "The colonists aboard {0} raised families on the way: {1} more on board.",
+  "message.fleet.colonists_grew.name": "Colonists grew",
+  "message.fleet.colonists_overflowed.text": "{0} ran out of room for its growing colonists; {1} of them moved down to {2}.",
+  "message.fleet.colonists_overflowed.name": "Colonists moved down"
 }

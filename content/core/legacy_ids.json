@@ -1382,5 +1382,11 @@
   },
   "message.fleet.mine_annihilated_salvage": {
     "message": 200
+  },
+  "message.fleet.colonists_grew": {
+    "message": 251
+  },
+  "message.fleet.colonists_overflowed": {
+    "message": 344
   }
 }
