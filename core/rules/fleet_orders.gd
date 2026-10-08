@@ -253,9 +253,10 @@ static func designs_word(fleet: Fleet, owner: Player, content: ContentRegistry) 
 
 
 ## The cargo the lost ships' capacity held is lost, as when ships move to another fleet (S11).
+## Returns what was lost, per cargo type.
 static func cargo_after_losses(
 	fleet: Fleet, owner: Player, content: ContentRegistry, lost: Dictionary
-) -> void:
+) -> Array[int]:
 	var caps := [0, 0, 0, 0]
 	var counts := {}
 	for stack in fleet.stacks:
@@ -273,3 +274,4 @@ static func cargo_after_losses(
 	var losses := _cargo_lost(fleet, caps)
 	for c in Fleet.CARGO_FUEL + 1:
 		fleet.cargo[c] -= losses[c]
+	return losses

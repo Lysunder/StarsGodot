@@ -39,6 +39,10 @@ const MESSAGE_PARAMS := [
 	"minefield_type",
 	# a minefield: its owner × 512 + its number
 	"minefield",
+	# a minefield or a packet / salvage pile: kind × 8192 + owner × 512 + number
+	"space_object",
+	# colonists in hundreds (one word)
+	"colonists",
 	"amount",
 	"population",
 	"planet",

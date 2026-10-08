@@ -46,6 +46,7 @@ static func pipeline() -> TurnPipeline:
 		FleetPhases.ResolveTargets.new(),
 		FleetPhases.Waypoint0Tasks.new(),
 		SpacePhases.MinefieldsReset.new(),
+		SpacePhases.MoveBeforeFleets.new(),
 		FleetPhases.Move.new(),
 		SpacePhases.DecayAndDetonate.new(),
 		FleetPhases.Refuel.new(),

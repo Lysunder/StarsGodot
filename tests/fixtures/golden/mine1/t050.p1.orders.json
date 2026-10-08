@@ -1,0 +1,38 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": 94,
+   "mass_driver_warp": 7,
+   "planet": 68,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": 94,
+   "mass_driver_warp": 10,
+   "planet": 68,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "items": [
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.ironium_packet",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 68,
+   "type": "production_queue"
+  }
+ ],
+ "player": 1,
+ "turn": 50
+}

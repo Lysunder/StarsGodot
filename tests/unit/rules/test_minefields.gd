@@ -170,9 +170,13 @@ func test_damage_matches_the_worked_example() -> void:
 	TurnMessages.clear(s)
 	# 2 ships with 1 engine: (2 x 100 + 300) x 1 = 500, 250 a ship: more than a Mini Mine
 	# Layer's armor, so the stack is destroyed and the fleet with it
-	Minefields._hit(s, _content, f, 0, 10)
+	Minefields._hit(s, _content, StarsRandom.new(), f, 0, 10)
 	assert_bool(f.stacks.is_empty()).is_true()
-	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.mine_annihilated")
+	# the lost fleet leaves salvage (its empty cargo becomes random amounts, S14)
+	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.mine_annihilated_salvage")
+	assert_int(s.packets.size()).is_equal(1)
+	assert_bool(s.packets[0].salvage).is_true()
+	assert_str(s.messages[1][0]["type"]).is_equal("message.minefield.annihilated_yours")
 	assert_int(s.players[0].ship_design(0).remaining).is_equal(-2)
 	# the field loses 10000 div 100 = 100 mines
 	assert_int(field.mines).is_equal(9900)

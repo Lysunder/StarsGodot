@@ -810,8 +810,133 @@
     "type": "message",
     "id": "message.minefield.annihilated_yours",
     "params": [
-      "minefield",
+      "space_object",
       "fleet",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.packet_lost_no_driver",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.packet_lost_no_target",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.packet_launched",
+    "params": [
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.packet_merged",
+    "params": [
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.packet_removed",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_caught",
+    "params": [
+      "planet",
+      "player",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_harmless",
+    "params": [
+      "planet",
+      "player",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_damage_partly_caught",
+    "params": [
+      "planet",
+      "amount",
+      "player",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_damage_defenses_partly_caught",
+    "params": [
+      "planet",
+      "amount",
+      "player",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_damage",
+    "params": [
+      "planet",
+      "amount",
+      "player",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_damage_defenses",
+    "params": [
+      "planet",
+      "amount",
+      "player",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_wiped_out",
+    "params": [
+      "planet",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.scrapped_in_space",
+    "params": [
+      "space_object",
+      "fleet_designs"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.mine_annihilated_salvage",
+    "params": [
+      "space_object",
+      "fleet_designs",
+      "player",
       "minefield_type",
       "object_kind",
       "object"

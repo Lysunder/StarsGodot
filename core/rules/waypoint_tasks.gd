@@ -4,9 +4,9 @@ extends RefCounted
 ##
 ## Built so far: transport to and from the fleet owner's own planet (load all, unload all, load n,
 ## unload n; minerals and colonists), colonize, colonizing empty planets, merge, scrap at a planet
-## and transfer (with the S24 tech bonus at a starbase). Other tasks, transport partners,
-## scrapping in deep space (salvage, S14) and Ultimate Recycling's resources wait for their specs;
-## they warn.
+## and in deep space (salvage, S14) and transfer (with the S24 tech bonus at a starbase). Other
+## tasks, transport to and from salvage and packets, and Ultimate Recycling's resources wait for
+## their specs; they warn.
 
 const CARGO_COLONISTS := 3
 const COLONIZER_TAG := "colonizer"
@@ -604,11 +604,11 @@ static func mining_rate(fleet: Fleet, owner: Player, content: ContentRegistry) -
 ## S11 "Scrap": the fleet is taken apart at a planet; the planet gets part of the ships' minerals
 ## and all minerals in the cargo, and the colonists if it is the fleet owner's.
 func _scrap(fleet: Fleet) -> void:
+	var owner := _state.player(fleet.owner)
 	if fleet.planet < 0:
-		push_warning("scrapping in deep space (salvage, S14) is not implemented yet")
+		_scrap_in_space(fleet, owner)
 		return
 	var planet := _state.planet(fleet.planet)
-	var owner := _state.player(fleet.owner)
 	var recycling := (
 		planet.owner >= 0
 		and RaceMath.trait_param(_state.player(planet.owner).race, _content, "scrap.recycling", 0)
@@ -632,6 +632,30 @@ func _scrap(fleet: Fleet) -> void:
 			TechGain.tech_needed(fleet, owner, _content),
 			_content,
 			_rng
+		)
+	_dismantle(fleet)
+
+
+## S11 "Scrap" in deep space (S14 "Salvage"): a third of the ships' minerals and the cargo's
+## minerals are left as a new salvage pile; colonists are lost.
+func _scrap_in_space(fleet: Fleet, owner: Player) -> void:
+	var ratio: Array = SCRAP_RETURN["planet"]
+	var value := _ships_value(fleet, owner)
+	var minerals: Array[int] = [0, 0, 0]
+	for m in 3:
+		minerals[m] = value[m] * ratio[0] / ratio[1] + fleet.cargo[m]
+	var described := FleetOrders.designs_word(fleet, owner, _content)
+	var pile := Packets.drop_salvage(
+		_state, _content, _rng, fleet.owner, fleet.x, fleet.y, minerals
+	)
+	if pile != null:
+		TurnMessages.add(
+			_state,
+			_content,
+			fleet.owner,
+			"message.fleet.scrapped_in_space",
+			Packets.goto_of(pile),
+			[Packets.object_word(pile), described]
 		)
 	_dismantle(fleet)
 

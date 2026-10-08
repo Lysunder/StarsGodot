@@ -1340,5 +1340,47 @@
   },
   "message.minefield.annihilated_yours": {
     "message": 204
+  },
+  "message.production.packet_lost_no_driver": {
+    "message": 209
+  },
+  "message.production.packet_lost_no_target": {
+    "message": 210
+  },
+  "message.production.packet_launched": {
+    "message": 211
+  },
+  "message.production.packet_merged": {
+    "message": 212
+  },
+  "message.production.packet_removed": {
+    "message": 297
+  },
+  "message.planet.packet_caught": {
+    "message": 213
+  },
+  "message.planet.packet_harmless": {
+    "message": 326
+  },
+  "message.planet.packet_damage_partly_caught": {
+    "message": 214
+  },
+  "message.planet.packet_damage_defenses_partly_caught": {
+    "message": 215
+  },
+  "message.planet.packet_damage": {
+    "message": 216
+  },
+  "message.planet.packet_damage_defenses": {
+    "message": 217
+  },
+  "message.planet.packet_wiped_out": {
+    "message": 218
+  },
+  "message.fleet.scrapped_in_space": {
+    "message": 91
+  },
+  "message.fleet.mine_annihilated_salvage": {
+    "message": 200
   }
 }

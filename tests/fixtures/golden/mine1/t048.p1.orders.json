@@ -1,0 +1,178 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.space_station",
+    "mod_data": {},
+    "name": "Design 1",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     }
+    ],
+    "picture": 136,
+    "remaining": 0,
+    "slot": 1,
+    "transferred": false,
+    "turn_designed": 48
+   },
+   "slot": 1,
+   "starbase": true,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.space_station",
+    "mod_data": {},
+    "name": "Design 1",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.orbital.mass_driver_7"
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.beam.laser"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 8,
+      "part": "part.shield.mole_skin_shield"
+     }
+    ],
+    "picture": 136,
+    "remaining": 0,
+    "slot": 1,
+    "transferred": false,
+    "turn_designed": 48
+   },
+   "slot": 1,
+   "starbase": true,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": 1,
+     "item": "",
+     "progress": 0,
+     "starbase": true
+    }
+   ],
+   "planet": 68,
+   "type": "production_queue"
+  },
+  {
+   "fleet": 0,
+   "index": 0,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "scrap",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 5,
+    "x": 1409,
+    "y": 1296
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 48
+}

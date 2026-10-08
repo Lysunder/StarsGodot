@@ -4,7 +4,7 @@ Status: draft (2026-10-02), second pass. Read from the decompiled code, with the
 (`DoProduction`), whose control flow the decompiler garbles. Not yet harness-verified: no fixture has a production
 queue yet (computer players' queues are made and spent inside the original's turn run, so they never appear in the
 files; human queues need order files, S23). Packet launching is summarized here and specified with S14.
-Implemented in `core/rules/production.gd` and `production_costs.gd` (2026-10-02), except packets (S14), route following for new fleets (S11) and Alternate Reality default orders; those items are dropped
+Implemented in `core/rules/production.gd` and `production_costs.gd` (2026-10-02; packets 2026-10-07, S14), except route following for new fleets (S11) and Alternate Reality default orders; those items are dropped
 from the queue with a warning until their specs are done.
 References: `DoProduction@10b0:0000`, `Production_SpendOnItem@10b0:0756`, `Production_CompleteItem@10b0:0e68`,
 `GetProductionItemCost@10c8:21e4`, `Design_ComputeCost@1048:7a92`, `Planet_FreeQueue@10b0:36d6`,

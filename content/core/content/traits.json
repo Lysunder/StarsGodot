@@ -88,7 +88,9 @@
       "production.mixed_packet_mineral_cost": 25,
       "production.packet_resource_cost": 5,
       "production.packet_minerals": 70,
-      "production.mixed_packet_minerals": 25
+      "production.mixed_packet_minerals": 25,
+      "packet.decay_pct": 50,
+      "packet.decay_min": 5
     }
   },
   {
@@ -101,7 +103,9 @@
       "production.packet_mineral_cost": 120,
       "production.mixed_packet_mineral_cost": 48,
       "cost.tag.stargate_adjust_pct": 75,
-      "movement.gate_cargo": 1
+      "movement.gate_cargo": 1,
+      "packet.decay_class_bonus": 1,
+      "packet.catch_pct": 50
     }
   },
   {
@@ -120,7 +124,8 @@
       "colony.skips_auto_mines": 1,
       "colony.skips_auto_factories": 1,
       "colony.skips_auto_defenses": 1,
-      "message.orbital_colony": 1
+      "message.orbital_colony": 1,
+      "packet.no_damage": 1
     }
   },
   {

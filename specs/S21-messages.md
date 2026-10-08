@@ -36,6 +36,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `{"item": id}` | a part or planetary item (the technology browser) |
 | `{"hulls": true}` | the ship designer's hull list |
 | `{"minefield": number, "owner": player}` | a minefield |
+| `{"packet": number, "owner": player}` | a packet or salvage pile |
 
 ### Parameter kinds
 
@@ -54,6 +55,8 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `axis` | an environment axis: 0 gravity, 1 temperature, 2 radiation |
 | `axis_value` | an environment value with its axis: axis × 256 + value |
 | `minefield` | a minefield: owner × 512 + its number |
+| `space_object` | a minefield or a packet / salvage pile: kind (0 minefield, 1 packet) × 8192 + owner × 512 + number |
+| `colonists` | a number of colonists in hundreds |
 | `object_kind` | the first half of a "where": -1 (65535) when the second half names an object, else a position's x |
 | `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value; or the position's y |
 

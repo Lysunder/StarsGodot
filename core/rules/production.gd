@@ -3,9 +3,8 @@ extends RefCounted
 ## Each planet's production for the year (spec S09 steps 3-6): research share, the queue, and
 ## what completed units do.
 ##
-## Not yet: packets (S14), route following for new fleets (S11), and
-## default orders for Alternate Reality miners. Such items are dropped from the queue with a
-## warning.
+## Not yet: route following for new fleets (S11) and default orders for Alternate Reality
+## miners.
 
 enum Status {
 	DONE,
@@ -20,7 +19,6 @@ enum Status {
 
 const AUTO_UNLIMITED := 1000
 const MERGE_HEADROOM := 32766
-const UNSUPPORTED := ["packet"]
 ## Installation effects and their single-unit message names (S21).
 const SINGULAR := {"mines": "mine", "factories": "factory", "defenses": "defense"}
 
@@ -124,11 +122,11 @@ func _buildable(planet: Planet, player: Player, item: QueueItem) -> bool:
 		return player.ship_design(item.design) != null
 	var def := _content.get_def("production_item", item.item)
 	var effect: String = def["effect"]
-	if UNSUPPORTED.has(effect):
-		push_warning("planet %d: %s items are not implemented yet" % [planet.id, effect])
-		return false
 	if def.get("auto", false):
 		return true
+	if effect == "packet" and not Packets.can_build(_state, _content, planet):
+		_message(planet.owner, "production.packet_removed", planet, [planet.id])
+		return false
 	if effect == "scanner":
 		return not planet.has_scanner
 	if effect in ["mines", "factories", "defenses", "terraform"]:
@@ -277,6 +275,8 @@ func _auto_room(planet: Planet, player: Player, def: Dictionary) -> int:
 			return PlanetEconomy.operable_factories(planet, race, _content, next) - planet.factories
 		"defenses":
 			return PlanetEconomy.operable_defenses(planet, race, next) - planet.defenses
+		"packet":
+			return AUTO_UNLIMITED if Packets.can_build(_state, _content, planet) else 0
 	return AUTO_UNLIMITED
 
 
@@ -356,6 +356,8 @@ func _complete(planet: Planet, player: Player, item: QueueItem, built: int) -> b
 				_genesis(planet, player)
 		"scanner":
 			planet.has_scanner = true
+		"packet":
+			Packets.launch(_state, _content, planet, def, built)
 	return true
 
 

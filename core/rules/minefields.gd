@@ -157,7 +157,7 @@ static func check_path(
 		for ly in range(stretch[1] - stretch[0]):
 			if rng.random(1000) < chance:
 				var at: int = stretch[0] + ly
-				_hit(state, content, fleet, t, at)
+				_hit(state, content, rng, fleet, t, at)
 				return at
 	return -1
 
@@ -240,7 +240,9 @@ static func _friendly(state: GameState, field_owner: int, player: int) -> bool:
 
 ## A hit of a field of type `t` at `at` light years along the fleet's path: damage per design
 ## (S13 "Damage from one hit", fix B04), the field that was hit loses mines, messages.
-static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: int, at: int) -> void:
+static func _hit(
+	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, t: int, at: int
+) -> void:
 	var owner := state.player(fleet.owner)
 	var to := fleet.waypoints[1]
 	var dx := to.x - fleet.x
@@ -253,19 +255,53 @@ static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: in
 	var result := _damage(fleet, owner, content, t, false)
 	var total: int = result[0]
 	var destroyed: int = result[1]
+	# ships lost leave their minerals as salvage (S14; fix B35: the lost ships' share)
+	var pile: Packet = null
+	if destroyed > 0:
+		var minerals: Array[int] = result[2]
+		pile = Packets.drop_salvage(
+			state, content, rng, fleet.owner, x, y, minerals, Packets.salvage_at(state, x, y)
+		)
 	var field := _field_hit(state, fleet, TYPES[t], x, y)
 	var obj := 32768 + fleet.owner * 512 + fleet.number
 	var goto := {"fleet": fleet.number, "owner": fleet.owner}
 	var place := [x, y]
 	if fleet.ship_count() == 0:
-		TurnMessages.add(
-			state,
-			content,
-			fleet.owner,
-			"message.fleet.mine_annihilated",
-			{},
-			[described, field.owner, t] + place
-		)
+		var word := fleet.owner * 512 + fleet.number
+		if pile != null:
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.mine_annihilated_salvage",
+				Packets.goto_of(pile),
+				[Packets.object_word(pile), described, field.owner, t] + place
+			)
+			TurnMessages.add(
+				state,
+				content,
+				field.owner,
+				"message.minefield.annihilated_yours",
+				Packets.goto_of(pile),
+				[Packets.object_word(pile), word, t] + place
+			)
+		else:
+			TurnMessages.add(
+				state,
+				content,
+				fleet.owner,
+				"message.fleet.mine_annihilated",
+				{},
+				[described, field.owner, t] + place
+			)
+			TurnMessages.add(
+				state,
+				content,
+				field.owner,
+				"message.minefield.annihilated_yours",
+				{"minefield": field.number, "owner": field.owner},
+				[field.owner * 512 + field.number, word, t] + place
+			)
 	elif total == 0:
 		TurnMessages.add(
 			state,
@@ -327,7 +363,8 @@ static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: in
 
 
 ## Damage from one mine hit of type `t` (S13 "Damage from one hit", fix B04): [raw damage before
-## shields (at most MESSAGE_DAMAGE_MAX), ships lost]. Stacks whose ships all die leave the fleet
+## shields (at most MESSAGE_DAMAGE_MAX), ships lost, the minerals the lost ships took (all the
+## cargo's when the whole fleet is lost)]. Stacks whose ships all die leave the fleet
 ## (taking their share of the cargo); the others are damaged. `spare_layers`: stacks on mine layer
 ## hulls take nothing (their owner's own detonating field).
 static func _damage(
@@ -365,9 +402,15 @@ static func _damage(
 			else:
 				stack.damaged_percent = 100
 				stack.damage = maxi(per_ship * DAMAGE_SCALE / armor, 1)
-		if destroyed > 0 and fleet.ship_count() > 0:
-			FleetOrders.cargo_after_losses(fleet, owner, content, lost)
-	return [mini(total, MESSAGE_DAMAGE_MAX), destroyed]
+	var minerals: Array[int] = [0, 0, 0]
+	if destroyed > 0 and fleet.ship_count() > 0:
+		var losses := FleetOrders.cargo_after_losses(fleet, owner, content, lost)
+		minerals.assign(losses.slice(0, 3))
+	elif destroyed > 0:
+		for m in 3:
+			minerals[m] = fleet.cargo[m]
+			fleet.cargo[m] = 0
+	return [mini(total, MESSAGE_DAMAGE_MAX), destroyed, minerals]
 
 
 static func _is_mine_layer(design: Design, content: ContentRegistry) -> bool:

@@ -11,6 +11,8 @@ const FUEL := 4
 const FLEET_OBJECT := 32768
 ## The `fleet` and `fleet_designs` packings (S21).
 const OWNER_SHIFT := 512
+## A `space_object` of kind 1 (packets and salvage) and up.
+const OBJECT_KIND := 8192
 const DESIGNS_MANY := 8192
 const DESIGN_SHIFT := 32
 ## The first word of a "where" that names an object rather than a position (-1 as a word).
@@ -75,6 +77,11 @@ static func _value(
 			return d.name if d != null else "a design"
 		"minefield":
 			return "minefield #%d" % (int(v) % OWNER_SHIFT + 1)
+		"space_object":
+			var what := "salvage" if int(v) >= OBJECT_KIND else "minefield"
+			return "%s #%d" % [what, int(v) % OWNER_SHIFT + 1]
+		"colonists":
+			return thousands(int(v) * 100)
 		"minefield_type":
 			return ["standard", "heavy", "speed bump"][clampi(int(v), 0, 2)]
 		"own_design":

@@ -569,14 +569,15 @@ class Importer:
                 }
             )
         elif kind == 1:
-            w6 = struct.unpack_from("<H", d, 6)[0]
+            w6, w14 = struct.unpack_from("<H", d, 6)[0], struct.unpack_from("<H", d, 14)[0]
             dest, warp = w6 & 0x3FF, (w6 >> 10) & 15
             salvage = dest == 0x3FF
             out["packets"].append(
                 {
                     "owner": owner, "number": number, "x": x, "y": y,
                     "minerals": list(struct.unpack_from("<3H", d, 8)), "salvage": salvage,
-                    "destination": -1 if salvage else dest, "warp": 0 if salvage else warp,
+                    "destination": -1 if salvage else dest, "warp": 0 if salvage else warp + 4,
+                    "decay": w14 >> 14, "mass_tenths": w14 & 0x3FFF, "fresh": bool(d[7] & 0x40),
                     "mod_data": {},
                 }
             )
@@ -632,7 +633,8 @@ def message_goto(word, legacy, params=()):
     """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code.
     0xFFFA shows the minefield named by the first parameter."""
     if word == 0xFFFA and params:
-        return {"minefield": params[0] & 0x1FF, "owner": (params[0] >> 9) & 15}
+        kind = "minefield" if params[0] >> 13 == 0 else "packet"
+        return {kind: params[0] & 0x1FF, "owner": (params[0] >> 9) & 15}
     if word == 0xFFFF:
         return {}
     if word == 0xFFFE:

@@ -12,6 +12,10 @@ const MAX_STARBASE_DAMAGE := 4095
 const MAX_DRIVER_WARP := 19
 const MAX_STACK_DAMAGE := 499
 const MAX_WARP := 11
+## A packet flies at up to 4 + 15 (its stored speed field is 4 bits above 4).
+const MAX_PACKET_WARP := 19
+## The 14-bit mass field of a packet or salvage pile.
+const MASS_TENTHS_MAX := 16383
 
 var _content: ContentRegistry
 var _state: GameState
@@ -279,7 +283,9 @@ func _check_space_objects() -> void:
 			_err(path, "salvage has no destination and warp 0")
 		if not pk.salvage:
 			_planet_ref(pk.destination, path + "/destination")
-			_range(pk.warp, 1, MAX_WARP, path + "/warp")
+			_range(pk.warp, 1, MAX_PACKET_WARP, path + "/warp")
+		_range(pk.decay, 0, Packet.DECAY_CLASSES - 1, path + "/decay")
+		_range(pk.mass_tenths, 0, MASS_TENTHS_MAX, path + "/mass_tenths")
 	for i in _state.wormholes.size():
 		var w := _state.wormholes[i]
 		var path := "/wormholes/%d" % i
