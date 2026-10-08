@@ -148,4 +148,6 @@ static func _key(order: Dictionary) -> String:
 			return order["type"]
 		"fleet_repeat", "fleet_rename", "fleet_battle_plan":
 			return "%s/%s" % [order["type"], order.get("fleet")]
+		"minefield_detonate":
+			return "%s/%s" % [order["type"], order.get("minefield")]
 	return ""

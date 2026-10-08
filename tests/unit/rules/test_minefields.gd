@@ -273,3 +273,44 @@ func test_starbases_sweep_fields_of_players_who_are_not_friends() -> void:
 	s.players[1].relations[0] = "friend"
 	Minefields.sweep_all(s, _content)
 	assert_int(field.mines).is_equal(920)
+
+
+func test_detonation_hits_every_fleet_inside_but_the_owners_layers() -> void:
+	var s := _game()
+	var f := _sweeper(s, 0)
+	s.players[1].ship_design(0).parts.append(DesignSlot.new("part.engine.long_hump_6", 1))
+	# a Mini Mine Layer of the field's owner sits inside too: it is spared
+	var layer := _layer(s, 0)
+	layer.waypoints[0].task = "none"
+	var field := _field(s, 0, 1200, 1200, 1000)
+	field.detonate = true
+	TurnMessages.clear(s)
+	Minefields.decay_all(s, _content)
+	# player 1's 2 scouts: (2 x 100 + 300) x 1 = 500 raw, 250 a ship, more than a scout's armor
+	assert_bool(s.fleets.has(f)).is_false()
+	assert_bool(s.fleets.has(layer)).is_true()
+	assert_int(layer.stacks[0].damage).is_equal(0)
+	assert_str(s.messages[1][0]["type"]).is_equal("message.fleet.mine_annihilated")
+	assert_str(s.messages[0][0]["type"]).is_equal("message.minefield.annihilated_yours")
+	assert_int(s.messages[0].size()).is_equal(1)
+	# decay with the detonation's 25%: 2 + 25 = 27%
+	assert_int(field.mines).is_equal(1000 - 270)
+
+
+func test_a_detonation_can_damage_without_destroying() -> void:
+	var s := _game()
+	var f := _sweeper(s, 0)
+	var d := s.players[1].ship_design(0)
+	d.hull = "hull.destroyer"
+	d.parts.assign(
+		[DesignSlot.new("part.engine.long_hump_6", 1), DesignSlot.new("part.armor.tritanium", 2)]
+	)
+	var field := _field(s, 0, 1200, 1200, 1000)
+	field.detonate = true
+	TurnMessages.clear(s)
+	Minefields.decay_all(s, _content)
+	assert_int(f.ship_count()).is_equal(2)
+	assert_int(f.stacks[0].damaged_percent).is_equal(100)
+	assert_str(s.messages[1][0]["type"]).is_equal("message.fleet.detonation_damaged")
+	assert_array(s.messages[1][0]["params"]).is_equal([33280, 0, 0, 1200, 1200, 500])
+	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.detonation_damaged_yours")

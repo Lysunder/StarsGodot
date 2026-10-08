@@ -4,7 +4,7 @@ extends RefCounted
 ## A field's radius is the square root of its mine count: a point is inside when its squared
 ## distance from the center is at most the mine count.
 ##
-## Not yet: detonation, and the salvage a destroyed ship leaves (S14).
+## Not yet: the salvage a destroyed ship leaves (S14).
 
 const TYPES := ["standard", "heavy", "speed_bump"]
 ## A field holding more than this takes no more mines: a new field is started instead.
@@ -250,39 +250,9 @@ static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: in
 	var x := fleet.x + _mul_div(dx, at, length)
 	var y := fleet.y + _mul_div(dy, at, length)
 	var described := FleetOrders.designs_word(fleet, owner, content)
-	var column := 1 if _has_free_engine(fleet, owner, content) else 0
-	var per_engine: int = DAMAGE_PER_ENGINE[t][column]
-	var total := 0
-	var destroyed := 0
-	var ships := fleet.ship_count()
-	var lost := {}
-	if per_engine > 0:
-		var top_up: int = MIN_DAMAGE[t][column] - per_engine * ships
-		if ships > SMALL_FLEET or top_up < 1:
-			top_up = 0
-		for stack: ShipStack in fleet.stacks.duplicate():
-			var design := owner.ship_design(stack.design)
-			var n := stack.count
-			var engines := _engines(design)
-			# fix B04: the top-up is shared by the stacks in proportion to their ships
-			var raw := (n * per_engine + top_up * n / ships) * engines
-			total += raw
-			var armor := PartRules.armor(design, content, owner.race)
-			var absorbed := mini(PartRules.shields(design, content, owner.race) * n, raw / 2)
-			var damaged_ships := stack.damaged_percent * n / 100
-			var old := damaged_ships * armor * stack.damage / DAMAGE_SCALE
-			var per_ship := (old - absorbed + raw) / n
-			if per_ship > armor:
-				destroyed += n
-				lost[stack.design] = n
-				design.remaining -= n
-				fleet.stacks.erase(stack)
-			else:
-				stack.damaged_percent = 100
-				stack.damage = maxi(per_ship * DAMAGE_SCALE / armor, 1)
-		if destroyed > 0 and fleet.ship_count() > 0:
-			FleetOrders.cargo_after_losses(fleet, owner, content, lost)
-	total = mini(total, MESSAGE_DAMAGE_MAX)
+	var result := _damage(fleet, owner, content, t, false)
+	var total: int = result[0]
+	var destroyed: int = result[1]
 	var field := _field_hit(state, fleet, TYPES[t], x, y)
 	var obj := 32768 + fleet.owner * 512 + fleet.number
 	var goto := {"fleet": fleet.number, "owner": fleet.owner}
@@ -354,6 +324,140 @@ static func _hit(state: GameState, content: ContentRegistry, fleet: Fleet, t: in
 		field.mines -= loss
 		_mark(field.known_by, fleet.owner)
 		_mark(field.seen_by, fleet.owner)
+
+
+## Damage from one mine hit of type `t` (S13 "Damage from one hit", fix B04): [raw damage before
+## shields (at most MESSAGE_DAMAGE_MAX), ships lost]. Stacks whose ships all die leave the fleet
+## (taking their share of the cargo); the others are damaged. `spare_layers`: stacks on mine layer
+## hulls take nothing (their owner's own detonating field).
+static func _damage(
+	fleet: Fleet, owner: Player, content: ContentRegistry, t: int, spare_layers: bool
+) -> Array:
+	var column := 1 if _has_free_engine(fleet, owner, content) else 0
+	var per_engine: int = DAMAGE_PER_ENGINE[t][column]
+	var total := 0
+	var destroyed := 0
+	var ships := fleet.ship_count()
+	var lost := {}
+	if per_engine > 0:
+		var top_up: int = MIN_DAMAGE[t][column] - per_engine * ships
+		if ships > SMALL_FLEET or top_up < 1:
+			top_up = 0
+		for stack: ShipStack in fleet.stacks.duplicate():
+			var design := owner.ship_design(stack.design)
+			if spare_layers and _is_mine_layer(design, content):
+				continue
+			var n := stack.count
+			var engines := _engines(design)
+			# fix B04: the top-up is shared by the stacks in proportion to their ships
+			var raw := (n * per_engine + top_up * n / ships) * engines
+			total += raw
+			var armor := PartRules.armor(design, content, owner.race)
+			var absorbed := mini(PartRules.shields(design, content, owner.race) * n, raw / 2)
+			var damaged_ships := stack.damaged_percent * n / 100
+			var old := damaged_ships * armor * stack.damage / DAMAGE_SCALE
+			var per_ship := (old - absorbed + raw) / n
+			if per_ship > armor:
+				destroyed += n
+				lost[stack.design] = n
+				design.remaining -= n
+				fleet.stacks.erase(stack)
+			else:
+				stack.damaged_percent = 100
+				stack.damage = maxi(per_ship * DAMAGE_SCALE / armor, 1)
+		if destroyed > 0 and fleet.ship_count() > 0:
+			FleetOrders.cargo_after_losses(fleet, owner, content, lost)
+	return [mini(total, MESSAGE_DAMAGE_MAX), destroyed]
+
+
+static func _is_mine_layer(design: Design, content: ContentRegistry) -> bool:
+	return (content.hull(design.hull).get("tags", []) as Array).has(MINE_LAYER_TAG)
+
+
+## S13 "Detonation": every fleet with ships inside a detonating field takes one hit of its type,
+## wherever it is going, friends and the field's owner included (the owner's mine layer hulls
+## excepted). No rolls. Fix B03: the original checks a fleet against the first detonating field
+## that contains it only; here every detonating field hits it.
+static func _detonate(state: GameState, content: ContentRegistry, field: Minefield) -> void:
+	var t := TYPES.find(field.type)
+	var place := [field.x, field.y]
+	for fleet in state.fleets:
+		if fleet.stacks.is_empty() or _distance2(fleet.x, fleet.y, field) > field.mines:
+			continue
+		var owner := state.player(fleet.owner)
+		var described := FleetOrders.designs_word(fleet, owner, content)
+		var result := _damage(fleet, owner, content, t, fleet.owner == field.owner)
+		var total: int = result[0]
+		var destroyed: int = result[1]
+		if total == 0:
+			continue
+		var word := fleet.owner * 512 + fleet.number
+		var obj := 32768 + word
+		var goto := {"fleet": fleet.number, "owner": fleet.owner}
+		var foreign := fleet.owner != field.owner
+		if fleet.stacks.is_empty():
+			if foreign:
+				TurnMessages.add(
+					state,
+					content,
+					fleet.owner,
+					"message.fleet.mine_annihilated",
+					{},
+					[described, field.owner, t] + place
+				)
+				TurnMessages.add(
+					state,
+					content,
+					field.owner,
+					"message.minefield.annihilated_yours",
+					{"minefield": field.number, "owner": field.owner},
+					[field.owner * 512 + field.number, word, t] + place
+				)
+			else:
+				TurnMessages.add(
+					state,
+					content,
+					field.owner,
+					"message.minefield.annihilated_own",
+					{},
+					[described, t] + place
+				)
+		elif destroyed == 0:
+			if foreign:
+				TurnMessages.add(
+					state,
+					content,
+					fleet.owner,
+					"message.fleet.detonation_damaged",
+					goto,
+					[obj, field.owner, t] + place + [total]
+				)
+			TurnMessages.add(
+				state,
+				content,
+				field.owner,
+				"message.fleet.detonation_damaged_yours",
+				goto,
+				[obj, t] + place + [total]
+			)
+		else:
+			if foreign:
+				TurnMessages.add(
+					state,
+					content,
+					fleet.owner,
+					"message.fleet.detonation_destroyed_some",
+					goto,
+					[obj, field.owner, t] + place + [total, destroyed]
+				)
+			TurnMessages.add(
+				state,
+				content,
+				field.owner,
+				"message.fleet.detonation_destroyed_some_yours",
+				goto,
+				[obj, t] + place + [total, destroyed]
+			)
 
 
 ## The field of this type, of another player and not a friend, the hit point is deepest inside.
@@ -526,10 +630,13 @@ static func reset_all(state: GameState) -> void:
 		field.seen_by.clear()
 
 
-## S02 phase 11 (minefields): each field loses a share of its mines, more with planets inside;
-## a field that would lose all its mines disappears. Detonation is not built yet.
+## S02 phase 11 (minefields), in field order: a field ordered to detonate damages the fleets inside
+## it (`_detonate`); then it loses a share of its mines, more with planets inside and when it
+## detonated; a field that would lose all its mines disappears. Fleets left without ships go.
 static func decay_all(state: GameState, content: ContentRegistry) -> void:
 	for field in state.minefields.duplicate():
+		if field.detonate:
+			_detonate(state, content, field)
 		var owner := state.player(field.owner)
 		var per_planet := RaceMath.trait_param(owner.race, content, "minefield.decay_per_planet", 4)
 		var rate := mini(per_planet * planets_inside(state, field) + DECAY_BASE, DECAY_MAX)
@@ -542,6 +649,9 @@ static func decay_all(state: GameState, content: ContentRegistry) -> void:
 			state.minefields.erase(field)
 		else:
 			field.mines -= lost
+	for fleet in state.fleets.duplicate():
+		if fleet.stacks.is_empty():
+			FleetOrders.delete_fleet(state, fleet, fleet.owner)
 
 
 ## Planets inside the field (`Minefield_Radius@1100:01a0`, which counts them).

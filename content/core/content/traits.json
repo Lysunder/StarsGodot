@@ -72,7 +72,8 @@
     "params": {
       "minefield.decay_per_planet": 1,
       "minefield.lay_while_moving": 1,
-      "minefield.speed_bonus": 2
+      "minefield.speed_bonus": 2,
+      "minefield.detonate": 1
     }
   },
   {

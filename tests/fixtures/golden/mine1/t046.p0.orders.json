@@ -1,0 +1,19 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "detonate": true,
+   "minefield": 0,
+   "type": "minefield_detonate"
+  },
+  {
+   "detonate": true,
+   "minefield": 2,
+   "type": "minefield_detonate"
+  }
+ ],
+ "player": 0,
+ "turn": 46
+}

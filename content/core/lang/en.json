@@ -609,5 +609,17 @@
   "message.planet.swept_mines.text": "The starbase at {0} cleared {1} mines from a {2} {3} minefield at {5}.",
   "message.planet.swept_mines.name": "Mines swept",
   "message.minefield.swept.text": "An unknown sweeper cleared {1} mines from your {2} minefield at {4}.",
-  "message.minefield.swept.name": "Your minefield swept"
+  "message.minefield.swept.name": "Your minefield swept",
+  "message.fleet.detonation_damaged.text": "{0} was caught in a detonating {1} {2} minefield at {4} and took {5} damage points; no ships were lost.",
+  "message.fleet.detonation_damaged.name": "Hit by a detonation",
+  "message.fleet.detonation_destroyed_some.text": "{0} was caught in a detonating {1} {2} minefield at {4}, took {5} damage points and lost {6} ships.",
+  "message.fleet.detonation_destroyed_some.name": "Ships lost to a detonation",
+  "message.minefield.annihilated_own.text": "{0} was destroyed when your {1} minefield at {3} detonated.",
+  "message.minefield.annihilated_own.name": "Fleet lost to your detonation",
+  "message.fleet.detonation_damaged_yours.text": "Your detonating {1} minefield at {3} did {4} damage points to {0}, destroying no ships.",
+  "message.fleet.detonation_damaged_yours.name": "Detonation damage",
+  "message.fleet.detonation_destroyed_some_yours.text": "Your detonating {1} minefield at {3} did {4} damage points to {0} and destroyed {5} ships.",
+  "message.fleet.detonation_destroyed_some_yours.name": "Detonation kills",
+  "message.minefield.annihilated_yours.text": "{1} was wiped out in your {2} minefield at {4}.",
+  "message.minefield.annihilated_yours.name": "Fleet destroyed by your mines"
 }

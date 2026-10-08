@@ -23,6 +23,7 @@ const TYPES := [
 	"cargo_transfer",
 	"message_filters",
 	"player_relations",
+	"minefield_detonate",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -72,6 +73,8 @@ static func apply(
 			return _message_filters(state, content, player, order)
 		"player_relations":
 			return _player_relations(state, player, order)
+		"minefield_detonate":
+			return _minefield_detonate(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -252,6 +255,23 @@ static func _message_filters(
 	fresh.sort()
 	state.player(player).message_filters = fresh
 	return ""
+
+
+## Orders one of the player's standard minefields to detonate each year, or stops it (S11
+## `minefield_detonate`, block 43). Only races with the `minefield.detonate` trait parameter.
+static func _minefield_detonate(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	if RaceMath.trait_param(state.player(player).race, content, "minefield.detonate", 0) == 0:
+		return "the race can't detonate minefields"
+	var number := int(order.get("minefield", -1))
+	for field in state.minefields:
+		if field.owner == player and field.number == number:
+			if field.type != "standard":
+				return "only standard minefields detonate"
+			field.detonate = bool(order.get("detonate", false))
+			return ""
+	return "no such minefield"
 
 
 ## The player's relation toward every player (S11 `player_relations`, block 38): one entry per

@@ -274,7 +274,9 @@ func test_mine1(
 		[42],
 		[43],
 		[44],
-		[45]
+		[45],
+		[46],
+		[47]
 	]
 ) -> void:
 	_check_turn("mine1", turn)

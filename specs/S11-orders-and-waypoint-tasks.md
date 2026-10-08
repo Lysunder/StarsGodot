@@ -120,6 +120,10 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`minefield_detonate`** `{minefield, detonate}`: the player's minefield (by number) detonates every year from
+  now on (S13 "Detonation"), or stops. Block 43 (the field's id word, then the setting). The original accepts it for
+  any field; we accept it only for a standard field of a race with the `minefield.detonate` trait parameter (Space
+  Demolition), the only case its client offers.
 - **`player_relations`** `{relations}`: the player's relation toward each player, one entry per player
   ("neutral", "friend" or "enemy"; the player's own entry is kept as given). Block 38 (one byte per player).
 - **`message_filters`** `{filtered}`: replaces the list of message types the player has filtered out (S21

@@ -1,10 +1,11 @@
 # S13 Minefields
 
-Status: draft (2026-09-30); second pass 2026-10-07. Laying (S11), decay, hits during movement and sweeping
-implemented (`core/rules/minefields.gd`) and verified by the mine1 game (turns 0-46: a Space Demolition race laying
-in place and while moving, fields merging, decay, two speed-bump hits, a fleet sweeping a speed-bump field, a
-starbase sweeping a standard field back to its edge each turn); damage from standard and heavy fields and the
-unclamped starbase rate are unit-tested only. Detonation not built yet. The constant tables are in the code segment (10a8:0e6e-0e8c) and match
+Status: draft (2026-09-30); second pass 2026-10-07. Laying (S11), decay, hits during movement, sweeping and
+detonation implemented (`core/rules/minefields.gd`) and verified by the mine1 game (turns 0-48: a Space Demolition
+race laying in place and while moving, fields merging, decay, two speed-bump hits, a fleet sweeping a speed-bump
+field, a starbase sweeping a standard field back to its edge each turn, two fields detonating for two years:
+another player's fleet and two of the owner's own fleets destroyed, the owner's mine layer spared); damage that
+leaves ships alive, heavy fields and the unclamped starbase rate are unit-tested only. The constant tables are in the code segment (10a8:0e6e-0e8c) and match
 the community "Guts of Minefields" page.
 References: `Fleet_CheckMinefields@10a8:30b6`, `SegmentCircleIntersect@1038:ae30`,
 `ProcessMinefieldHits@10b0:42a0` (decay and detonation), `SweepMinefields@10b0:45c4`, `Fleet_SweepRate@1078:1ca2`,
@@ -103,8 +104,24 @@ Per design stack in the fleet (n ships, e engines per ship, armor A, shields s p
 
 Each year, for each minefield:
 
-1. **Detonation:** a Space Demolition field ordered to detonate checks every fleet inside it once (each fleet at most
-   once per turn across all fields in the original, see B03), with the same damage rules.
+1. **Detonation** (`ProcessMinefieldHits@10b0:42a0` calling `Fleet_CheckMinefields` with the field): a field
+   ordered to detonate (S11 `minefield_detonate`) hits every fleet with ships inside it (squared distance at most
+   the mine count), in fleet order: any owner, friends and the field's own owner included, wherever the fleet is
+   going. No rolls. Each such fleet takes one hit of the field's type ("Damage from one hit"), except that the
+   stacks of the field owner's own Mini and Super Mine Layer hulls take nothing (they don't count as lost or
+   damaged, but their ships still count in the top-up's ship total). A detonation that does no damage (all stacks
+   spared, or a speed-bump field) sends nothing. The field loses no mines from the hits. **B03:** the original
+   marks a fleet when a detonating field checks it and skips marked fleets for the rest of the phase, so a fleet
+   inside two detonating fields is hit once. Fix: every detonating field that contains the fleet hits it.
+   Messages (x, y the field's center): the fleet's owner, when not the field's owner, gets
+   **`fleet.detonation_damaged`** `[fleet, field owner, type, x, y, damage]` or
+   **`fleet.detonation_destroyed_some`** `[…, damage, ships lost]` (goto the fleet), or when the whole fleet is lost
+   **`fleet.mine_annihilated`** as for a hit; the field's owner gets **`fleet.detonation_damaged_yours`**
+   `[fleet, type, x, y, damage]` or **`fleet.detonation_destroyed_some_yours`** `[…, damage, ships lost]` (goto the
+   fleet), or when the whole fleet is lost **`minefield.annihilated_yours`** `[field, fleet, type, x, y]` (goto the
+   field) for another player's fleet and **`minefield.annihilated_own`** `[fleet described, type, x, y]` (no goto)
+   for one of its own. (A field owner of the Space Demolition race also learns the designs of the ships hit, by
+   hits and detonations alike: S15.) Fleets left without ships are removed at the end of the phase.
 2. **Decay rate** r = 4 × (planets inside) + 2 percent, or 1 × (planets inside) + 2 for a Space Demolition owner;
    at most 50; plus 25 when the field detonated.
 3. Mines lost = max(mines × r div 100, r); at least 10 unless the field is a speed bump.
@@ -173,7 +190,6 @@ field order during detonation.
 ## Open questions
 
 1. B02 root cause in the code.
-2. Detonation details (which fields detonate: standard only; damage column used).
-3. The words at +10 (players who know the field) and +16 of a field's record, and which players scanning marks as
-   seeing it this turn (S15): the mine1 fixtures ignore `seen_by`.
-4. The argument of the square root for a (assumed the distance from the fleet to P).
+2. The word at +16 of a field's record, and which players scanning marks as seeing (+14, `seen_by`) and knowing
+   (+10, `known_by`) a field (S15): the mine1 fixtures ignore both.
+3. The argument of the square root for a (assumed the distance from the fleet to P).

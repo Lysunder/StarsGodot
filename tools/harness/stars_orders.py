@@ -39,6 +39,7 @@ RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
 MERGE_FLEETS = 37
 PLAYER_RELATIONS = 38
+MINEFIELD_DETONATE = 43
 RELATIONS = ["neutral", "friend", "enemy"]
 FLEET_BATTLE_PLAN = 42
 RENAME_FLEET = 44
@@ -167,6 +168,10 @@ def convert_block(importer, b, keep_names=False):
     if b.type == PLAYER_RELATIONS:
         # one byte per player: 0 neutral, 1 friend, 2 enemy (the player's own entry included)
         return {"type": "player_relations", "relations": [RELATIONS[v] for v in d]}
+    if b.type == MINEFIELD_DETONATE:
+        # the field's id word (number, owner, kind 0), then the new detonate setting
+        field, value = struct.unpack_from("<HH", d, 0)
+        return {"type": "minefield_detonate", "minefield": field & 0x1FF, "detonate": value != 0}
     raise StarsOrdersError("order block type %d is not converted yet" % b.type)
 
 

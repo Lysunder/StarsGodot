@@ -747,5 +747,74 @@
       "object_kind",
       "object"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.detonation_damaged",
+    "params": [
+      "object",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.detonation_destroyed_some",
+    "params": [
+      "object",
+      "player",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.minefield.annihilated_own",
+    "params": [
+      "fleet_designs",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.detonation_damaged_yours",
+    "params": [
+      "object",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.detonation_destroyed_some_yours",
+    "params": [
+      "object",
+      "minefield_type",
+      "object_kind",
+      "object",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.minefield.annihilated_yours",
+    "params": [
+      "minefield",
+      "fleet",
+      "minefield_type",
+      "object_kind",
+      "object"
+    ]
   }
 ]

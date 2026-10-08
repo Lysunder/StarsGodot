@@ -1322,5 +1322,23 @@
   },
   "message.minefield.swept": {
     "message": 190
+  },
+  "message.fleet.detonation_damaged": {
+    "message": 352
+  },
+  "message.fleet.detonation_destroyed_some": {
+    "message": 353
+  },
+  "message.minefield.annihilated_own": {
+    "message": 354
+  },
+  "message.fleet.detonation_damaged_yours": {
+    "message": 355
+  },
+  "message.fleet.detonation_destroyed_some_yours": {
+    "message": 356
+  },
+  "message.minefield.annihilated_yours": {
+    "message": 204
   }
 }
