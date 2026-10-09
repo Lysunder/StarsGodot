@@ -123,7 +123,8 @@
       "resources": 100
     },
     "stats": {
-      "scan_range": 320
+      "scan_range": 320,
+      "pen_range": 160
     },
     "tags": [
       "penetrating"
@@ -151,7 +152,8 @@
       "resources": 100
     },
     "stats": {
-      "scan_range": 400
+      "scan_range": 400,
+      "pen_range": 200
     },
     "tags": [
       "penetrating"
@@ -179,7 +181,8 @@
       "resources": 100
     },
     "stats": {
-      "scan_range": 500
+      "scan_range": 500,
+      "pen_range": 250
     },
     "tags": [
       "penetrating"
@@ -207,7 +210,8 @@
       "resources": 100
     },
     "stats": {
-      "scan_range": 620
+      "scan_range": 620,
+      "pen_range": 310
     },
     "tags": [
       "penetrating"

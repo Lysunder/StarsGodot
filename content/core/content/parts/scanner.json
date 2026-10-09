@@ -130,7 +130,8 @@
     },
     "stats": {
       "scan_range": 160,
-      "cloak": 40
+      "cloak": 40,
+      "pen_range": 45
     },
     "required_traits": [
       "trait.prt.SS"
@@ -153,7 +154,8 @@
       "resources": 36
     },
     "stats": {
-      "scan_range": 185
+      "scan_range": 185,
+      "pen_range": 50
     },
     "forbidden_traits": [
       "trait.lrt.NAS"
@@ -176,7 +178,8 @@
       "resources": 40
     },
     "stats": {
-      "scan_range": 220
+      "scan_range": 220,
+      "pen_range": 100
     },
     "forbidden_traits": [
       "trait.lrt.NAS"
@@ -256,7 +259,8 @@
       "resources": 70
     },
     "stats": {
-      "scan_range": 300
+      "scan_range": 300,
+      "pen_range": 200
     },
     "forbidden_traits": [
       "trait.lrt.NAS"
@@ -298,7 +302,8 @@
       "resources": 90
     },
     "stats": {
-      "scan_range": 220
+      "scan_range": 220,
+      "pen_range": 120
     },
     "tags": [
       "steals_from_fleets",

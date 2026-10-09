@@ -306,7 +306,10 @@
         ]
       }
     ],
-    "class": 2
+    "class": 2,
+    "tags": [
+      "builtin_scanner"
+    ]
   },
   {
     "type": "hull",
@@ -375,7 +378,10 @@
         ]
       }
     ],
-    "class": 2
+    "class": 2,
+    "tags": [
+      "builtin_scanner"
+    ]
   },
   {
     "type": "hull",
@@ -475,7 +481,10 @@
         ]
       }
     ],
-    "class": 2
+    "class": 2,
+    "tags": [
+      "builtin_scanner"
+    ]
   },
   {
     "type": "hull",

@@ -107,7 +107,6 @@ static func lay(
 			field.y = fleet.y
 			field.mines = rate
 			field.type = TYPES[t]
-			field.known_by.assign([fleet.owner])
 		else:
 			field.x = (fleet.x * rate + field.x * field.mines) / (rate + field.mines)
 			field.y = (fleet.y * rate + field.y * field.mines) / (rate + field.mines)

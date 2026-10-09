@@ -30,7 +30,8 @@ class RandomSettings:
 
 
 ## 27: the original draws one value per file it writes, player files first, then the host
-## file (S01). We make the same draws without writing those files.
+## file (S01). We make the same draws without writing those files. Writing each player's file
+## also runs that player's scanning, which records minefields and wormholes seen (S15).
 class FileDraws:
 	extends Phase
 
@@ -42,3 +43,4 @@ class FileDraws:
 	func run(ctx: TurnContext) -> void:
 		for i in ctx.state.players.size() + 1:
 			ctx.rng().random(DRAW)
+		Scanning.record_all(ctx.state, ctx.content)
