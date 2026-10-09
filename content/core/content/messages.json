@@ -958,5 +958,35 @@
       "population",
       "planet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_died_in_transit",
+    "params": [
+      "population",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.warp10_ship_lost",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.warp10_ships_lost",
+    "params": [
+      "number",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.engines_exploded",
+    "params": [
+      "fleet"
+    ]
   }
 ]

@@ -224,6 +224,9 @@
     ],
     "required_traits": [
       "trait.lrt.NRSE"
+    ],
+    "tags": [
+      "warp10_safe"
     ]
   },
   {
@@ -260,7 +263,10 @@
       "cloak": 20,
       "battle_move_halves": 1
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "tags": [
+      "warp10_safe"
+    ]
   },
   {
     "type": "part",
@@ -288,6 +294,9 @@
       40,
       45,
       50
+    ],
+    "tags": [
+      "warp10_safe"
     ]
   },
   {
@@ -448,6 +457,9 @@
     ],
     "forbidden_traits": [
       "trait.lrt.NRSE"
+    ],
+    "tags": [
+      "warp10_safe"
     ]
   },
   {
@@ -483,6 +495,9 @@
     ],
     "forbidden_traits": [
       "trait.lrt.NRSE"
+    ],
+    "tags": [
+      "warp10_safe"
     ]
   }
 ]

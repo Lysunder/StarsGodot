@@ -117,6 +117,10 @@ B = w². Later passes (up to 11 in all) repeat while any chaser has budget left:
    target that was itself chasing: B12; our engine doesn't).
 
 Each fleet's first-pass work happens once; only chasers take part in later passes, in fleet order.
+Fourth pass (2026-10-09): warp-10 damage and Alternate Reality transit losses implemented (`Movement._move`).
+mine1 turn 64: a one-ship fleet lost to its warp-10 roll (destroyed, its design's count lowered) next to a
+two-ship fleet whose rolls both passed. Losing some of a fleet's ships and the Alternate Reality losses are
+unit-tested only.
 
 ### Cheap Engines failure
 
@@ -127,13 +131,18 @@ don't engage, the player is told, and the fleet doesn't move this turn.
 
 A fleet travelling at warp 10: for every ship whose design's engine is not one of Interspace-10, Enigma Pulsar,
 Trans-Star 10, Trans-Galactic Mizer Scoop or Galaxy Scoop, draw `random(10)`; on 0 that ship is destroyed. Ships are
-rolled design by design, one draw per ship. If no ships are left the fleet is gone; otherwise cargo is redistributed
-over the remaining ships and the player is told how many were lost.
+rolled design by design, one draw per ship. The lost ships leave their design's count of ships in service. If no
+ships are left the fleet is gone: **`fleet.engines_exploded`** `[fleet]`, and it doesn't move. Otherwise the cargo
+their capacity held is lost (S11 "Cargo after a ship move") and the player is told: one ship
+**`fleet.warp10_ship_lost`** `[fleet]`, more **`fleet.warp10_ships_lost`** `[ships, fleet]` (goto the fleet).
+The engines are tagged `warp10_safe` in content.
 
 ### Alternate Reality colonists in transit
 
 An Alternate Reality fleet carrying more than 10 colonists (cargo units) loses (colonists + 11) × 3 div 100 of them
-when it moves.
+when it moves (trait parameter `movement.transit_loss_pct` 3): **`fleet.colonists_died_in_transit`**
+`[colonists, fleet]`. Order for a moving fleet, once, before its first step: the Cheap Engines roll, then these
+losses, then the warp-10 rolls; none of them for stargate travel.
 
 ### Fuel use
 

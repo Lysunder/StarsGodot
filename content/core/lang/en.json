@@ -653,5 +653,13 @@
   "message.fleet.colonists_grew.text": "The colonists aboard {0} raised families on the way: {1} more on board.",
   "message.fleet.colonists_grew.name": "Colonists grew",
   "message.fleet.colonists_overflowed.text": "{0} ran out of room for its growing colonists; {1} of them moved down to {2}.",
-  "message.fleet.colonists_overflowed.name": "Colonists moved down"
+  "message.fleet.colonists_overflowed.name": "Colonists moved down",
+  "message.fleet.colonists_died_in_transit.text": "The strain of warp travel killed {0} of the colonists aboard {1}.",
+  "message.fleet.colonists_died_in_transit.name": "Colonists lost in transit",
+  "message.fleet.warp10_ship_lost.text": "A ship in {0} was lost when its engines failed at warp 10.",
+  "message.fleet.warp10_ship_lost.name": "Ship lost at warp 10",
+  "message.fleet.warp10_ships_lost.text": "{0} ships in {1} were lost to engine strain at warp 10.",
+  "message.fleet.warp10_ships_lost.name": "Ships lost at warp 10",
+  "message.fleet.engines_exploded.text": "{0} was destroyed when its engines blew apart at warp 10.",
+  "message.fleet.engines_exploded.name": "Fleet lost at warp 10"
 }

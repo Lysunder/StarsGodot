@@ -6,8 +6,9 @@ extends RefCounted
 ## Trait parameters: `movement.fuel_usage_pct` (Improved Fuel Efficiency 85),
 ## `movement.engine_failure` (Cheap Engines: 1 in 10 above warp 6).
 ##
-## Stargates are in Stargates (S12 "Stargates"), mine hits in Minefields (S13). Not yet: warp-10
-## engine damage and Alternate Reality colonists in transit.
+## `movement.transit_loss_pct` (Alternate Reality: colonists aboard a moving fleet die).
+##
+## Stargates are in Stargates (S12 "Stargates"), mine hits in Minefields (S13).
 
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
@@ -28,6 +29,14 @@ const SCOOP_DISTANCE_CUT := 0.99999
 const PASSES := 11
 ## A chaser's step while its target is still moving: a fifth of its budget, rounded up.
 const CHASE_STEPS := 5
+## Warp 10: each ship whose engine isn't tagged WARP10_SAFE is lost with one chance in WARP10_ROLL.
+const WARP10 := 10
+const WARP10_ROLL := 10
+const WARP10_SAFE := "warp10_safe"
+## Alternate Reality transit losses: only above this many colonists (hundreds);
+## (c + 11) x pct / 100.
+const TRANSIT_LOSS_ABOVE := 10
+const TRANSIT_LOSS_ADD := 11
 
 
 ## Fuel (mg) the fleet needs to move `distance` light years at `warp` (S12 "Fuel use"); a huge value
@@ -180,10 +189,94 @@ static func _move(
 		and rng.random(FAILURE_CHANCE) == 0
 	):
 		return
+	if next.warp < Waypoint.WARP_STARGATE:
+		_transit_losses(state, content, fleet, owner)
+		if next.warp == WARP10 and not _warp10_damage(state, content, rng, fleet, owner):
+			return
 	if next.target == "fleet" and state.fleet(next.target_owner, next.target_id) != null:
 		chasers[fleet] = {"budget": next.warp * next.warp, "moved": 0, "fuel": 0}
 		return
 	_step(state, content, rng, fleet, next.warp * next.warp, {})
+
+
+## S12 "Alternate Reality colonists in transit": colonists aboard a moving fleet of a race with
+## `movement.transit_loss_pct` die, (colonists + 11) x pct / 100, when there are more than 10.
+static func _transit_losses(
+	state: GameState, content: ContentRegistry, fleet: Fleet, owner: Player
+) -> void:
+	var colonists := fleet.cargo[Fleet.CARGO_COLONISTS]
+	var pct := RaceMath.trait_param(owner.race, content, "movement.transit_loss_pct", 0)
+	if pct == 0 or colonists <= TRANSIT_LOSS_ABOVE:
+		return
+	var lost := (colonists + TRANSIT_LOSS_ADD) * pct / 100
+	if lost <= 0:
+		return
+	fleet.cargo[Fleet.CARGO_COLONISTS] -= lost
+	TurnMessages.add(
+		state,
+		content,
+		fleet.owner,
+		"message.fleet.colonists_died_in_transit",
+		{"fleet": fleet.number, "owner": fleet.owner},
+		[lost, fleet.owner * 512 + fleet.number]
+	)
+
+
+## S12 "Warp-10 damage": each ship whose engine isn't safe at warp 10 is lost with one chance in
+## 10 (one roll per ship, in design slot order). Returns false when the whole fleet is lost.
+static func _warp10_damage(
+	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, owner: Player
+) -> bool:
+	var lost := {}
+	var total := 0
+	var survivors := 0
+	var stacks := fleet.stacks.duplicate()
+	stacks.sort_custom(func(a: ShipStack, b: ShipStack) -> bool: return a.design < b.design)
+	for stack: ShipStack in stacks:
+		if stack.count <= 0:
+			continue
+		var design := owner.ship_design(stack.design)
+		var engine := PartRules.engine(design, content)
+		var safe: bool = (
+			not engine[0].is_empty()
+			and (content.part(engine[0]).get("tags", []) as Array).has(WARP10_SAFE)
+		)
+		var n := 0
+		if not safe:
+			for i in stack.count:
+				if rng.random(WARP10_ROLL) == 0:
+					n += 1
+		if n > 0:
+			lost[stack.design] = n
+			total += n
+		survivors += stack.count - n
+	if total == 0:
+		return true
+	var word := fleet.owner * 512 + fleet.number
+	var goto := {"fleet": fleet.number, "owner": fleet.owner}
+	for slot: int in lost:
+		owner.ship_design(slot).remaining -= int(lost[slot])
+	if survivors == 0:
+		fleet.stacks.clear()
+		TurnMessages.add(
+			state, content, fleet.owner, "message.fleet.engines_exploded", goto, [word]
+		)
+		return false
+	for slot: int in lost:
+		var stack := fleet.stack_for(slot)
+		stack.count -= int(lost[slot])
+		if stack.count == 0:
+			fleet.stacks.erase(stack)
+	FleetOrders.cargo_after_losses(fleet, owner, content, lost)
+	if total == 1:
+		TurnMessages.add(
+			state, content, fleet.owner, "message.fleet.warp10_ship_lost", goto, [word]
+		)
+	else:
+		TurnMessages.add(
+			state, content, fleet.owner, "message.fleet.warp10_ships_lost", goto, [total, word]
+		)
+	return true
 
 
 ## A later pass for a chaser: its waypoint takes the target's position, and it moves the rest of

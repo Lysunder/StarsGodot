@@ -128,7 +128,8 @@
       "colony.skips_auto_factories": 1,
       "colony.skips_auto_defenses": 1,
       "message.orbital_colony": 1,
-      "packet.no_damage": 1
+      "packet.no_damage": 1,
+      "movement.transit_loss_pct": 3
     }
   },
   {

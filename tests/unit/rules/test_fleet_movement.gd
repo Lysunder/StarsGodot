@@ -224,3 +224,39 @@ func test_player_defaults_order() -> void:
 	design.design = 0
 	order["queue"] = [design.to_dict()]
 	assert_str(OrderRules.apply(s, _content, 0, order)).is_equal("no such production item")
+
+
+func test_warp10_loses_ships_with_unsafe_engines() -> void:
+	var s := _game()
+	var safe := _colony_ship("part.engine.trans_star_10")
+	safe.slot = 1
+	s.players[0].set_design(safe, false)
+	var f := _fleet(s)
+	f.add_ships(0, 59)
+	f.add_ships(1, 5)
+	f.cargo[Fleet.CARGO_FUEL] = 100000
+	_goto(f, s.planets[1], 10)
+	TurnMessages.clear(s)
+	Movement.move_all(s, _content, StarsRandom.new())
+	# about one in ten of the 60 unsafe ships is lost; the Trans-Star 10 ships never are
+	var unsafe := f.stack_for(0).count
+	assert_int(unsafe).is_less(60)
+	assert_int(unsafe).is_greater(40)
+	assert_int(f.stack_for(1).count).is_equal(5)
+	assert_int(s.players[0].ship_design(0).remaining).is_equal(unsafe - 60)
+	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.warp10_ships_lost")
+	assert_array(s.messages[0][0]["params"]).is_equal([60 - unsafe, 0])
+
+
+func test_alternate_reality_colonists_die_in_transit() -> void:
+	var s := _game()
+	s.players[0].race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+	s.players[0].race.primary_trait = "trait.prt.AR"
+	var f := _fleet(s)
+	f.cargo[Fleet.CARGO_COLONISTS] = 100
+	_goto(f, s.planets[1], 5)
+	TurnMessages.clear(s)
+	Movement.move_all(s, _content, StarsRandom.new())
+	# (100 + 11) x 3 / 100 = 3
+	assert_int(f.cargo[Fleet.CARGO_COLONISTS]).is_equal(97)
+	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.colonists_died_in_transit")

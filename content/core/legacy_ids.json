@@ -1388,5 +1388,17 @@
   },
   "message.fleet.colonists_overflowed": {
     "message": 344
+  },
+  "message.fleet.colonists_died_in_transit": {
+    "message": 193
+  },
+  "message.fleet.warp10_ship_lost": {
+    "message": 223
+  },
+  "message.fleet.warp10_ships_lost": {
+    "message": 224
+  },
+  "message.fleet.engines_exploded": {
+    "message": 225
   }
 }
