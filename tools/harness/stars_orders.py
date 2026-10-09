@@ -89,6 +89,10 @@ def holder(kind, word):
         return {"planet": word & 0x7FF}
     if name == "fleet":
         return {"fleet": word & 0x1FF, "owner": (word >> 9) & 15}
+    if name == "deep_space":
+        return {"deep_space": True}
+    if name == "object" and word >> 13 == 1:
+        return {"packet": word & 0x1FF, "owner": (word >> 9) & 15}
     raise StarsOrdersError("cargo transfer with a %s is not converted yet" % name)
 
 

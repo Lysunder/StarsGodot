@@ -370,6 +370,12 @@ static func _new_pile(state: GameState, owner: int, x: int, y: int, limit: int) 
 	return pile
 
 
+## How many more kT a packet or pile takes from a transfer (`TransferCargo@1048:3aec`): the
+## rounding room of its recorded mass, `mass_tenths` x 10 minus its minerals.
+static func slack(packet: Packet) -> int:
+	return packet.mass_tenths * 10 - packet.minerals[0] - packet.minerals[1] - packet.minerals[2]
+
+
 ## The salvage pile at exactly this point (any owner's), or null.
 static func salvage_at(state: GameState, x: int, y: int) -> Packet:
 	for p in state.packets:

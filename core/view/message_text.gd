@@ -17,6 +17,8 @@ const DESIGNS_MANY := 8192
 const DESIGN_SHIFT := 32
 ## The first word of a "where" that names an object rather than a position (-1 as a word).
 const NOT_A_POSITION := 65535
+## The first word of a "where" that names a packet or salvage pile.
+const SPACE_OBJECT := 65534
 
 
 ## The text of a message `m` received by `player`.
@@ -37,7 +39,9 @@ static func format(view: PlayerView, player: int, m: Dictionary) -> String:
 		# a "where" whose first word isn't -1 is a position: x, then y
 		if kinds[i] == "object" and i > 0 and kinds[i - 1] == "object_kind":
 			var x := int(params[i - 1])
-			if x != -1 and x != NOT_A_POSITION:
+			if x == SPACE_OBJECT:
+				value = _value(view, player, type, "space_object", params[i], cargo)
+			elif x != -1 and x != NOT_A_POSITION:
 				value = "Space (%d, %d)" % [x, int(params[i])]
 		text = text.replace("{%d}" % i, value)
 	return text

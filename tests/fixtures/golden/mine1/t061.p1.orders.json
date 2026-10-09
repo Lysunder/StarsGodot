@@ -1,0 +1,48 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 6,
+   "index": 0,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "scrap",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1445,
+    "y": 1523
+   }
+  },
+  {
+   "amounts": [
+    0,
+    0,
+    -30,
+    0,
+    0
+   ],
+   "fleet": 1,
+   "other": {
+    "deep_space": true
+   },
+   "owner": 1,
+   "type": "cargo_transfer"
+  }
+ ],
+ "player": 1,
+ "turn": 61
+}

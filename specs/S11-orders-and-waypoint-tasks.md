@@ -130,12 +130,15 @@ the fleets of a ship move have the same owner, and trusts the client for the res
   "Filters"); each must be a message type; stored once each, sorted. Block 33 (a bitmap of message numbers).
 - **`cargo_transfer`** `{owner, fleet, other, amounts}`: a transfer by hand, applied at once with the orders (before
   any waypoint task). `other` is `{"planet": id}` or `{"fleet": number, "owner": o}`; `amounts` gives five signed
-  amounts (ironium, boranium, germanium, colonists, fuel), positive into the fleet. Unloads (negative) go first, then
+  amounts (ironium, boranium, germanium, colonists, fuel), positive into the fleet. `other` can also be
+  `{"deep_space": true}` (jettison: the fleet loses what it unloads, any type; nothing loads) or
+  `{"packet": number, "owner": o}` (a packet or salvage pile at the fleet's position: minerals only, loads take
+  what it has, unloads only its rounding room, S14). Unloads (negative) go first, then
   loads, each type in order; each is limited by what the giver has and the receiver's free space (cargo or fuel;
   planets take anything but fuel). What the receiver can't take stays with the giver (fix B20: the original lets it
   vanish). Built so far: the fleet's owner's own planet at the fleet's location, and the owner's fleets at the same
-  position; transfers with other players' planets or fleets (queued in the original, S02 5f) and jettisoning are
-  rejected for now. Blocks 1, 2 and 25 (amounts of 1, 2 or 4 bytes). `ApplyOrderBlock@1040:651e`,
+  position, jettisoning, and packets and salvage; transfers with other players' planets or fleets (queued in the
+  original, S02 5f) are rejected for now. Blocks 1, 2 and 25 (amounts of 1, 2 or 4 bytes). `ApplyOrderBlock@1040:651e`,
   `TransferCargo@1048:3aec`.
 - **`design_change`** `{starbase, slot, design}`: creates the player's ship design (slot 0–15) or starbase design
   (slot 0–9) in that slot, or replaces it. A design that still has ships (or starbases) in existence can't be
@@ -246,15 +249,18 @@ Rules visible in the code (amounts to be confirmed, see "Open questions"):
 - A fleet can't load from a planet it doesn't own; the player gets a message. (Fix B15: colonists can never be
   loaded from a planet the fleet's owner doesn't own.)
 - Unloading colonists onto another player's planet is an invasion (resolved in ground combat, S17).
-- Unloading onto deep space jettisons the cargo (salvage, S14).
+- Unloading minerals in deep space destroys them (S14).
+- Loading from a packet or salvage pile (anyone's) takes its minerals, up to the fleet's free space; colonists and
+  fuel are skipped. The where of the messages is [65534, the object] (S21).
 - Built so far: every action except load optimal, with every partner below, for minerals and colonists, and fuel
   between fleets (colonists move between the fleet's cargo and the planet's
   population units, 1 kT = 1 unit = 100 colonists). Loading takes what the other side has, up to the fleet's free
   cargo space (its designs' cargo capacity minus minerals and colonists carried) or free fuel space.
 
 **The other side** comes from the current waypoint's target: a fleet (the target fleet, which must be at the same
-position), a planet (the planet the fleet is at), or deep space. Space objects (salvage, packets) belong to S14 and
-are skipped with a warning.
+position), a planet (the planet the fleet is at), a packet or salvage pile (the waypoint's target object; a target
+that no longer exists ends the task when loading), or deep space. Minefields, wormholes and the Mystery Trader as
+targets carry no cargo: the transport does nothing.
 
 **Unloading** (passes 1 and 3), per cargo type in order (ironium, boranium, germanium, colonists, fuel); each unload
 action is cleared once carried out:
@@ -266,7 +272,8 @@ action is cleared once carried out:
 | An unowned planet | to the surface | refused (colonizing needs the colonize task) | not transferred |
 | One of the player's fleets | up to its free cargo space | up to its free cargo space | up to its free fuel space |
 | Another player's fleet | refused (fix B20; the original lets them vanish) | refused | up to its free fuel space, nothing if that player counts the giver as an enemy |
-| Deep space | jettisoned as salvage (S14; not built yet) | refused | not built yet |
+| A packet or salvage pile (S14) | up to the rounding room of its recorded mass (`mass_tenths` × 10 − its minerals) | skipped | skipped |
+| Deep space | lost (the original's transfer target for deep space is a scratch record; no salvage is made); "unloaded", the where being the fleet's position | refused | stays aboard |
 
 A refused colonist unload cancels the whole transport task (the original's "order canceled" messages): later cargo
 types and the load actions are not carried out.

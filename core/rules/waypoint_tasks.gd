@@ -24,6 +24,8 @@ const MINING_RATE_MAX := 4000
 ## Fill and wait percentages use the capacity capped here; from 65,536 on they divide first.
 ## A fleet as the "where" of a transport message: this plus the fleet's parameter value (S21).
 const FLEET_OBJECT := 32768
+## The first half of a transport message's "where" for a packet or salvage pile (65534, S21).
+const SPACE_OBJECT := 65534
 ## Transport actions that load (S21 "load refused").
 const LOAD_ACTIONS := ["load_all", "load", "fill_percent", "wait_percent"]
 const PERCENT_CAPACITY_MAX := 2000000
@@ -52,6 +54,9 @@ var _content: ContentRegistry
 var _rng: StarsRandom
 ## The unowned planet whose own remote miner is the transport partner, during one transport.
 var _site: Planet = null
+## The packet or salvage pile the current transport works with (S14 "Transport with salvage and
+## packets"), else null.
+var _pile: Packet = null
 ## The task pass being run (1..4).
 var _pass := 0
 ## Colonizations waiting for the next resolution (S11 "Colonize").
@@ -104,12 +109,13 @@ func run_pass(pass_number: int) -> void:
 				push_warning("waypoint task %s is not implemented yet" % wp.task)
 
 
-## S11 "Transport": the other side is the target fleet, the planet the fleet is at, or deep
-## space. Unload actions run in passes 1 and 3 and are cleared once done; loads run in passes 2 and
-## 4 and end the task. A refused colonist unload cancels the task.
+## S11 "Transport": the other side is the target fleet, the planet the fleet is at, a packet or
+## salvage pile (S14), or deep space. Unload actions run in passes 1 and 3 and are cleared once
+## done; loads run in passes 2 and 4 and end the task. A refused colonist unload cancels the task.
 func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 	var other: Fleet = null
 	var planet: Planet = null
+	_pile = null
 	match wp.target:
 		"fleet":
 			other = _state.fleet(wp.target_owner, wp.target_id)
@@ -126,10 +132,16 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 					other = miner
 					_site = planet
 					planet = null
+		"packet":
+			_pile = _find_packet(wp.target_owner, wp.target_id)
+			if _pile == null:
+				if loading:
+					_task_done(fleet, wp)
+				return
 		"none":
 			pass
 		_:
-			push_warning("transport with %s (S14) is not implemented yet" % wp.target)
+			# minefields, wormholes and the Mystery Trader carry no cargo
 			return
 	var cargo: Array = wp.task_data.get("cargo", [])
 	var done := true
@@ -138,6 +150,8 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 	var fuel_optimal := false
 	for c in mini(cargo.size(), Fleet.CARGO_FUEL + 1):
 		if c == Fleet.CARGO_FUEL and planet != null:
+			continue
+		if _pile != null and c >= CARGO_COLONISTS:
 			continue
 		var action: String = cargo[c].get("action", "none")
 		var amount: int = cargo[c].get("amount", 0)
@@ -206,8 +220,17 @@ func _transport(fleet: Fleet, wp: Waypoint, loading: bool) -> void:
 	if wait_for_space and _cargo_space(fleet, _state.player(fleet.owner)) > 0:
 		done = false
 	_site = null
+	_pile = null
 	if loading and done:
 		_task_done(fleet, wp)
+
+
+## The packet or salvage pile with this owner and number, or null.
+func _find_packet(owner: int, number: int) -> Packet:
+	for p in _state.packets:
+		if p.owner == owner and p.number == number:
+			return p
+	return null
 
 
 ## S21: in the last load pass a load action from a planet the player doesn't own sends
@@ -236,9 +259,11 @@ func _fleet_message(fleet: Fleet, type: String, params: Array) -> void:
 	)
 
 
-## The "where" of a transport message (S21 `object_kind`, `object`): [-1, planet id] or
-## [-1, 32768 + the fleet's parameter value].
-static func _where(other: Fleet, planet: Planet) -> Array:
+## The "where" of a transport message (S21 `object_kind`, `object`): [-1, planet id],
+## [-1, 32768 + the fleet's parameter value] or [65534, the packet's `space_object` value].
+func _where(other: Fleet, planet: Planet) -> Array:
+	if _pile != null:
+		return [SPACE_OBJECT, Packets.object_word(_pile)]
 	if other != null:
 		return [-1, FLEET_OBJECT + _fleet_word(other)]
 	return [-1, planet.id if planet != null else -1]
@@ -295,6 +320,8 @@ func _fuel_optimal(fleet: Fleet, other: Fleet) -> bool:
 ## What the other side has of cargo type `c`: the target fleet's cargo or the planet's surface or
 ## population; 0 in deep space.
 func _available(other: Fleet, planet: Planet, c: int) -> int:
+	if _pile != null:
+		return _pile.minerals[c] if c < CARGO_COLONISTS else 0
 	if _site != null and c != Fleet.CARGO_FUEL:
 		return _site.population if c == CARGO_COLONISTS else _site.surface[c]
 	if other != null:
@@ -304,8 +331,11 @@ func _available(other: Fleet, planet: Planet, c: int) -> int:
 	return planet.population if c == CARGO_COLONISTS else planet.surface[c]
 
 
-## Loads come only from the fleet owner's own planet (not fuel) or own fleets (fix B26/B15).
+## Loads come only from the fleet owner's own planet (not fuel) or own fleets (fix B26/B15), or
+## from anyone's packet or salvage (minerals only, S14).
 func _can_load(fleet: Fleet, other: Fleet, planet: Planet, c: int) -> bool:
+	if _pile != null:
+		return c < CARGO_COLONISTS
 	if other != null:
 		return other.owner == fleet.owner
 	return planet != null and planet.owner == fleet.owner and c != Fleet.CARGO_FUEL
@@ -360,7 +390,9 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 			)
 		return from_miner + from_site
 	fleet.cargo[c] += moved
-	if other != null:
+	if _pile != null:
+		_pile.minerals[c] -= moved
+	elif other != null:
 		other.cargo[c] -= moved
 	elif c == CARGO_COLONISTS:
 		planet.population -= moved
@@ -373,6 +405,14 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 ## Gives up to `amount` of cargo type `c` to the other side (S11 "Unloading"). Returns false when a
 ## colonist unload is refused, which cancels the task.
 func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) -> bool:
+	if _pile != null:
+		# only the rounding room of the pile's recorded mass takes more (S14)
+		var moved := mini(amount, maxi(Packets.slack(_pile), 0))
+		if c < CARGO_COLONISTS and moved > 0:
+			fleet.cargo[c] -= moved
+			_pile.minerals[c] += moved
+			_unload_message(fleet, c, moved, _where(null, null))
+		return true
 	if other != null:
 		var foreign := other.owner != fleet.owner
 		if foreign and c == CARGO_COLONISTS:
@@ -390,8 +430,10 @@ func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) ->
 	if planet == null:
 		if c == CARGO_COLONISTS:
 			return false
-		if amount > 0:
-			push_warning("jettisoning cargo in deep space (salvage, S14) is not implemented yet")
+		# minerals unloaded in deep space are lost (S14); fuel stays aboard
+		if c != Fleet.CARGO_FUEL and amount > 0:
+			fleet.cargo[c] -= amount
+			_unload_message(fleet, c, amount, [fleet.x, fleet.y])
 		return true
 	if c == Fleet.CARGO_FUEL or amount <= 0:
 		return true

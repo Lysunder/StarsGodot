@@ -57,8 +57,8 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `minefield` | a minefield: owner × 512 + its number |
 | `space_object` | a minefield or a packet / salvage pile: kind (0 minefield, 1 packet) × 8192 + owner × 512 + number |
 | `colonists` | a number of colonists in hundreds |
-| `object_kind` | the first half of a "where": -1 (65535) when the second half names an object, else a position's x |
-| `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value; or the position's y |
+| `object_kind` | the first half of a "where": -1 (65535) when the second half names a planet or fleet, 65534 when it names a packet or salvage pile, else a position's x |
+| `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value; the `space_object` value; or the position's y |
 
 In the original's files every parameter is a byte or a word, a 32-bit amount takes two (low word, high word) and an
 item takes two (category mask, item number); the harness importer (`tools/harness/stars_messages.py`,

@@ -1,0 +1,64 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "packet",
+    "target_id": 0,
+    "target_owner": 1,
+    "task": "none",
+    "task_data": {},
+    "warp": 2,
+    "x": 1445,
+    "y": 1523
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 1,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "packet",
+    "target_id": 0,
+    "target_owner": 1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "load_all",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "unload_all",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 2,
+    "x": 1445,
+    "y": 1523
+   }
+  }
+ ],
+ "player": 1,
+ "turn": 62
+}

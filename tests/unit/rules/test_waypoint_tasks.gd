@@ -310,3 +310,38 @@ func test_set_amount_and_set_waypoint() -> void:
 	_transport(f, {0: ["set_waypoint", 30]})
 	_tasks(s).run_pass(1)
 	assert_array([f.cargo[0], s.planets[0].surface[0]]).is_equal([0, 30])
+
+
+func test_transport_with_salvage_and_deep_space() -> void:
+	var s := _game()
+	var f := _fleet(s, 0, 1)
+	f.planet = -1
+	f.x = 300
+	var pile := s.add_packet(1, true, 512)
+	pile.x = 300
+	pile.y = 100
+	pile.minerals.assign([20, 5, 0])
+	pile.mass_tenths = 3
+	var wp := f.waypoints[0]
+	wp.x = 300
+	wp.target = "packet"
+	wp.target_owner = 1
+	wp.target_id = pile.number
+	# anyone's salvage: minerals load; unloading only fits the pile's rounding room (30 - 25)
+	f.cargo.assign([0, 0, 8, 0, 0])
+	_transport(f, {0: ["load_all", 0], 2: ["unload_all", 0]})
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(1)
+	assert_array(pile.minerals).is_equal([20, 5, 5])
+	assert_int(f.cargo[2]).is_equal(3)
+	_tasks(s).run_pass(2)
+	assert_int(f.cargo[0]).is_equal(20)
+	assert_int(pile.minerals[0]).is_equal(0)
+	var where: Array = s.messages[0][1]["params"].slice(3)
+	assert_array(where).is_equal([WaypointTasks.SPACE_OBJECT, Packets.object_word(pile)])
+	# minerals unloaded in deep space are lost
+	wp.target = "none"
+	_transport(f, {0: ["unload_all", 0]})
+	_tasks(s).run_pass(1)
+	assert_int(f.cargo[0]).is_equal(0)
+	assert_array(s.messages[0][3]["params"].slice(3)).is_equal([300, 100])

@@ -304,7 +304,18 @@ static func _cargo_transfer(
 			return "bad cargo amount"
 	var planet: Planet = null
 	var partner: Fleet = null
-	if other.has("planet"):
+	var pile: Packet = null
+	var jettison := false
+	if other.has("deep_space"):
+		# jettisoned cargo is lost (S14); nothing comes back from deep space
+		jettison = true
+	elif other.has("packet"):
+		for p in state.packets:
+			if p.owner == other.get("owner", -1) and p.number == other["packet"]:
+				pile = p
+		if pile == null or pile.x != fleet.x or pile.y != fleet.y:
+			return "no such packet or salvage here"
+	elif other.has("planet"):
 		planet = state.planet(other["planet"]) if other["planet"] is int else null
 		if planet == null or fleet.planet != planet.id:
 			return "the fleet is not at that planet"
@@ -327,20 +338,30 @@ static func _cargo_transfer(
 				continue
 			if planet != null and c == Fleet.CARGO_FUEL:
 				continue
+			if (jettison and loading) or (pile != null and c >= Fleet.CARGO_COLONISTS):
+				continue
 			var giver_has := 0
 			var room := 0
 			if loading:
-				giver_has = _holder_amount(partner, planet, c)
+				giver_has = pile.minerals[c] if pile != null else _holder_amount(partner, planet, c)
 				room = _room(state, content, fleet, c)
 			else:
 				giver_has = fleet.cargo[c]
-				room = _room(state, content, partner, c) if partner != null else 1 << 53
+				room = 1 << 53
+				if partner != null:
+					room = _room(state, content, partner, c)
+				elif pile != null:
+					room = maxi(Packets.slack(pile), 0)
 			var moved := mini(absi(amount), mini(giver_has, room))
 			if moved <= 0:
 				continue
 			var sign := 1 if loading else -1
 			fleet.cargo[c] += sign * moved
-			if partner != null:
+			if jettison:
+				continue
+			if pile != null:
+				pile.minerals[c] -= sign * moved
+			elif partner != null:
 				partner.cargo[c] -= sign * moved
 			elif c == Fleet.CARGO_COLONISTS:
 				planet.population -= sign * moved

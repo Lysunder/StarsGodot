@@ -1,14 +1,17 @@
 # S14 Mineral packets and salvage
 
 Status: draft (2026-10-07), first pass. Launching, flight, decay, catching and impact damage of packets, and salvage
-from scrapping in deep space and from mine hits, with salvage decay, implemented in `core/rules/packets.gd`.
+from scrapping in deep space and from mine hits, with salvage decay, implemented in `core/rules/packets.gd`; second
+pass (2026-10-08): transports and cargo transfers with packets, salvage and deep space, verified by mine1 turns
+59-63 (cargo jettisoned by hand is lost, a second scrap's salvage, a transport unloading into that salvage up to its
+rounding room and loading from it, a transport unloading in deep space). Loading from a packet in flight is
+unit-tested only.
 Verified by mine1 turns 48-54: a ship scrapped in deep space (salvage, its decay), two packet items launched the
 same year (merged), a packet landing on an unowned planet (a ninth of it), a packet overdriven three warps (50%
 decay, pro-rated in the launch and arrival years) hitting a planet without a mass driver (colonists killed, a
 defense destroyed). Catching and partial catching, Inter-stellar Traveler and Alternate Reality targets, mine salvage
-and salvage overflow are unit-tested only. Not built yet: loading from and unloading into
-salvage and packets (transport tasks and cargo transfers, with the original's random sharing when several players
-load from one object), salvage from battles (S16), and Packet Physics terraforming on impact.
+and salvage overflow are unit-tested only. Not built yet: salvage from battles (S16) and Packet
+Physics terraforming on impact.
 References: `Production_CompleteItem@10b0:0e68` (launch), `Planet_GetMassDriverWarp@1040:4f76`,
 `MoveSpaceObjects@10a8:0f6e` (flight and impact), `Minefield_Decay@10b0:4166` (which decays packets),
 `ProcessMinefieldHits@10b0:42a0` (packet and salvage decay), `DropSalvage@10e8:183a`,
@@ -141,6 +144,18 @@ Where salvage comes from:
 Salvage decay (phase 11): a fresh pile only stops being fresh. Otherwise each mineral that isn't 0 loses
 max(mineral div 10, 10), at least down to 0; a pile left with none is deleted; else `mass_tenths` = (total + 9) div
 10.
+
+### Transfers with packets, salvage and deep space (`TransferCargo@1048:3aec`)
+
+- **Loading** from a packet or salvage pile (a transport task whose waypoint targets it, S11, or a cargo transfer
+  by hand): minerals only, anyone's object, up to what it has and the fleet's free space. The object's
+  `mass_tenths` doesn't change. An object loaded to nothing stays (it decays away or, for a packet in flight, is
+  deleted when it next moves).
+- **Unloading** into one: minerals only, at most its rounding room, `mass_tenths` × 10 − its minerals.
+- **Deep space**: minerals a transport unloads there, and any cargo jettisoned by hand, are lost. The original's
+  transfer target for deep space is a scratch record and no salvage is made; its turn generation also never sends
+  the "another player took the minerals first" messages, so several players loading from one object are simply
+  served in fleet order.
 
 ## Randomness
 

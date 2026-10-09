@@ -151,3 +151,45 @@ func test_order_file_round_trip_and_checks() -> void:
 	data["orders"] = [{"percent": 3}]
 	var bad := OrderFile.decode(ContentRegistry.canonical(data))
 	assert_array(Array(bad.errors)).is_equal(['/orders/0: must be an object with a "type"'])
+
+
+func test_jettison_and_salvage_transfers() -> void:
+	var s := GameState.new()
+	var p := Player.new()
+	p.relations.assign(["neutral"])
+	p.race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+	var d := Design.new()
+	d.slot = 0
+	d.hull = "hull.medium_freighter"
+	d.parts.assign([DesignSlot.new("part.engine.long_hump_6", 1)])
+	p.set_design(d, false)
+	s.players.append(p)
+	var f := s.add_fleet(0, 512)
+	f.x = 50
+	f.y = 50
+	f.add_ships(0, 1)
+	f.cargo.assign([10, 0, 0, 5, 20])
+	var pile := s.add_packet(0, true, 512)
+	pile.x = 50
+	pile.y = 50
+	pile.minerals.assign([0, 7, 0])
+	var into_space := {
+		"type": "cargo_transfer",
+		"owner": 0,
+		"fleet": f.number,
+		"other": {"deep_space": true},
+		"amounts": [-4, 0, 0, -5, 3]
+	}
+	assert_str(OrderRules.apply(s, _content, 0, into_space)).is_empty()
+	# jettisoned cargo is gone; nothing comes back from deep space
+	assert_array(f.cargo).is_equal([6, 0, 0, 0, 20])
+	var from_pile := {
+		"type": "cargo_transfer",
+		"owner": 0,
+		"fleet": f.number,
+		"other": {"packet": pile.number, "owner": 0},
+		"amounts": [0, 7, 0, 0, 0]
+	}
+	assert_str(OrderRules.apply(s, _content, 0, from_pile)).is_empty()
+	assert_int(f.cargo[1]).is_equal(7)
+	assert_int(pile.minerals[1]).is_equal(0)
