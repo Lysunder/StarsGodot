@@ -4,8 +4,9 @@ Status: draft (2026-10-09). First part: scanner ranges and what scanning records
 and seen, wormholes tracked). Second part: cloaking and each player's view of the turn (the other players' planets,
 fleets and designs seen and at what detail, the players met, and the packets, wormholes and traders in view),
 including Inter-stellar Traveler stargate scanning and Space Demolition minefield scanning. Not yet: what battles show
-(M9), planets lost to invasion or bombing (S17, M9), the waypoint changes the original makes when a target is out of
-sight, and planet reports kept from earlier years.
+(M9), planets lost to invasion or bombing (S17, M9), and planet reports kept from earlier years. Writing each
+player's file also changes that player's orders: patrolling fleets pick targets, and waypoints aimed at what the player
+no longer sees lose their target ("Orders changed by sight").
 References: `ComputeVisibility@1068:5872`, `Visibility_Reset@1068:58e4`, `Visibility_FleetScanners@1068:5d44`,
 `Visibility_PlanetScanners@1068:6340`, `Visibility_PacketScanners@1068:6bc0`, `Visibility_Designs@1068:71a4`,
 `Design_ScannerRange@1030:336a`, `Fleet_ScannerRanges@1030:31a2`, `Planet_ScannerRange@1030:302e`,
@@ -160,6 +161,42 @@ packets in view (own ones too), the wormholes tracked in this pass and the trade
 
 `seen_by` is emptied at the start of each turn (S13, S02 phase 7).
 
+### Orders changed by sight (`WriteGameFile`, right after the player's scanning)
+
+For each of the player's fleets, in fleet order:
+
+1. **Waypoint 0** targeting a fleet now targets the planet at its position, or deep space.
+2. **Patrol arrives**: when waypoint 0 has no task and waypoint 1 is a patrol, waypoint 0 becomes a patrol with
+   waypoint 1's speed and range (task data words 0 and 1).
+3. **Patrol** (waypoint 0's task is patrol, and there is no waypoint 1 or it doesn't target a fleet): from the
+   fleet's position (or waypoint 1's, for a repeating fleet in deep space with more waypoints), the player's view is
+   searched, in fleet order, for another player's fleet that has a ship of the class the fleet's battle plan targets
+   first (any fleet for the targets none, any and starbase, unlike S12's retargeting) and whose owner the plan attacks. A fleet no patrol of this player picked this turn is preferred: the
+   first such fleet replaces a picked one, and after that only a nearer unpicked fleet replaces it; until one is
+   found, any nearer fleet replaces the current one. An unpicked choice becomes picked. When the choice's squared
+   distance is above 0 and at most the range² (range (data word 1 + 1) × 50 ly; 550 means any distance, 10000):
+   - with one waypoint: a new waypoint 1 is added, a patrol with waypoint 0's task data (other words 0); its speed is
+     data word 0, or the fleet's default warp when that is 0. A repeating fleet also gets a copy of waypoint 0 as
+     waypoint 2, at the default warp;
+   - with more waypoints: waypoint 1 is duplicated in front of itself; its speed becomes the low four bits of its
+     data word 0, or the default warp when that word is 0;
+   - waypoint 1 then targets the chosen fleet, at its position; the player gets message 0xFF (the fleet, the target).
+4. **Lost targets**, unless waypoint 0's task is transport, for waypoints 1 and later:
+   - a fleet target: the waypoint stops following a fleet that jumped (S12). When the target fleet is gone (message
+     0x28: the fleet, the target), or the player's view doesn't hold it (message 0x2A when it is in deep space or the
+     waypoint had stopped following it, else 0x29 with the planet it orbits), the waypoint targets the planet at its
+     position, or deep space, and keeps its position (the last place seen);
+   - a minefield the player didn't see this turn (0x111), a wormhole not tracked in this pass (0xF8) or a trader not
+     in view (0x110; traders are always in view) loses its target the same way, but always to deep space; a target
+     object that no longer exists does too, without a message. Packets stay targeted.
+
+**Default warp** (`Fleet_CalcWarp@1048:678c`): starting at warp 10, for each design the fleet has ships of: no engine
+gives 0; otherwise come down to the highest warp at most the current one whose fuel use (the engine's table, no race
+factor) is below 121; if that use is above 0 and the engine is not a Trans-Galactic Mizer Scoop or Galaxy Scoop
+(tag `full_default_warp`): warp 5 or more drops by 1 when the warp below uses no fuel, else warp 6 or more by 2 when
+the warp two below uses none, else warp 7 or more by 3 when the warp three below uses none; then warp 10 becomes 9
+unless the engine is one of the warp-10-safe ones (tag `warp10_safe`). The fleet's default warp is the last value.
+
 ## Randomness
 
 `random(100)` once per cloaked fleet not yet seen inside a Space Demolition player's minefield, in player order, then
@@ -188,3 +225,4 @@ minefield order, then fleet order, after the turn's other draws (the files are w
    (40 ly, penetrating 20 ly); which setting it is.
 2. Which code sets a wormhole's `seen_by` (not the scanning code).
 3. The players the original always writes into a turn file (a player-record flag besides "met"); not seen yet.
+4. A game setting (bit 3 of the byte at 1110:0791) stops patrols from marking their choice as picked; which setting.

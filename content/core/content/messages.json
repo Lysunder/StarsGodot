@@ -990,5 +990,50 @@
     "params": [
       "fleet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.target_gone",
+    "params": [
+      "fleet",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.target_behind_planet",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.target_out_of_range",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.patrol_intercept",
+    "params": [
+      "fleet",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.trader_vanished",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.minefield_vanished",
+    "params": [
+      "fleet"
+    ]
   }
 ]

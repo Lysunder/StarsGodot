@@ -1400,5 +1400,23 @@
   },
   "message.fleet.engines_exploded": {
     "message": 225
+  },
+  "message.fleet.target_gone": {
+    "message": 40
+  },
+  "message.fleet.target_behind_planet": {
+    "message": 41
+  },
+  "message.fleet.target_out_of_range": {
+    "message": 42
+  },
+  "message.fleet.patrol_intercept": {
+    "message": 255
+  },
+  "message.fleet.trader_vanished": {
+    "message": 272
+  },
+  "message.fleet.minefield_vanished": {
+    "message": 273
   }
 }

@@ -95,7 +95,7 @@ static func _check_target(
 	if target != null and target.x == wp.x and target.y == wp.y:
 		target.claimed = true
 		return
-	var plan_target := _primary_target(state, fleet)
+	var plan_target := primary_target(state, fleet)
 	var heaviest: Fleet = null
 	var heaviest_mass := 0
 	var picked: Fleet = null
@@ -156,7 +156,7 @@ static func freeze_followers(state: GameState, fleet: Fleet) -> void:
 				wp.y = fleet.y
 
 
-static func _primary_target(state: GameState, fleet: Fleet) -> int:
+static func primary_target(state: GameState, fleet: Fleet) -> int:
 	var plans: Array = state.player(fleet.owner).battle_plans
 	if fleet.battle_plan < 0 or fleet.battle_plan >= plans.size():
 		return 0
@@ -165,8 +165,11 @@ static func _primary_target(state: GameState, fleet: Fleet) -> int:
 
 ## Whether the fleet has a ship of the hull classes a battle plan's primary target prefers
 ## (`Fleet_HasShipOfTargetClass@1030:411a`): armed (classes 2-4), bombers and freighters (1, 5),
-## unarmed (no ship of 2-4), fuel transports (7), freighters (1); other targets match nothing.
-static func has_class(fleet: Fleet, owner: Player, target: int, content: ContentRegistry) -> bool:
+## unarmed (no ship of 2-4), fuel transports (7), freighters (1); other targets give `others`
+## (the caller's third argument: patrols pass "match", S15).
+static func has_class(
+	fleet: Fleet, owner: Player, target: int, content: ContentRegistry, others := false
+) -> bool:
 	var classes: Array[int] = []
 	for stack in fleet.stacks:
 		var design := owner.ship_design(stack.design)
@@ -183,7 +186,7 @@ static func has_class(fleet: Fleet, owner: Player, target: int, content: Content
 			return classes.has(7)
 		TARGET_FREIGHTERS:
 			return classes.has(1)
-	return false
+	return others
 
 
 ## Ships' mass plus cargo (not fuel), as `Fleet_GetMass@1030:4c90`.

@@ -131,13 +131,15 @@ static func record_all(state: GameState, content: ContentRegistry, rng: StarsRan
 	finish(state)
 
 
-## One player's pass; players go in order, starting from an empty `state.views`.
+## One player's pass; players go in order, starting from an empty `state.views`. Returns the
+## pass, for the orders that change with what the player sees (Retargeting).
 static func record_player(
 	state: GameState, content: ContentRegistry, p: int, rng: StarsRandom
-) -> void:
+) -> Sight:
 	var sight := Sight.new(state, content, p, rng)
 	sight.run()
 	state.views.append(sight.view())
+	return sight
 
 
 ## Clears the turn-only marks scanning reads.

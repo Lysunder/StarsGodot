@@ -10,7 +10,8 @@ const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
 ## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9;
 ## the battle also shows both sides' designs in full, S15); turn 40: player 2's colonists unloaded
-## onto player 1's colony fought its ground troops (ground combat, S17).
+## onto player 1's colony fought its ground troops (ground combat, S17); mine1 turn 69: player 2's
+## patrol caught player 1's fleet 2 (a battle: damage, designs shown in full).
 const TURN_IGNORE := {
 	"terra1":
 	{
@@ -24,6 +25,7 @@ const TURN_IGNORE := {
 		],
 		40: ["/planets/30/population"],
 	},
+	"mine1": {69: ["/fleets[0:2]/stacks[2]/damage*", "/views/*designs/*"]},
 }
 
 var _content: ContentRegistry
@@ -294,7 +296,11 @@ func test_mine1(
 		[63],
 		[64],
 		[65],
-		[66]
+		[66],
+		[67],
+		[68],
+		[69],
+		[70]
 	]
 ) -> void:
 	_check_turn("mine1", turn)

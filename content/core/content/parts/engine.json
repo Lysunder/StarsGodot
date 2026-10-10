@@ -459,6 +459,7 @@
       "trait.lrt.NRSE"
     ],
     "tags": [
+      "full_default_warp",
       "warp10_safe"
     ]
   },
@@ -497,6 +498,7 @@
       "trait.lrt.NRSE"
     ],
     "tags": [
+      "full_default_warp",
       "warp10_safe"
     ]
   }
