@@ -175,6 +175,9 @@ func _check_whole_game(game: String) -> void:
 	var state := gen.generate()
 	var ignore := PackedStringArray(IGNORE)
 	_known_messages_only(real, state, ignore)
+	# player views (S15) only where the fixture kept the players' turn files
+	if real.views.is_empty():
+		ignore.append("/views*")
 	var diffs := StateDiff.compare(real, state, ignore)
 	(
 		assert_array(diffs)

@@ -8,8 +8,8 @@ extends GdUnitTestSuite
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
-## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9);
-## turn 40: player 2's colonists unloaded
+## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9;
+## the battle also shows both sides' designs in full, S15); turn 40: player 2's colonists unloaded
 ## onto player 1's colony fought its ground troops (ground combat, S17).
 const TURN_IGNORE := {
 	"terra1":
@@ -20,6 +20,7 @@ const TURN_IGNORE := {
 			"/planets/23/starbase/damage",
 			"/planets/23/surface*",
 			"/players/1/ship_designs[3]/remaining",
+			"/views/*designs/*",
 		],
 		40: ["/planets/30/population"],
 	},
@@ -64,6 +65,9 @@ func _check_turn(game: String, turn: int) -> void:
 	ignore.append_array(GAME_IGNORE.get(game, []))
 	ignore.append_array(TURN_IGNORE.get(game, {}).get(turn, []))
 	_known_messages_only(expected, state, ignore)
+	# player views (S15) only where the fixture kept the players' turn files
+	if expected.views.is_empty():
+		ignore.append("/views*")
 	var diffs := StateDiff.compare(expected, state, ignore)
 	(
 		assert_array(diffs)

@@ -79,6 +79,7 @@ func generate() -> GameState:
 	state.planets.assign(planets)
 	StartingSetup.new(self, state).run()
 	_welcome(state)
+	Scanning.record_all(state, content, _rng)
 	return state
 
 

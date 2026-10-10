@@ -1,4 +1,4 @@
-"""Adds each player's turn messages (S21) to existing golden fixtures, from the original's turn files
+"""Adds each player's turn messages (S21) and view (S15) to existing golden fixtures, from the original's turn files
 in the harness runs, leaving everything else in the fixtures as it is.
 
     python tools/harness/add_messages.py <fixture folder> <run folder>
@@ -31,6 +31,7 @@ def main(fixtures, runs):
             save = json.load(f)
         state = save["state"]
         state["messages"] = stars_import.player_messages(hosts[0], len(state["players"]), legacy)
+        state["views"] = stars_import.player_views(hosts[0], state)
         with open(path, "w", encoding="utf-8", newline="\n") as f:
             json.dump(save, f, indent=1, sort_keys=True)
             f.write("\n")

@@ -7587,6 +7587,42 @@
   },
   "traders": [],
   "turn": 28,
+  "views": [
+   {
+    "designs": {
+     "1/1": 3,
+     "1/2": 3
+    },
+    "fleets": {
+     "1/1": 3,
+     "1/2": 3
+    },
+    "met": [
+     1
+    ],
+    "packets": [],
+    "planets": {},
+    "starbase_designs": {},
+    "traders": [],
+    "wormholes": []
+   },
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [
+     0
+    ],
+    "packets": [],
+    "planets": {
+     "75": 3,
+     "81": 3,
+     "83": 3
+    },
+    "starbase_designs": {},
+    "traders": [],
+    "wormholes": []
+   }
+  ],
   "wormholes": [
    {
     "age": 28,

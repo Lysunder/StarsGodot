@@ -74,6 +74,8 @@ class Waypoint1Tasks:
 		super("wp1.tasks")
 
 	func run(ctx: TurnContext) -> void:
+		# battles come first (M9), then bombing: so far only which fleets take part
+		Bombing.mark_fleets(ctx.state)
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
 		tasks.run_pass(3)
 		tasks.resolve()

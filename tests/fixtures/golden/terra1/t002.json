@@ -2566,6 +2566,28 @@
   },
   "traders": [],
   "turn": 2,
+  "views": [
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [],
+    "packets": [],
+    "planets": {},
+    "starbase_designs": {},
+    "traders": [],
+    "wormholes": []
+   },
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [],
+    "packets": [],
+    "planets": {},
+    "starbase_designs": {},
+    "traders": [],
+    "wormholes": []
+   }
+  ],
   "wormholes": []
  }
 }

@@ -27,7 +27,7 @@ static func jump(
 	var here := fleet.waypoints[0]
 	var next := fleet.waypoints[1]
 	var source: Planet = state.planet(here.target_id) if here.target == "planet" else null
-	var source_gate := _gate(state, content, source)
+	var source_gate := gate(state, content, source)
 	if not source_gate.is_empty():
 		if not _ours_or_friend(state, source, fleet.owner):
 			_refuse(state, content, fleet, "gate_source_not_ours", [source.id, source.id])
@@ -47,7 +47,7 @@ static func jump(
 	if destination == null:
 		_refuse(state, content, fleet, "gate_no_destination", [next.x, next.y])
 		return "stayed"
-	var destination_gate := _gate(state, content, destination)
+	var destination_gate := gate(state, content, destination)
 	if destination_gate.is_empty():
 		_refuse(state, content, fleet, "gate_none_there", [destination.id, NO_X, destination.id])
 		return "stayed"
@@ -109,7 +109,7 @@ static func jump(
 
 
 ## The stargate part on a planet's starbase: the first one in its design ({} if none).
-static func _gate(state: GameState, content: ContentRegistry, planet: Planet) -> Dictionary:
+static func gate(state: GameState, content: ContentRegistry, planet: Planet) -> Dictionary:
 	if planet == null or planet.starbase == null or planet.owner < 0:
 		return {}
 	var design := state.player(planet.owner).starbase_design(planet.starbase.design)

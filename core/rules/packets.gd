@@ -227,6 +227,12 @@ static func _impact(
 ) -> void:
 	var drv := driver(state, content, planet)
 	var catch := drv[0] + drv[1]
+	# S15: a Packet Physics packet sees the starbase whose driver catches it in full
+	var sender := state.player(packet.owner).race
+	if catch > 0 and RaceMath.trait_param(sender, content, "packet.reveals_catcher", 0):
+		var base := state.player(planet.owner).starbase_design(planet.starbase.design)
+		if base != null:
+			base.revealed_to[packet.owner] = true
 	var caught := catch * catch
 	if planet.owner >= 0:
 		var race := state.player(planet.owner).race

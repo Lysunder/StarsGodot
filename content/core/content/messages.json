@@ -337,7 +337,8 @@
     "id": "message.planet.died",
     "params": [
       "planet"
-    ]
+    ],
+    "reveals_planet": true
   },
   {
     "type": "message",
@@ -351,7 +352,8 @@
     "id": "message.planet.abandoned",
     "params": [
       "planet"
-    ]
+    ],
+    "reveals_planet": true
   },
   {
     "type": "message",

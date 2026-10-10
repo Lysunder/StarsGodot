@@ -252,6 +252,7 @@ static func _hit(
 	var x := fleet.x + _mul_div(dx, at, length)
 	var y := fleet.y + _mul_div(dy, at, length)
 	var described := FleetOrders.designs_word(fleet, owner, content)
+	var before := fleet.copy() as Fleet
 	var result := _damage(fleet, owner, content, t, false)
 	var total: int = result[0]
 	var destroyed: int = result[1]
@@ -263,6 +264,8 @@ static func _hit(
 			state, content, rng, fleet.owner, x, y, minerals, Packets.salvage_at(state, x, y)
 		)
 	var field := _field_hit(state, fleet, TYPES[t], x, y)
+	if field != null:
+		_reveal_designs(state, content, before, field)
 	var obj := 32768 + fleet.owner * 512 + fleet.number
 	var goto := {"fleet": fleet.number, "owner": fleet.owner}
 	var place := [x, y]
@@ -428,6 +431,7 @@ static func _detonate(state: GameState, content: ContentRegistry, field: Minefie
 		if fleet.stacks.is_empty() or _distance2(fleet.x, fleet.y, field) > field.mines:
 			continue
 		var owner := state.player(fleet.owner)
+		_reveal_designs(state, content, fleet, field)
 		var described := FleetOrders.designs_word(fleet, owner, content)
 		var result := _damage(fleet, owner, content, t, fleet.owner == field.owner)
 		var total: int = result[0]
@@ -505,6 +509,21 @@ static func _detonate(state: GameState, content: ContentRegistry, field: Minefie
 
 
 ## The field of this type, of another player and not a friend, the hit point is deepest inside.
+## S15: a Space Demolition field's owner sees in full the designs of a fleet its field hits (as
+## the fleet was before the damage).
+static func _reveal_designs(
+	state: GameState, content: ContentRegistry, fleet: Fleet, field: Minefield
+) -> void:
+	if not RaceMath.trait_param(
+		state.player(field.owner).race, content, "minefield.reveals_designs", 0
+	):
+		return
+	var owner := state.player(fleet.owner)
+	for stack in fleet.stacks:
+		if stack.count > 0:
+			owner.ship_design(stack.design).revealed_to[field.owner] = true
+
+
 static func _field_hit(state: GameState, fleet: Fleet, type: String, x: int, y: int) -> Minefield:
 	var best: Minefield = null
 	var best_depth := 100000000

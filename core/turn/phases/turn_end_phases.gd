@@ -40,7 +40,12 @@ class FileDraws:
 	func _init() -> void:
 		super("files.write")
 
+	## Each player's file: scanning (S15; Space Demolition draws) then the file's draw; then the
+	## host file's draw.
 	func run(ctx: TurnContext) -> void:
-		for i in ctx.state.players.size() + 1:
+		ctx.state.views.clear()
+		for p in ctx.state.players.size():
+			Scanning.record_player(ctx.state, ctx.content, p, ctx.rng())
 			ctx.rng().random(DRAW)
-		Scanning.record_all(ctx.state, ctx.content)
+		ctx.rng().random(DRAW)
+		Scanning.finish(ctx.state)

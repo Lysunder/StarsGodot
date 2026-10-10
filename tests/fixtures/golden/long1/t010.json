@@ -6985,6 +6985,25 @@
   },
   "traders": [],
   "turn": 10,
+  "views": [
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [],
+    "packets": [],
+    "planets": {
+     "107": 3,
+     "111": 3,
+     "84": 3,
+     "88": 3,
+     "93": 4,
+     "96": 3
+    },
+    "starbase_designs": {},
+    "traders": [],
+    "wormholes": []
+   }
+  ],
   "wormholes": [
    {
     "age": 10,

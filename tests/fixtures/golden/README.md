@@ -57,8 +57,10 @@ players), and each of its turns makes 7 draws. In `tiny3ai` the computer players
 
 Regenerate these files whenever the importer or the save format changes.
 
-**Turn messages (S21):** `terra1`, `long1` and `prod1` also hold each player's messages of the turn, read from the
-players' turn files (`.m1`, `.m2`) beside each host file with `python tools/harness/add_messages.py <fixture
-folder> <run folder>`, which changes nothing else. Only numbers and content ids are stored (no text). The other
-games kept no turn files: their `messages` is an empty list and the tests skip it. A message number without a
+**Turn messages (S21) and views (S15):** `terra1`, `long1`, `prod1`, `follow1`, `gate1` and `mine1` also hold each
+player's messages and view of the turn (`views`: the other players' planets, fleets and designs seen and at what
+detail, the players met, the packets, wormholes and traders in view), read from the players' turn files (`.m1`, `.m2`)
+beside each host file with `python tools/harness/add_messages.py <fixture folder> <run folder>`, which changes nothing
+else. Only numbers and content ids are stored (no text). The other
+games kept no turn files: their `messages` and `views` are empty lists and the tests skip them. A message number without a
 content id yet is kept as `legacy.message.<n>` with its raw parameters; the tests compare only the types built.

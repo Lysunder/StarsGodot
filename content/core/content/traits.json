@@ -18,6 +18,7 @@
     "order": 1,
     "cost": 95,
     "params": {
+      "cloak.builtin_units": 300,
       "research.spy_pct": 50,
       "race.ap_nas_penalty": 200,
       "minefield.speed_bonus": 1
@@ -30,6 +31,7 @@
     "order": 2,
     "cost": 45,
     "params": {
+      "scanner.full_designs": 1,
       "cost.beam_adjust_pct": 75,
       "cost.torpedo_adjust_pct": 75,
       "cost.bomb_adjust_pct": 75,
@@ -73,6 +75,8 @@
     "order": 5,
     "cost": -150,
     "params": {
+      "minefield.reveals_designs": 1,
+      "scanner.minefields": 1,
       "minefield.decay_per_planet": 1,
       "minefield.lay_while_moving": 1,
       "minefield.speed_bonus": 2,
@@ -86,6 +90,7 @@
     "order": 6,
     "cost": 120,
     "params": {
+      "packet.reveals_catcher": 1,
       "race.ap_nas_penalty": 280,
       "production.packet_mineral_cost": 70,
       "production.mixed_packet_mineral_cost": 25,
@@ -104,6 +109,7 @@
     "order": 7,
     "cost": 180,
     "params": {
+      "scanner.gates": 1,
       "production.packet_mineral_cost": 120,
       "production.mixed_packet_mineral_cost": 48,
       "cost.tag.stargate_adjust_pct": 75,
@@ -184,6 +190,7 @@
     "order": 3,
     "cost": 201,
     "params": {
+      "cloak.starbase_units": 40,
       "production.starbase_adjust_pct": 80
     }
   },

@@ -19,6 +19,9 @@ var picture: int = 0
 ## when scrapped or colonizing.
 var transferred: bool = false
 var mod_data: Dictionary = {}
+## Turn-only mark: players who saw this design in full this turn (S15; a minefield hit, a caught
+## packet); keys are player indices.
+var revealed_to: Dictionary = {}
 
 
 func _schema() -> Array:

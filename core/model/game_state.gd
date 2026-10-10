@@ -25,6 +25,9 @@ var rng: RngStreams = RngStreams.new(0)
 var messages: Array = []
 ## This turn's battle records (S16).
 var battles: Array = []
+## Each player's view of the turn (S15): what the player's scanners saw of the other players.
+## One dictionary per player, or empty when not known (fixtures without the players' files).
+var views: Array = []
 ## Per player, score history (S20).
 var history: Array = []
 var mod_data: Dictionary = {}
@@ -43,6 +46,7 @@ func _schema() -> Array:
 		["traders", Kind.OBJECT_LIST, Trader],
 		["messages", Kind.JSON],
 		["battles", Kind.JSON],
+		["views", Kind.JSON],
 		["history", Kind.JSON],
 		["mod_data", Kind.JSON],
 	]

@@ -252,6 +252,8 @@ const TYPES := {
 			"ai": {"t": "bool"},
 			# types with the same group are filtered together (S21 "Filters")
 			"filter_group": {"t": "string"},
+			# the planet the message is about becomes seen by its reader (S15)
+			"reveals_planet": {"t": "bool"},
 		},
 		"required": ["params"],
 	},

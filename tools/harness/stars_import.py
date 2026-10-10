@@ -20,6 +20,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import stars_messages  # noqa: E402
+import stars_view  # noqa: E402
 import starsfile  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -228,6 +229,7 @@ class Importer:
             },
             "messages": [],
             "battles": [],
+            "views": [],
             "history": [],
             "mod_data": {},
         }
@@ -711,7 +713,15 @@ def import_game(xy_path, hst_path, rng=DEFAULT_RNG, keep_names=False):
     save = Importer(xy, hst, legacy, keep_names).run(rng)
     state = save["state"]
     state["messages"] = player_messages(hst_path, len(state["players"]), legacy)
+    state["views"] = player_views(hst_path, state)
     return save
+
+
+def player_views(hst_path, state):
+    """Each player's view of the turn (S15) from the turn files beside the host file; an empty list
+    when a player's file is missing (the tests then skip the views)."""
+    views = stars_view.player_views(hst_path, state)
+    return [] if None in views else views
 
 
 def main(argv=None):
