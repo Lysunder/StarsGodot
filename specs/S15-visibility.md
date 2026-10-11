@@ -138,7 +138,8 @@ For each player in order (a player's pass only touches that player's view):
    space object order: every fleet not yet seen in deep space with d² ≤ the field's mine count is seen at level 3
    when it has no cloak, or when its cloak c ≤ `random(100)` (one draw per cloaked fleet in the field).
 5. **Messages** (`Messages_MarkPlanetsSeen`): a planet named in one of the player's messages that says the player
-   lost it (its colonists died off or left; also invaded, S17, and bombed out, M9) is seen at level 3.
+   lost it (its colonists died off or left, or it was invaded, S17), or that one of its fleets bombed it out (S17), is
+   seen at level 3; so is a planet its fleets bombed out together (fix B37, S17).
 6. **Designs**: every other player's design seen this turn gets level 3 (7 for a War Monger viewer), and a design
    shown in full this turn (below) level 7; its owner is met.
 

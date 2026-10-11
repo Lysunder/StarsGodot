@@ -109,7 +109,9 @@ negative mines share counts). Some types keep fewer parameters than others (the 
 keeps its own count): see the content.
 
 The bombers' "one fleet" `wiped_out` makes the bombers' owner see the planet at level 3 (S15 step 5; computer players
-get this message too); the "fleets" form does not (open question 1).
+get this message too). Fix B37: the original's "fleets" form shows nothing; we mark the planet for the bombers' owner,
+who sees it at level 3 in the same step (no message changes; it only shows when all the bombers left the planet's
+orbit before scanning, since the bombing mark shows it otherwise).
 
 ### Afterwards
 
@@ -177,7 +179,8 @@ Ground combat: a taken planet's tech bonus try (S24), then an artifact's `random
 
 ## Known bugs
 
-None fixed here yet.
+- B37 (fixed): a planet bombed out by several fleets is shown to the bombers' owner like one bombed out by one fleet
+  (see "Messages").
 
 ## Worked examples
 
@@ -191,7 +194,5 @@ Part stats `kill_rate`, `installations`, `min_kill`, tags `smart`, `retro`; the 
 
 ## Open questions
 
-1. The "fleets" form of the bombed-out message doesn't reveal the planet to the bombers (`Messages_MarkPlanetsSeen`
-   only knows the one-fleet form). An oversight of the original? Kept as is for now.
-2. Not yet checked against a game of the original (big1's computer players get only the bombed-out message): a
+1. Not yet checked against a game of the original (big1's computer players get only the bombed-out message): a
    harness game with bombing and a successful invasion is needed.

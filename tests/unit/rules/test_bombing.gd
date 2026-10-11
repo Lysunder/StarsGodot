@@ -121,3 +121,23 @@ func test_smart_bombs_and_retro_bombs() -> void:
 	assert_array(pl.environment).is_equal([56, 44, 50])
 	assert_str(s.messages[0][0].type).is_equal("message.bombing.retro")
 	assert_array(s.messages[0][0].params).is_equal([0, 0, 8])
+
+
+func test_bombed_out_by_several_fleets_is_seen() -> void:
+	# fix B37: the original shows the planet only when one fleet bombed it out
+	var s := _world()
+	var pl := _planet(s, 2)
+	var a := _bomber(s, pl, [["part.bomb.lady_finger_bomb", 2]])
+	var b := s.add_fleet(0, 512)
+	b.x = pl.x
+	b.y = pl.y
+	b.planet = pl.id
+	b.add_ships(0, 1)
+	Bombing.bomb_all(s, _content, StarsRandom.new(5, 673))
+	assert_str(s.messages[0][0].type).is_equal("message.bombing.fleets_wiped_out")
+	# every bomber leaves before scanning (scrapped there): only the mark shows the planet
+	s.remove_fleet(a)
+	s.remove_fleet(b)
+	Scanning.record_all(s, _content, StarsRandom.new())
+	assert_dict(s.views[0].planets).is_equal({str(pl.id): 3})
+	assert_dict(pl.bombed_out_by).is_empty()

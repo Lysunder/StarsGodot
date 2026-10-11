@@ -218,6 +218,9 @@ static func _messages(
 			params.append(DefenseCoverage.stopped_basis_points(through))
 	if kind == "wiped_out":
 		params = []
+	if kind == "wiped_out" and several:
+		# fix B37: the original's "fleets" form of the message shows the bombers nothing
+		planet.bombed_out_by[fleet.owner] = true
 	var prefix := "fleets_" if several else ""
 	var word := fleet.owner * FLEET_WORD + fleet.number
 	var said := [word, planet.id] + params

@@ -42,6 +42,10 @@ var leftover_to_research: bool = false
 var artifact: Variant = null
 var mod_data: Dictionary = {}
 
+## Turn-only mark: the players whose fleets bombed out the planet this turn (fix B37: they see
+## it as the one-fleet message makes the original show it, S17).
+var bombed_out_by: Dictionary = {}
+
 
 func _schema() -> Array:
 	return [

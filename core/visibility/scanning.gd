@@ -151,6 +151,8 @@ static func finish(state: GameState) -> void:
 	for player in state.players:
 		for design in player.ship_designs + player.starbase_designs:
 			design.revealed_to.clear()
+	for planet in state.planets:
+		planet.bombed_out_by.clear()
 
 
 static func _distance2(x1: int, y1: int, x2: int, y2: int) -> int:
@@ -330,9 +332,8 @@ class Sight:
 	## `Messages_MarkPlanetsSeen@1028:81b4`: a planet the player lost this turn (or bombed out,
 	## S17), named in a message, is seen at level 3: the message's planet parameter.
 	func _messages() -> void:
-		if p >= state.messages.size():
-			return
-		for m: Dictionary in state.messages[p]:
+		var mine: Array = state.messages[p] if p < state.messages.size() else []
+		for m: Dictionary in mine:
 			var type: String = m.get("type", "")
 			if not content.has_def(type):
 				continue
@@ -344,6 +345,10 @@ class Sight:
 				continue
 			var planet := state.planet(int(m.params[at]))
 			if planet != null:
+				_see_planet(planet, SCANNED)
+		# fix B37: bombed out by several fleets, which the original's message list leaves out
+		for planet in state.planets:
+			if planet.bombed_out_by.has(p):
 				_see_planet(planet, SCANNED)
 
 	## A fleet not seen yet, from a scanner at (x, y): within the normal range and, in orbit,
