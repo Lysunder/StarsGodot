@@ -19,6 +19,7 @@ import struct
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import stars_battles  # noqa: E402
 import stars_messages  # noqa: E402
 import stars_view  # noqa: E402
 import starsfile  # noqa: E402
@@ -714,6 +715,7 @@ def import_game(xy_path, hst_path, rng=DEFAULT_RNG, keep_names=False):
     state = save["state"]
     state["messages"] = player_messages(hst_path, len(state["players"]), legacy)
     state["views"] = player_views(hst_path, state)
+    state["battles"] = stars_battles.game_battles(hst_path, len(state["players"]))
     return save
 
 

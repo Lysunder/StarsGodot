@@ -10,7 +10,9 @@ is excluded from every export, and this folder has a `.gdignore`.
 | `stars_import.py` | Converts a game's `.xy` + `.hst` into our JSON save format (S03). |
 | `stars_messages.py` | Reads each player's turn messages from the player turn files (`.m1`, `.m2` ...), S21. |
 | `stars_view.py` | Reads each player's view of the turn (other players' planets, fleets and designs seen, players met, packets, wormholes, traders) from the player turn files, S15. |
-| `add_messages.py` | Adds the players' messages and views to existing fixtures, changing nothing else. |
+| `stars_battles.py` | Reads the battle recordings (tokens, moves, shots) from the player turn files, S16. |
+| `add_messages.py` | Adds the players' messages, views and battles to existing fixtures, changing nothing else. |
+| `test_stars_battles.py` | Tests of the battle reader on a synthetic record. |
 | `stars_orders.py` | Converts a player's `.x` order file into our order file format (S11). |
 | `test_stars_orders.py` | Tests of the order converter on synthetic files. |
 | `test_starsfile.py` | Tests on synthetic files (no original files needed); CI runs them. |

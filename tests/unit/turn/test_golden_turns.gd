@@ -6,7 +6,8 @@ extends GdUnitTestSuite
 ## design keeps the giver's name, S11), plus what a game's phases not built yet would change
 ## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
 
-const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
+## Battle recordings (S16) are in the fixtures as the oracle for the battle engine, not built yet.
+const IGNORE := ["/rng", "/players/*/ship_designs*/name", "/battles"]
 const GAME_IGNORE := {}
 ## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9;
 ## the battle also shows both sides' designs in full, S15); turn 40: player 2's colonists unloaded

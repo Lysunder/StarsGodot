@@ -10,7 +10,567 @@
  ],
  "ruleset_hash": "",
  "state": {
-  "battles": [],
+  "battles": [
+   {
+    "events": [
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 0,
+      "square": 87,
+      "token": 0
+     },
+     {
+      "countdown": 7,
+      "hits": [],
+      "round": 0,
+      "square": 72,
+      "token": 3
+     },
+     {
+      "countdown": 7,
+      "hits": [],
+      "round": 0,
+      "square": 50,
+      "token": 1
+     },
+     {
+      "countdown": 7,
+      "hits": [],
+      "round": 0,
+      "square": 104,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 0,
+      "square": 87,
+      "token": 2
+     },
+     {
+      "countdown": 6,
+      "hits": [],
+      "round": 1,
+      "square": 55,
+      "token": 3
+     },
+     {
+      "countdown": 6,
+      "hits": [],
+      "round": 1,
+      "square": 33,
+      "token": 1
+     },
+     {
+      "countdown": 6,
+      "hits": [],
+      "round": 1,
+      "square": 119,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 1,
+      "square": 86,
+      "token": 2
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 2,
+      "square": 86,
+      "token": 0
+     },
+     {
+      "countdown": 5,
+      "hits": [],
+      "round": 2,
+      "square": 32,
+      "token": 1
+     },
+     {
+      "countdown": 5,
+      "hits": [],
+      "round": 2,
+      "square": 103,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 2,
+      "square": 69,
+      "token": 2
+     },
+     {
+      "countdown": 5,
+      "hits": [],
+      "round": 3,
+      "square": 54,
+      "token": 3
+     },
+     {
+      "countdown": 4,
+      "hits": [],
+      "round": 3,
+      "square": 16,
+      "token": 1
+     },
+     {
+      "countdown": 4,
+      "hits": [],
+      "round": 3,
+      "square": 87,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 3,
+      "square": 84,
+      "token": 2
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 4,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 4,
+      "hits": [],
+      "round": 4,
+      "square": 70,
+      "token": 3
+     },
+     {
+      "countdown": 3,
+      "hits": [],
+      "round": 4,
+      "square": 0,
+      "token": 1
+     },
+     {
+      "countdown": 3,
+      "hits": [],
+      "round": 4,
+      "square": 86,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 4,
+      "square": 67,
+      "token": 2
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 0,
+        "killed": 1,
+        "kind": 1,
+        "shield_damage": 0,
+        "target": 2
+       }
+      ],
+      "round": 4,
+      "square": 65,
+      "token": 5
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 0,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 4,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 3,
+      "hits": [],
+      "round": 5,
+      "square": 71,
+      "token": 3
+     },
+     {
+      "countdown": 2,
+      "hits": [],
+      "round": 5,
+      "square": 16,
+      "token": 1
+     },
+     {
+      "countdown": 2,
+      "hits": [],
+      "round": 5,
+      "square": 85,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 356,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 5,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 1,
+      "hits": [],
+      "round": 6,
+      "square": 0,
+      "token": 1
+     },
+     {
+      "countdown": 1,
+      "hits": [],
+      "round": 6,
+      "square": 84,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 612,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 6,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 2,
+      "hits": [],
+      "round": 7,
+      "square": 55,
+      "token": 3
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 7,
+      "square": 255,
+      "token": 1
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 7,
+      "square": 255,
+      "token": 4
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 868,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 7,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 1,
+      "hits": [],
+      "round": 8,
+      "square": 54,
+      "token": 3
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1124,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 8,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [],
+      "round": 9,
+      "square": 255,
+      "token": 3
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1124,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 9,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1380,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 10,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1380,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 11,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1380,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 12,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1380,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 13,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1380,
+        "killed": 0,
+        "kind": 196,
+        "shield_damage": 0,
+        "target": 5
+       }
+      ],
+      "round": 14,
+      "square": 69,
+      "token": 0
+     },
+     {
+      "countdown": 0,
+      "hits": [
+       {
+        "damage": 1636,
+        "killed": 0,
+        "kind": 4,
+        "shield_damage": 2,
+        "target": 5
+       }
+      ],
+      "round": 15,
+      "square": 69,
+      "token": 0
+     }
+    ],
+    "id": 3585,
+    "planet": 23,
+    "players": [
+     0,
+     1
+    ],
+    "sides": 2,
+    "tokens": [
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 6,
+      "fleet": 1,
+      "fleet_owner": 1,
+      "initiative_high": 13,
+      "initiative_low": 4,
+      "kind": 2,
+      "mass": 186,
+      "movement": 0,
+      "owner": 1,
+      "shields": 0,
+      "square": 88,
+      "state": 1045,
+      "tactic": 52,
+      "targets": 19,
+      "unknown": "040000001414"
+     },
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 2,
+      "fleet": 0,
+      "fleet_owner": 0,
+      "initiative_high": 255,
+      "initiative_low": 255,
+      "kind": 2,
+      "mass": 61,
+      "movement": 2,
+      "owner": 0,
+      "shields": 0,
+      "square": 65,
+      "state": 10481,
+      "tactic": 112,
+      "targets": 16,
+      "unknown": "0000000000ff"
+     },
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 3,
+      "fleet": 1,
+      "fleet_owner": 1,
+      "initiative_high": 10,
+      "initiative_low": 10,
+      "kind": 2,
+      "mass": 23,
+      "movement": 2,
+      "owner": 1,
+      "shields": 0,
+      "square": 88,
+      "state": 7185,
+      "tactic": 52,
+      "targets": 19,
+      "unknown": "010000000011"
+     },
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 5,
+      "fleet": 1,
+      "fleet_owner": 1,
+      "initiative_high": 255,
+      "initiative_low": 255,
+      "kind": 2,
+      "mass": 130,
+      "movement": 1,
+      "owner": 1,
+      "shields": 0,
+      "square": 88,
+      "state": 6385,
+      "tactic": 112,
+      "targets": 16,
+      "unknown": "0000000000ff"
+     },
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 4,
+      "fleet": 1,
+      "fleet_owner": 1,
+      "initiative_high": 255,
+      "initiative_low": 255,
+      "kind": 2,
+      "mass": 25,
+      "movement": 2,
+      "owner": 1,
+      "shields": 0,
+      "square": 88,
+      "state": 7409,
+      "tactic": 80,
+      "targets": 16,
+      "unknown": "0100000000ff"
+     },
+     {
+      "beam_damage_pct": 0,
+      "beam_defense_pct": 100,
+      "count": 1,
+      "damage": 0,
+      "design": 16,
+      "initiative_high": 23,
+      "initiative_low": 23,
+      "kind": 1,
+      "mass": 65535,
+      "movement": 0,
+      "owner": 0,
+      "planet": 23,
+      "shields": 800,
+      "square": 65,
+      "state": 17,
+      "tactic": 53,
+      "targets": 17,
+      "unknown": "0e0000000022"
+     }
+    ],
+    "x": 1277,
+    "y": 1233
+   }
+  ],
   "fleets": [
    {
     "battle_plan": 0,

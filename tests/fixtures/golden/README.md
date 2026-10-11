@@ -61,6 +61,7 @@ Regenerate these files whenever the importer or the save format changes.
 player's messages and view of the turn (`views`: the other players' planets, fleets and designs seen and at what
 detail, the players met, the packets, wormholes and traders in view), read from the players' turn files (`.m1`, `.m2`)
 beside each host file with `python tools/harness/add_messages.py <fixture folder> <run folder>`, which changes nothing
-else. Only numbers and content ids are stored (no text). The other
+else. The same tool adds the turn's battle recordings (`battles`, S16): terra1 turn 31 and mine1 turn 70 have one;
+the golden tests ignore them until the battle engine exists. Only numbers and content ids are stored (no text). The other
 games kept no turn files: their `messages` and `views` are empty lists and the tests skip them. A message number without a
 content id yet is kept as `legacy.message.<n>` with its raw parameters; the tests compare only the types built.
