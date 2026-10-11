@@ -6,27 +6,15 @@ extends GdUnitTestSuite
 ## design keeps the giver's name, S11), plus what a game's phases not built yet would change
 ## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
 
-## Battle recordings (S16) are in the fixtures as the oracle for the battle engine, not built yet.
-const IGNORE := ["/rng", "/players/*/ship_designs*/name", "/battles"]
+const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
-## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld (battles, M9;
-## the battle also shows both sides' designs in full, S15); turn 40: player 2's colonists unloaded
-## onto player 1's colony fought its ground troops (ground combat, S17); mine1 turn 69: player 2's
-## patrol caught player 1's fleet 2 (a battle: damage, designs shown in full).
+## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld, and mine1
+## turn 69: player 2's patrol caught player 1's fleet 2 (both battles show the sides' designs in
+## full, S16 part 4c); terra1 turn 40: player 2's colonists unloaded onto player 1's colony fought
+## its ground troops (ground combat, S17).
 const TURN_IGNORE := {
-	"terra1":
-	{
-		30:
-		[
-			"/fleets[1:1]*",
-			"/planets/23/starbase/damage",
-			"/planets/23/surface*",
-			"/players/1/ship_designs[3]/remaining",
-			"/views/*designs/*",
-		],
-		40: ["/planets/30/population"],
-	},
-	"mine1": {69: ["/fleets[0:2]/stacks[2]/damage*", "/views/*designs/*"]},
+	"terra1": {30: ["/views/*designs/*"], 40: ["/planets/30/population"]},
+	"mine1": {69: ["/views/*designs/*"]},
 }
 
 var _content: ContentRegistry

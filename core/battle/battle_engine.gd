@@ -47,6 +47,11 @@ var round_number := 0
 var pile: Packet = null
 ## Initiatives that some weapon has.
 var initiatives := {}
+## The highest level per tech field of the designs that lost ships (S16 "Battle results").
+var tech_seen: Array[int] = [0, 0, 0, 0, 0, 0]
+## The starbase was destroyed, or damaged and survived.
+var starbase_destroyed := false
+var starbase_damaged := false
 
 
 func _init(
@@ -638,7 +643,7 @@ func _best_target(t: Dictionary, w: Dictionary, mask: int, primary: bool) -> int
 		var o := tokens[target]
 		if not _in_reach(t, o, w, mask) or not is_target_class(o, target_class):
 			continue
-		var cost := ProductionCosts.design_cost(o._design, state.player(o.owner), content)
+		var cost := stored_cost(o._design, state.player(o.owner))
 		var value: int = ((cost[3] + cost[1]) * o.count & 0xFFFF) * 100
 		var armor: int = o._armor * o.count
 		var shields: int = o.shields * o.count
@@ -870,6 +875,7 @@ func _starbase_damage(o: Dictionary, x: int, hit: Dictionary) -> void:
 	if o.damage & 0xFF80:
 		x += _div((o.damage >> 7) * armor, 500)
 	if x < armor:
+		starbase_damaged = true
 		var v := _div(x * 500, armor)
 		if planet.starbase.damage == v:
 			planet.starbase.damage += 1
@@ -881,6 +887,8 @@ func _starbase_damage(o: Dictionary, x: int, hit: Dictionary) -> void:
 		hit.killed = 1
 		o.state &= ~ALIVE
 		o.count = 0
+		starbase_destroyed = true
+		(o._design as Design).remaining -= 1
 		var race := state.player(planet.owner).race
 		if not RaceMath.trait_param(race, content, "colony.starbase", 0):
 			planet.starbase = null
@@ -906,10 +914,13 @@ func _is_packet(q: QueueItem) -> bool:
 	return def.get("effect", "") == "packet" and not def.get("auto", false)
 
 
-## `Token_RecordLosses@10e8:4f0c`: the fleet loses the ships; cargo and salvage follow them.
+## `Token_RecordLosses@10e8:4f0c`: the fleet loses the ships; cargo and salvage follow them, and
+## the design's technology is noted for the tech bonus.
 func _record_losses(o: Dictionary, killed: int) -> void:
 	var fleet: Fleet = o._fleet
 	var owner := state.player(fleet.owner)
+	TechGain.note_design(o._design, tech_seen, content)
+	(o._design as Design).remaining -= killed
 	o.count -= killed
 	if o.count == 0:
 		o.state &= ~ALIVE
@@ -923,7 +934,9 @@ func _record_losses(o: Dictionary, killed: int) -> void:
 		fleet.cargo.assign([0, 0, 0, 0, 0])
 	else:
 		lost_cargo = FleetOrders.cargo_after_losses(fleet, owner, content, {o.design: killed})
-	var cost := ProductionCosts.design_cost(o._design, owner, content)
+	var cost := stored_cost(o._design, owner)
+	if RaceMath.trait_param(owner.race, content, "battle.salvage_at_current_tech", 0):
+		cost = ProductionCosts.design_cost(o._design, owner, content)
 	var minerals: Array[int] = []
 	for m in 3:
 		minerals.append(_div(cost[m] * killed, 3) + lost_cargo[m])
@@ -941,6 +954,18 @@ func _record_losses(o: Dictionary, killed: int) -> void:
 			pile = Packets.drop_salvage(
 				state, content, rng, fleet.owner, fleet.x, fleet.y, minerals, pile
 			)
+
+
+## The design's cost as the original keeps it: computed with the owner's tech levels when the turn
+## started (current levels outside turn generation).
+func stored_cost(design: Design, owner: Player) -> Array[int]:
+	if owner.tech_levels_at_start.is_empty():
+		return ProductionCosts.design_cost(design, owner, content)
+	var now := owner.tech_levels
+	owner.tech_levels = owner.tech_levels_at_start
+	var cost := ProductionCosts.design_cost(design, owner, content)
+	owner.tech_levels = now
+	return cost
 
 
 ## Integer division truncating toward zero, as the original's C does.

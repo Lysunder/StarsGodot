@@ -7,7 +7,10 @@ tokens and where they start. Third part: rounds, movement and target choice (3a)
 big1 (80 turns, 6 computer players; 6,170 moves and shots), replayed from their recorded starting tokens at their place
 in the random sequence (each big1 turn starts from the fixed start-up state; the setup's jitter and shuffle draws
 locate the battle), match move for move and shot for shot.
-Not yet: the results after the battle (part 4), and battles inside the turn (they come with part 4).
+Fourth part (4a): battles inside the turn and their results (tech bonus draws, Alternate Reality habitats, marks for
+repair); verified by the fixture turns (terra1 turn 30, mine1 turn 69 now match whole) and by replaying each big1
+turn's battles in sequence: all 227 start exactly where the previous battle's results left the random sequence. Not
+yet: the battle messages (4b) and what the battle shows the players (4c).
 References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBattle@10e8:1ae2`,
 `ResolveBattle@10e8:58c0`, `BuildBattleTokens@10e8:2cb4`, `Token_InitStats@10e8:2770`,
 `Design_BattleComputers@10e8:2636`, `Token_ComputeWeapons@10e8:27c4`, `Token_SetClass@10e8:15f0`,
@@ -18,7 +21,8 @@ References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBa
 `Token_HasPrimaryTargets@10e8:37f0`, `Token_IsTargetClass@10e8:38ea`, `Token_RatePosition@10e8:3966`,
 `Tactic_Score@10e8:3bdc`, `Token_Move@10e8:3c7a`, `Token_EstimateDamage@10e8:315a`, `CalcTorpedoHits@10e8:41b4`,
 `Token_RecordLosses@10e8:4f0c`, `Battle_ApplyLosses@10e8:5050`, `PackLongToWord@1030:2ffe`,
-`Fleets_RedistributeCargo@1048:6c1c`.
+`Fleets_RedistributeCargo@1048:6c1c`, `TryTechBonus@10e8:6112`, `NoteDesignTech@1078:244c`,
+`Planet_Depopulate@1040:553a`, `RepairFleetsAndStarbases@10b0:28de`.
 
 ## Summary
 
@@ -233,7 +237,8 @@ Every target in range takes it (× its beam defense / 100 when below 100), with 
 ship count × slot count. While some is left, the token picks the best target (primary class first; the secondary class
 only when no primary target is found) and fires at it:
 
-- A target's **value**: the design's resource and boranium cost per ship (as stored at the start of the turn) × its ship
+- A target's **value**: the design's resource and boranium cost per ship (as stored at the start of the turn: the
+  original computes a design's cost when it loads the turn and the tech update doesn't refresh it) × its ship
   count, kept to 16 bits, × 100. **Strength**: armor × count, less damage taken (as for the estimate; at least 1);
   shields × count.
 - **Beam score**: the value × beam defense / 100 (when below 100); a sapper scores (value × 100 + shields − 1) div
@@ -290,14 +295,41 @@ it fits, with the number of shifts in the top 3 bits) and the target's damage wo
 
 **Losses** (`Token_RecordLosses`): the token and its fleet lose the ships; a fleet without ships is destroyed. The
 lost ships take their share of the fleet's cargo (S12's cargo split) and leave salvage: a third of their mineral cost
-plus that cargo; at a planet 80% of it (with a starbase there) or 50% lands on the planet, in deep space 75% becomes
+(as stored at the start of the turn, but at current tech levels for a race with `battle.salvage_at_current_tech`,
+Bleeding Edge Technology) plus that cargo; at a planet 80% of it (with a starbase there) or 50% lands on the planet, in deep space 75% becomes
 salvage (S14). The losing design's technology is noted for the battle's tech bonus (part 4).
+
+## Battle results (`FinishBattle`)
+
+The battles of a turn are fought one after the other, in place order (above), at the start of the waypoint 1 step;
+each battle's recording is added to the turn's battles, with id `(turn × 256 + 1 + k) mod 4096` for the turn's k-th
+battle (from 0). Every fleet in a battle, and a starbase whose owner took part, is marked as having fought this turn.
+When a battle ends:
+
+1. **Alternate Reality habitat.** When the starbase was destroyed and its owner's race lives in its starbases
+   (`colony.starbase`), the planet is emptied (S08 "Depopulation").
+2. **Tech bonus** (`TryTechBonus`, S24), in player order. The need is, per field, the highest level any design that
+   lost ships in this battle needs (hull and parts in use; noted at each loss, whoever owned the ships). A destroyed
+   starbase is not noted. Each player in turn gets one try when:
+   - it took part: unless the starbase of an Alternate Reality race was destroyed (then no participant tries); the
+     planet (if any) must be unowned or its own; and in a battle of two sides it must still have ships there, or its
+     starbase there survived;
+   - it did not take part but owns the planet;
+   - it did not take part but has a fleet at the place (a bystander). Fix B36: the original tests the bystanders'
+     bit mask against the player's number instead of its bit, so most bystanders never try. Every bystander tries;
+     the draws come from the classic stream when the original's test passes, else from the `fixes` stream.
+3. **Destroyed fleets** (no ships left) are deleted after all of the turn's battles (S11 "Deleting a fleet"). The
+   design counts of the ships and starbases destroyed go down as they are lost.
+
+**Repair (S19).** A fleet that fought doesn't repair this turn; a starbase that fought doesn't repair, and fleets at
+its planet repair at the rate for their owner's planet without a starbase.
 
 ## Randomness (battles)
 
 Setup: `random(15)` per ship token with an engine; the shuffle (one draw per token). Each round: square choices
 (`random(k)` on ties, as above), steps (`random(count)` or `random(2)` on ties), `random(15)` per living token for the
-jitter, and the firing draws (part 3b).
+jitter, and the firing draws (part 3b). After each battle: the tech bonus tries, in player order (S24: `random(100)`,
+then 13 × `random(13)` and up to 6 × `random(6)` when it passes).
 
 ## Files (harness)
 

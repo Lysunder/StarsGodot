@@ -37,6 +37,8 @@ var claimed: bool = false
 var gated: bool = false
 ## Turn-only mark: a minefield hit or damaged the fleet this turn (S13; no repair, S19).
 var mine_hit: bool = false
+## Turn-only mark: the fleet was in a battle this turn (S16; no repair, S19).
+var fought: bool = false
 ## Turn-only mark: the fleet orbits a planet its owner's fleets there would bomb this turn
 ## (`DoBombing@10e8:6e2a`); it sees that planet (S15).
 var at_bombing: bool = false

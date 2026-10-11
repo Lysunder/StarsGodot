@@ -48,15 +48,15 @@ ships and colonists aboard whose owner has it:
 
 ### Repair (S02 phase 18)
 
-1. **Fleets**, in fleet order: a fleet with ships that wasn't hit by mines or gated this turn and has a damaged
-   stack repairs. Rate by where it is: 5 if it moved this year; else 10 in deep space; 15 at another player's
+1. **Fleets**, in fleet order: a fleet with ships that wasn't hit by mines, gated or in a battle this turn and has
+   a damaged stack repairs. Rate by where it is: 5 if it moved this year; else 10 in deep space; 15 at another player's
    planet; 25 at its owner's planet without a starbase; 40 at its owner's starbase without a dock; 100 at its
    owner's starbase with a dock. × `repair.fleet_pct` / 100. Plus the best `repair_bonus` of the hulls of its
    ships. Each damaged stack: if the amount is less than its damage, the damage drops by it; otherwise the stack is
    whole (damage 0, damaged 0%).
-2. **Starbases**, in planet order: each starbase with damage repairs 50 × `repair.starbase_pct` / 100 armor points
-   (at least down to 0).
-3. The `mine_hit` and `gated` marks are cleared.
+2. **Starbases**, in planet order: each starbase with damage that wasn't in a battle this turn repairs
+   50 × `repair.starbase_pct` / 100 armor points (at least down to 0).
+3. The `mine_hit`, `gated` and `fought` marks are cleared.
 
 ## Randomness
 
@@ -64,8 +64,9 @@ ships and colonists aboard whose owner has it:
 
 ## Edge cases
 
-- A starbase that fought this year doesn't repair (the original's mark; battles are M9).
-- Fleets that fought don't repair either (the original sets the same mark as mine hits; M9).
+- A starbase that fought this year doesn't repair, and fleets at its planet repair at the rate for their owner's planet
+  without a starbase (S16 "Battle results").
+- Fleets that fought don't repair either (the original sets the same mark as mine hits).
 - The fleet's location is its planet, if it orbits one, after movement and all waypoint tasks.
 
 ## Mod hooks
@@ -74,5 +75,4 @@ Trait parameters above; hull stats `repair_bonus`, `fuel_generation`; the rate c
 
 ## Open questions
 
-1. Whether the original's battle mark on fleets is the same as the mine-hit mark (the code sets bit 0x40 in both
-   places; to confirm with M9).
+1. (Answered 2026-10-11: the battle mark on fleets is the mine-hit mark, bit 0x40; `GatherBattle` sets it.)

@@ -3,8 +3,8 @@ extends RefCounted
 ## Tech gained from other players' ships (spec S24, partial): the bonus a planet owner may get
 ## when ships are scrapped at its starbase.
 ##
-## Not yet: Mystery Trader parts among the scrapped parts (none are marked in content; their
-## draws are made), battle and invasion gains.
+## Also the battle bonus (S16 "Battle results"). Not yet: Mystery Trader parts among the parts
+## seen (none are marked in content; their draws are made), invasion gains.
 
 const GATE_ROLL := 100
 ## The roll must be above this.
@@ -17,14 +17,17 @@ const FIELD_TRIES := 6
 static func tech_needed(fleet: Fleet, owner: Player, content: ContentRegistry) -> Array[int]:
 	var need: Array[int] = [0, 0, 0, 0, 0, 0]
 	for stack in fleet.stacks:
-		if stack.count <= 0:
-			continue
-		var design := owner.ship_design(stack.design)
-		_note(content.hull(design.hull), need, content)
-		for slot in design.parts:
-			if not slot.part.is_empty() and slot.count > 0:
-				_note(content.part(slot.part), need, content)
+		if stack.count > 0:
+			note_design(owner.ship_design(stack.design), need, content)
 	return need
+
+
+## Raises `need` to the levels the design's hull and parts in use need (`NoteDesignTech@1078:244c`).
+static func note_design(design: Design, need: Array[int], content: ContentRegistry) -> void:
+	_note(content.hull(design.hull), need, content)
+	for slot in design.parts:
+		if not slot.part.is_empty() and slot.count > 0:
+			_note(content.part(slot.part), need, content)
 
 
 static func _note(def: Dictionary, need: Array[int], content: ContentRegistry) -> void:

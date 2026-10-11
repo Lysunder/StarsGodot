@@ -19,16 +19,21 @@ const SMALL_GROWTH_ROLL := 3
 
 
 ## S02 phase 18 (`RepairFleetsAndStarbases@10b0:28de`): every fleet with damaged ships repairs
-## them by its rate (S19), unless it was hit by mines or went through a stargate this turn; then
-## every starbase repairs. Clears those turn marks.
+## them by its rate (S19), unless it was hit by mines, went through a stargate or fought this turn;
+## then every starbase that didn't fight repairs. Clears those turn marks.
 static func repair_all(state: GameState, content: ContentRegistry) -> void:
 	for fleet in state.fleets:
-		if fleet.ship_count() > 0 and not fleet.mine_hit and not fleet.gated:
+		if fleet.ship_count() > 0 and not (fleet.mine_hit or fleet.gated or fleet.fought):
 			_repair_fleet(state, content, fleet)
 		fleet.mine_hit = false
 		fleet.gated = false
+		fleet.fought = false
 	for planet in state.planets:
-		if planet.starbase == null or planet.starbase.damage == 0 or planet.owner < 0:
+		if planet.starbase == null:
+			continue
+		var fought := planet.starbase.fought
+		planet.starbase.fought = false
+		if fought or planet.starbase.damage == 0 or planet.owner < 0:
 			continue
 		var race := state.player(planet.owner).race
 		var rate := STARBASE * RaceMath.trait_param(race, content, "repair.starbase_pct", PCT) / PCT
@@ -71,7 +76,7 @@ static func rate(state: GameState, content: ContentRegistry, fleet: Fleet) -> in
 	var planet := state.planet(fleet.planet)
 	if planet.owner != fleet.owner:
 		return OTHERS_PLANET
-	if planet.starbase == null:
+	if planet.starbase == null or planet.starbase.fought:
 		return OWN_PLANET
 	var design := state.player(planet.owner).starbase_design(planet.starbase.design)
 	if design == null:

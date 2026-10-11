@@ -1,7 +1,7 @@
 # S24 Tech trading (tech gain)
 
-Status: draft (2026-10-04), first part: the bonus for ships scrapped at a starbase. Battle and invasion gains and
-Mystery Trader parts are not read yet.
+Status: draft (2026-10-04), first part: the bonus for ships scrapped at a starbase; 2026-10-11: after battles (S16
+"Battle results", which says who tries and the need). Invasion gains and Mystery Trader parts are not read yet.
 References: `TryTechBonus@10e8:6112`, `NoteDesignTech@1078:244c`, `Tech_LevelCost@10d0:1546`,
 `DoWaypointTaskPass@10a8:3ec6` (scrap).
 
@@ -64,4 +64,4 @@ None yet; planned: `tech_gain.bonus` formula, `on_tech_gained` hook.
 ## Open questions
 
 1. Mystery Trader part kinds and chances (the 13 entries `NoteDesignTech` fills).
-2. The battle and invasion callers.
+2. The invasion caller (the battle caller is in S16).

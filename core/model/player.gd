@@ -47,6 +47,9 @@ var mod_data: Dictionary = {}
 ## Turn-only mark: the player already gained tech from scrapping, battle or invasion this turn
 ## (S24).
 var tech_bonus_taken: bool = false
+## Turn-only: the tech levels when the turn started. The original keeps each design's cost as
+## computed when the turn was loaded, and battles use it (S16); empty outside turn generation.
+var tech_levels_at_start: Array[int] = []
 
 
 func _schema() -> Array:

@@ -286,7 +286,8 @@
     "params": {
       "production.miniaturization_per_level": 5,
       "production.miniaturization_max": 80,
-      "production.cost_at_tech_level_pct": 200
+      "production.cost_at_tech_level_pct": 200,
+      "battle.salvage_at_current_tech": 1
     }
   },
   {

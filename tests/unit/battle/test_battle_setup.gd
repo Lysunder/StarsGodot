@@ -1,49 +1,7 @@
 extends GdUnitTestSuite
-## Spec S16: the battles of fixture turns, set up from the state at the waypoint 1 step and fought,
-## must match the original's recordings: place, sides, players, every token as it started (stats,
+## Spec S16: the battles of fixture turns, fought in the turn's waypoint 1 step, must match the
+## original's recordings: place, sides, players, every token as it started (stats,
 ## square, order, weight jitter) and every move and shot.
-
-
-class Capture:
-	extends Phase
-
-	var battles: Array = []
-
-	func _init() -> void:
-		super("test.capture_battles")
-
-	func run(ctx: TurnContext) -> void:
-		var index := 0
-		for group in BattleSetup.places(ctx.state):
-			var battle := BattleSetup.gather(ctx.state, ctx.content, group)
-			if battle.is_empty():
-				continue
-			var tokens := BattleSetup.tokens(ctx.state, ctx.content, ctx.rng(), battle)
-			var start: Array = []
-			for t in tokens:
-				start.append(BattleEngine.token_record(t).duplicate(true))
-			var events := BattleEngine.new(ctx.state, ctx.content, ctx.rng(), battle, tokens).run()
-			var players: Array[int] = []
-			for p in ctx.state.players.size():
-				if battle.players & (1 << p):
-					players.append(p)
-			(
-				battles
-				. append(
-					{
-						"id": BattleSetup.battle_id(ctx.state.turn, index),
-						"sides": battle.sides,
-						"players": players,
-						"planet": battle.planet,
-						"x": battle.x,
-						"y": battle.y,
-						"tokens": start,
-						"events": events,
-					}
-				)
-			)
-			index += 1
-
 
 var _content: ContentRegistry
 
@@ -70,15 +28,11 @@ func _orders(game: String, turn: int, players: int) -> Array[OrderSet]:
 	return out
 
 
-## The battles set up while generating `turn` of `game`.
+## The battles fought while generating `turn` of `game`.
 func _setup(game: String, turn: int) -> Array:
 	var state := _load(game, turn)
-	var capture := Capture.new()
-	var pipeline := StandardTurn.pipeline()
-	pipeline.insert_before("wp1.tasks", capture)
-	TurnMessages.clear(state)
-	pipeline.run(TurnContext.new(state, _content, _orders(game, turn, state.players.size())))
-	return capture.battles
+	StandardTurn.generate(state, _content, _orders(game, turn, state.players.size()))
+	return state.battles
 
 
 func _check(game: String, turn: int) -> void:

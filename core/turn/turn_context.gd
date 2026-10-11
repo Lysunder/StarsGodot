@@ -19,6 +19,8 @@ func _init(p_state: GameState, p_content: ContentRegistry, p_orders: Array[Order
 	content = p_content
 	orders = p_orders
 	research_spent.resize(state.players.size())
+	for p in state.players:
+		p.tech_levels_at_start.assign(p.tech_levels)
 
 
 ## The named random stream (S01). Phases draw only from streams obtained here.
