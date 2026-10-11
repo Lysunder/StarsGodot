@@ -3,7 +3,10 @@
 Status: draft (2026-10-11). First part: the battle recording, which the harness reads from the original's player turn
 files and which our battle engine will produce in the same shape (`state.battles`). Second part: who fights, the
 tokens and where they start. Third part: rounds, movement and target choice (3a), firing and damage (3b); built
-(`BattleEngine`), and the two fixture battles (terra1 turn 30, mine1 turn 69) match move for move and shot for shot.
+(`BattleEngine`). Verified: the two fixture battles (terra1 turn 30, mine1 turn 69), and all 227 battles recorded in
+big1 (80 turns, 6 computer players; 6,170 moves and shots), replayed from their recorded starting tokens at their place
+in the random sequence (each big1 turn starts from the fixed start-up state; the setup's jitter and shuffle draws
+locate the battle), match move for move and shot for shot.
 Not yet: the results after the battle (part 4), and battles inside the turn (they come with part 4).
 References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBattle@10e8:1ae2`,
 `ResolveBattle@10e8:58c0`, `BuildBattleTokens@10e8:2cb4`, `Token_InitStats@10e8:2770`,
@@ -152,7 +155,7 @@ A battle lasts at most 16 rounds (0-15). Each round (`ResolveBattle`):
    - A disengaging token (tactic 0): while its countdown is above 0 it counts down by one and moves; at 0 it leaves
      the battle (recorded as a move to square 255; it no longer takes part).
    - Otherwise the token moves (`Token_Move`, below). The move is recorded unless the token is a starbase, or it
-     stayed on its square and is armed.
+     stayed on its square and is armed (a disengaging token's move is always recorded).
 4. Every living token rolls a new weight jitter: `random(15)`, in token order.
 5. A player still fights only while one of the players it attacks has a living token; the battle ends when fewer
    than two players still fight.
@@ -182,9 +185,9 @@ when the token has no more moves left than the enemy, the enemy may come closer 
 considered run from d − 1 (at least 0) to the largest distance from the square to any square next to the enemy (on
 the board); otherwise just d. For each distance considered: *dealt* = the token's estimated damage on the enemy at
 that distance when the enemy is of the class aimed at (else 0), *taken* = the enemy's estimated damage on the token at
-that distance (ignoring range and the token's armor when the token's tactic is 0). The distance kept is the one with
-the lowest `score(taken, dealt)` (the last one on ties) — the two values are passed in this order here, the reverse of
-the final score; the original does this. The square's rating is `score(the largest dealt kept, the sum of the taken
+that distance (ignoring range and the token's armor when the token's tactic is 0). The distance kept is the one the enemy
+would choose: the lowest `score(taken, dealt)` under the enemy's own tactic (from its side, so the two values are
+passed in the reverse order of the final score), the last one on ties. The square's rating is `score(the largest dealt kept, the sum of the taken
 kept)`.
 
 **Score** (`Tactic_Score`, 32-bit signed; lower is better) of (a, b) by tactic: 0, 2: b; 1, 5: −a; 3, 4: when a is 0,
@@ -243,7 +246,8 @@ only when no primary target is found) and fires at it:
   (100 − accuracy) div 100; otherwise accuracy − accuracy × (jamming − bonus) div 100.
 
 **A beam shot** at distance d: damage = the pool, × the beam damage percent / 100 when not 0, × the target's beam
-defense / 100 when below 100, × (100 − 10d div range) / 100 when d and the range are above 0; hit kind 1 (power below
+defense / 100 when below 100, × (100 − 10d div the part's range) / 100 when d and that range are above 0 (the part's own range, without the
+starbase's +1); hit kind 1 (power below
 200) or 2. What the target does not absorb is left: the pool becomes the smaller of (pool − 1) and pool × left div
 damage (none left: the pool is empty). (The original computes this in floating point when a value is 65536 or more.)
 

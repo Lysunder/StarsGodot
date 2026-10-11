@@ -166,7 +166,8 @@ func _link(t: Dictionary) -> void:
 		t["_planet"] = state.planet(t.planet)
 		t["_design"] = owner.starbase_design(t.design - 16)
 	else:
-		t["_fleet"] = state.fleet(t.fleet_owner, t.fleet)
+		if not t.has("_fleet"):
+			t["_fleet"] = state.fleet(t.fleet_owner, t.fleet)
 		t["_design"] = owner.ship_design(t.design)
 	var design: Design = t._design
 	var weapons: Array[Dictionary] = []
@@ -254,6 +255,8 @@ func _move_token(idx: int, p: int) -> void:
 	var event := _event(idx, 0)
 	var before: int = t.square
 	if t.tactic & 15 == 0:
+		# a disengaging token's move is always recorded
+		before = NONE
 		if t.state & COUNTDOWN_MASK == 0:
 			event.square = LEFT_BATTLE
 			t.state &= ~ALIVE
@@ -464,7 +467,8 @@ func _rate_position(t: Dictionary, square: int, primary: bool, mask: int) -> int
 		for dist in range(low, high + 1):
 			var dealt := estimate(t, dist, o, false) if is_target else 0
 			var taken := estimate(o, dist, t, tactic == 0)
-			var score := tactic_score(taken, dealt, tactic)
+			# the enemy picks the distance: its own tactic, from its side (taken and dealt swapped)
+			var score := tactic_score(taken, dealt, o.tactic & 15)
 			if score <= best:
 				best = score
 				kept_dealt = dealt
@@ -683,8 +687,9 @@ func _beam_shot(
 		damage = _div(t.beam_damage_pct * damage, 100)
 	if o.beam_defense_pct < 100:
 		damage = _div(o.beam_defense_pct * damage, 100)
-	if d > 0 and w.range > 0:
-		damage = _div((100 - _div(10 * d, w.range)) * damage, 100)
+	# the fall-off uses the part's own range (no starbase +1), unlike the estimate
+	if d > 0 and w.part_range > 0:
+		damage = _div((100 - _div(10 * d, w.part_range)) * damage, 100)
 	var kind := HIT_BIG_BEAM if w.power >= BIG_BEAM_POWER else HIT_SMALL_BEAM
 	var before: int = damage
 	var left := [damage]
