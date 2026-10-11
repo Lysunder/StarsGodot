@@ -60,6 +60,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `colonists` | a number of colonists in hundreds |
 | `object_kind` | the first half of a "where": -1 (65535) when the second half names a planet or fleet, 65534 when it names a packet or salvage pile, else a position's x |
 | `object` | the second half: the planet id, or 32768 + the fleet's `fleet` value; the `space_object` value; or the position's y |
+| `basis_points` | hundredths of a percent (e.g. the share of bombs a planet's defenses stopped) |
 
 In the original's files every parameter is a byte or a word, a 32-bit amount takes two (low word, high word) and an
 item takes two (category mask, item number); the harness importer (`tools/harness/stars_messages.py`,

@@ -58,6 +58,8 @@ const MESSAGE_PARAMS := [
 	"axis_value",
 	"object_kind",
 	"object",
+	# hundredths of a percent
+	"basis_points",
 ]
 const _TAGS := {"t": "list", "of": {"t": "string"}}
 const _TRAIT_LIST := {"t": "list", "of": {"t": "ref", "to": "trait"}}

@@ -34,7 +34,10 @@
     ],
     "required_traits": [
       "trait.prt.AR"
-    ]
+    ],
+    "stats": {
+      "min_kill": 20
+    }
   },
   {
     "type": "part",

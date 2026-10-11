@@ -1433,5 +1433,418 @@
       "object_kind",
       "object"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.killed",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.one_installation",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.installations",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.killed_one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.killed_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.killed_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.killed_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.wiped_out",
+    "params": [
+      "fleet",
+      "planet"
+    ],
+    "ai": true,
+    "reveals_planet": true
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.killed",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.installations",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.killed_one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.killed_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.killed_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.killed_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.wiped_out",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_killed",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_one_installation",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_killed_one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_killed_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_killed_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_killed_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_wiped_out",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_killed",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_killed_one_installation",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_killed_installations",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_killed_one_installation_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_killed_installations_defended",
+    "params": [
+      "fleet",
+      "planet",
+      "colonists",
+      "number",
+      "basis_points"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_wiped_out",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.retro",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombing.fleets_retro",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.bombed.fleets_retro",
+    "params": [
+      "fleet",
+      "planet",
+      "number"
+    ]
   }
 ]

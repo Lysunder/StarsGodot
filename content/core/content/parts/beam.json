@@ -406,7 +406,10 @@
       "cloak": 20,
       "torpedo_accuracy": 10,
       "scan_range": 150,
-      "mines_standard": 40
+      "mines_standard": 40,
+      "kill_rate": 20,
+      "installations": 5,
+      "min_kill": 3
     },
     "mystery_trader": true
   },

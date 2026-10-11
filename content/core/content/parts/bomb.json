@@ -15,7 +15,8 @@
     },
     "stats": {
       "kill_rate": 6,
-      "installations": 2
+      "installations": 2,
+      "min_kill": 3
     },
     "tags": [
       "normal"
@@ -37,7 +38,8 @@
     },
     "stats": {
       "kill_rate": 9,
-      "installations": 4
+      "installations": 4,
+      "min_kill": 3
     },
     "tags": [
       "normal"
@@ -59,7 +61,8 @@
     },
     "stats": {
       "kill_rate": 12,
-      "installations": 6
+      "installations": 6,
+      "min_kill": 3
     },
     "tags": [
       "normal"
@@ -81,7 +84,8 @@
     },
     "stats": {
       "kill_rate": 17,
-      "installations": 7
+      "installations": 7,
+      "min_kill": 3
     },
     "tags": [
       "normal"
@@ -103,7 +107,8 @@
     },
     "stats": {
       "kill_rate": 25,
-      "installations": 10
+      "installations": 10,
+      "min_kill": 3
     },
     "tags": [
       "normal"

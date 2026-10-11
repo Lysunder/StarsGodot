@@ -95,6 +95,8 @@ static func _value(
 			return "%s #%d" % [what, int(v) % OWNER_SHIFT + 1]
 		"colonists":
 			return thousands(int(v) * 100)
+		"basis_points":
+			return "%d.%02d%%" % [int(v) / 100, int(v) % 100]
 		"minefield_type":
 			return ["standard", "heavy", "speed bump"][clampi(int(v), 0, 2)]
 		"own_design":

@@ -75,8 +75,7 @@ class Waypoint1Tasks:
 
 	func run(ctx: TurnContext) -> void:
 		Battles.run_all(ctx.state, ctx.content, ctx.rng(), ctx.rng(RngStreams.FIXES))
-		# then bombing: so far only which fleets take part
-		Bombing.mark_fleets(ctx.state)
+		Bombing.bomb_all(ctx.state, ctx.content, ctx.rng())
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
 		tasks.run_pass(3)
 		tasks.resolve()

@@ -1529,5 +1529,134 @@
   },
   "message.battle.seen_by_fleet": {
     "message": 250
+  },
+  "message.bombing.killed": {
+    "message": 96
+  },
+  "message.bombing.one_installation": {
+    "message": 97
+  },
+  "message.bombing.installations": {
+    "message": 98
+  },
+  "message.bombing.killed_one_installation": {
+    "message": 99
+  },
+  "message.bombing.killed_installations": {
+    "message": 100
+  },
+  "message.bombing.one_installation_defended": {
+    "message": 102
+  },
+  "message.bombing.installations_defended": {
+    "message": 103
+  },
+  "message.bombing.killed_one_installation_defended": {
+    "message": 104
+  },
+  "message.bombing.killed_installations_defended": {
+    "message": 105
+  },
+  "message.bombing.wiped_out": {
+    "message": 143
+  },
+  "message.bombed.killed": {
+    "message": 106
+  },
+  "message.bombed.one_installation": {
+    "message": 107
+  },
+  "message.bombed.installations": {
+    "message": 108
+  },
+  "message.bombed.killed_one_installation": {
+    "message": 109
+  },
+  "message.bombed.killed_installations": {
+    "message": 110
+  },
+  "message.bombed.one_installation_defended": {
+    "message": 112
+  },
+  "message.bombed.installations_defended": {
+    "message": 113
+  },
+  "message.bombed.killed_one_installation_defended": {
+    "message": 114
+  },
+  "message.bombed.killed_installations_defended": {
+    "message": 115
+  },
+  "message.bombed.wiped_out": {
+    "message": 144
+  },
+  "message.bombing.fleets_killed": {
+    "message": 358
+  },
+  "message.bombing.fleets_one_installation": {
+    "message": 359
+  },
+  "message.bombing.fleets_installations": {
+    "message": 360
+  },
+  "message.bombing.fleets_killed_one_installation": {
+    "message": 361
+  },
+  "message.bombing.fleets_killed_installations": {
+    "message": 362
+  },
+  "message.bombing.fleets_one_installation_defended": {
+    "message": 364
+  },
+  "message.bombing.fleets_installations_defended": {
+    "message": 365
+  },
+  "message.bombing.fleets_killed_one_installation_defended": {
+    "message": 366
+  },
+  "message.bombing.fleets_killed_installations_defended": {
+    "message": 367
+  },
+  "message.bombing.fleets_wiped_out": {
+    "message": 380
+  },
+  "message.bombed.fleets_killed": {
+    "message": 368
+  },
+  "message.bombed.fleets_one_installation": {
+    "message": 369
+  },
+  "message.bombed.fleets_installations": {
+    "message": 370
+  },
+  "message.bombed.fleets_killed_one_installation": {
+    "message": 371
+  },
+  "message.bombed.fleets_killed_installations": {
+    "message": 372
+  },
+  "message.bombed.fleets_one_installation_defended": {
+    "message": 374
+  },
+  "message.bombed.fleets_installations_defended": {
+    "message": 375
+  },
+  "message.bombed.fleets_killed_one_installation_defended": {
+    "message": 376
+  },
+  "message.bombed.fleets_killed_installations_defended": {
+    "message": 377
+  },
+  "message.bombed.fleets_wiped_out": {
+    "message": 381
+  },
+  "message.bombing.retro": {
+    "message": 302
+  },
+  "message.bombing.fleets_retro": {
+    "message": 378
+  },
+  "message.bombed.fleets_retro": {
+    "message": 379
   }
 }

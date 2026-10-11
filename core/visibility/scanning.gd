@@ -327,19 +327,24 @@ class Sight:
 				if cloak == 0 or cloak <= rng.random(PCT):
 					_see_fleet(other, SCANNED)
 
-	## `Messages_MarkPlanetsSeen@1028:81b4`: a planet the player lost this turn, named in a message,
-	## is seen at level 3.
+	## `Messages_MarkPlanetsSeen@1028:81b4`: a planet the player lost this turn (or bombed out,
+	## S17), named in a message, is seen at level 3: the message's planet parameter.
 	func _messages() -> void:
 		if p >= state.messages.size():
 			return
 		for m: Dictionary in state.messages[p]:
 			var type: String = m.get("type", "")
-			if not content.has_def(type) or not m.get("goto", {}).has("planet"):
+			if not content.has_def(type):
 				continue
-			if content.get_def("message", type).get("reveals_planet", false):
-				var planet := state.planet(int(m.goto.planet))
-				if planet != null:
-					_see_planet(planet, SCANNED)
+			var def := content.get_def("message", type)
+			if not def.get("reveals_planet", false):
+				continue
+			var at: int = (def.get("params", []) as Array).find("planet")
+			if at < 0 or at >= (m.params as Array).size():
+				continue
+			var planet := state.planet(int(m.params[at]))
+			if planet != null:
+				_see_planet(planet, SCANNED)
 
 	## A fleet not seen yet, from a scanner at (x, y): within the normal range and, in orbit,
 	## within the penetrating range; cloaking shrinks both (a tachyon factor shrinks the cloak).

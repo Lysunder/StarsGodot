@@ -27,7 +27,6 @@ const DAMAGE_DIVISOR := 160
 const DEFENSE_DIVISOR := 20
 const DEFENSE_ROLL := 20
 ## A planetary defense's `defense` stat is in tenths of a percent.
-const DEFENSE_SCALE := 0.001
 ## Salvage: a pile holds at most this many tens of kT; empty salvage gets random(10) of each.
 const PILE_TENTHS_MAX := 3000
 const EMPTY_SALVAGE_ROLL := 10
@@ -261,7 +260,7 @@ static func _impact(
 	if planet.owner < 0:
 		return
 	var race := state.player(planet.owner).race
-	damage = int(_uncovered(state, content, planet) * damage)
+	damage = int(DefenseCoverage.uncovered(state, content, planet) * damage)
 	if damage == 0 or RaceMath.trait_param(race, content, "packet.no_damage", 0):
 		var type := "planet.packet_caught" if k > 0 else "planet.packet_harmless"
 		_planet_message(state, content, planet, type, params)
@@ -290,21 +289,6 @@ static func _impact(
 		_planet_message(state, content, planet, type, said + [destroyed])
 	planet.defenses -= destroyed
 	planet.population -= killed
-
-
-## The share of a packet's damage the planet's defenses don't stop (`Planet_DefenseCoverage`):
-## (1 - best x 0.001)^n as a 32-bit float, n the operable defenses; 1 without defenses.
-static func _uncovered(state: GameState, content: ContentRegistry, planet: Planet) -> float:
-	if planet.defenses == 0:
-		return 1.0
-	var owner := state.player(planet.owner)
-	var best := PartRules.best_part("planetary", "defense", owner, content)
-	if best.is_empty():
-		return 1.0
-	var value: int = content.part(best).get("stats", {}).get("defense", 0)
-	var n := mini(planet.defenses, PlanetEconomy.operable_defenses(planet, owner.race))
-	var single := PackedFloat32Array([pow(1.0 - value * DEFENSE_SCALE, n)])
-	return single[0]
 
 
 ## Wraps a product to 32 bits, as the original's long arithmetic does.
