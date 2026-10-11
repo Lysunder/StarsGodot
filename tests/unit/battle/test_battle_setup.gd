@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
-## Spec S16 "Who fights" and "Tokens": the battles of fixture turns, set up from the state at the
-## waypoint 1 step, must start as the original's recordings do (place, sides, players, and every
-## token with its stats, square, order and weight jitter).
+## Spec S16: the battles of fixture turns, set up from the state at the waypoint 1 step and fought,
+## must match the original's recordings: place, sides, players, every token as it started (stats,
+## square, order, weight jitter) and every move and shot.
 
 
 class Capture:
@@ -19,6 +19,10 @@ class Capture:
 			if battle.is_empty():
 				continue
 			var tokens := BattleSetup.tokens(ctx.state, ctx.content, ctx.rng(), battle)
+			var start: Array = []
+			for t in tokens:
+				start.append(BattleEngine.token_record(t).duplicate(true))
+			var events := BattleEngine.new(ctx.state, ctx.content, ctx.rng(), battle, tokens).run()
 			var players: Array[int] = []
 			for p in ctx.state.players.size():
 				if battle.players & (1 << p):
@@ -33,7 +37,8 @@ class Capture:
 						"planet": battle.planet,
 						"x": battle.x,
 						"y": battle.y,
-						"tokens": tokens,
+						"tokens": start,
+						"events": events,
 					}
 				)
 			)
@@ -83,7 +88,6 @@ func _check(game: String, turn: int) -> void:
 	assert_int(ours.size()).is_equal(expected.size())
 	for i in mini(ours.size(), expected.size()):
 		var want: Dictionary = (expected[i] as Dictionary).duplicate(true)
-		want.erase("events")
 		var diffs := StateDiff.compare_dicts(want, ours[i], PackedStringArray())
 		(
 			assert_array(diffs)
