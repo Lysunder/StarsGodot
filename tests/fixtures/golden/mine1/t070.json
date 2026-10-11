@@ -663,14 +663,16 @@
      "type": "message.production.factories_built"
     },
     {
-     "goto": 17665,
+     "goto": {
+      "battle": 1281
+     },
      "params": [
       1449,
       1428,
       2,
       36
      ],
-     "type": "legacy.message.149"
+     "type": "message.battle.duel_drawn"
     },
     {
      "goto": {
@@ -740,14 +742,16 @@
      "type": "message.research.level"
     },
     {
-     "goto": 17665,
+     "goto": {
+      "battle": 1281
+     },
      "params": [
       1449,
       1428,
       36,
       2
      ],
-     "type": "legacy.message.149"
+     "type": "message.battle.duel_drawn"
     }
    ]
   ],

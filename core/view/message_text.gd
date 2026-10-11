@@ -15,6 +15,7 @@ const OWNER_SHIFT := 512
 const OBJECT_KIND := 8192
 const DESIGNS_MANY := 8192
 const DESIGN_SHIFT := 32
+const STARBASE_SLOTS := 16
 ## The first word of a "where" that names an object rather than a position (-1 as a word).
 const NOT_A_POSITION := 65535
 ## The first word of a "where" that names a packet or salvage pile.
@@ -77,7 +78,15 @@ static func _value(
 			return "%s #%d" % [name, number + 1]
 		"design":
 			var owner := view.state.player(int(v) / DESIGN_SHIFT)
-			var d := owner.ship_design(int(v) % DESIGN_SHIFT) if owner != null else null
+			var slot := int(v) % DESIGN_SHIFT
+			var d: Design = null
+			if owner != null:
+				# slots from 16 name starbase designs (battle messages, S16)
+				d = (
+					owner.ship_design(slot)
+					if slot < STARBASE_SLOTS
+					else owner.starbase_design(slot - STARBASE_SLOTS)
+				)
 			return d.name if d != null else "a design"
 		"minefield":
 			return "minefield #%d" % (int(v) % OWNER_SHIFT + 1)

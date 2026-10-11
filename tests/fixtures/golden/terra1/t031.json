@@ -827,17 +827,19 @@
      "type": "message.production.queue_done"
     },
     {
-     "goto": 19969,
+     "goto": {
+      "battle": 3585
+     },
      "params": [
-      65535,
+      -1,
       23,
-      49,
+      1,
       2,
       4,
       0,
       1
      ],
-     "type": "legacy.message.159"
+     "type": "message.battle.drawn"
     }
    ],
    [
@@ -860,17 +862,19 @@
      "type": "message.production.queue_empty"
     },
     {
-     "goto": 19969,
+     "goto": {
+      "battle": 3585
+     },
      "params": [
-      65535,
+      -1,
       23,
-      48,
+      0,
       4,
       2,
       1,
       0
      ],
-     "type": "legacy.message.159"
+     "type": "message.battle.drawn"
     },
     {
      "goto": {

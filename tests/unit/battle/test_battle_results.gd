@@ -38,7 +38,8 @@ func _expected(rng: StarsRandom, players: Array) -> Array:
 func _finish(
 	state: GameState, battle: Dictionary, group: Array, rng: StarsRandom, fixes: StarsRandom
 ) -> void:
-	Battles.finish(state, _content, rng, fixes, battle, group, _engine(state), -1)
+	var place := {"id": 1, "starbase_owner": -1, "starbase_slot": 0, "ships": 9, "designs": 9}
+	Battles.finish(state, _content, rng, fixes, battle, group, _engine(state), place)
 
 
 func _battle(players: int, sides: int, bystanders: int, fleets: Array) -> Dictionary:
@@ -47,6 +48,8 @@ func _battle(players: int, sides: int, bystanders: int, fleets: Array) -> Dictio
 		"sides": sides,
 		"bystanders": bystanders,
 		"planet": -1,
+		"x": 0,
+		"y": 0,
 		"fleets": fleets,
 	}
 
@@ -101,3 +104,59 @@ func test_bystander_draws_from_classic_where_the_original_does() -> void:
 	_finish(state, _battle(0, 0, 3, []), [a, b], rng, fixes)
 	assert_array([rng.s1, rng.s2]).is_equal(want)
 	assert_array([fixes.s1, fixes.s2]).is_equal(want_fixes)
+
+
+func _messages(state: GameState, p: int) -> Array:
+	return (state.messages[p] as Array).filter(
+		func(m: Dictionary) -> bool: return (m.type as String).begins_with("message.battle.")
+	)
+
+
+func test_duel_messages() -> void:
+	# one ship each: player 1's ship is destroyed, player 0's takes no damage
+	var state := _load()
+	TurnMessages.clear(state)
+	var ours := state.fleet(0, 2)
+	var theirs := state.fleet(1, 2)
+	theirs.stacks.clear()
+	var engine := _engine(state)
+	engine.losses = {1 * 16 + 2: BattleEngine.LOSS_HIT | 1}
+	var place := {"id": 7, "starbase_owner": -1, "starbase_slot": 0, "ships": 2, "designs": 2}
+	var battle := _battle(3, 2, 0, [ours, theirs])
+	battle.x = 10
+	battle.y = 20
+	var rng := StarsRandom.new(5, 673)
+	Battles.finish(
+		state, _content, rng, StarsRandom.new(7, 7), battle, [ours, theirs], engine, place
+	)
+	var won: Dictionary = _messages(state, 0)[0]
+	assert_str(won.type).is_equal("message.battle.duel_won")
+	assert_dict(won.goto).is_equal({"battle": 7})
+	assert_array(won.params).is_equal([10, 20, 2, 34])
+	var lost: Array = _messages(state, 1)
+	assert_int(lost.size()).is_equal(1)
+	assert_str(lost[0].type).is_equal("message.battle.duel_lost")
+	assert_array(lost[0].params).is_equal([10, 20, 34, 2])
+
+
+func test_two_sides_counts_ships_and_names_the_enemy() -> void:
+	# player 0's 1 ship of fleet 2 and fleet 3 against player 1's lone ship, destroyed
+	var state := _load()
+	TurnMessages.clear(state)
+	var a := state.fleet(0, 2)
+	var b := state.fleet(0, 3)
+	var theirs := state.fleet(1, 2)
+	theirs.stacks.clear()
+	var engine := _engine(state)
+	engine.losses = {1 * 16 + 2: BattleEngine.LOSS_HIT | 1}
+	var place := {"id": 7, "starbase_owner": -1, "starbase_slot": 0, "ships": 3, "designs": 3}
+	var battle := _battle(3, 2, 0, [a, b, theirs])
+	var rng := StarsRandom.new(5, 673)
+	Battles.finish(
+		state, _content, rng, StarsRandom.new(7, 7), battle, [a, b, theirs], engine, place
+	)
+	var won: Dictionary = _messages(state, 0)[0]
+	assert_str(won.type).is_equal("message.battle.won_one")
+	assert_array(won.params).is_equal([0, 0, 1, 2, 34])
+	assert_str(_messages(state, 1)[0].type).is_equal("message.battle.lost_one")
+	assert_array(_messages(state, 1)[0].params).is_equal([0, 0, 0, 34, 2])

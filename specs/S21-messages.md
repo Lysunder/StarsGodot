@@ -37,6 +37,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `{"hulls": true}` | the ship designer's hull list |
 | `{"minefield": number, "owner": player}` | a minefield |
 | `{"packet": number, "owner": player}` | a packet or salvage pile |
+| `{"battle": id}` | a battle's recording (S16; the battle viewer) |
 
 ### Parameter kinds
 
@@ -46,7 +47,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `planet` | a planet id |
 | `fleet` | a fleet: owner × 512 + fleet number |
 | `fleet_designs` | a fleet described by its main design: number + 512 × main design slot, + 8192 when the fleet has more than one design (`Fleet_MsgRef`) |
-| `design` | a ship design: owner × 32 + slot |
+| `design` | a ship design: owner × 32 + slot; slots 16 and up name the owner's starbase design slot − 16 |
 | `player` | a player index |
 | `cargo` | a cargo type: 0 ironium, 1 boranium, 2 germanium, 3 colonists, 4 fuel |
 | `field` | a tech field index (`tech_field` order) |

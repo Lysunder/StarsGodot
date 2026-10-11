@@ -635,7 +635,7 @@ def legacy_item(legacy, mask, item):
 
 def message_goto(word, legacy, params=()):
     """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code.
-    0xFFFA shows the minefield named by the first parameter."""
+    0xFFFA shows the minefield named by the first parameter; 0x4000 + id a battle's recording."""
     if word == 0xFFFA and params:
         kind = "minefield" if params[0] >> 13 == 0 else "packet"
         return {kind: params[0] & 0x1FF, "owner": (params[0] >> 9) & 15}
@@ -649,6 +649,8 @@ def message_goto(word, legacy, params=()):
         return {"item": legacy_item(legacy, 1 << ((word >> 8) & 0x3F), word & 0xFF)}
     if word & 0x8000:
         return {"fleet": word & 0x1FF, "owner": (word >> 9) & 0x3F}
+    if word & 0x4000:
+        return {"battle": word & 0x3FFF}
     return {"planet": word}
 
 

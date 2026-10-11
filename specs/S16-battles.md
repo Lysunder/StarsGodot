@@ -9,8 +9,9 @@ in the random sequence (each big1 turn starts from the fixed start-up state; the
 locate the battle), match move for move and shot for shot.
 Fourth part (4a): battles inside the turn and their results (tech bonus draws, Alternate Reality habitats, marks for
 repair); verified by the fixture turns (terra1 turn 30, mine1 turn 69 now match whole) and by replaying each big1
-turn's battles in sequence: all 227 start exactly where the previous battle's results left the random sequence. Not
-yet: the battle messages (4b) and what the battle shows the players (4c).
+turn's battles in sequence: all 227 start exactly where the previous battle's results left the random sequence.
+Fourth part (4b): the battle messages; verified by the two fixture battles (a duel and a two-sided battle at a
+starbase), the other cases read from the code only. Not yet: what the battle shows the players (4c).
 References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBattle@10e8:1ae2`,
 `ResolveBattle@10e8:58c0`, `BuildBattleTokens@10e8:2cb4`, `Token_InitStats@10e8:2770`,
 `Design_BattleComputers@10e8:2636`, `Token_ComputeWeapons@10e8:27c4`, `Token_SetClass@10e8:15f0`,
@@ -323,6 +324,87 @@ When a battle ends:
 
 **Repair (S19).** A fleet that fought doesn't repair this turn; a starbase that fought doesn't repair, and fleets at
 its planet repair at the rate for their owner's planet without a starbase.
+
+## Battle messages
+
+Sent in `FinishBattle`, player by player in player order, each player's message coming just before its tech bonus
+try (S16 "Battle results"); a gained bonus adds its own message. Parameter kinds are S21's. Every message starts with
+the place as a "where" (`object_kind`, `object`: -1 and the planet, or the position's x and y). The battle messages
+go to the battle's recording (Goto `{"battle": id}`); the others are marked below.
+
+**What is counted.** The engine keeps a loss table per owner and design slot: a mark when ships of that design took
+armor damage (a ship token reaching the armor step of `Token_TakeDamage`, even if nothing died) and the ships killed.
+After the battle, every design with ships left in a fleet at the place (any fleet there, also bystanders') gets a
+"ships left" mark. Entries are read in owner, then slot order; for player p, its **own** entry is its last one with any
+mark and the **enemy** entry the last one of any other owner. The battle's **ships** are all ships at the place before
+the battle (bystanders' too) plus 1 for the starbase when its owner takes part; its **designs** the number of owner
+and design pairs among them, likewise plus 1. A design is named as owner × 32 + slot; the starbase as its owner × 32
++ 16 + its starbase slot. In what follows "the starbase" is the planet's starbase (if any) of its owner, whether or
+not that owner took part, and "destroyed" or "damaged" means the engine destroyed it or damaged it without destroying
+it during the battle.
+
+**A participant, when an Alternate Reality starbase was destroyed:** its owner gets `battle.habitat_lost_many` (more
+than 1,000 hundred colonists) or `battle.habitat_lost`, the others `battle.habitat_destroyed`, all `[where, starbase
+design, population]` (the colonists, in hundreds, before the planet was emptied). Nothing else for them.
+
+**Other participants, battles of two sides, two "ships":** a duel. Own (or the starbase, when p has no entry) is
+destroyed when its entry counts a kill (the starbase: destroyed); then p gets `duel_lost_to_damaged` when the enemy
+(entry with a hit mark, or the starbase: damaged) was damaged, else `duel_lost`. Otherwise when the enemy is destroyed:
+`duel_won_damaged` when own was damaged, else `duel_won`. Otherwise `duel_drawn`. Parameters `[where, own design,
+enemy design]`. P may try the bonus unless own was destroyed.
+
+**Two sides, two designs:** as the duel, with `stacks_*` types; a side is destroyed when its entry has no "ships left"
+mark (the starbase: destroyed). The counts: own = its kills (1 for the starbase) plus the ships of own's slot in p's
+fleets at the place; enemy = its kills (1 for the starbase) plus the ships of the enemy's slot in every fleet at the
+place not counted for p, whoever owns it (the original's way: p's own fleets count for the enemy when p has no entry).
+Parameters `[where, own design, own count, enemy design, enemy count]`.
+
+**Otherwise.** Own lost = the kills in p's entries, enemy lost = the kills in all other entries; own total = own lost
+plus the ships of p's fleets at the place now; enemy total = enemy lost plus the ships of all other fleets at the place
+(bystanders' too). The starbase counts 1 in its owner's side's total, and 1 in the lost when destroyed. The **race**
+named is the owner of the last enemy entry, or the starbase's owner when the starbase is not p's (the planet's owner
+when there is neither). The own design (when own total is 1) is p's starbase if it has one, else its own entry; the
+enemy design (when enemy total is 1) is the starbase when the race is the starbase's owner, else the enemy entry.
+
+Two sides, parameters `[where, race, ...]`:
+
+| Case | Type | Further parameters |
+|---|---|---|
+| enemy all lost, enemy total 1, own lost 0 | `won_one` | own total, enemy design |
+| enemy all lost, enemy total 1 | `won_one_with_losses` | own total, enemy design, own lost |
+| enemy all lost, own lost 0, own total 1 | `one_won` | own design, enemy lost |
+| enemy all lost, own lost 0 | `won` | own total |
+| enemy all lost | `won_with_losses` | own total, own lost |
+| own all lost, own total 1, enemy lost 0 | `lost_one` | own design, enemy total |
+| own all lost, own total 1 | `lost_one_with_kills` | own design, enemy total, enemy lost |
+| own all lost, enemy lost 0, enemy total 1 | `lost_to_one` | own lost, enemy design |
+| own all lost, enemy lost 0 | `lost` | enemy total |
+| own all lost | `lost_with_kills` | enemy total, enemy lost |
+| own total 1 | `one_drawn` | own design, enemy total, enemy lost |
+| enemy total 1 | `drawn_against_one` | own total, enemy design, own lost |
+| else | `drawn` | own total, enemy total, own lost, enemy lost |
+
+P may try the bonus unless it lost everything (own lost = own total). More sides, parameters `[where, sides, ...]`,
+and p may always try:
+
+| Case | Type | Further parameters |
+|---|---|---|
+| own lost 0, enemy all lost | `melee_won` | own total |
+| own lost 0; or enemy lost 0 and own not all lost | `melee` | own lost, own total, enemy lost, enemy total |
+| enemy lost 0 (own all lost) | `melee_lost` | own total, enemy total |
+| enemy all lost | `melee_won_with_losses` | own lost, own total |
+| own all lost | `melee_lost_with_kills` | own total, enemy total, enemy lost |
+| else | `fought` | (none) |
+
+**Non-participants:** the planet's owner gets `battle.seen_from_planet` `[planet]` (Goto the planet); a bystander,
+`battle.seen_by_fleet` `[fleet, where]` for its first fleet at the place (Goto that fleet; the original sends it only
+when its faulty test passes, fix B36).
+
+**Tech bonus messages** (Goto research): `battle.tech_gained` (a participant), `battle.tech_gained_orbit` (the
+planet's owner) and `battle.tech_gained_watching` (a bystander), all `[where, field, amount]`, the amount being the
+field's next level cost (with slow tech's doubling, though the points added are without it, S24).
+
+(The original's message for fleets left out by its token limit, B08, has no counterpart.)
 
 ## Randomness (battles)
 

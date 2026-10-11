@@ -30,6 +30,7 @@ const HIT_ABSORBED := 0xC0
 const BIG_BEAM_POWER := 200
 const STARBASE_DESTROYED := 0xFA00
 const DAMAGE_POINTS_MAX := 499
+const LOSS_HIT := 0x8000
 const CAPITAL_MISSILES := [
 	"part.torpedo.jihad_missile",
 	"part.torpedo.juggernaut_missile",
@@ -52,6 +53,9 @@ var tech_seen: Array[int] = [0, 0, 0, 0, 0, 0]
 ## The starbase was destroyed, or damaged and survived.
 var starbase_destroyed := false
 var starbase_damaged := false
+## Per owner × 16 + design slot of the ships that took armor damage: LOSS_HIT plus the ships
+## killed (for the battle messages, S16 "Battle results").
+var losses := {}
 
 
 func _init(
@@ -792,6 +796,8 @@ func _take_damage(
 		damage[0] = 0
 		_record_hit(hit, event)
 		return true
+	var key: int = o.owner * 16 + o.design
+	losses[key] = losses.get(key, 0) | LOSS_HIT
 	if o.tactic & 15 == 1:
 		o.tactic &= 0xF0
 		o.state = o.state & ~COUNTDOWN_MASK | 7 << 5
@@ -920,6 +926,8 @@ func _record_losses(o: Dictionary, killed: int) -> void:
 	var fleet: Fleet = o._fleet
 	var owner := state.player(fleet.owner)
 	TechGain.note_design(o._design, tech_seen, content)
+	var key: int = o.owner * 16 + o.design
+	losses[key] = losses.get(key, 0) + killed
 	(o._design as Design).remaining -= killed
 	o.count -= killed
 	if o.count == 0:

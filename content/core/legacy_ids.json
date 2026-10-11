@@ -1418,5 +1418,116 @@
   },
   "message.fleet.minefield_vanished": {
     "message": 273
+  },
+  "message.battle.fought": {
+    "message": 126
+  },
+  "message.battle.habitat_lost_many": {
+    "message": 141
+  },
+  "message.battle.habitat_lost": {
+    "message": 142
+  },
+  "message.battle.habitat_destroyed": {
+    "message": 324
+  },
+  "message.battle.duel_won": {
+    "message": 145
+  },
+  "message.battle.duel_lost": {
+    "message": 146
+  },
+  "message.battle.duel_won_damaged": {
+    "message": 147
+  },
+  "message.battle.duel_lost_to_damaged": {
+    "message": 148
+  },
+  "message.battle.duel_drawn": {
+    "message": 149
+  },
+  "message.battle.stacks_won": {
+    "message": 150
+  },
+  "message.battle.stacks_lost": {
+    "message": 151
+  },
+  "message.battle.stacks_won_damaged": {
+    "message": 152
+  },
+  "message.battle.stacks_lost_to_damaged": {
+    "message": 153
+  },
+  "message.battle.stacks_drawn": {
+    "message": 154
+  },
+  "message.battle.won": {
+    "message": 155
+  },
+  "message.battle.lost": {
+    "message": 156
+  },
+  "message.battle.won_with_losses": {
+    "message": 157
+  },
+  "message.battle.lost_with_kills": {
+    "message": 158
+  },
+  "message.battle.drawn": {
+    "message": 159
+  },
+  "message.battle.won_one": {
+    "message": 160
+  },
+  "message.battle.lost_one": {
+    "message": 161
+  },
+  "message.battle.won_one_with_losses": {
+    "message": 162
+  },
+  "message.battle.lost_one_with_kills": {
+    "message": 163
+  },
+  "message.battle.one_won": {
+    "message": 275
+  },
+  "message.battle.lost_to_one": {
+    "message": 276
+  },
+  "message.battle.one_drawn": {
+    "message": 277
+  },
+  "message.battle.drawn_against_one": {
+    "message": 278
+  },
+  "message.battle.melee_won": {
+    "message": 164
+  },
+  "message.battle.melee_won_with_losses": {
+    "message": 165
+  },
+  "message.battle.melee_lost": {
+    "message": 166
+  },
+  "message.battle.melee_lost_with_kills": {
+    "message": 167
+  },
+  "message.battle.melee": {
+    "message": 168
+  },
+  "message.battle.tech_gained": {
+    "message": 239
+  },
+  "message.battle.tech_gained_watching": {
+    "message": 240
+  },
+  "message.battle.tech_gained_orbit": {
+    "message": 241
+  },
+  "message.battle.seen_from_planet": {
+    "message": 249
+  },
+  "message.battle.seen_by_fleet": {
+    "message": 250
   }
 }

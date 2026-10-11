@@ -1035,5 +1035,403 @@
     "params": [
       "fleet"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.fought",
+    "params": [
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.habitat_lost_many",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "population"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.habitat_lost",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "population"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.habitat_destroyed",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "population"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.duel_won",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.duel_lost",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.duel_won_damaged",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.duel_lost_to_damaged",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.duel_drawn",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.stacks_won",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.stacks_lost",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.stacks_won_damaged",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.stacks_lost_to_damaged",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.stacks_drawn",
+    "params": [
+      "object_kind",
+      "object",
+      "design",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.won",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.lost",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.won_with_losses",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.lost_with_kills",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.drawn",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.won_one",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.lost_one",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.won_one_with_losses",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.lost_one_with_kills",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "design",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.one_won",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.lost_to_one",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.one_drawn",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "design",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.drawn_against_one",
+    "params": [
+      "object_kind",
+      "object",
+      "player",
+      "number",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.melee_won",
+    "params": [
+      "object_kind",
+      "object",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.melee_won_with_losses",
+    "params": [
+      "object_kind",
+      "object",
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.melee_lost",
+    "params": [
+      "object_kind",
+      "object",
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.melee_lost_with_kills",
+    "params": [
+      "object_kind",
+      "object",
+      "number",
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.melee",
+    "params": [
+      "object_kind",
+      "object",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.tech_gained",
+    "params": [
+      "object_kind",
+      "object",
+      "field",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.tech_gained_watching",
+    "params": [
+      "object_kind",
+      "object",
+      "field",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.tech_gained_orbit",
+    "params": [
+      "object_kind",
+      "object",
+      "field",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.seen_from_planet",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.seen_by_fleet",
+    "params": [
+      "fleet",
+      "object_kind",
+      "object"
+    ]
   }
 ]
