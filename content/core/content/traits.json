@@ -31,6 +31,7 @@
     "order": 2,
     "cost": 45,
     "params": {
+      "battle.movement_bonus": 2,
       "scanner.full_designs": 1,
       "cost.beam_adjust_pct": 75,
       "cost.torpedo_adjust_pct": 75,
@@ -295,6 +296,7 @@
     "order": 13,
     "cost": -30,
     "params": {
+      "battle.shield_regen": 1,
       "design.armor_part_pct": 50,
       "design.shield_pct": 140
     }

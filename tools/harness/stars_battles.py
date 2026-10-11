@@ -35,9 +35,11 @@ STARBASE = 1
 # (name, offset, struct format) of the token fields kept.
 TOKEN_FIELDS = [
     ("id", 0, "<h"), ("owner", 2, "B"), ("kind", 3, "B"), ("design", 4, "B"), ("square", 5, "B"),
-    ("initiative_low", 7, "B"), ("initiative_high", 8, "B"), ("beam_damage_pct", 13, "B"),
+    ("computer_initiative", 6, "B"), ("initiative_low", 7, "B"), ("initiative_high", 8, "B"),
+    ("torpedo_jamming", 11, "B"), ("torpedo_accuracy", 12, "B"), ("beam_damage_pct", 13, "B"),
     ("beam_defense_pct", 14, "B"), ("mass", 15, "<H"), ("shields", 17, "<H"), ("count", 19, "<H"),
-    ("damage", 21, "<H"), ("targets", 23, "B"), ("tactic", 24, "B"), ("movement", 26, "B"),
+    ("damage", 21, "<H"), ("targets", 23, "B"), ("tactic", 24, "B"), ("ranges", 25, "B"),
+    ("movement", 26, "B"),
     ("state", 27, "<H"),
 ]
 
@@ -66,9 +68,6 @@ def parse_record(data):
         else:
             word = token.pop("id")
             token["fleet"], token["fleet_owner"] = word & 0x1FF, (word >> 9) & 15
-        # bytes not decoded yet, kept while the battle engine is written
-        token["unknown"] = data[base + 6:base + 7].hex() + data[base + 9:base + 13].hex()
-        token["unknown"] += data[base + 25:base + 26].hex()
         out["tokens"].append(token)
     pos = HEADER + tokens * TOKEN
     while pos < size:

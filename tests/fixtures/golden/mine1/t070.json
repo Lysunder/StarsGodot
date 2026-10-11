@@ -236,6 +236,7 @@
      {
       "beam_damage_pct": 0,
       "beam_defense_pct": 100,
+      "computer_initiative": 0,
       "count": 1,
       "damage": 0,
       "design": 2,
@@ -247,16 +248,19 @@
       "mass": 116,
       "movement": 0,
       "owner": 0,
+      "ranges": 255,
       "shields": 0,
       "square": 65,
       "state": 13553,
       "tactic": 80,
       "targets": 16,
-      "unknown": "0000000000ff"
+      "torpedo_accuracy": 0,
+      "torpedo_jamming": 0
      },
      {
       "beam_damage_pct": 0,
       "beam_defense_pct": 100,
+      "computer_initiative": 4,
       "count": 1,
       "damage": 0,
       "design": 4,
@@ -268,12 +272,14 @@
       "mass": 186,
       "movement": 0,
       "owner": 1,
+      "ranges": 20,
       "shields": 0,
       "square": 88,
       "state": 1045,
       "tactic": 52,
       "targets": 19,
-      "unknown": "040000001414"
+      "torpedo_accuracy": 20,
+      "torpedo_jamming": 0
      }
     ],
     "x": 1449,

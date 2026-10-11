@@ -201,6 +201,27 @@ const TYPES := {
 		"fields": {"value": {"t": "int"}},
 		"required": ["value"],
 	},
+	# the battle board (S16): its size and each side's starting square, by number of sides
+	"battle_board":
+	{
+		"fields":
+		{
+			"width": {"t": "int", "min": 1},
+			"height": {"t": "int", "min": 1},
+			"start_squares":
+			{
+				"t": "list",
+				"of":
+				{
+					"t": "list",
+					"of": {"t": "list", "of": _INT0, "min": 2, "max": 2},
+					"min": 1,
+				},
+				"min": 1,
+			},
+		},
+		"required": ["width", "height", "start_squares"],
+	},
 	"name_list":
 	{
 		"fields": {"names": {"t": "list", "of": {"t": "string"}, "min": 1}},

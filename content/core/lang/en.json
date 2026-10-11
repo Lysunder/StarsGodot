@@ -6,6 +6,7 @@
   "tech_field.electronics.name": "Electronics",
   "tech_field.biotech.name": "Biotechnology",
   "constant.battle.max_rounds.name": "Battle rounds",
+  "battle_board.standard.name": "Battle board",
   "constant.research.max_level.name": "Highest tech level",
   "name_list.planets.name": "Planet names",
   "name_list.races.name": "Race names",

@@ -1,0 +1,107 @@
+extends GdUnitTestSuite
+## Spec S16 "Who fights" and "Tokens": the battles of fixture turns, set up from the state at the
+## waypoint 1 step, must start as the original's recordings do (place, sides, players, and every
+## token with its stats, square, order and weight jitter).
+
+
+class Capture:
+	extends Phase
+
+	var battles: Array = []
+
+	func _init() -> void:
+		super("test.capture_battles")
+
+	func run(ctx: TurnContext) -> void:
+		var index := 0
+		for group in BattleSetup.places(ctx.state):
+			var battle := BattleSetup.gather(ctx.state, ctx.content, group)
+			if battle.is_empty():
+				continue
+			var tokens := BattleSetup.tokens(ctx.state, ctx.content, ctx.rng(), battle)
+			var players: Array[int] = []
+			for p in ctx.state.players.size():
+				if battle.players & (1 << p):
+					players.append(p)
+			(
+				battles
+				. append(
+					{
+						"id": BattleSetup.battle_id(ctx.state.turn, index),
+						"sides": battle.sides,
+						"players": players,
+						"planet": battle.planet,
+						"x": battle.x,
+						"y": battle.y,
+						"tokens": tokens,
+					}
+				)
+			)
+			index += 1
+
+
+var _content: ContentRegistry
+
+
+func before() -> void:
+	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
+	_content = r.registry
+
+
+func _load(game: String, turn: int) -> GameState:
+	var path := "res://tests/fixtures/golden/%s/t%03d.json" % [game, turn]
+	var result := SaveFile.decode(FileAccess.get_file_as_string(path), _content)
+	assert_bool(result.ok()).override_failure_message("\n".join(result.errors)).is_true()
+	return result.state
+
+
+func _orders(game: String, turn: int, players: int) -> Array[OrderSet]:
+	var out: Array[OrderSet] = []
+	for p in players:
+		var path := "res://tests/fixtures/golden/%s/t%03d.p%d.orders.json" % [game, turn, p]
+		if FileAccess.file_exists(path):
+			out.append(OrderFile.read(path).order_set)
+	return out
+
+
+## The battles set up while generating `turn` of `game`.
+func _setup(game: String, turn: int) -> Array:
+	var state := _load(game, turn)
+	var capture := Capture.new()
+	var pipeline := StandardTurn.pipeline()
+	pipeline.insert_before("wp1.tasks", capture)
+	TurnMessages.clear(state)
+	pipeline.run(TurnContext.new(state, _content, _orders(game, turn, state.players.size())))
+	return capture.battles
+
+
+func _check(game: String, turn: int) -> void:
+	var expected: Array = _load(game, turn + 1).battles
+	var ours := _setup(game, turn)
+	assert_int(expected.size()).is_greater(0)
+	assert_int(ours.size()).is_equal(expected.size())
+	for i in mini(ours.size(), expected.size()):
+		var want: Dictionary = (expected[i] as Dictionary).duplicate(true)
+		want.erase("events")
+		var diffs := StateDiff.compare_dicts(want, ours[i], PackedStringArray())
+		(
+			assert_array(diffs)
+			. override_failure_message(
+				"%s turn %d battle %d:\n%s" % [game, turn, i, StateDiff.format(diffs, 40)]
+			)
+			. is_empty()
+		)
+
+
+func test_terra1_starbase_battle() -> void:
+	_check("terra1", 30)
+
+
+func test_mine1_patrol_battle() -> void:
+	_check("mine1", 69)
+
+
+func test_no_battle_without_an_armed_attacker() -> void:
+	# mine1 turn 68: fleets of both players meet nowhere armed and hostile
+	assert_array(_setup("mine1", 68)).is_empty()

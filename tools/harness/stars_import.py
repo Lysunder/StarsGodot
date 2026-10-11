@@ -330,6 +330,7 @@ class Importer:
                 "primary_target": d[2] & 15,
                 "secondary_target": d[2] >> 4,
                 "attack": d[3],
+                "dump_cargo": bool(d[1] & 0x80),
             }
         )
 
