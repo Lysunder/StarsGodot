@@ -1846,5 +1846,117 @@
       "planet",
       "number"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_failed",
+    "params": [
+      "population",
+      "planet",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_failed_defended",
+    "params": [
+      "population",
+      "planet",
+      "basis_points",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_repelled",
+    "params": [
+      "planet",
+      "population",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_repelled_defended",
+    "params": [
+      "planet",
+      "population",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invaded_all_died",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_all_died",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invaded",
+    "params": [
+      "player",
+      "planet",
+      "population"
+    ],
+    "ai": true,
+    "reveals_planet": true
+  },
+  {
+    "type": "message",
+    "id": "message.planet.colonized_race_won",
+    "params": [
+      "number",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.colonized_race_lost",
+    "params": [
+      "number",
+      "planet",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.colonized_starbase",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_won",
+    "params": [
+      "player",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.invasion_lost_race",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.artifact_found",
+    "params": [
+      "planet",
+      "field",
+      "number"
+    ]
   }
 ]

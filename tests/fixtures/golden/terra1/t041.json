@@ -191,14 +191,15 @@
      "type": "message.production.queue_empty"
     },
     {
-     "goto": 30,
+     "goto": {
+      "planet": 30
+     },
      "params": [
       30,
       10,
-      0,
-      49
+      1
      ],
-     "type": "legacy.message.3"
+     "type": "message.planet.invasion_repelled"
     }
    ],
    [
@@ -246,14 +247,15 @@
      "type": "message.fleet.unloaded"
     },
     {
-     "goto": 30,
+     "goto": {
+      "planet": 30
+     },
      "params": [
       10,
-      0,
       30,
-      48
+      0
      ],
-     "type": "legacy.message.0"
+     "type": "message.planet.invasion_failed"
     },
     {
      "goto": {

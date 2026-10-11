@@ -8,13 +8,8 @@ extends GdUnitTestSuite
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
-## terra1 turn 30: player 1's starbase fought player 2's gift fleet at its homeworld, and mine1
-## turn 69: player 2's patrol caught player 1's fleet 2 (both battles show the sides' designs in
-## full, S16 part 4c); terra1 turn 40: player 2's colonists unloaded onto player 1's colony fought
-## its ground troops (ground combat, S17).
-const TURN_IGNORE := {
-	"terra1": {40: ["/planets/30/population"]},
-}
+## Nothing is ignored per turn any more; kept for events not built yet.
+const TURN_IGNORE := {}
 
 var _content: ContentRegistry
 

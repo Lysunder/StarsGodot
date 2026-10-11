@@ -2,10 +2,12 @@
 
 Status: draft (2026-10-11). First part: bombing, built (`core/rules/bombing.gd`, `core/rules/defense_coverage.gd`) and
 unit-tested; read from the code (the floating-point parts from the disassembly), not yet checked against a game of
-the original. Not yet: invasion and ground combat (second part).
+the original. Second part: ground combat (`core/rules/waypoint_tasks.gd`); verified by terra1 turn 40 (an invasion
+beaten off) and by big1's views (every planet lost to an invasion is shown to its former owner).
 References: `DoBombing@10e8:6e2a`, `Bombing_SumFleetBombs@1030:0d6a`, `Planet_DefenseCoverage@1030:0262`,
 `Fleet_WillAttackPlayer@10e8:6db6`, `Planet_Depopulate@1040:553a`, `Messages_MarkPlanetsSeen@1028:81b4`,
-`RunBattles@10e8:24aa` (calls the bombing), `ResolveGroundCombat@10b0:1e82`.
+`RunBattles@10e8:24aa` (calls the bombing), `ResolveGroundCombat@10b0:1e82`, `RecordTransfer@10b0:2fda`,
+`TryTechBonus@10e8:6112`.
 
 ## Summary
 
@@ -14,6 +16,10 @@ starbase, when one of them has a battle plan that attacks that player, drop thei
 kill a share of the colonists (with a minimum) and destroy installations; smart bombs kill a share of the colonists
 that compounds per bomb; retro bombs undo terraforming. The planet's defenses stop part of the bombs. A planet left
 without colonists loses its owner.
+
+Then, between the task passes, colonists landed on a planet fight for it: on another player's planet against its
+population (the defenses stop some of the invaders), and among several invaders the strongest wins; an unowned planet
+is simply colonized by the strongest.
 
 ## Data used
 
@@ -109,11 +115,57 @@ get this message too); the "fleets" form does not (open question 1).
 
 A planet with no colonists left is depopulated (S08).
 
+## Ground combat (`ResolveGroundCombat`)
+
+Colonists landed on a planet (S11: unloaded onto another player's planet, or brought by a colonizing fleet) are
+recorded per fleet and planet (`RecordTransfer`; a second landing of the same fleet on the same planet adds to its
+record). Between the task passes of each pair (S02 5c, 16d) the planets are taken in the order of their first record;
+for each:
+
+1. **Coverage.** For an owned planet, the troops that get through: T = U + (1 - U) × 0.25 (U as for bombs, S17
+   "Defenses"), stored as a 32-bit float; 1 for an unowned planet.
+2. **Invaders.** Per record: the player's colonists grow by its colonists, and its strength by trunc(colonists ×
+   troops percent div 100 × T) (trait parameter `invasion.troops_pct`: 110, War Monger 165, Alternate Reality 0;
+   the product with T exact, as for bombs). The total strength is the sum.
+3. **Defenders** (owned planet): defense = population × `invasion.defense_pct` div 100 (100; Inner Strength 200).
+   - When defense > total strength, the defenders win: each invader (player order) gets **`planet.invasion_failed`**
+     `[colonists, planet, owner]` and the owner **`planet.invasion_repelled`** `[planet, colonists, invader]`, or,
+     when T < 1, **`planet.invasion_failed_defended`** `[colonists, planet, share stopped, owner]` (the share as
+     trunc((1 - T) × 10000), hundredths of a percent) and **`planet.invasion_repelled_defended`**; all goto the
+     planet. The population loses population × total div defense. Done.
+   - Otherwise the planet is depopulated (S08) and the invaders fight among themselves as below.
+4. **Winner.** Among the invading players in player order, the greatest strength wins; an exact tie for the greatest
+   means everyone dies: each invader gets **`planet.invasion_all_died`** `[number of invaders, planet]` and a former
+   owner **`planet.invaded_all_died`** (same parameters); the planet stays empty. "Second" is the greatest strength
+   before the winner's in player order (0 when none).
+5. **Messages** (goto the planet):
+   - An unowned planet, one invader: **`planet.colonized`** `[planet]`, or **`planet.colonized_starbase`** for an
+     Alternate Reality race; several: the winner **`planet.colonized_race_won`** `[number, planet]`, the others
+     **`planet.colonized_race_lost`** `[number, planet, winner]`.
+   - A taken planet: the winner **`planet.invasion_won`** `[former owner, planet]`, the other invaders
+     **`planet.invasion_lost_race`** `[planet]`, the former owner **`planet.invaded`** `[winner, planet, the winner's
+     colonists]` (computer players get it too; it shows the lost planet, S15). Then the winner tries the tech bonus
+     (S24) with the former owner's tech levels as the need: **`battle.tech_gained`** `[-1, planet, field, amount]`
+     (goto research) when it gains.
+6. **Population.** The winner's colonists; when the total strength and the winner's strength are above 0, times
+   ((total - defense) × winner's strength div total) div the winner's strength; then, with a second, times (winner's
+   strength - second) div the winner's strength; at least 1.
+7. The planet becomes the winner's (S11 "Colonizing an empty planet" step 4: default queue and settings, an Alternate
+   Reality starbase; a taken planet too). An artifact found there (only on a planet that had no owner) gives the
+   research points of step 5 there, with **`planet.artifact_found`** `[planet, field, points]`.
+
+(The original also resolves colonists dropped by hand from the orders, `ApplyOrderBlock`: an Alternate Reality
+race's, or any onto a planet with a starbase, die, and colonists dropped on an unowned planet without colonizing die
+too. Hand transfers to other players' planets are not built yet, S11.)
+
 ## Randomness
 
 Per bombing, from the classic stream: `random(T)` for the factories and `random(T)` for the defenses when their
 remainders are above 0, then `random(1000)` for the colonists when its remainder is above 0. Bombings come in fleet
 order, after the battles' draws.
+
+Ground combat: a taken planet's tech bonus try (S24), then an artifact's `random(6)` field and `random(301)` points
+(random events on).
 
 ## Edge cases
 
@@ -142,4 +194,4 @@ Part stats `kill_rate`, `installations`, `min_kill`, tags `smart`, `retro`; the 
 1. The "fleets" form of the bombed-out message doesn't reveal the planet to the bombers (`Messages_MarkPlanetsSeen`
    only knows the one-fleet form). An oversight of the original? Kept as is for now.
 2. Not yet checked against a game of the original (big1's computer players get only the bombed-out message): a
-   harness game with bombing is needed.
+   harness game with bombing and a successful invasion is needed.

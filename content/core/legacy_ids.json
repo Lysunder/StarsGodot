@@ -1658,5 +1658,44 @@
   },
   "message.bombed.fleets_retro": {
     "message": 379
+  },
+  "message.planet.invasion_failed": {
+    "message": 0
+  },
+  "message.planet.invasion_failed_defended": {
+    "message": 1
+  },
+  "message.planet.invasion_repelled": {
+    "message": 3
+  },
+  "message.planet.invasion_repelled_defended": {
+    "message": 4
+  },
+  "message.planet.invaded_all_died": {
+    "message": 5
+  },
+  "message.planet.invasion_all_died": {
+    "message": 6
+  },
+  "message.planet.invaded": {
+    "message": 7
+  },
+  "message.planet.colonized_race_won": {
+    "message": 8
+  },
+  "message.planet.colonized_race_lost": {
+    "message": 9
+  },
+  "message.planet.colonized_starbase": {
+    "message": 11
+  },
+  "message.planet.invasion_won": {
+    "message": 12
+  },
+  "message.planet.invasion_lost_race": {
+    "message": 13
+  },
+  "message.planet.artifact_found": {
+    "message": 94
   }
 }

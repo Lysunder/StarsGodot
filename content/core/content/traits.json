@@ -66,7 +66,8 @@
       "cost.bomb_adjust_pct": 125,
       "repair.fleet_pct": 200,
       "repair.starbase_pct": 150,
-      "fleet.colonist_growth": 1
+      "fleet.colonist_growth": 1,
+      "invasion.defense_pct": 200
     }
   },
   {

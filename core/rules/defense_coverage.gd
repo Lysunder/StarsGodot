@@ -53,6 +53,23 @@ static func scale_round(x: int, f: float) -> int:
 	return (x * p[0] + (1 << (s - 1))) >> s
 
 
+## trunc(x × f) for x ≥ 0.
+static func scale_trunc(x: int, f: float) -> int:
+	var p := parts(f)
+	var s: int = p[1]
+	if s <= 0:
+		return x * (p[0] << -s)
+	if s > MAX_SHIFT:
+		return 0
+	return (x * p[0]) >> s
+
+
+## What ground troops get through: U + (1 - U) × 0.25 as a 32-bit float (invaders are covered
+## three quarters as well as bombs).
+static func troops_through(u: float) -> float:
+	return PackedFloat32Array([(1.0 - u) * 0.25 + u])[0]
+
+
 ## trunc(x × (1 - (1 - f) × 0.5) + 0.5): installations against bombs, the coverage halved.
 static func halved_round(x: int, f: float) -> int:
 	var p := parts(f)
