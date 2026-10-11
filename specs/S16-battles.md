@@ -11,7 +11,9 @@ Fourth part (4a): battles inside the turn and their results (tech bonus draws, A
 repair); verified by the fixture turns (terra1 turn 30, mine1 turn 69 now match whole) and by replaying each big1
 turn's battles in sequence: all 227 start exactly where the previous battle's results left the random sequence.
 Fourth part (4b): the battle messages; verified by the two fixture battles (a duel and a two-sided battle at a
-starbase), the other cases read from the code only. Not yet: what the battle shows the players (4c).
+starbase), the other cases read from the code only. Fourth part (4c): what a battle shows its participants (S15
+"What scanning records", step 7); verified by the fixture turns and by all six players' views in the 80 turns of
+big1 (designs, fleets, players met; the only differences left are planets lost or bombed out, S17).
 References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBattle@10e8:1ae2`,
 `ResolveBattle@10e8:58c0`, `BuildBattleTokens@10e8:2cb4`, `Token_InitStats@10e8:2770`,
 `Design_BattleComputers@10e8:2636`, `Token_ComputeWeapons@10e8:27c4`, `Token_SetClass@10e8:15f0`,

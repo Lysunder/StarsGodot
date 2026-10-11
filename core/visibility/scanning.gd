@@ -33,6 +33,8 @@ const STARBASE_HIDDEN := 2
 const SCANNED := 3
 const MINERALS := 4
 const FULL := 7
+## Battle tokens name a starbase design as 16 + its slot (S16).
+const STARBASE_SLOTS := 16
 
 
 ## A design's [normal, penetrating] range (`Design_ScannerRange@1030:336a`): the fourth root of
@@ -189,6 +191,36 @@ class Sight:
 		_packet_scanners()
 		_minefield_scanners()
 		_messages()
+		_battles()
+
+	## `WriteBattleBlocks@1068:444e` (when the player's file is written, before anything else of
+	## its view): in each battle the player took part in, the other players are met, every other
+	## player's token design is shown in full, the fleets that are left are seen (level 3 or more)
+	## and the battle's planet at level 1.
+	func _battles() -> void:
+		for battle: Dictionary in state.battles:
+			if not (battle.players as Array).has(p):
+				continue
+			for other: int in battle.players:
+				if other != p:
+					met[other] = true
+			for t: Dictionary in battle.tokens:
+				var owner := state.player(int(t.owner))
+				if owner.index == p:
+					continue
+				var design: Design
+				if int(t.kind) == BattleSetup.STARBASE:
+					design = owner.starbase_design(int(t.design) - STARBASE_SLOTS)
+				else:
+					design = owner.ship_design(int(t.design))
+					var fleet := state.fleet(int(t.fleet_owner), int(t.fleet))
+					if fleet != null and fleet.ship_count() > 0:
+						met[fleet.owner] = true
+						fleets[fleet] = maxi(_level(fleet), SCANNED)
+				if design != null:
+					design.revealed_to[p] = true
+			if int(battle.planet) >= 0:
+				_see_planet(state.planet(int(battle.planet)), ORBITED)
 
 	## `Visibility_Reset@1068:58e4`: own planets and fleets, planets orbited by own fleets, packets
 	## for a Packet Physics player.

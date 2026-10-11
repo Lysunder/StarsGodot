@@ -13,8 +13,7 @@ const GAME_IGNORE := {}
 ## full, S16 part 4c); terra1 turn 40: player 2's colonists unloaded onto player 1's colony fought
 ## its ground troops (ground combat, S17).
 const TURN_IGNORE := {
-	"terra1": {30: ["/views/*designs/*"], 40: ["/planets/30/population"]},
-	"mine1": {69: ["/views/*designs/*"]},
+	"terra1": {40: ["/planets/30/population"]},
 }
 
 var _content: ContentRegistry

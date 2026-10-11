@@ -142,8 +142,11 @@ For each player in order (a player's pass only touches that player's view):
 6. **Designs**: every other player's design seen this turn gets level 3 (7 for a War Monger viewer), and a design
    shown in full this turn (below) level 7; its owner is met.
 
-(Battles add to each participant's view when its file is written: the other players in the battle are met, every
-token's design is shown in full, the fleets in it are seen at level 3 or more, and the battle's planet at level 1: M9.)
+7. **Battles** (`WriteBattleBlocks@1068:444e`, when the player's file is written, before any of its view is): in
+   each of the turn's battles the player took part in, the other players in it are met; every token of another
+   player shows its design in full (level 7: a ship design, or the starbase design); each such token's fleet, when it
+   still has ships, is seen at level 3 or more and its owner met; and the battle's planet is seen at level 1 (with
+   its starbase's design and owner, as any planet seen; S16).
 
 ### Marks made during the turn
 
@@ -214,10 +217,10 @@ minefield order, then fleet order, after the turn's other draws (the files are w
 
 ## Verification
 
-- terra1, long1, follow1, gate1, prod1 and mine1 (all turns): every player's view matches the original's turn files
-  (terra1 turn 30 has a battle: designs ignored).
-- big1 (80 turns, 6 computer players, views only: our scanning run on each converted host state): matches except
-  battles and invasions.
+- terra1, long1, follow1, gate1, prod1 and mine1 (all turns, battles included): every player's view matches the
+  original's turn files.
+- big1 (80 turns, 6 computer players, 227 battles; views only: our scanning run on each converted host state): matches
+  except planets lost to invasion or bombed out (S17).
 
 ## Open questions
 
