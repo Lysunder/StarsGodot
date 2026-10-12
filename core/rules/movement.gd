@@ -384,6 +384,9 @@ static func _step(
 		arrived = landed
 	if arrived and next.target == "wormhole":
 		_through_wormhole(state, fleet, next)
+	# a fleet that stops on a planet orbits it, whatever its waypoint targets (a chased fleet there)
+	if fleet.planet < 0:
+		fleet.planet = _planet_at(state, fleet.x, fleet.y)
 	# scoops make fuel over min(move, trunc(distance - 0.99999)); not after running out of fuel or a
 	# mine hit
 	if not out_of_fuel and hit < 0:
@@ -423,13 +426,17 @@ static func _through_wormhole(state: GameState, fleet: Fleet, next: Waypoint) ->
 		far.tracked_by.sort()
 	fleet.x = far.x
 	fleet.y = far.y
-	fleet.planet = -1
-	for pl in state.planets:
-		if pl.x == far.x and pl.y == far.y:
-			fleet.planet = pl.id
-			break
+	fleet.planet = _planet_at(state, far.x, far.y)
 	next.x = far.x
 	next.y = far.y
+
+
+## The planet at (x, y), or -1.
+static func _planet_at(state: GameState, x: int, y: int) -> int:
+	for pl in state.planets:
+		if pl.x == x and pl.y == y:
+			return pl.id
+	return -1
 
 
 ## Out of fuel: the next waypoint's warp drops to the highest warp that uses no fuel.

@@ -1,0 +1,96 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.medium_freighter",
+    "mod_data": {},
+    "name": "Design 4",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 4,
+    "remaining": 0,
+    "slot": 4,
+    "transferred": false,
+    "turn_designed": 118
+   },
+   "slot": 4,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.medium_freighter",
+    "mod_data": {},
+    "name": "Design 4",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.trans_galactic_fuel_scoop"
+     },
+     {
+      "count": 1,
+      "part": "part.scanner.gazelle_scanner"
+     },
+     {
+      "count": 1,
+      "part": "part.shield.bear_neutrino_barrier"
+     }
+    ],
+    "picture": 4,
+    "remaining": 0,
+    "slot": 4,
+    "transferred": false,
+    "turn_designed": 118
+   },
+   "slot": 4,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": 4,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 16,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 94,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 118
+}

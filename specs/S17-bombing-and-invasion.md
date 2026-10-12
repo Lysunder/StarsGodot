@@ -1,9 +1,12 @@
 # S17 Bombing and invasion
 
 Status: draft (2026-10-11). First part: bombing, built (`core/rules/bombing.gd`, `core/rules/defense_coverage.gd`) and
-unit-tested; read from the code (the floating-point parts from the disassembly), not yet checked against a game of
-the original. Second part: ground combat (`core/rules/waypoint_tasks.gd`); verified by terra1 turn 40 (an invasion
-beaten off) and by big1's views (every planet lost to an invasion is shown to its former owner).
+unit-tested; read from the code (the floating-point parts from the disassembly); verified by mine1 turns 126-131
+(three Mini Bombers with Lady Finger bombs on an undefended colony: six bombings, one-fleet and several-fleets
+forms, the minimum kill, installation draws). Second part: ground combat (`core/rules/waypoint_tasks.gd`); verified
+by terra1 turn 40 (an invasion beaten off), mine1 turn 131 (21,000 colonists take a planet of 18,200, messages
+and views) and by big1's views (every planet lost to an invasion is shown to its former owner). Not yet seen in a
+game: defenses against bombs, smart and retro bombs, several invaders.
 References: `DoBombing@10e8:6e2a`, `Bombing_SumFleetBombs@1030:0d6a`, `Planet_DefenseCoverage@1030:0262`,
 `Fleet_WillAttackPlayer@10e8:6db6`, `Planet_Depopulate@1040:553a`, `Messages_MarkPlanetsSeen@1028:81b4`,
 `RunBattles@10e8:24aa` (calls the bombing), `ResolveGroundCombat@10b0:1e82`, `RecordTransfer@10b0:2fda`,
@@ -194,5 +197,5 @@ Part stats `kill_rate`, `installations`, `min_kill`, tags `smart`, `retro`; the 
 
 ## Open questions
 
-1. Not yet checked against a game of the original (big1's computer players get only the bombed-out message): a
-   harness game with bombing and a successful invasion is needed.
+1. Answered: mine1 turns 126-131 match (bombing, then a successful invasion). Defenses, smart and retro bombs and
+   several invaders are still checked only by unit tests.

@@ -322,17 +322,17 @@ class Importer:
     def battle_plan(self, d, players):
         owner, number = d[0] & 15, d[0] >> 4
         name = starsfile.read_string(d, 4)[0]
-        players[owner]["battle_plans"].append(
-            {
-                "number": number,
-                "name": name if self.keep_names else "Plan %d" % number,
-                "tactic": d[1] & 15,
-                "primary_target": d[2] & 15,
-                "secondary_target": d[2] >> 4,
-                "attack": d[3],
-                "dump_cargo": bool(d[1] & 0x80),
-            }
-        )
+        plan = {
+            "number": number,
+            "name": name if self.keep_names else "Plan %d" % number,
+            "tactic": d[1] & 15,
+            "primary_target": d[2] & 15,
+            "secondary_target": d[2] >> 4,
+            "attack": d[3],
+        }
+        if d[1] & 0x80:
+            plan["dump_cargo"] = True  # (absent means false, as in the fixtures made before this flag)
+        players[owner]["battle_plans"].append(plan)
 
     def design(self, block, starbase):
         if block is None or block.type != T_DESIGN:

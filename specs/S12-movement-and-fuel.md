@@ -197,7 +197,10 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    is marked known (tracked) by its owner, other players' waypoints that target the fleet are frozen at the near
    end (`RetargetFollowers`), and the fleet and its waypoint are placed on the far end. The rest of the step
    (ram scoops, waypoints) then sees it there. A wormhole that jumps (phase 14) is no longer tracked by anyone.
-9. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
+9. **Orbit:** a fleet that ends its move on a planet's position orbits that planet, whatever its waypoint targets
+   (`MoveFleets` looks for a planet there when the fleet has none): a fleet that caught up with a fleet orbiting a
+   planet orbits it too, so its current waypoint becomes that planet (seen in mine1 turn 81).
+10. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
 
 ### Waypoints after movement
 

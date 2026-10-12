@@ -1,0 +1,184 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.mini_bomber",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 64,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 71
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.mini_bomber",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.long_hump_6"
+     },
+     {
+      "count": 1,
+      "part": "part.bomb.lady_finger_bomb"
+     }
+    ],
+    "picture": 64,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 71
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.mini_bomber",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.long_hump_6"
+     },
+     {
+      "count": 1,
+      "part": "part.bomb.lady_finger_bomb"
+     }
+    ],
+    "picture": 64,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 71
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 3,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 8,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 99,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 68,
+   "type": "production_queue"
+  }
+ ],
+ "player": 1,
+ "turn": 71
+}
