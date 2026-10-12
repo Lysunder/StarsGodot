@@ -1,6 +1,6 @@
 class_name TurnEndPhases
 extends RefCounted
-## Phases at the end of a turn (spec S02 23, 26, 27).
+## Phases at the end of a turn (spec S02 23, 24, 26, 27).
 
 
 ## 23: the year advances.
@@ -14,6 +14,17 @@ class Advance:
 		ctx.state.turn += 1
 		for p in ctx.state.players:
 			p.tech_bonus_taken = false
+
+
+## 24: scores, ranks, eliminations and victory (S20).
+class ScoreUpdate:
+	extends Phase
+
+	func _init() -> void:
+		super("score.update")
+
+	func run(ctx: TurnContext) -> void:
+		Score.update(ctx.state, ctx.content)
 
 
 ## 26: one draw the original stores in its settings word (purpose open, S02).

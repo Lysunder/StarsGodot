@@ -456,31 +456,12 @@ static func _movement(
 	token: Dictionary,
 	dumped: bool
 ) -> int:
-	var engine := ""
-	var engines := 0
-	var halves := 0
-	var extra := 0
-	for slot in design.parts:
-		if slot.count <= 0 or slot.part.is_empty():
-			continue
-		var part := content.part(slot.part)
-		var stats: Dictionary = part.get("stats", {})
-		if part.get("category", "") == "engine" and engine.is_empty():
-			engine = slot.part
-			engines = slot.count
-		halves += slot.count * int(stats.get("battle_move_halves", 0))
-		extra += slot.count * int(stats.get("battle_move", 0))
-	if engine.is_empty() or engines == 0:
+	var base := _engine_move(design, content)
+	var engines: int = base[1]
+	if engines == 0:
 		return 0
-	var engine_part := content.part(engine)
-	var speed := 10
-	if not engine_part.get("tags", []).has("warp10_safe"):
-		var table: Array = engine_part.get("fuel_table", [])
-		speed = 9
-		while speed > 0 and int(table[speed]) >= FUEL_LIMIT:
-			speed -= 1
 	var owner := state.player(fleet.owner)
-	var move := speed + extra + (halves + 1) / 2 - MOVE_BASE
+	var move: int = base[0]
 	move += RaceMath.trait_param(owner.race, content, "battle.movement_bonus", 0)
 	var mass := PartRules.mass(design, content)
 	var capacity := PartRules.cargo_capacity(design, content)
@@ -502,6 +483,46 @@ static func _movement(
 	token.mass = mass
 	move -= mass / MASS_PER_MOVE / engines
 	return clampi(move, 0, MOVE_MAX)
+
+
+## A design's battle movement on its own, without a fleet (no race bonus, no cargo, no draw): what
+## the ship rating uses (S20 `Design_Evaluate`, which calls `Design_BattleMovement` without one).
+static func design_movement(design: Design, content: ContentRegistry) -> int:
+	var base := _engine_move(design, content)
+	var engines: int = base[1]
+	if engines == 0:
+		return 0
+	var move: int = base[0] - PartRules.mass(design, content) / MASS_PER_MOVE / engines
+	return clampi(move, 0, MOVE_MAX)
+
+
+## [the engines' speed plus movement parts, less MOVE_BASE; the first engine slot's count] (0
+## engines: no movement).
+static func _engine_move(design: Design, content: ContentRegistry) -> Array[int]:
+	var engine := ""
+	var engines := 0
+	var halves := 0
+	var extra := 0
+	for slot in design.parts:
+		if slot.count <= 0 or slot.part.is_empty():
+			continue
+		var part := content.part(slot.part)
+		var stats: Dictionary = part.get("stats", {})
+		if part.get("category", "") == "engine" and engine.is_empty():
+			engine = slot.part
+			engines = slot.count
+		halves += slot.count * int(stats.get("battle_move_halves", 0))
+		extra += slot.count * int(stats.get("battle_move", 0))
+	if engine.is_empty() or engines == 0:
+		return [0, 0]
+	var engine_part := content.part(engine)
+	var speed := 10
+	if not engine_part.get("tags", []).has("warp10_safe"):
+		var table: Array = engine_part.get("fuel_table", [])
+		speed = 9
+		while speed > 0 and int(table[speed]) >= FUEL_LIMIT:
+			speed -= 1
+	return [speed + extra + (halves + 1) / 2 - MOVE_BASE, engines]
 
 
 ## `Fleet_DumpCargo@10e8:173e`: a fleet with minerals aboard drops them onto the planet, or as

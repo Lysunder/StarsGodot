@@ -105,6 +105,12 @@ static func _value(
 		"player":
 			var p := view.state.player(int(v))
 			return p.race.plural_name if p != null else "player %d" % (int(v) + 1)
+		"players":
+			var names: PackedStringArray = []
+			for i: int in v:
+				var each := view.state.player(i)
+				names.append(each.race.plural_name if each != null else "player %d" % (i + 1))
+			return " and ".join(names)
 		"cargo":
 			return CARGO[clampi(int(v), 0, CARGO.size() - 1)]
 		"field":

@@ -14,6 +14,13 @@ var race: Race = Race.new()
 var ai: String = AI_NONE
 var ai_level: int = 0
 var active: bool = true
+## Out of the game: no planets and no ships left (S20).
+var eliminated: bool = false
+## Rank by score, 1 for the highest (S20); 0 before the first scoring and in a one-player game.
+var rank: int = 0
+## This turn's score record (S20): score, resources, planets, starbases, unarmed, escorts,
+## capitals, tech, rank, met (the victory conditions met), winner. Empty before the first scoring.
+var score: Dictionary = {}
 ## Homeworld planet id, -1 when none.
 var homeworld: int = -1
 ## Per tech field, in field order (energy, weapons, propulsion, construction, electronics, biotech).
@@ -59,6 +66,9 @@ func _schema() -> Array:
 		["ai", Kind.STRING],
 		["ai_level", Kind.INT],
 		["active", Kind.BOOL],
+		["eliminated", Kind.BOOL],
+		["rank", Kind.INT],
+		["score", Kind.JSON],
 		["homeworld", Kind.INT],
 		["tech_levels", Kind.INT_LIST],
 		["research_points", Kind.INT_LIST],

@@ -128,6 +128,29 @@ def mask_bits(mask):
 # --- Settings and planets (.xy) ----------------------------------------------------------------
 
 
+# Victory conditions (S20): the original's byte per condition (low 7 bits a choice v, bit 7 on) as
+# our values. None: the condition has no switch of its own.
+VICTORY = [
+    ("owns_planets", lambda v: (v + 4) * 5, True),
+    ("tech_level", lambda v: v + 8, True),
+    ("tech_fields", lambda v: v + 2, False),
+    ("score", lambda v: (v + 1) * 1000, True),
+    ("exceeds_second", lambda v: (v + 2) * 10, True),
+    ("production", lambda v: (v + 1) * 10, True),
+    ("capital_ships", lambda v: (v + 1) * 10, True),
+    ("highest_score", lambda v: (v + 3) * 10, True),
+    ("criteria", lambda v: v, False),
+    ("min_years", lambda v: (v + 3) * 10, False),
+]
+
+
+def victory_settings(raw):
+    out = {}
+    for (name, value, switch), b in zip(VICTORY, raw):
+        out[name] = {"on": bool(b & 0x80), "value": value(b & 0x7F)} if switch else value(b & 0x7F)
+    return out
+
+
 def read_settings(xy):
     block = next(b for b in xy.blocks if b.type == starsfile.TYPE_SETTINGS)
     d = block.data
@@ -138,7 +161,7 @@ def read_settings(xy):
         "density": DENSITIES[density],
         "player_positions": POSITIONS[positions],
         "tutorial": False,
-        "victory": {"raw": list(d[20:32])},
+        "victory": victory_settings(d[20:30]),
         "ruleset_hash": "",
         "mods": [{"id": "core", "version": GAME_VERSION}],
     }
@@ -293,6 +316,9 @@ class Importer:
             "ai": AI_PERSONALITIES[personality] if computer else "",
             "ai_level": (ai_flags >> 2) & 7 if computer else 0,
             "active": personality != AI_INACTIVE or not ai_flags & 2,
+            "eliminated": bool(d[0x54] & 1),
+            "rank": struct.unpack_from("<H", d, 0x0A)[0],
+            "score": {},
             "homeworld": struct.unpack_from("<h", d, 8)[0],
             "tech_levels": list(d[0x1A:0x20]),
             "research_points": list(struct.unpack_from("<6I", d, 0x20)),
@@ -645,6 +671,8 @@ def message_goto(word, legacy, params=()):
         return {"research": True}
     if word == 0xFFFD:
         return {"hulls": True}
+    if word == 0xFFFC:
+        return {"score": True}
     if word >= 0xC000:
         return {"item": legacy_item(legacy, 1 << ((word >> 8) & 0x3F), word & 0xFF)}
     if word & 0x8000:
@@ -670,6 +698,9 @@ def message_params(raw, kinds, legacy):
         elif kind == "player":
             out.append(raw[i] & 0x0F)
             i += 1
+        elif kind == "players":
+            out.append(mask_bits(raw[i]))
+            i += 1
         elif kind == "object_kind":
             out.append(-1 if raw[i] == 0xFFFF else raw[i])
             i += 1
@@ -678,6 +709,61 @@ def message_params(raw, kinds, legacy):
             i += 1
     if i != len(raw):
         raise StarsImportError("message parameters %r don't fit kinds %r" % (raw, kinds))
+    return out
+
+
+TYPE_SCORE = 45
+# Score record flags (S20): the conditions met this turn, by bit, and the winner bit.
+SCORE_MET = [
+    (0x40, "owns_planets"),
+    (0x80, "tech_level"),
+    (0x100, "score"),
+    (0x200, "exceeds_second"),
+    (0x400, "production"),
+    (0x800, "capital_ships"),
+    (0x1000, "highest_score"),
+]
+SCORE_WINNER = 0x4000
+
+
+def unpack_word(word):
+    """The original's 16-bit packed count (13 bits, shifted left by 2 per step in the top 3 bits)."""
+    return (word & 0x1FFF) << (((word >> 13) & 7) * 2)
+
+
+def score_record(d):
+    """A score record (block 45, S20) as our player score: [player, record]."""
+    flags, rank, score, resources, planets, starbases = struct.unpack_from("<HHiiHH", d, 0)
+    unarmed, escorts, capitals, tech = struct.unpack_from("<HHHH", d, 16)
+    return flags & 0x1F, {
+        "score": score,
+        "resources": resources,
+        "planets": planets,
+        "starbases": starbases,
+        "unarmed": unpack_word(unarmed),
+        "escorts": unpack_word(escorts),
+        "capitals": unpack_word(capitals),
+        "tech": tech,
+        "rank": rank,
+        "met": [name for bit, name in SCORE_MET if flags & bit],
+        "winner": bool(flags & SCORE_WINNER),
+    }
+
+
+def player_scores(hst_path, players):
+    """Each player's score record of this turn (S20), from the turn files beside the host file:
+    a player's own record, or {} when its file is missing or holds none."""
+    base = os.path.splitext(hst_path)[0]
+    out = [{} for _ in range(players)]
+    for p in range(players):
+        path = "%s.m%d" % (base, p + 1)
+        if not os.path.exists(path):
+            continue
+        for block in starsfile.StarsFile.read(path).blocks:
+            if block.type == TYPE_SCORE:
+                owner, record = score_record(block.data)
+                if owner == p:
+                    out[p] = record
     return out
 
 

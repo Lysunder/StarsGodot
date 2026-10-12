@@ -63,6 +63,7 @@ static func pipeline() -> TurnPipeline:
 		PlanetPhases.RemoteTerraform.new(),
 		FleetPhases.Retarget.new(),
 		TurnEndPhases.Advance.new(),
+		TurnEndPhases.ScoreUpdate.new(),
 		TurnEndPhases.RandomSettings.new(),
 		TurnEndPhases.FileDraws.new(),
 	]:

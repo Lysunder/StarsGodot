@@ -6622,6 +6622,7 @@
     ],
     "default_leftover_to_research": false,
     "default_queue": [],
+    "eliminated": false,
     "homeworld": 84,
     "index": 0,
     "knowledge": {},
@@ -6680,6 +6681,7 @@
      "resources_per_colonist": 12,
      "techs_start_at_3": false
     },
+    "rank": 0,
     "relations": [
      "neutral",
      "neutral",
@@ -6695,6 +6697,7 @@
      0,
      0
     ],
+    "score": {},
     "ship_designs": [
      {
       "built": 1,
@@ -6864,6 +6867,7 @@
     ],
     "default_leftover_to_research": false,
     "default_queue": [],
+    "eliminated": false,
     "homeworld": 63,
     "index": 1,
     "knowledge": {},
@@ -6921,6 +6925,7 @@
      "resources_per_colonist": 10,
      "techs_start_at_3": false
     },
+    "rank": 0,
     "relations": [
      "neutral",
      "neutral",
@@ -6936,6 +6941,7 @@
      0,
      0
     ],
+    "score": {},
     "ship_designs": [
      {
       "built": 1,
@@ -7159,6 +7165,7 @@
     ],
     "default_leftover_to_research": false,
     "default_queue": [],
+    "eliminated": false,
     "homeworld": 38,
     "index": 2,
     "knowledge": {},
@@ -7208,6 +7215,7 @@
      "resources_per_colonist": 10,
      "techs_start_at_3": false
     },
+    "rank": 0,
     "relations": [
      "neutral",
      "neutral",
@@ -7223,6 +7231,7 @@
      0,
      0
     ],
+    "score": {},
     "ship_designs": [
      {
       "built": 1,
@@ -7494,20 +7503,37 @@
    "tutorial": false,
    "universe_width": 800,
    "victory": {
-    "raw": [
-     136,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ]
+    "capital_ships": {
+     "on": false,
+     "value": 10
+    },
+    "criteria": 0,
+    "exceeds_second": {
+     "on": false,
+     "value": 20
+    },
+    "highest_score": {
+     "on": false,
+     "value": 30
+    },
+    "min_years": 30,
+    "owns_planets": {
+     "on": true,
+     "value": 60
+    },
+    "production": {
+     "on": false,
+     "value": 10
+    },
+    "score": {
+     "on": false,
+     "value": 1000
+    },
+    "tech_fields": 2,
+    "tech_level": {
+     "on": false,
+     "value": 8
+    }
    }
   },
   "traders": [],

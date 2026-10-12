@@ -35,6 +35,7 @@ A turn's generation starts with empty lists (the original's host loads the game 
 | `{"research": true}` | the research dialog |
 | `{"item": id}` | a part or planetary item (the technology browser) |
 | `{"hulls": true}` | the ship designer's hull list |
+| `{"score": true}` | the score report (S20 end-of-game messages) |
 | `{"minefield": number, "owner": player}` | a minefield |
 | `{"packet": number, "owner": player}` | a packet or salvage pile |
 | `{"battle": id}` | a battle's recording (S16; the battle viewer) |

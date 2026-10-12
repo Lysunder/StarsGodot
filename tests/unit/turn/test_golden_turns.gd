@@ -59,6 +59,10 @@ func _check_turn(game: String, turn: int) -> void:
 	# player views (S15) only where the fixture kept the players' turn files
 	if expected.views.is_empty():
 		ignore.append("/views*")
+	# score records (S20) likewise: a player's own turn file holds its record
+	for p in expected.players.size():
+		if expected.player(p).score.is_empty():
+			ignore.append("/players/%d/score*" % p)
 	var diffs := StateDiff.compare(expected, state, ignore)
 	(
 		assert_array(diffs)

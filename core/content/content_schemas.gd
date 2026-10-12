@@ -50,6 +50,8 @@ const MESSAGE_PARAMS := [
 	"fleet_designs",
 	"design",
 	"player",
+	# several players: a list of player indices (the original's one-bit-per-player word)
+	"players",
 	"cargo",
 	"field",
 	"item",

@@ -878,5 +878,17 @@
   "message.planet.invasion_lost_race.text": "The colonists you landed on {0} were killed in the fighting.",
   "message.planet.invasion_lost_race.name": "Invasion failed",
   "message.planet.artifact_found.text": "Your colonists on {0} found an alien artifact: {2} resources of research in {1}.",
-  "message.planet.artifact_found.name": "Artifact found"
+  "message.planet.artifact_found.name": "Artifact found",
+  "message.game.won_by_other.text": "The {0} have won this game. Bowing to them is advised, though nothing stops you from fighting on.",
+  "message.game.won_by_other.name": "Victory",
+  "message.game.won.text": "You have won this game. You may play on to make your triumph even more complete.",
+  "message.game.won.name": "Victory",
+  "message.game.won_shared.text": "You and the {0} have won this game together. You may play on to improve your standing.",
+  "message.game.won_shared.name": "Shared victory",
+  "message.game.dead.text": "Your race is no more: every planet has been lost and every ship destroyed.",
+  "message.game.dead.name": "Defeat",
+  "message.game.player_eliminated.text": "The {0} have been wiped out; nothing of them is left in the galaxy.",
+  "message.game.player_eliminated.name": "Player eliminated",
+  "message.game.last_standing.text": "Every rival has been wiped out. The galaxy is yours alone.",
+  "message.game.last_standing.name": "Last one standing"
 }

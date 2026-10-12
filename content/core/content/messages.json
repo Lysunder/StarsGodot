@@ -1958,5 +1958,41 @@
       "field",
       "number"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.won_by_other",
+    "params": [
+      "players"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.won",
+    "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.game.won_shared",
+    "params": [
+      "players"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.dead",
+    "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.game.player_eliminated",
+    "params": [
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.game.last_standing",
+    "params": []
   }
 ]

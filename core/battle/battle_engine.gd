@@ -779,10 +779,10 @@ func _take_damage(
 		var pool: int = o.shields * o.count
 		if pool <= left:
 			left -= pool
-			hit.shield_damage = _packed(pool)
+			hit.shield_damage = pack(pool)
 			o.shields = 0
 		else:
-			hit.shield_damage = _packed(left)
+			hit.shield_damage = pack(left)
 			o.shields = _div(pool - left, o.count)
 			left = 0
 	if (left == 0 or sapper) and armor_part == 0:
@@ -830,8 +830,9 @@ func _record_hit(hit: Dictionary, event: Dictionary) -> void:
 	(event.hits as Array).append(hit)
 
 
-## Shield damage as recorded: 13 bits, shifted right by 2 while too big, the shifts on top.
-static func _packed(value: int) -> int:
+## Shield damage as recorded (`PackLongToWord`): 13 bits, shifted right by 2 while too big, the
+## shifts on top. Score records pack ship counts the same way (S20).
+static func pack(value: int) -> int:
 	var shifts := 0
 	while value & ~0x1FFF:
 		value >>= 2

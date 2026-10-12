@@ -1697,5 +1697,23 @@
   },
   "message.planet.artifact_found": {
     "message": 94
+  },
+  "message.game.won_by_other": {
+    "message": 181
+  },
+  "message.game.won": {
+    "message": 182
+  },
+  "message.game.won_shared": {
+    "message": 183
+  },
+  "message.game.dead": {
+    "message": 184
+  },
+  "message.game.player_eliminated": {
+    "message": 187
+  },
+  "message.game.last_standing": {
+    "message": 188
   }
 }

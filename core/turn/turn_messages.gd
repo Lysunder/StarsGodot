@@ -14,14 +14,16 @@ static func clear(state: GameState) -> void:
 	state.messages = lists
 
 
-## Sends message `type` to `player`.
+## Sends message `type` to `player`; `first` puts it at the start of the player's list (the
+## original's `AddMessageFirst`).
 static func add(
 	state: GameState,
 	content: ContentRegistry,
 	player: int,
 	type: String,
 	goto: Dictionary,
-	params: Array
+	params: Array,
+	first := false
 ) -> void:
 	if player < 0 or player >= state.players.size():
 		return
@@ -30,6 +32,8 @@ static func add(
 		return
 	while state.messages.size() < state.players.size():
 		state.messages.append([])
-	(state.messages[player] as Array).append(
-		{"type": type, "goto": goto, "params": params.duplicate()}
-	)
+	var message := {"type": type, "goto": goto, "params": params.duplicate()}
+	if first:
+		(state.messages[player] as Array).push_front(message)
+	else:
+		(state.messages[player] as Array).append(message)

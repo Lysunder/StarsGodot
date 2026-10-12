@@ -6879,6 +6879,7 @@
       "starbase": false
      }
     ],
+    "eliminated": false,
     "homeworld": 94,
     "index": 0,
     "knowledge": {},
@@ -6928,6 +6929,7 @@
      "resources_per_colonist": 10,
      "techs_start_at_3": false
     },
+    "rank": 2,
     "relations": [
      "neutral",
      "neutral"
@@ -6942,6 +6944,19 @@
      0,
      63
     ],
+    "score": {
+     "capitals": 0,
+     "escorts": 0,
+     "met": [],
+     "planets": 2,
+     "rank": 2,
+     "resources": 1555,
+     "score": 138,
+     "starbases": 1,
+     "tech": 42,
+     "unarmed": 1,
+     "winner": false
+    },
     "ship_designs": [
      {
       "built": 1,
@@ -7198,6 +7213,7 @@
       "starbase": false
      }
     ],
+    "eliminated": false,
     "homeworld": 68,
     "index": 1,
     "knowledge": {},
@@ -7249,6 +7265,7 @@
      "resources_per_colonist": 10,
      "techs_start_at_3": false
     },
+    "rank": 1,
     "relations": [
      "enemy",
      "neutral"
@@ -7263,6 +7280,22 @@
      0,
      0
     ],
+    "score": {
+     "capitals": 0,
+     "escorts": 4,
+     "met": [
+      "tech_level",
+      "highest_score"
+     ],
+     "planets": 1,
+     "rank": 1,
+     "resources": 1655,
+     "score": 163,
+     "starbases": 1,
+     "tech": 49,
+     "unarmed": 3,
+     "winner": false
+    },
     "ship_designs": [
      {
       "built": 1,
@@ -7616,20 +7649,37 @@
    "tutorial": false,
    "universe_width": 800,
    "victory": {
-    "raw": [
-     136,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ]
+    "capital_ships": {
+     "on": false,
+     "value": 10
+    },
+    "criteria": 0,
+    "exceeds_second": {
+     "on": false,
+     "value": 20
+    },
+    "highest_score": {
+     "on": false,
+     "value": 30
+    },
+    "min_years": 30,
+    "owns_planets": {
+     "on": true,
+     "value": 60
+    },
+    "production": {
+     "on": false,
+     "value": 10
+    },
+    "score": {
+     "on": false,
+     "value": 1000
+    },
+    "tech_fields": 2,
+    "tech_level": {
+     "on": false,
+     "value": 8
+    }
    }
   },
   "traders": [],

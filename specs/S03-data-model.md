@@ -81,6 +81,9 @@ files are read only by the dev harness (S23).
 | `race` | the race definition (S06): names, logo, primary and lesser traits, habitability, growth rate, economy settings, research costs, leftover-points choice, options |
 | `ai` | none (human) or a personality and level (S22) |
 | `active` | still in the game |
+| `eliminated` | out of the game: no planets and no ships left (S20) |
+| `rank` | rank by score, 1 for the highest; 0 before the first scoring and in a one-player game (S20) |
+| `score` | this turn's score record (S20), empty before the first scoring |
 | `homeworld` | planet id |
 | `tech_levels` | six integers 0 … 26, in tech field order (energy, weapons, propulsion, construction, electronics, biotech) |
 | `research_points` | six integers, progress toward each field's next level (S05) |
