@@ -76,6 +76,7 @@ class Waypoint1Tasks:
 	func run(ctx: TurnContext) -> void:
 		Battles.run_all(ctx.state, ctx.content, ctx.rng(), ctx.rng(RngStreams.FIXES))
 		Bombing.bomb_all(ctx.state, ctx.content, ctx.rng())
+		MysteryTrader.meet_all(ctx.state, ctx.content, ctx.rng())
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
 		tasks.run_pass(3)
 		tasks.resolve()

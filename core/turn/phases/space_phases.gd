@@ -24,6 +24,10 @@ class MoveBeforeFleets:
 
 	func run(ctx: TurnContext) -> void:
 		Packets.move_all(ctx.state, ctx.content, ctx.rng(), false)
+		# the Mystery Trader comes after the packets (space objects in id order, S18)
+		if not ctx.state.traders.is_empty():
+			MysteryTrader.move_all(ctx.state, ctx.content, ctx.rng())
+			FleetTargets.update(ctx.state, ctx.content, ctx.rng())
 
 
 ## 11: minefields detonate and decay (S13), then packets and salvage decay (S14).

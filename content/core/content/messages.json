@@ -1994,5 +1994,180 @@
     "type": "message",
     "id": "message.game.last_standing",
     "params": []
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_small",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_medium",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_large",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_huge",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_yours_small",
+    "params": [
+      "planet",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_yours_medium",
+    "params": [
+      "planet",
+      "axis",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_yours_large",
+    "params": [
+      "planet",
+      "axis",
+      "axis",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.comet_hit_yours_huge",
+    "params": [
+      "planet",
+      "axis",
+      "axis",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.environment_changed",
+    "params": [
+      "planet",
+      "axis"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.event.mineral_deposit",
+    "params": [
+      "planet",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.arrived",
+    "params": [
+      "space_object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.course_changed",
+    "params": [
+      "space_object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.turned_back",
+    "params": [
+      "space_object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.refused",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.recovering",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.research",
+    "params": [
+      "fleet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.research_all_parts",
+    "params": [
+      "fleet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.part",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.hull",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.planetary",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.nothing_to_teach",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.ships",
+    "params": [
+      "fleet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.trader.ships_no_room",
+    "params": [
+      "fleet"
+    ]
   }
 ]

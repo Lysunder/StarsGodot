@@ -1,7 +1,7 @@
 class_name EconomyPhases
 extends RefCounted
-## The production phase's steps (spec S02 13a-13d): mining, planet production, population
-## growth and the tech update.
+## The production phase's steps (spec S02 13a-13e): mining, planet production, population
+## growth, the tech update and random events.
 
 
 ## 13a: every owned, populated planet is mined by its owner (S08), in planet order.
@@ -87,3 +87,15 @@ class TechUpdate:
 
 	func run(ctx: TurnContext) -> void:
 		ResearchRules.update(ctx.state, ctx.content, ctx.research_spent)
+
+
+## 13e: random events, unless the game has them off (S18).
+class RandomEventsPhase:
+	extends Phase
+
+	func _init() -> void:
+		super("production.random_events")
+
+	func run(ctx: TurnContext) -> void:
+		if not ctx.state.settings.no_random_events:
+			RandomEvents.run(ctx.state, ctx.content, ctx.rng())

@@ -13,6 +13,7 @@ The classic random stream's state at the start of the turn is not in any file (S
 """
 
 import argparse
+import glob
 import json
 import os
 import struct
@@ -98,6 +99,35 @@ class Legacy:
                 self.lrts[v["lrt_bit"]] = cid
             else:
                 self.parts[(v["kind"], v["item"])] = cid
+
+    # The Mystery Trader's items by bit (S18): content ids carrying "trader_bit"; bit 12 is ships.
+    TRADER_SHIPS_BIT = 12
+
+    def trader_bits(self):
+        if not hasattr(self, "_trader_bits"):
+            self._trader_bits = {}
+            pattern = os.path.join(ROOT, "content", "core", "content", "**", "*.json")
+            for path in glob.glob(pattern, recursive=True):
+                with open(path, encoding="utf-8") as f:
+                    defs = json.load(f)
+                for d in defs if isinstance(defs, list) else []:
+                    if "trader_bit" in d:
+                        self._trader_bits[d["trader_bit"]] = d["id"]
+        return self._trader_bits
+
+    def trader_item(self, word):
+        """A trader's item word: 0 research, bit 12 ships, else the part or hull of that bit."""
+        if word == 0:
+            return "research"
+        bit = word.bit_length() - 1
+        return "ships" if bit == self.TRADER_SHIPS_BIT else self.trader_bits()[bit]
+
+    def trader_items(self, word):
+        """A player's Mystery Trader items (S18), sorted."""
+        return sorted(
+            "ships" if bit == self.TRADER_SHIPS_BIT else self.trader_bits()[bit]
+            for bit in range(13) if word >> bit & 1
+        )
 
     def part(self, kind, item):
         if (kind, item) not in self.parts:
@@ -332,7 +362,7 @@ class Importer:
             "default_queue": self.default_queue(index, d[0x57], d[0x58:0x70]),
             "default_leftover_to_research": bool(d[0x56] & 1),
             "message_filters": [],
-            "trader_parts": [],
+            "trader_parts": self.legacy.trader_items(struct.unpack_from("<H", d, 0x52)[0]),
             "knowledge": {},
             "mod_data": {},
             "_ship_design_count": d[1],
@@ -627,7 +657,7 @@ class Importer:
             out["traders"].append(
                 {
                     "number": number, "x": x, "y": y, "destination_x": dx, "destination_y": dy,
-                    "warp": d[10] & 15, "item": "",
+                    "warp": d[10] & 15, "item": self.legacy.trader_item(struct.unpack_from("<H", d, 14)[0]),
                     "met": mask_bits(struct.unpack_from("<H", d, 12)[0]), "mod_data": {},
                 }
             )
@@ -663,6 +693,8 @@ def message_goto(word, legacy, params=()):
     """The original's Goto word (S21 "Goto") as our Goto dictionary; None for an unknown code.
     0xFFFA shows the minefield named by the first parameter; 0x4000 + id a battle's recording."""
     if word == 0xFFFA and params:
+        if params[0] >> 13 == 3:
+            return {"trader": params[0] & 0x1FF}
         kind = "minefield" if params[0] >> 13 == 0 else "packet"
         return {kind: params[0] & 0x1FF, "owner": (params[0] >> 9) & 15}
     if word == 0xFFFF:

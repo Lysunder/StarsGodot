@@ -206,7 +206,8 @@
     "tags": [
       "normal"
     ],
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 5
   },
   {
     "type": "part",

@@ -84,6 +84,8 @@ static func update(state: GameState, content: ContentRegistry, rng: StarsRandom)
 				_check_target(state, content, rng, fleet, wp)
 			elif wp.target == "wormhole":
 				_check_wormhole(state, content, fleet, wp)
+			elif wp.target == "trader":
+				_follow_trader(state, wp)
 
 
 ## A waypoint's fleet target: still there (claimed), or retargeted among the fleets at the
@@ -133,6 +135,18 @@ static func _check_wormhole(
 		return
 	if w != null:
 		_message(state, content, fleet, "message.fleet.wormhole_vanished")
+	wp.target = "none"
+	wp.target_owner = -1
+	wp.target_id = -1
+
+
+## A waypoint's Mystery Trader: it follows the trader (S18); deep space when it is gone.
+static func _follow_trader(state: GameState, wp: Waypoint) -> void:
+	for trader in state.traders:
+		if trader.number == wp.target_id:
+			wp.x = trader.x
+			wp.y = trader.y
+			return
 	wp.target = "none"
 	wp.target_owner = -1
 	wp.target_id = -1

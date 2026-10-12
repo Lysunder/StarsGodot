@@ -130,7 +130,7 @@ static func _update_player(
 					switched = true
 					break
 			if switched:
-				var target := _lowest_field(p) if next == Player.NEXT_FIELD_LOWEST else next
+				var target := lowest_field(p) if next == Player.NEXT_FIELD_LOWEST else next
 				if next != Player.NEXT_FIELD_LOWEST:
 					next = Player.NEXT_FIELD_SAME
 				current = target
@@ -153,7 +153,7 @@ static func _level_messages(
 	var level := p.tech_levels[field]
 	var focus := current
 	if field == current and next != Player.NEXT_FIELD_SAME:
-		focus = _lowest_field(p) if next == Player.NEXT_FIELD_LOWEST else next
+		focus = lowest_field(p) if next == Player.NEXT_FIELD_LOWEST else next
 	var kind := "message.research.level"
 	if RaceMath.trait_param(p.race, content, "research.focus_message", 0) != 0:
 		kind = "message.research.level_focus"
@@ -209,7 +209,8 @@ static func _share(spent: int, pct: int) -> int:
 
 
 ## The field with the lowest level (the first one on ties).
-static func _lowest_field(p: Player) -> int:
+## The field with the lowest level, the first such in field order.
+static func lowest_field(p: Player) -> int:
 	var best := 0
 	for f in range(1, FIELDS):
 		if p.tech_levels[f] < p.tech_levels[best]:

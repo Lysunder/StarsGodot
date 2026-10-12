@@ -1129,5 +1129,137 @@
     "primary_target": 1,
     "secondary_target": 0,
     "attack": 2
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.trader_nubian",
+    "hull": "hull.nubian",
+    "slots": [
+      {
+        "part": "part.engine.enigma_pulsar",
+        "count": 3
+      },
+      {
+        "part": "part.armor.mega_poly_shell",
+        "count": 3
+      },
+      {
+        "part": "part.armor.mega_poly_shell",
+        "count": 3
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 3
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 3
+      },
+      {
+        "part": "part.shield.langston_shell",
+        "count": 3
+      },
+      {
+        "part": "part.shield.langston_shell",
+        "count": 3
+      },
+      {
+        "part": "part.electrical.multi_function_pod",
+        "count": 3
+      },
+      {
+        "part": "part.electrical.multi_function_pod",
+        "count": 3
+      },
+      {
+        "part": "part.mechanical.multi_cargo_pod",
+        "count": 3
+      },
+      {
+        "part": "part.beam.multi_contained_munition",
+        "count": 3
+      },
+      {
+        "part": "part.beam.multi_contained_munition",
+        "count": 3
+      },
+      {
+        "part": "part.beam.multi_contained_munition",
+        "count": 3
+      }
+    ],
+    "picture": 108
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.trader_morph_shield",
+    "hull": "hull.mini_morph",
+    "slots": [
+      {
+        "part": "part.engine.enigma_pulsar",
+        "count": 2
+      },
+      {
+        "part": "part.shield.langston_shell",
+        "count": 3
+      },
+      {
+        "part": "part.electrical.multi_function_pod",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.multi_cargo_pod",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.jump_gate",
+        "count": 1
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 2
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 2
+      }
+    ],
+    "picture": 122
+  },
+  {
+    "type": "starting_design",
+    "id": "starting_design.trader_morph_armor",
+    "hull": "hull.mini_morph",
+    "slots": [
+      {
+        "part": "part.engine.enigma_pulsar",
+        "count": 2
+      },
+      {
+        "part": "part.armor.mega_poly_shell",
+        "count": 3
+      },
+      {
+        "part": "part.electrical.multi_function_pod",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.multi_cargo_pod",
+        "count": 1
+      },
+      {
+        "part": "part.mechanical.jump_gate",
+        "count": 1
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 2
+      },
+      {
+        "part": "part.torpedo.anti_matter_torpedo",
+        "count": 2
+      }
+    ],
+    "picture": 123
   }
 ]

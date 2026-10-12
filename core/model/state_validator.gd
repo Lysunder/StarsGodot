@@ -97,7 +97,7 @@ func _check_player(p: Player, path: String) -> void:
 	for i in p.starbase_designs.size():
 		_check_design(p.starbase_designs[i], true, "%s/starbase_designs/%d" % [path, i])
 	for i in p.trader_parts.size():
-		_content_ref(p.trader_parts[i], "part", "%s/trader_parts/%d" % [path, i])
+		_trader_item(p.trader_parts[i], "%s/trader_parts/%d" % [path, i], false)
 
 
 func _check_race(r: Race, path: String) -> void:
@@ -297,8 +297,7 @@ func _check_space_objects() -> void:
 		var t := _state.traders[i]
 		_range(t.number, 0, numbers - 1, "/traders/%d/number" % i)
 		_players(t.met, "/traders/%d/met" % i)
-		if not t.item.is_empty():
-			_content_ref(t.item, "part", "/traders/%d/item" % i)
+		_trader_item(t.item, "/traders/%d/item" % i, true)
 
 
 func _find_object(list_name: String, owner: int, number: int) -> ModelObject:
@@ -356,6 +355,17 @@ func _players(indices: Array[int], path: String) -> void:
 func _planet_ref(id: int, path: String) -> void:
 	if _state.planet(id) == null:
 		_err(path, "no planet %d" % id)
+
+
+## A Mystery Trader item (S18): a part or hull carrying `trader_bit`, "ships", or (a trader's
+## item) "research".
+func _trader_item(id: String, path: String, research_allowed: bool) -> void:
+	if id == MysteryTrader.SHIPS or (research_allowed and id == MysteryTrader.RESEARCH):
+		return
+	if not _content.has_def(id) or not _content.type_of(id) in ["part", "hull"]:
+		_err(path, "no part or hull '%s' in the loaded content" % id)
+	elif not _content.get_def(_content.type_of(id), id).has("trader_bit"):
+		_err(path, "'%s' is not a Mystery Trader item" % id)
 
 
 func _content_ref(id: String, type_name: String, path: String) -> bool:

@@ -97,7 +97,8 @@
       "armor": 50,
       "cloak": 20
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 0
   },
   {
     "type": "part",
@@ -192,7 +193,8 @@
     "tags": [
       "jump_gate"
     ],
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 11
   },
   {
     "type": "part",

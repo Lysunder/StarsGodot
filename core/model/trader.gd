@@ -8,8 +8,8 @@ var y: int = 0
 var destination_x: int = 0
 var destination_y: int = 0
 var warp: int = 0
-## The item it carries (content id), "" when none.
-var item: String = ""
+## What it gives (S18): a part or hull content id, "research" or "ships".
+var item: String = "research"
 ## Player indices it has met, sorted.
 var met: Array[int] = []
 var mod_data: Dictionary = {}

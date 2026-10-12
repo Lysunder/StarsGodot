@@ -47,6 +47,7 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S15](S15-visibility.md) | Scanning, cloaking and visibility | draft |
 | [S16](S16-battles.md) | Battles | draft |
 | [S17](S17-bombing-and-invasion.md) | Bombing and invasion | draft |
+| [S18](S18-random-events-and-mystery-trader.md) | Random events and the Mystery Trader | draft |
 | [S19](S19-repair-refuel-and-fleet-growth.md) | Repair, refueling and colonist growth in fleets | draft |
 | [S20](S20-score-and-victory.md) | Score, ranks, elimination and victory | draft |
 | [S21](S21-messages.md) | Turn messages | draft |

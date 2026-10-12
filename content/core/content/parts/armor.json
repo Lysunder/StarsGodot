@@ -192,7 +192,8 @@
       "jamming": 20,
       "scan_range": 80
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 3
   },
   {
     "type": "part",

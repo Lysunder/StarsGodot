@@ -171,7 +171,8 @@
       "initiative": 0,
       "accuracy": 85
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 6
   },
   {
     "type": "part",

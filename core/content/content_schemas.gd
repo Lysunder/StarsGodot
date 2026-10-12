@@ -168,6 +168,8 @@ const TYPES := {
 			"forbidden_traits": _TRAIT_LIST,
 			# needs the Mystery Trader's item for this part (Player.trader_parts)
 			"mystery_trader": {"t": "bool"},
+			# its bit in the Mystery Trader's items (S18)
+			"trader_bit": _INT0,
 		},
 		"required": ["category", "mass", "cost"],
 	},
@@ -195,6 +197,8 @@ const TYPES := {
 			"cargo_area": {"t": "list", "of": _INT0, "min": 4, "max": 4},
 			# needs the Mystery Trader's item for this hull (Player.trader_parts)
 			"mystery_trader": {"t": "bool"},
+			# its bit in the Mystery Trader's items (S18)
+			"trader_bit": _INT0,
 			"required_traits": _TRAIT_LIST,
 			"forbidden_traits": _TRAIT_LIST,
 		},

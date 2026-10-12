@@ -266,7 +266,8 @@
     "mystery_trader": true,
     "tags": [
       "warp10_safe"
-    ]
+    ],
+    "trader_bit": 9
   },
   {
     "type": "part",

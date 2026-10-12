@@ -1715,5 +1715,74 @@
   },
   "message.game.last_standing": {
     "message": 188
+  },
+  "message.event.comet_hit_small": {
+    "message": 131
+  },
+  "message.event.comet_hit_medium": {
+    "message": 132
+  },
+  "message.event.comet_hit_large": {
+    "message": 133
+  },
+  "message.event.comet_hit_huge": {
+    "message": 134
+  },
+  "message.event.comet_hit_yours_small": {
+    "message": 135
+  },
+  "message.event.comet_hit_yours_medium": {
+    "message": 136
+  },
+  "message.event.comet_hit_yours_large": {
+    "message": 137
+  },
+  "message.event.comet_hit_yours_huge": {
+    "message": 138
+  },
+  "message.event.environment_changed": {
+    "message": 253
+  },
+  "message.event.mineral_deposit": {
+    "message": 254
+  },
+  "message.trader.arrived": {
+    "message": 299
+  },
+  "message.trader.course_changed": {
+    "message": 304
+  },
+  "message.trader.turned_back": {
+    "message": 192
+  },
+  "message.trader.refused": {
+    "message": 264
+  },
+  "message.trader.recovering": {
+    "message": 280
+  },
+  "message.trader.research": {
+    "message": 265
+  },
+  "message.trader.research_all_parts": {
+    "message": 266
+  },
+  "message.trader.part": {
+    "message": 267
+  },
+  "message.trader.hull": {
+    "message": 268
+  },
+  "message.trader.planetary": {
+    "message": 271
+  },
+  "message.trader.nothing_to_teach": {
+    "message": 270
+  },
+  "message.trader.ships": {
+    "message": 335
+  },
+  "message.trader.ships_no_room": {
+    "message": 336
   }
 }

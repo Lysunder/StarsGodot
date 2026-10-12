@@ -411,7 +411,8 @@
       "installations": 5,
       "min_kill": 3
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 7
   },
   {
     "type": "part",

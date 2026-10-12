@@ -404,12 +404,17 @@ func _conditions_met(entry: Dictionary, p: Player) -> bool:
 
 
 func _design_from(template_id: String, slot: int) -> Design:
-	var def := _content.get_def("starting_design", template_id)
+	return design_from(_content, template_id, slot)
+
+
+## A design from a `starting_design` template (also the Mystery Trader's ships, S18).
+static func design_from(content: ContentRegistry, template_id: String, slot: int) -> Design:
+	var def := content.get_def("starting_design", template_id)
 	var design := Design.new()
 	design.slot = slot
-	design.name = _content.display_name(template_id)
+	design.name = content.display_name(template_id)
 	design.hull = def["hull"]
-	design.picture = PartRules.design_picture(def.get("picture", 0), _content.hull(design.hull))
+	design.picture = PartRules.design_picture(def.get("picture", 0), content.hull(design.hull))
 	design.turn_designed = STARTING_DESIGN_TURN
 	for s: Dictionary in def["slots"]:
 		design.parts.append(DesignSlot.new(s.get("part", ""), s.get("count", 0)))

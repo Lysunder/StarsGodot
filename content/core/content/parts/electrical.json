@@ -98,7 +98,8 @@
       "jamming": 10,
       "battle_move": 1
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 1
   },
   {
     "type": "part",

@@ -2757,7 +2757,8 @@
       6
     ],
     "mystery_trader": true,
-    "class": 4
+    "class": 4,
+    "trader_bit": 8
   },
   {
     "type": "hull",

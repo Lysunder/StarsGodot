@@ -153,7 +153,8 @@
       "jamming": 30,
       "battle_move_halves": 1
     },
-    "mystery_trader": true
+    "mystery_trader": true,
+    "trader_bit": 4
   },
   {
     "type": "part",

@@ -95,7 +95,7 @@ files are read only by the dev harness (S23).
 | `starbase_designs` | 10 slots (limit `limits.starbase_designs`), each empty or a design |
 | `default_queue` | the production queue a newly colonized planet starts with: standard items only, at most 12, progress 0 (S09, S11) |
 | `default_leftover_to_research` | a new colony's "contribute only leftover resources to research" setting |
-| `trader_parts` | Mystery Trader parts obtained (S18) |
+| `trader_parts` | Mystery Trader parts and hulls obtained, sorted (S18; "ships" only from a computer player's planet trade) |
 | `knowledge` | what this player knows of other objects (S15), below |
 | `mod_data` | per mod |
 
@@ -197,7 +197,7 @@ that order.
 | 0 Minefield | `minefields` | owner, number, x, y, mines, type (standard, heavy, speed bump), detonate order, players who have seen it | S13 |
 | 1 Packet or salvage | `packets` | owner, number, x, y, minerals per type, `mass_tenths`, `fresh`; packets: destination planet, warp (speed), decay class; salvage: no destination, warp 0 | S14 |
 | 2 Wormhole | `wormholes` | number, x, y, other end, stability, age (years since it last moved), players who have seen it | S12, S18 |
-| 3 Mystery Trader | `traders` | number, x, y, destination, warp, item, players met | S18 |
+| 3 Mystery Trader | `traders` | number, x, y, destination, warp, item (a part or hull id, "research" or "ships"), players met | S18 |
 
 Packets and salvage share one kind and one numbering, so they are one collection with a `salvage` flag.
 Wormholes and the Mystery Trader have no owner (the original stores owner 0 for them; we use −1 and sort them by

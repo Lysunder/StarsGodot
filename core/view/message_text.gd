@@ -13,6 +13,7 @@ const FLEET_OBJECT := 32768
 const OWNER_SHIFT := 512
 ## A `space_object` of kind 1 (packets and salvage) and up.
 const OBJECT_KIND := 8192
+const TRADER_KIND := 3
 const DESIGNS_MANY := 8192
 const DESIGN_SHIFT := 32
 const STARBASE_SLOTS := 16
@@ -91,6 +92,8 @@ static func _value(
 		"minefield":
 			return "minefield #%d" % (int(v) % OWNER_SHIFT + 1)
 		"space_object":
+			if int(v) / OBJECT_KIND == TRADER_KIND:
+				return "the Mystery Trader"
 			var what := "salvage" if int(v) >= OBJECT_KIND else "minefield"
 			return "%s #%d" % [what, int(v) % OWNER_SHIFT + 1]
 		"colonists":
