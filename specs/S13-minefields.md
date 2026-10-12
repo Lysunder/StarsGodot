@@ -90,7 +90,9 @@ Per design stack in the fleet (n ships, e engines per ship, armor A, shields s p
    fields.
 2. Raw damage D = (n × perEngine(t) + E) × e, where E = minimum(t) − perEngine(t) × (ships in the fleet) if the fleet
    has at most 4 ships and that is positive, else 0. **The original adds E for the first design stack only (B04);
-   our engine gives each stack E × n div (ships in the fleet).** e is the design's engine count.
+   our engine gives each stack E × n div (ships in the fleet)** (formula `minefield.top_up`). e is the design's
+   engine count. (The first stack is the first in design slot order that takes damage: a spared mine layer stack
+   is not it.)
 3. Shields take at most half: absorbed = min(s × n, D div 2).
 4. Damage per ship = (existing damage of the stack + D − absorbed) div n, where the existing damage is (damaged
    percent × n div 100) × A × damage div 500. If it exceeds A, **all n ships of the stack are destroyed** (they
@@ -165,7 +167,7 @@ field order during detonation.
   **Fix:** check each detonating field that contains the fleet; Mine Layer hulls stay immune to their owner's fields.
 - **B04 damage allocation:** the minimum-damage top-up E goes entirely to the first design stack. **Fix** (decided):
   spread D over the stacks in proportion to ships × engines. Compat (D12): the test-only compat mod reproduces the
-  original allocation.
+  original allocation (its `minefield.top_up` formula).
 
 ## Edge cases
 

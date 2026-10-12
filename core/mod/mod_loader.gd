@@ -14,6 +14,9 @@ const API_VERSION := 1
 const CORE_ID := ContentRegistry.CORE_MOD_ID
 ## Mod ids only test mods may use: a copy of the compat mod anywhere else is refused (D12).
 const RESERVED_TEST_IDS: Array[String] = ["harness_compat"]
+## A mod's formula script: `build(ruleset)` replaces or adds formulas. Only test mods may have one
+## until script mods arrive with their trust confirmation (M14).
+const RULESET_SCRIPT := "ruleset.gd"
 
 
 class LoadResult:
@@ -90,6 +93,7 @@ func load_mods(sources: Array[ModSource], enabled: PackedStringArray) -> LoadRes
 
 	for mod_id in result.order:
 		_load_one(result, result.manifests[mod_id], source_of[mod_id])
+	result.registry.ruleset.frozen = true
 	result.registry.finish()
 	result.errors.append_array(result.registry.errors)
 	return result
@@ -208,6 +212,15 @@ func _load_one(result: LoadResult, m: ModManifest, source: ModSource) -> void:
 		registry.add_strings_file(
 			m.id, path, path.get_file().get_basename(), source.read_text(path)
 		)
+	if source.has_file(RULESET_SCRIPT):
+		if not source.is_test_mod():
+			_err(result, m.id, "script mods are not supported yet")
+			return
+		var script := source.load_script(RULESET_SCRIPT)
+		if script == null:
+			_err(result, m.id, "cannot load %s" % RULESET_SCRIPT)
+			return
+		script.new().build(registry.ruleset)
 
 
 func _err(result: LoadResult, mod_id: String, message: String) -> void:

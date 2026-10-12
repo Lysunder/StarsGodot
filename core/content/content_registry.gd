@@ -21,6 +21,8 @@ var errors: Array[ContentError] = []
 var frozen: bool = false
 ## SHA-256 (hex) of all gameplay content and the gameplay mod list; set by finish().
 var ruleset_hash: String = ""
+## The game's formulas: Standard, with whatever the mods' ruleset scripts replaced (MODDING.md §6).
+var ruleset: Ruleset = StandardRuleset.build()
 
 var _defs: Dictionary = {}  # type -> {id -> Dictionary}
 var _type_of: Dictionary = {}  # id -> type

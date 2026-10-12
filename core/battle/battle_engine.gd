@@ -29,7 +29,6 @@ const HIT_TORPEDO_MISS := 0x84
 const HIT_ABSORBED := 0xC0
 const BIG_BEAM_POWER := 200
 const STARBASE_DESTROYED := 0xFA00
-const DAMAGE_POINTS_MAX := 499
 const LOSS_HIT := 0x8000
 const CAPITAL_MISSILES := [
 	"part.torpedo.jihad_missile",
@@ -56,6 +55,9 @@ var starbase_damaged := false
 ## Per owner × 16 + design slot of the ships that took armor damage: LOSS_HIT plus the ships
 ## killed (for the battle messages, S16 "Battle results").
 var losses := {}
+## The armor damage formulas (S16 "Damage"): `battle.armor_damage`, `battle.starbase_damage`.
+var _ship_armor: Callable
+var _starbase_armor: Callable
 
 
 func _init(
@@ -70,6 +72,8 @@ func _init(
 	rng = p_rng
 	attack.assign(battle.attack)
 	tokens = p_tokens
+	_ship_armor = content.ruleset.formula(StandardRuleset.ARMOR_DAMAGE)
+	_starbase_armor = content.ruleset.formula(StandardRuleset.STARBASE_DAMAGE)
 	for t in tokens:
 		_link(t)
 
@@ -790,7 +794,6 @@ func _take_damage(
 		return true
 	var allowed: int = kills[0] if kills != null else 0x7FFFFFFF
 	var x := left + armor_part
-	var armor: int = o._armor
 	if o.kind == KIND_STARBASE:
 		_starbase_damage(o, x, hit)
 		damage[0] = 0
@@ -801,54 +804,19 @@ func _take_damage(
 	if o.tactic & 15 == 1:
 		o.tactic &= 0xF0
 		o.state = o.state & ~COUNTDOWN_MASK | 7 << 5
-	var count: int = o.count
-	var damaged := 0
-	var per := 0
-	if o.damage & 0xFF80:
-		damaged = maxi(_div((o.damage & 0x7F) * count, 100), 1)
-		per = maxi(_div((o.damage >> 7) * armor, 500), 1)
-	var damaged_left := damaged
-	if damaged != 0:
-		var rest := armor - per
-		if rest <= x:
-			while damaged_left != 0 and allowed != 0:
-				x -= rest
-				damaged_left -= 1
-				allowed -= 1
-				if x < rest:
-					break
-		count = damaged_left + (count - damaged)
-	while armor <= x and count != 0 and allowed != 0:
-		x -= armor
-		count -= 1
-		allowed -= 1
-	if allowed < 1:
-		x = 0
-	var points := 0
-	var pct := 0
-	if x == 0 or count == 0:
-		if damaged_left != 0:
-			pct = _div(damaged_left * 100 + count - 1, count)
-			points = o.damage >> 7
-	else:
-		if damaged_left != 0:
-			x += damaged_left * per + count - 1
-		x = _div(x, count)
-		if x == 0:
-			x = 1
-		points = maxi(_div(x * 500 + armor - 1, armor), 1)
-		pct = 100
+	var result: Array = _ship_armor.call(o, x, allowed)
+	var count: int = result[0]
+	x = result[1]
+	allowed = result[2]
 	var killed: int = o.count - count
 	hit.killed = killed
 	if killed > 0:
 		_record_losses(o, killed)
 	if count != 0:
-		points = mini(points, DAMAGE_POINTS_MAX)
-		o.damage = points << 7 | (pct & 0x7F)
 		var stack := (o._fleet as Fleet).stack_for(o.design)
 		if stack != null:
-			stack.damage = points
-			stack.damaged_percent = pct & 0x7F
+			stack.damage = o.damage >> 7
+			stack.damaged_percent = o.damage & 0x7F
 		x = 0
 	damage[0] = x - armor_part if x > armor_part else 0
 	hit.damage = o.damage
@@ -877,16 +845,10 @@ static func unpack(word: int) -> int:
 
 func _starbase_damage(o: Dictionary, x: int, hit: Dictionary) -> void:
 	var planet: Planet = o._planet
-	var armor: int = o._armor
-	if o.damage & 0xFF80:
-		x += _div((o.damage >> 7) * armor, 500)
-	if x < armor:
+	var v: int = _starbase_armor.call(o, x)
+	if v >= 0:
 		starbase_damaged = true
-		var v := _div(x * 500, armor)
-		if planet.starbase.damage == v:
-			planet.starbase.damage += 1
-		else:
-			planet.starbase.damage = v
+		planet.starbase.damage = v
 		hit.damage = (planet.starbase.damage << 7) & 0xFFFF
 	else:
 		hit.damage = STARBASE_DESTROYED

@@ -14,6 +14,8 @@ Fourth part (4b): the battle messages; verified by the two fixture battles (a du
 starbase), the other cases read from the code only. Fourth part (4c): what a battle shows its participants (S15
 "What scanning records", step 7); verified by the fixture turns and by all six players' views in the 80 turns of
 big1 (designs, fleets, players met; the only differences left are planets lost or bombed out, S17).
+Fix B09 (2026-10-11): exact armor damage within a battle; the verifications above run with the original's version
+(harness_compat, D12). Without it, the fixtures differ only in one hit's damage word (mine1 turn 69).
 References: `RunBattles@10e8:24aa`, `GroupFleetsByLocation@1030:11d0`, `GatherBattle@10e8:1ae2`,
 `ResolveBattle@10e8:58c0`, `BuildBattleTokens@10e8:2cb4`, `Token_InitStats@10e8:2770`,
 `Design_BattleComputers@10e8:2636`, `Token_ComputeWeapons@10e8:27c4`, `Token_SetClass@10e8:15f0`,
@@ -283,18 +285,32 @@ it fits, with the number of shifts in the top 3 bits) and the target's damage wo
    become (pool − damage) div count), else the pool is emptied and the rest goes on. A sapper hit on a token without
    shields does nothing (no hit). When nothing is left (or the hit is a sapper or torpedo miss) and no armor part was
    given, the hit ends; a torpedo hit absorbed this way is recorded with kind 0xC4.
-2. **Armor**, for ships: a token with tactic 1 (disengage if challenged) starts disengaging (tactic 0, countdown 7).
-   Ships already damaged go first: there are (damaged percent × count div 100, at least 1) of them, each with armor −
-   damage (damage points × armor div 500, at least 1) left; while the damage covers one and kills are allowed, it is
-   destroyed. Then whole ships, armor each. (A torpedo hit may kill at most one ship per torpedo.) What is left spreads
-   over the survivors: with damaged ships it adds their damage and is rounded up, else rounded down, per ship (at
-   least 1); damage points = that × 500 div armor rounded up (at least 1), damaged percent 100. With nothing left over,
-   the damaged percent becomes the damaged ships' share of the survivors, rounded up. Damage points stay at most 499.
+2. **Armor**, for ships (formula `battle.armor_damage`): a token with tactic 1 (disengage if challenged) starts
+   disengaging (tactic 0, countdown 7). Within a battle a token keeps the exact damage of its damaged ships (fix
+   B09, below), in 1/512,000 of a damage point; at the battle's first hit on it, it comes from the damage word: the
+   damaged ships are (damaged percent × count div 100, at least 1), each with damage points × armor / 500. Then:
+   - Damaged ships go first: while the damage covers what one has left (armor − its damage) and kills are allowed,
+     it is destroyed. Then whole ships, armor each. (A torpedo hit may kill at most one ship per torpedo; when the
+     kills run out, the rest of the hit is lost.)
+   - What is left, with ships left, spreads evenly over all of them, the damaged ships' damage included: each
+     ship's damage becomes (rest + damaged ships × their damage) div ships (in the fine units), and all are damaged
+     (none when that is 0).
+   - The damage word follows: damage points = each damaged ship's damage × 500 / armor, rounded to nearest (halves
+     up), at most 499; damaged percent = damaged ships × 100 / ships, rounded up (0 with 0 points).
    The fleet's stack takes the new damage word; losses are recorded (`Token_RecordLosses`, below).
-3. **A starbase**: its armor damage (in 1/500ths of its armor) plus the hit; below its armor, the planet's starbase
-   damage becomes that × 500 div armor (+1 when unchanged); otherwise the starbase is destroyed (recorded with damage
+3. **A starbase** (formula `battle.starbase_damage`): it keeps its exact damage the same way (from the planet's
+   starbase damage at its first hit); with the hit added, below its armor, the planet's starbase damage becomes
+   that × 500 / armor rounded to nearest (at most 499); otherwise the starbase is destroyed (recorded with damage
    0xFA00, one ship killed): it leaves the planet (except an Alternate Reality race's), and the planet's queue loses
-   its ship and packet items.
+   its ship and packet items. Its token's damage word becomes the damage points with damaged percent 100.
+
+The original's version (B09; the harness_compat mod's formulas): there is no exact damage; each hit starts again
+from the damage word, a damaged ship having (damage points × armor div 500, at least 1) damage. The rest of a hit is
+spread per ship rounded down (rounded up when there were damaged ships, their damage added), at least 1, and the
+damage points are that × 500 div armor rounded up, at least 1 (damaged percent 100); with nothing left over, the
+damaged percent becomes the damaged ships' share of the survivors, rounded up. A starbase's damage is its damage
+word's points × armor div 500 plus the hit, the new damage that × 500 div armor, plus 1 when that leaves it
+unchanged. So every hit adds at least 1/500 of the armor per ship.
 
 **Losses** (`Token_RecordLosses`): the token and its fleet lose the ships; a fleet without ships is destroyed. The
 lost ships take their share of the fleet's cargo (S12's cargo split) and leave salvage: a third of their mineral cost
@@ -420,6 +436,23 @@ then 13 × `random(13)` and up to 6 × `random(6)` when it passes).
 A record goes into each participant's turn file as block type 31; a record over 1 KiB continues in blocks of type 39
 (the tokens and the events are split at token and event boundaries where they fit). `tools/harness/stars_battles.py`
 reads them; the importer stores each turn's battles, by id, in `state.battles`.
+
+## Known bugs
+
+- B09 (fixed, compat): armor damage is rounded up per hit, at least 1 point and 1/500 of the armor per ship, so many
+  small hits (a big stack under fire from many small weapons) do far more damage than they should: a hit of 1 point
+  on 100 ships of 2,000 armor adds 1/500 of the armor to every one of them. We keep the exact damage within a
+  battle and round only the stored damage word (see "Damage"). Since fixtures cannot avoid it, the test-only
+  harness_compat mod keeps the original's version, and the golden turns and battle replays run with it (D12).
+- B08 (fixed): the original's limit of 256 tokens (see "Who fights"). No compat version: no fixture battle comes near
+  it (big1's largest has 12 tokens).
+- B06 (not in 2.6i): said to make ships ignore a starbase's extra range when moving. The code counts it everywhere:
+  in the token's ranges (`Token_ComputeWeapons`) and per weapon in the damage estimate (see "Estimated damage").
+- B07 (not found): said to keep ships with sappers and range-2 beams from closing to range 2. The target search
+  handles that mix on purpose (a token whose longest range is 3 checks its longest non-sapper beam against an
+  enemy without shields, see "Target first"), and the estimate gives sappers nothing against an enemy without
+  shields; staying at range 3 can follow from the tactic's score. No faulty step found; to revisit with a
+  recorded battle that shows it.
 
 ## Open questions
 

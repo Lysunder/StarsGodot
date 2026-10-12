@@ -42,6 +42,10 @@ func read_text(path: String) -> String:
 	return FileAccess.get_file_as_string(_root + "/" + path)
 
 
+func load_script(path: String) -> Script:
+	return load(_root + "/" + path) as Script
+
+
 func list_files(dir: String, extension: String) -> PackedStringArray:
 	var result: PackedStringArray = []
 	_collect(dir.trim_suffix("/"), extension, result)

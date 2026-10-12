@@ -383,14 +383,16 @@ static func _damage(
 		var top_up: int = MIN_DAMAGE[t][column] - per_engine * ships
 		if ships > SMALL_FLEET or top_up < 1:
 			top_up = 0
+		var share := content.ruleset.formula(StandardRuleset.MINE_TOP_UP)
+		var first := true
 		for stack: ShipStack in fleet.stacks.duplicate():
 			var design := owner.ship_design(stack.design)
 			if spare_layers and _is_mine_layer(design, content):
 				continue
 			var n := stack.count
 			var engines := _engines(design)
-			# fix B04: the top-up is shared by the stacks in proportion to their ships
-			var raw := (n * per_engine + top_up * n / ships) * engines
+			var raw := (n * per_engine + int(share.call(top_up, n, ships, first))) * engines
+			first = false
 			total += raw
 			var armor := PartRules.armor(design, content, owner.race)
 			var absorbed := mini(PartRules.shields(design, content, owner.race) * n, raw / 2)
@@ -414,6 +416,13 @@ static func _damage(
 			minerals[m] = fleet.cargo[m]
 			fleet.cargo[m] = 0
 	return [mini(total, MESSAGE_DAMAGE_MAX), destroyed, minerals]
+
+
+## Formula `minefield.top_up` (S13 "Damage from one hit", fix B04): a stack's share of the
+## minimum-damage top-up, in proportion to its ships. (`first`: the first stack hit; the original
+## gives it the whole top-up.)
+static func top_up_share(top_up: int, n: int, ships: int, _first: bool) -> int:
+	return top_up * n / ships
 
 
 static func _is_mine_layer(design: Design, content: ContentRegistry) -> bool:

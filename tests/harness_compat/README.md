@@ -18,18 +18,20 @@ The runner has two modes:
   refuses the id `harness_compat` anywhere outside `res://tests/`, so a copy in `user://mods` never loads. Every
   export preset excludes `tests/`. It is never a host, player or mod option.
 - **Replaces whole formulas or phases.** Each fix lives in its own replaceable formula or phase in the core rules,
-  so this mod swaps it through the normal ruleset and pipeline API (M6) instead of patching code.
+  so this mod swaps it through the normal ruleset and pipeline API instead of patching code. Its `ruleset.gd` has
+  `build(ruleset)`, which the mod loader calls after loading its content (only test mods may have one for now).
 - **Written from the specs.** Each subsystem spec describes both the fixed rule and the original behaviour; the
   code here follows the latter, in our own words.
 
-## Contents (planned)
+## Contents
 
-Nothing is replaced yet: the formulas and phases these entries target arrive with the rules engine (M6, M7, M9).
+| Bug | Original behaviour reproduced | Replaces | Spec | State |
+|---|---|---|---|---|
+| B09 | Armor damage rounded up per hit, at least 1/500 of the armor per ship | formulas `battle.armor_damage`, `battle.starbase_damage` | S16 | done |
+| B04 | Mine damage top-up applied to the first design stack only | formula `minefield.top_up` | S13 | done |
 
-| Bug | Original behaviour reproduced | Replaces | Spec |
-|---|---|---|---|
-| B04 | Mine damage top-up applied to the first design stack only | formula `minefield.damage` | S13 |
-| B08 | Battle board limited to 256 tokens, extras left out by fleet number | battle token selection | S16 |
-| B09 | Armor damage rounded to 1/512 of the stack per salvo | battle damage resolution | S16 |
+B08 (the 256-token battle limit) is not here: no fixture battle comes near it.
+
+Tests load it with `tests/unit/compat_content.gd`.
 
 Add a bug here only when fixtures cannot avoid it, and record the reason in `KNOWN_BUGS.md`.

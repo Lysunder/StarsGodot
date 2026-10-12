@@ -166,7 +166,7 @@ whole game. "Each planet" means in id order.
 
 The damage pair is the original's representation, and the battle, mine and gate rules (S12, S13, S16) are written
 against it. The number of damaged ships is count × damaged_percent div 100 (at least 1 when damaged_percent > 0, as
-those rules state). Whether the B09 fix needs a finer field is decided in S16.
+those rules state). The B09 fix (S16) needs no finer field: a battle keeps exact damage only while it is fought.
 
 ### Waypoint
 

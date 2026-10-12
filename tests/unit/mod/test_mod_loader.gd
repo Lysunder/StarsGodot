@@ -158,3 +158,14 @@ func test_gameplay_mod_changes_hash() -> void:
 	var base := _load([_core()], [])
 	var r := _load([_core(), _mod("a")], ["a"])
 	assert_str(r.registry.ruleset_hash).is_not_equal(base.registry.ruleset_hash)
+
+
+func test_ruleset_script_refused_outside_test_mods() -> void:
+	var r := _load([_core(), _mod("a", {}, {"ruleset.gd": "extends RefCounted"})], ["a"])
+	assert_str(r.error_text()).contains("script mods are not supported yet")
+
+
+func test_standard_formulas_and_frozen_ruleset() -> void:
+	var r := _load([_core()], [])
+	assert_bool(r.registry.ruleset.has(StandardRuleset.ARMOR_DAMAGE)).is_true()
+	assert_bool(r.registry.ruleset.frozen).is_true()

@@ -2,12 +2,15 @@ extends GdUnitTestSuite
 ## Spec S16: the battles of fixture turns, fought in the turn's waypoint 1 step, must match the
 ## original's recordings: place, sides, players, every token as it started (stats,
 ## square, order, weight jitter) and every move and shot.
+## In compat mode (D12), like the golden turns: the original's armor damage (B09).
+
+const CompatContent := preload("res://tests/unit/compat_content.gd")
 
 var _content: ContentRegistry
 
 
 func before() -> void:
-	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	var r := CompatContent.load_mods()
 	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
 	_content = r.registry
 

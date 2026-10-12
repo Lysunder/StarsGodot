@@ -5,17 +5,23 @@ extends GdUnitTestSuite
 ## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
 ## design keeps the giver's name, S11), plus what a game's phases not built yet would change
 ## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
+##
+## The turns run in compat mode (D12): the test-only harness_compat mod puts back the original's
+## behaviour for the few known bugs fixtures cannot avoid (B09), so everything around them is
+## checked exactly.
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
 ## Nothing is ignored per turn any more; kept for events not built yet.
 const TURN_IGNORE := {}
 
+const CompatContent := preload("res://tests/unit/compat_content.gd")
+
 var _content: ContentRegistry
 
 
 func before() -> void:
-	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	var r := CompatContent.load_mods()
 	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
 	_content = r.registry
 

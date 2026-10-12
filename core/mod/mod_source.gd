@@ -25,6 +25,11 @@ func read_text(_path: String) -> String:
 	return ""
 
 
+## The mod's script at `path`, or null when the source cannot hold scripts.
+func load_script(_path: String) -> Script:
+	return null
+
+
 ## Files under `dir` (recursively) with the given extension, as mod-relative paths, sorted.
 func list_files(_dir: String, _extension: String) -> PackedStringArray:
 	return PackedStringArray()

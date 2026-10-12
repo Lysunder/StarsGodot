@@ -318,3 +318,32 @@ func test_a_detonation_can_damage_without_destroying() -> void:
 	assert_str(s.messages[1][0]["type"]).is_equal("message.fleet.detonation_damaged")
 	assert_array(s.messages[1][0]["params"]).is_equal([33280, 0, 0, 1200, 1200, 500])
 	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.detonation_damaged_yours")
+
+
+func test_top_up_shared_by_ships_unlike_the_original() -> void:
+	# two destroyers, one ship each: (2 x 100 + top-up 300) for the fleet
+	var s := _game()
+	var p := s.players[0]
+	for slot in [1, 2]:
+		var d := Design.new()
+		d.slot = slot
+		d.hull = "hull.destroyer"
+		d.parts.assign(
+			[
+				DesignSlot.new("part.engine.long_hump_6", 1),
+				DesignSlot.new("part.armor.crobmnium", 4)
+			]
+		)
+		p.set_design(d, false)
+	var armor := PartRules.armor(p.ship_design(1), _content, p.race)
+	var compat := preload("res://tests/unit/compat_content.gd").load_mods() as ModLoader.LoadResult
+	var got := []
+	for content: ContentRegistry in [_content, compat.registry]:
+		var f := s.add_fleet(0, 512)
+		f.add_ships(1, 1)
+		f.add_ships(2, 1)
+		Minefields._damage(f, p, content, 0, false)
+		got.append([f.stacks[0].damage, f.stacks[1].damage])
+	# fix B04: 150 of the top-up each; the original gives it all to the first stack
+	assert_array(got[0]).is_equal([250 * 500 / armor, 250 * 500 / armor])
+	assert_array(got[1]).is_equal([400 * 500 / armor, 100 * 500 / armor])
