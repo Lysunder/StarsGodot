@@ -5,6 +5,8 @@ extends RefCounted
 ## gates' limits are damaged or lost.
 
 ## An unlimited gate range counts as this many light years.
+## Ships lost in one jump above this get the "unbelievable" message (S12).
+const GATE_LOSS_WORD := 65535
 const UNLIMITED_RANGE := 8000
 ## A gate takes up to this many times its limits, with damage beyond 1x.
 const OVER_LIMIT := 5
@@ -94,7 +96,10 @@ static func jump(
 	if total > 0:
 		var before := fleet.ship_count() + total
 		var type := "gate_lost_some"
-		if total < before / 4:
+		if total > GATE_LOSS_WORD:
+			# the original's count no longer fits a word: its "unbelievable" form
+			type = "gate_lost_huge"
+		elif total < before / 4:
 			type = "gate_lost_few"
 		elif total > before / 2:
 			type = "gate_lost_most"

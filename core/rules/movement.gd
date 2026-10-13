@@ -10,6 +10,12 @@ extends RefCounted
 ##
 ## Stargates are in Stargates (S12 "Stargates"), mine hits in Minefields (S13).
 
+## S12 step 7: Radiating Hydro-Ram Scoop.
+const RADIATING := "radiating"
+const RADIATION_AXIS := 2
+const RADIATION_SAFE_CENTER := 85
+const RADIATION_BASE := 86
+const RADIATION_PASSES := 2
 const CANNOT_MOVE := 1 << 40
 const FUEL_DIVISOR := 2000
 const FUEL_ROUNDING := 10
@@ -158,6 +164,7 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 		passes += 1
 		for fleet in state.fleets:
 			if chasers.has(fleet):
+				chasers[fleet]["pass"] = passes - 1
 				_chase(state, content, rng, fleet, chasers)
 	for fleet in state.fleets:
 		_advance_waypoints(state, content, fleet)
@@ -188,6 +195,14 @@ static func _move(
 		and RaceMath.trait_param(owner.race, content, "movement.engine_failure", 0)
 		and rng.random(FAILURE_CHANCE) == 0
 	):
+		TurnMessages.add(
+			state,
+			content,
+			fleet.owner,
+			"message.fleet.engines_failed",
+			{"fleet": fleet.number, "owner": fleet.owner},
+			[fleet.owner * 512 + fleet.number]
+		)
 		return
 	# the fuel range is taken before the year's losses in flight (seen in rand1 turn 54)
 	var fuel_reach := fuel_range(fleet, owner, next.warp, content)
@@ -408,7 +423,42 @@ static func _step(
 					{"fleet": fleet.number, "owner": fleet.owner},
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
+	_engine_radiation(state, content, fleet, owner, int(chase.get("pass", 0)))
 	return chase.has("budget") and not arrived and not out_of_fuel and hit < 0
+
+
+## S12 step 7: a Radiating Hydro-Ram Scoop kills colonists aboard whose race isn't immune to
+## radiation and whose radiation center is below 85, on the year's first two movement passes.
+static func _engine_radiation(
+	state: GameState, content: ContentRegistry, fleet: Fleet, owner: Player, pass_index: int
+) -> void:
+	var colonists := fleet.cargo[Fleet.CARGO_COLONISTS]
+	if colonists <= 0 or pass_index >= RADIATION_PASSES:
+		return
+	var low := owner.race.hab_low[RADIATION_AXIS]
+	var high := owner.race.hab_high[RADIATION_AXIS]
+	if high == -1 or low + high >= 2 * RADIATION_SAFE_CENTER:
+		return
+	var radiating := false
+	for stack in fleet.stacks:
+		var design := owner.ship_design(stack.design)
+		if stack.count > 0 and design != null:
+			var engine := PartRules.engine(design, content)
+			if not engine[0].is_empty() and content.part(engine[0]).get("tags", []).has(RADIATING):
+				radiating = true
+	if not radiating:
+		return
+	var killed := colonists * ((RADIATION_BASE - (low + high) / 2) >> 1) / 100
+	killed = clampi(killed, 1, colonists)
+	fleet.cargo[Fleet.CARGO_COLONISTS] -= killed
+	TurnMessages.add(
+		state,
+		content,
+		fleet.owner,
+		"message.fleet.engine_radiation",
+		{"fleet": fleet.number, "owner": fleet.owner},
+		[killed, fleet.owner * 512 + fleet.number]
+	)
 
 
 ## A fleet arriving on a wormhole its waypoint targets comes out at the other end (S12 step 8): both

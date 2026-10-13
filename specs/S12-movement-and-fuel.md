@@ -193,8 +193,10 @@ The same routine also gives the fleet's range with its current fuel: (fuel × 10
    terra1 turn 32), added up to the free fuel space (the message shows at most 32,500). A fleet that ran out of fuel
    this turn makes none.
 7. **Radiating Hydro-Ram Scoop:** a fleet using it, carrying colonists of a race that isn't immune to radiation and
-   whose radiation range center c = (low + high) div 2 is below 85, loses colonists × ((86 − c) div 2) div 100 (at
-   least 1).
+   whose radiation range center c = (low + high) div 2 is below 85 (low + high below 170), loses colonists × ((86 − c)
+   div 2) div 100 (at least 1, at most all), with **`fleet.engine_radiation`** `[colonists, fleet]` (goto the fleet).
+   "Using it": any stack of the fleet with ships has the engine (tag `radiating`); only on the year's first two
+   movement passes (a chaser's first step), after the ram scoops and before a wormhole jump (`MoveFleets`).
 8. **Wormholes:** a fleet that arrives on its waypoint's position when that waypoint targets a wormhole (merely
    passing over one does nothing) comes out at the other end: both ends are marked seen by its owner, the far end
    is marked known (tracked) by its owner, other players' waypoints that target the fleet are frozen at the near

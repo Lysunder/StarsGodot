@@ -101,8 +101,8 @@ without a decay class never decays.
    the planet's surface minerals; T = the total of the packet's minerals.
 4. F = 1000: **`planet.packet_caught`** `[planet, packet owner, T]` to the planet's owner (goto the planet). The
    packet is deleted.
-5. Otherwise the raw damage D = (S − K) × T div 160 (32-bit). (Packet Physics terraforming happens here: not built
-   yet.) An unowned target takes nothing more (no message). Otherwise D = trunc(U × D), U the target's uncovered
+5. Otherwise the raw damage D = (S − K) × T div 160 (32-bit). A Packet Physics sender (`packet.terraforms`) then
+   terraforms the planet (below), owned or not. An unowned target takes nothing more (no message). Otherwise D = trunc(U × D), U the target's uncovered
    share as a 32-bit float: (1 − best × 0.001)^n, best the owner's best planetary defense value (`defense`, e.g.
    SDI 10) and n = min(defenses, operable defenses); U = 1 without defenses.
 6. D = 0, or an Alternate Reality owner (`packet.no_damage`): **`planet.packet_caught`** when K > 0, else
@@ -157,11 +157,27 @@ max(mineral div 10, 10), at least down to 0; a pile left with none is deleted; e
   the "another player took the minerals first" messages, so several players loading from one object are simply
   served in fleet order.
 
+### Packet Physics terraforming (`MoveSpaceObjects`)
+
+For each mineral m in turn (ironium, boranium, germanium), its environment axis m (gravity, temperature,
+radiation): the uncaught part u = mineral × (1000 − F) div 1000. While u > 0: `random(200)` below min(u, 100) is a
+hit, and a hit with `random(10)` = 0 also lasts; u −= 100. Then, with the sender's race:
+
+1. **Lasting hits** L move the axis's original value toward the race's ideal by up to L clicks (on an axis the race
+   is immune to, away from 50, to at most 1 or 99): **`planet.packet_reshaped`** `[raised, axis, planet, clicks]`
+   to the sender and **`planet.packet_reshaped_yours`** to the planet's other owner (goto the planet).
+2. **Hits** H, when the sender has any terraforming reach (S10): the value moves toward the S10 target the sender
+   could terraform it to ("improve" targets), by at most H clicks (on an immune axis H div 2 clicks away from
+   50): **`planet.packet_terraformed`** `[raised, axis, planet, new value]` and **`_yours`** likewise.
+
+Fix B39: the original sends the "_yours" messages to the sender as well, never to the planet's owner.
+
 ## Randomness
 
 - `random(20)` at an impact that would destroy no defenses although there are some (step 8).
 - `random(10)` × 3 (repeated) when salvage is dropped with no minerals.
-- Packet Physics impact terraforming (not built): `random(200)` and `random(10)` per 100 kT per mineral.
+- Packet Physics impact terraforming: per mineral, per 100 kT of its uncaught part, `random(200)`, and
+  `random(10)` when that roll hit.
 
 ## Edge cases
 

@@ -101,7 +101,8 @@
       "production.mixed_packet_minerals": 25,
       "packet.decay_pct": 50,
       "packet.decay_min": 5,
-      "scanner.packets": 1
+      "scanner.packets": 1,
+      "packet.terraforms": 1
     }
   },
   {

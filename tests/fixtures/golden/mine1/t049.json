@@ -449,12 +449,14 @@
      "type": "message.fleet.ram_scoop"
     },
     {
-     "goto": 68,
+     "goto": {
+      "planet": 68
+     },
      "params": [
       68,
       49
      ],
-     "type": "legacy.message.205"
+     "type": "message.production.starbase_built"
     },
     {
      "goto": {

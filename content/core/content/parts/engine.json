@@ -330,6 +330,9 @@
     ],
     "forbidden_traits": [
       "trait.lrt.NRSE"
+    ],
+    "tags": [
+      "radiating"
     ]
   },
   {

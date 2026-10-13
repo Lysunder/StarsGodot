@@ -176,7 +176,10 @@ static func _try(ctx: Dictionary, rng: StarsRandom, player: Player, type: String
 	var state: GameState = ctx.state
 	var engine: BattleEngine = ctx.engine
 	var gained := TechGain.try_bonus(player, engine.tech_seen, ctx.content, rng)
-	if gained <= 0:
+	if gained < 0:
+		TechGain.wreckage_message(state, ctx.content, player.index, gained, ctx.where)
+		return
+	if gained == 0:
 		return
 	var field := gained - 1
 	var amount := ResearchRules.level_cost(player, field, ctx.content, state.settings.slow_tech)

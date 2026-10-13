@@ -48,7 +48,7 @@ var pile: Packet = null
 ## Initiatives that some weapon has.
 var initiatives := {}
 ## The highest level per tech field of the designs that lost ships (S16 "Battle results").
-var tech_seen: Array[int] = [0, 0, 0, 0, 0, 0]
+var tech_seen: Array[int] = TechGain.new_need()
 ## The starbase was destroyed, or damaged and survived.
 var starbase_destroyed := false
 var starbase_damaged := false

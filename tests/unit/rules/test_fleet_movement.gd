@@ -260,3 +260,31 @@ func test_alternate_reality_colonists_die_in_transit() -> void:
 	# (100 + 11) x 3 / 100 = 3
 	assert_int(f.cargo[Fleet.CARGO_COLONISTS]).is_equal(97)
 	assert_str(s.messages[0][0]["type"]).is_equal("message.fleet.colonists_died_in_transit")
+
+
+func test_radiating_engine_kills_colonists() -> void:
+	var s := _game()
+	s.players[0].race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+	s.players[0].race.hab_low[2] = 20
+	s.players[0].race.hab_high[2] = 60
+	s.players[0].set_design(_colony_ship("part.engine.radiating_hydro_ram_scoop"), false)
+	var f := _fleet(s)
+	f.cargo[Fleet.CARGO_COLONISTS] = 100
+	_goto(f, s.planets[1], 5)
+	TurnMessages.clear(s)
+	Movement.move_all(s, _content, StarsRandom.new())
+	# center 40: 100 x ((86 - 40) div 2) div 100 = 23
+	assert_int(f.cargo[Fleet.CARGO_COLONISTS]).is_equal(77)
+	var kinds: Array = s.messages[0].map(func(m: Dictionary) -> String: return m.type)
+	assert_array(kinds).contains(["message.fleet.engine_radiation"])
+	# a race immune to radiation loses nobody
+	var immune := _game()
+	immune.players[0].race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+	immune.players[0].race.hab_low[2] = -1
+	immune.players[0].race.hab_high[2] = -1
+	immune.players[0].set_design(_colony_ship("part.engine.radiating_hydro_ram_scoop"), false)
+	var g := _fleet(immune)
+	g.cargo[Fleet.CARGO_COLONISTS] = 100
+	_goto(g, immune.planets[1], 5)
+	Movement.move_all(immune, _content, StarsRandom.new())
+	assert_int(g.cargo[Fleet.CARGO_COLONISTS]).is_equal(100)

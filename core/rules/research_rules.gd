@@ -75,6 +75,14 @@ static func update(state: GameState, content: ContentRegistry, spent: Array[int]
 			var bonus := added[f] / active * pct / 100
 			if bonus > 1:
 				spied = true
+				TurnMessages.add(
+					state,
+					content,
+					p.index,
+					"message.research.spied",
+					{"research": true},
+					[f, bonus]
+				)
 				p.research_points[f] += (bonus + 1) / 2 if slow else bonus
 	if spied:
 		update(state, content, [])

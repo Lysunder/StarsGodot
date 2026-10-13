@@ -285,3 +285,7 @@ ships and route following (S11) do not draw.
    halving with a harness game that builds a starbase.
 7. The Bleeding Edge doubling for parts excluded from miniaturization reads an uninitialized value in the original;
    check the disassembly.
+8. A starbase built sends **`production.starbase_built`** `[planet, design]`; the original has two more forms
+   (ships up to some hull mass, or of any size, can now be built: `starbase_built_dock_limit`, `starbase_built_dock`),
+   chosen by a design field (offset 0x34) that its design code never sets: 0 for a starting Space Station (mine1
+   turn 48). Which designs carry it is open; only the plain form is sent.

@@ -153,17 +153,27 @@ func test_transfer_copies_designs_into_free_slots() -> void:
 
 
 func test_transfer_is_refused() -> void:
+	# each refusal sends its message and cancels the task (S21)
 	var s := _game()
 	var f := _fleet(s, 0, 1, "transfer")
 	f.waypoints[0].task_data = {"raw": [0, 0, 0, 0, 0]}
 	s.players[1].relations[0] = "enemy"
+	TurnMessages.clear(s)
 	_tasks(s).run_pass(4)
 	assert_int(s.fleets_of(1).size()).is_equal(0)
+	assert_str(f.waypoints[0].task).is_equal("none")
+	assert_str(s.messages[0][0].type).is_equal("message.fleet.give_refused")
 	s.players[1].relations[0] = "neutral"
 	f.cargo[Fleet.CARGO_COLONISTS] = 1
+	f.waypoints[0].task = "transfer"
+	f.waypoints[0].task_data = {"raw": [0, 0, 0, 0, 0]}
+	TurnMessages.clear(s)
 	_tasks(s).run_pass(4)
 	assert_int(s.fleets_of(1).size()).is_equal(0)
+	assert_str(s.messages[0][0].type).is_equal("message.fleet.give_colonists")
 	f.cargo[Fleet.CARGO_COLONISTS] = 0
+	f.waypoints[0].task = "transfer"
+	f.waypoints[0].task_data = {"raw": [0, 0, 0, 0, 0]}
 	_tasks(s).run_pass(4)
 	assert_int(s.fleets_of(1).size()).is_equal(1)
 
@@ -345,3 +355,64 @@ func test_transport_with_salvage_and_deep_space() -> void:
 	_tasks(s).run_pass(1)
 	assert_int(f.cargo[0]).is_equal(0)
 	assert_array(s.messages[0][3]["params"].slice(3)).is_equal([300, 100])
+
+
+func _types(s: GameState, p := 0) -> Array:
+	return (s.messages[p] as Array).map(func(m: Dictionary) -> String: return m.type)
+
+
+func test_task_refusals_send_messages_and_cancel() -> void:
+	# colonizing the player's own planet: it already has an owner
+	var s := _game()
+	var f := _fleet(s, 0, 1, "colonize")
+	f.cargo[WaypointTasks.CARGO_COLONISTS] = 10
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(1)
+	assert_array(_types(s)).contains(["message.fleet.colonize_populated"])
+	assert_str(f.waypoints[0].task).is_equal("none")
+	# remote mining in deep space
+	var g := _fleet(s, 0, 1, "remote_mine")
+	g.planet = -1
+	g.waypoints[0].target = "none"
+	g.did_not_move = true
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(3)
+	assert_array(_types(s)).contains(["message.fleet.remote_mine_deep_space"])
+	# colonists unloaded onto an unowned planet
+	s.planet(0).owner = -1
+	var h := _fleet(s, 0, 1, "transport")
+	h.cargo[WaypointTasks.CARGO_COLONISTS] = 10
+	h.waypoints[0].task_data = {
+		"cargo":
+		[
+			{"action": "none", "amount": 0},
+			{"action": "none", "amount": 0},
+			{"action": "none", "amount": 0},
+			{"action": "unload_all", "amount": 0},
+			{"action": "none", "amount": 0},
+		]
+	}
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(1)
+	assert_array(_types(s)).contains(["message.fleet.colonists_to_empty_planet"])
+	assert_int(h.cargo[WaypointTasks.CARGO_COLONISTS]).is_equal(10)
+
+
+func test_tech_bonus_learns_a_trader_part_seen() -> void:
+	var p := Player.new()
+	p.race.research_costs.assign([1, 1, 1, 1, 1, 1])
+	var need := TechGain.new_need()
+	# a Multi Contained Munition (bit 7) seen 25 times: 25% chance once the bonus roll passes
+	need[TechGain.PARTS_SEEN + 7] = 25
+	var learned := false
+	for seed in 400:
+		var copy := Player.new()
+		copy.race = p.race
+		var gained := TechGain.try_bonus(
+			copy, need, _content, StarsRandom.new(seed + 1, 673 + seed)
+		)
+		if gained == -8:
+			learned = true
+			assert_array(copy.trader_parts).is_equal(["part.beam.multi_contained_munition"])
+			break
+	assert_bool(learned).is_true()

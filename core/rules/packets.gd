@@ -7,6 +7,11 @@ extends RefCounted
 ## Packet Physics terraforming on impact.
 
 ## A speed setting below this means "the driver's own speed".
+## Packet Physics terraforming (S14): a roll in 200 per 100 kT, one in 10 of the hits lasting.
+const TERRAFORM_ROLL := 200
+const TERRAFORM_CHUNK := 100
+const TERRAFORM_LASTING := 10
+const TERRAFORM_MIDDLE := 50
 const SPEED_SETTING_MIN := 5
 ## The fastest launch is the best driver part's speed plus this.
 const OVERDRIVE_MAX := 3
@@ -257,6 +262,8 @@ static func _impact(
 		_planet_message(state, content, planet, "planet.packet_caught", params)
 		return
 	var damage := (speed - k) * total / DAMAGE_DIVISOR
+	if RaceMath.trait_param(sender, content, "packet.terraforms", 0):
+		_terraform(state, content, rng, packet, planet, share)
 	if planet.owner < 0:
 		return
 	var race := state.player(planet.owner).race
@@ -289,6 +296,110 @@ static func _impact(
 		_planet_message(state, content, planet, type, said + [destroyed])
 	planet.defenses -= destroyed
 	planet.population -= killed
+
+
+## S14 "Packet Physics terraforming": the uncaught part of each mineral, per 100 kT (the last
+## part counts as 100 for this many hundredths), is a chance in 200 to move that mineral's
+## environment axis one click (and one in ten of those also a click of the original value). The
+## original value moves first, toward the sender's ideal (away from the middle on an axis it is
+## immune to); then the value, by the clicks within the sender's terraforming reach toward its
+## ideal (half of them, away from the middle, on an immune axis).
+static func _terraform(
+	state: GameState,
+	content: ContentRegistry,
+	rng: StarsRandom,
+	packet: Packet,
+	planet: Planet,
+	share: int
+) -> void:
+	var sender := state.player(packet.owner)
+	var race := sender.race
+	for axis in 3:
+		var left := maxi(packet.minerals[axis], 0) * (SHARE - share) / SHARE
+		var hits := 0
+		var lasting := 0
+		while left > 0:
+			if rng.random(TERRAFORM_ROLL) < mini(left, TERRAFORM_CHUNK):
+				hits += 1
+				if rng.random(TERRAFORM_LASTING) == 0:
+					lasting += 1
+			left -= TERRAFORM_CHUNK
+		if lasting > 0:
+			var d := _toward(race, axis, planet.environment_original[axis], lasting)
+			if d != 0:
+				planet.environment_original[axis] += d
+				_terraform_message(
+					state, content, planet, packet.owner, "planet.packet_reshaped", d, axis, absi(d)
+				)
+		if hits > 0:
+			var reach := Terraforming.reach(sender, content)
+			if reach[0] == 0 and reach[1] == 0 and reach[2] == 0:
+				continue
+			var d := 0
+			var e := planet.environment[axis]
+			if race.is_immune(axis):
+				d = _toward(race, axis, e, hits / 2)
+			else:
+				var t: Array = Terraforming.targets(planet, race, reach, true)
+				var low: int = t[0][axis]
+				var high: int = t[1][axis]
+				if low != Terraforming.NONE:
+					d = -mini(hits, e - low)
+				elif high != Terraforming.NONE:
+					d = mini(hits, high - e)
+			if d != 0:
+				planet.environment[axis] += d
+				var value: int = axis * 256 + planet.environment[axis]
+				_terraform_message(
+					state,
+					content,
+					planet,
+					packet.owner,
+					"planet.packet_terraformed",
+					d,
+					axis,
+					value
+				)
+
+
+## Clicks toward the race's ideal on `axis`, at most `n` (away from the middle and at most to 1 or
+## 99 on an immune axis).
+static func _toward(race: Race, axis: int, value: int, n: int) -> int:
+	if race.is_immune(axis):
+		if value < TERRAFORM_MIDDLE:
+			return -mini(n, value - 1)
+		return mini(n, 99 - value)
+	var c := race.hab_center[axis]
+	if value < c:
+		return mini(n, c - value)
+	if c < value:
+		return -mini(n, value - c)
+	return 0
+
+
+## To the sender ("Your packet") and to another owner of the planet ("A packet"; fix B39: the
+## original sends that one to the sender too, so the planet's owner never hears of it).
+static func _terraform_message(
+	state: GameState,
+	content: ContentRegistry,
+	planet: Planet,
+	sender: int,
+	type: String,
+	d: int,
+	axis: int,
+	last: int
+) -> void:
+	var params := [1 if d > 0 else 0, axis, planet.id, last]
+	TurnMessages.add(state, content, sender, "message." + type, {"planet": planet.id}, params)
+	if planet.owner >= 0 and planet.owner != sender:
+		TurnMessages.add(
+			state,
+			content,
+			planet.owner,
+			"message." + type + "_yours",
+			{"planet": planet.id},
+			params
+		)
 
 
 ## Wraps a product to 32 bits, as the original's long arithmetic does.

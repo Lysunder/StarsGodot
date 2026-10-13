@@ -2169,5 +2169,414 @@
     "params": [
       "fleet_designs"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.engine_radiation",
+    "params": [
+      "colonists",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.wreckage_part",
+    "params": [
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.battle.wreckage_hull",
+    "params": [
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_part",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_level",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "field",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonize_not_at_planet",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonize_populated",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonize_no_colonists",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonize_no_module",
+    "params": [
+      "fleet",
+      "planet",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.merge_no_target",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.merge_not_yours",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.remote_mine_deep_space",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.remote_mine_no_robots",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.remote_mine_inhabited",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.give_dead",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.give_refused",
+    "params": [
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.give_colonists",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.give_no_room",
+    "params": [
+      "fleet",
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.receive_no_room",
+    "params": [
+      "player"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.transport_futile",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.load_foreign_fleet",
+    "params": [
+      "fleet",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.load_deep_space",
+    "params": [
+      "fleet",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.set_short",
+    "params": [
+      "fleet",
+      "cargo",
+      "amount",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.set_short_colonists",
+    "params": [
+      "fleet",
+      "cargo",
+      "amount",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.fuel_load_failed",
+    "params": [
+      "fleet",
+      "object_kind",
+      "object"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.fuel_waiting",
+    "params": [
+      "object_kind",
+      "object",
+      "fleet",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.fuel_out_of_reach",
+    "params": [
+      "fleet",
+      "amount",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_to_foreign_fleet",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_to_deep_space",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_to_empty_planet",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_overruled",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.colonists_starbase",
+    "params": [
+      "fleet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.starbase_built",
+    "params": [
+      "planet",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.starbase_built_dock_limit",
+    "params": [
+      "planet",
+      "design",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.starbase_built_dock",
+    "params": [
+      "planet",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.scanner_built",
+    "params": [
+      "planet",
+      "item"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.genesis",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.alchemy",
+    "params": [
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.scanner_cancelled",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.plans_lost",
+    "params": [
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ships_lost_limit",
+    "params": [
+      "planet",
+      "number",
+      "design"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ships_merged_limit",
+    "params": [
+      "planet",
+      "number",
+      "design",
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.gate_lost_huge",
+    "params": [
+      "fleet",
+      "planet",
+      "planet",
+      "amount"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.engines_failed",
+    "params": [
+      "fleet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.research.spied",
+    "params": [
+      "field",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_reshaped",
+    "params": [
+      "flag",
+      "axis",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_reshaped_yours",
+    "params": [
+      "flag",
+      "axis",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_terraformed",
+    "params": [
+      "flag",
+      "axis",
+      "planet",
+      "axis_value"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.packet_terraformed_yours",
+    "params": [
+      "flag",
+      "axis",
+      "planet",
+      "axis_value"
+    ]
   }
 ]

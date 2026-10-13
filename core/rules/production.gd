@@ -17,6 +17,8 @@ enum Status {
 	NO_PROGRESS,
 }
 
+## Starbase designs in a design message word come after the 16 ship slots (owner x 32 + slot).
+const STARBASE_SLOTS := 16
 const AUTO_UNLIMITED := 1000
 const MERGE_HEADROOM := 32766
 ## Installation effects and their single-unit message names (S21).
@@ -128,7 +130,10 @@ func _buildable(planet: Planet, player: Player, item: QueueItem) -> bool:
 		_message(planet.owner, "production.packet_removed", planet, [planet.id])
 		return false
 	if effect == "scanner":
-		return not planet.has_scanner
+		if planet.has_scanner:
+			_message(planet.owner, "production.scanner_cancelled", planet, [planet.id])
+			return false
+		return true
 	if effect in ["mines", "factories", "defenses", "terraform"]:
 		var room := (
 			Terraforming.max_steps(planet, player, _content)
@@ -239,6 +244,7 @@ func _spend(
 	if out.built > 0 and not item.is_design() and def["effect"] == "alchemy":
 		for m in 3:
 			avail[m] += out.built
+		_message(planet.owner, "production.alchemy", planet, [planet.id, out.built])
 	if short_of_minerals:
 		out.status = Status.AUTO_SHORT_BUILT if out.built >= 1 else Status.AUTO_SHORT_NONE
 	elif not auto or count != 0:
@@ -356,12 +362,25 @@ func _complete(planet: Planet, player: Player, item: QueueItem, built: int) -> b
 				_genesis(planet, player)
 		"scanner":
 			planet.has_scanner = true
+			var scanner: String = def.get("part", "")
+			if def.get("best", false):
+				scanner = PartRules.best_part("planetary", "scan_range", player, _content)
+			TurnMessages.add(
+				_state,
+				_content,
+				planet.owner,
+				"message.production.scanner_built",
+				{"planet": planet.id},
+				[planet.id, scanner]
+			)
 		"packet":
 			Packets.launch(_state, _content, planet, def, built)
 	return true
 
 
 func _genesis(planet: Planet, player: Player) -> void:
+	for p in _state.players.size():
+		_message(p, "production.genesis", planet, [planet.id])
 	if not RaceMath.trait_param(player.race, _content, "production.genesis_keeps_installations", 0):
 		planet.mines = 0
 		planet.factories = 0
@@ -396,10 +415,19 @@ func _complete_ships(planet: Planet, player: Player, slot: int, n: int) -> bool:
 		return false
 	var design := player.ship_design(slot)
 	if not _available(design, player):
+		_message(player.index, "production.plans_lost", planet, [planet.id, slot + 1])
 		return false
 	var limit := _content.constant("constant.limits.fleets_per_player")
 	if _state.fleets_of(player.index).size() >= limit:
-		return _merge_ships(planet, player, design, n)
+		if _merge_ships(planet, player, design, n):
+			return true
+		_message(
+			player.index,
+			"production.ships_lost_limit",
+			planet,
+			[planet.id, n, player.index * 32 + slot]
+		)
+		return false
 	var fleet := _state.add_fleet(player.index, limit)
 	fleet.x = planet.x
 	fleet.y = planet.y
@@ -463,6 +491,14 @@ func _merge_ships(planet: Planet, player: Player, design: Design, n: int) -> boo
 			stack.damage = points * 5 / now_damaged * 100 / armor
 		design.built += n
 		design.remaining += n
+		TurnMessages.add(
+			_state,
+			_content,
+			player.index,
+			"message.production.ships_merged_limit",
+			{"fleet": fleet.number, "owner": fleet.owner},
+			[planet.id, n, player.index * 32 + design.slot, fleet.owner * 512 + fleet.number]
+		)
 		return true
 	return false
 
@@ -471,6 +507,10 @@ func _complete_starbase(planet: Planet, player: Player, slot: int) -> bool:
 	var design := player.starbase_design(slot)
 	if not _available(design, player):
 		return false
+	# the original picks the dock forms by a design field (+0x34) not yet understood; it was 0 (no
+	# dock) for a starting Space Station design (mine1 turn 48), so the plain form for now (S09)
+	var word := player.index * 32 + STARBASE_SLOTS + slot
+	_message(player.index, "production.starbase_built", planet, [planet.id, word])
 	if planet.starbase != null:
 		var old := player.starbase_design(planet.starbase.design)
 		if old != null and _rank(design) < _rank(old):

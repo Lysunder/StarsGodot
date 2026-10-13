@@ -1,7 +1,7 @@
 # S24 Tech trading (tech gain)
 
 Status: draft (2026-10-04), first part: the bonus for ships scrapped at a starbase; 2026-10-11: after battles (S16
-"Battle results", which says who tries and the need). Invasion gains and Mystery Trader parts are not read yet.
+"Battle results", which says who tries and the need). Invasion gains use the same try (S17).
 References: `TryTechBonus@10e8:6112`, `NoteDesignTech@1078:244c`, `Tech_LevelCost@10d0:1546`,
 `DoWaypointTaskPass@10a8:3ec6` (scrap).
 
@@ -28,7 +28,10 @@ When a fleet is scrapped at a planet with a starbase (S11 "Scrap"), after the mi
 3. Draw `random(100)`; at 49 or below nothing happens.
 4. Thirteen times: draw `random(13)`, a Mystery Trader part kind; if the scrapped ships hold that part, the player
    does not have it yet, and `random(100)` is below the part's chance, the player gains the part and the mark is set
-   (not built yet: no Mystery Trader part is marked in content, so only the 13 draws are made).
+   (each design looked at adds its count of each Mystery Trader part to that part's chance, at most 25; the Mini
+   Morph hull and the Genesis Device never count). A part learned at a scrap changes the starbase owner's message
+   (**`planet.ships_scrapped_part`**, goto the part; a research gain **`planet.ships_scrapped_level`**, goto
+   research); from a battle or an invasion, **`battle.wreckage_part`** (`wreckage_hull` for a hull) goto the part.
 5. Six times: draw `random(6)`, a field; if the player's level in it is below the need, the player gains research
    points in that field equal to the cost of its next level (S05, without the slow-tech doubling), the mark is set,
    and the tries stop.

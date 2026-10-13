@@ -169,3 +169,29 @@ func test_salvage_piles_and_decay() -> void:
 	# nothing is left on a planet's position
 	var none := Packets.drop_salvage(s, _content, StarsRandom.new(), 1, 1000, 1000, amounts)
 	assert_object(none).is_null()
+
+
+func test_packet_physics_packets_terraform() -> void:
+	var s := _game([])
+	var home := s.planets[0]
+	home.starbase = null
+	home.environment.assign([10, 50, 50])
+	home.environment_original.assign([10, 50, 50])
+	var sender := s.player(1)
+	sender.race.primary_trait = "trait.prt.PP"
+	var center := sender.race.hab_center[0]
+	# 20,000 kT of ironium: 200 rolls on gravity, so some hits last
+	var p := _packet(s, 8, [20000, 0, 0])
+	p.owner = 1
+	p.destination = 0
+	p.x = 1030
+	Packets.move_all(s, _content, StarsRandom.new(5, 673), false)
+	var moved := home.environment_original[0] - 10
+	assert_int(moved).is_greater(0)
+	assert_int(home.environment_original[0]).is_less_equal(center)
+	var mine: Array = s.messages[1].map(func(m: Dictionary) -> String: return m.type)
+	assert_array(mine).contains(["message.planet.packet_reshaped"])
+	# fix B39: the planet's owner hears of it (the original told the sender twice)
+	var theirs: Array = s.messages[0].map(func(m: Dictionary) -> String: return m.type)
+	assert_array(theirs).contains(["message.planet.packet_reshaped_yours"])
+	assert_array(mine).not_contains(["message.planet.packet_reshaped_yours"])
