@@ -22,6 +22,8 @@ static func follow(state: GameState, content: ContentRegistry, fleet: Fleet, pla
 	wp.target = "planet"
 	wp.target_id = destination.id
 	wp.task = "route"
+	# no task data (S11; the original's five data words are zero for a fresh waypoint)
+	wp.task_data = {"raw": [0, 0, 0, 0, 0]}
 	fleet.waypoints.resize(1)
 	fleet.waypoints.append(wp)
 	var warp := Retargeting.default_warp(fleet, owner, content)

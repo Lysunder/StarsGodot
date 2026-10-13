@@ -1,0 +1,72 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    0,
+    -3
+   ],
+   "fleet": 1,
+   "other": {
+    "fleet": 0,
+    "owner": 1
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    -4,
+    0
+   ],
+   "fleet": 1,
+   "other": {
+    "planet": 4
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 8,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 4,
+    "x": 1120,
+    "y": 1210
+   }
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 8,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1120,
+    "y": 1210
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 2
+}

@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 ## random streams are ignored (a fixture holds the state at the start of the next turn's
 ## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
 ## design keeps the giver's name, S11), plus what a game's phases not built yet would change
-## (GAME_IGNORE), or, for single turns, what an event not built yet changed (TURN_IGNORE).
+## (GAME_IGNORE), or, for single turns, what a fixed bug changes (TURN_IGNORE, the S25 allowlist).
 ##
 ## The turns run in compat mode (D12): the test-only harness_compat mod puts back the original's
 ## behaviour for the few known bugs fixtures cannot avoid (B09), so everything around them is
@@ -12,8 +12,15 @@ extends GdUnitTestSuite
 
 const IGNORE := ["/rng", "/players/*/ship_designs*/name"]
 const GAME_IGNORE := {}
-## Nothing is ignored per turn any more; kept for events not built yet.
-const TURN_IGNORE := {}
+## Allowed divergences of single turns (the S25 allowlist): what a fixed bug changes.
+const TURN_IGNORE := {
+	# B41: the original refuses a Pick Pocket fleet's load from player 2's colony ship ("load
+	# cancelled"); we steal the 3 kT and say so
+	"steal1":
+	{
+		22: ["/fleets[0:2]/cargo/0", "/fleets[1:1]/cargo/0", "/messages/0/6*"],
+	},
+}
 
 const CompatContent := preload("res://tests/unit/compat_content.gd")
 
@@ -473,3 +480,35 @@ func test_rand1(
 	]
 ) -> void:
 	_check_turn("rand1", turn)
+
+
+func test_steal1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[0],
+		[1],
+		[2],
+		[3],
+		[4],
+		[5],
+		[6],
+		[7],
+		[8],
+		[9],
+		[10],
+		[11],
+		[12],
+		[13],
+		[14],
+		[15],
+		[16],
+		[17],
+		[18],
+		[19],
+		[20],
+		[21],
+		[22],
+	]
+) -> void:
+	_check_turn("steal1", turn)

@@ -14,13 +14,15 @@ player's planet match the original in terra1 turns 36-40 (ground combat itself i
 fix B26 have unit tests only. Design orders (block 27) added (2026-10-04), matching the original in terra1 turn 42
 (create, replace, delete); deleting a design with ships and fix B19 have unit tests only. Fill, wait, set amount and set
 waypoint actions added (2026-10-04); fill, wait and set amount (unloading) match the original in terra1 turn 45; the
-waiting cases and set waypoint have unit tests only. Routes and default orders, Ultimate Recycling's resources, hand transfers with other players' fleets and planets,
-and stealing (fix B41) added from the code (2026-10-13); unit tests only, no fixture has them yet.
-References: `ApplyLoggedOrders@1040:649a`,
-`ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`, `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`,
-`TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`, `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`,
-`Fleet_SetDefaultOrders@1078:17c2`, `Fleet_MiningRate@1078:193e`, `Fleet_MineLayRate@1078:1aea`,
-`ProcessCargoTransferQueue@10b0:1c2c`.
+waiting cases and set waypoint have unit tests only. Routes and default orders, Ultimate Recycling's resources, hand
+transfers with other players' fleets and planets, and stealing (fix B41) added from the code (2026-10-13). The steal1
+game (2026-10-13) matches the original: Ultimate Recycling and routes (turn 1), hand transfers to another player's fleet
+and planets with the colonists' fates (turns 3, 4), theft by hand (turn 19) and a refused load from another player's
+fleet (turn 21); turn 22 shows B41 (the original refuses a Pick Pocket fleet's task load; we steal).
+References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`, `DoWaypointTaskPass@10a8:3ec6`,
+`CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`, `RecordTransfer@10b0:2fda`,
+`Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`, `Fleet_MiningRate@1078:193e`,
+`Fleet_MineLayRate@1078:1aea`, `ProcessCargoTransferQueue@10b0:1c2c`.
 
 ## Summary
 

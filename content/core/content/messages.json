@@ -2586,7 +2586,7 @@
       "fleet_designs",
       "amount",
       "planet",
-      "number"
+      "amount"
     ]
   },
   {
@@ -2596,7 +2596,7 @@
       "fleet_designs",
       "amount",
       "planet",
-      "number"
+      "amount"
     ]
   },
   {
@@ -2606,7 +2606,7 @@
       "fleet",
       "amount",
       "planet",
-      "number"
+      "amount"
     ]
   },
   {
@@ -2616,7 +2616,7 @@
       "fleet",
       "amount",
       "planet",
-      "number"
+      "amount"
     ]
   },
   {
@@ -2626,7 +2626,7 @@
       "fleet",
       "amount",
       "planet",
-      "number",
+      "amount",
       "number"
     ]
   },
@@ -2637,7 +2637,7 @@
       "fleet",
       "amount",
       "planet",
-      "number",
+      "amount",
       "field"
     ]
   },
@@ -2731,7 +2731,7 @@
     "type": "message",
     "id": "message.planet.dropped_colonists_died",
     "params": [
-      "colonists",
+      "population",
       "planet"
     ]
   },

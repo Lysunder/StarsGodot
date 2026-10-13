@@ -1,0 +1,25 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    5,
+    0,
+    0,
+    0,
+    0
+   ],
+   "fleet": 2,
+   "other": {
+    "fleet": 1,
+    "owner": 1
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  }
+ ],
+ "player": 0,
+ "turn": 18
+}

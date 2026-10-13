@@ -1,0 +1,168 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.small_freighter",
+    "mod_data": {},
+    "name": "Design 3",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 0,
+    "remaining": 0,
+    "slot": 3,
+    "transferred": false,
+    "turn_designed": 16
+   },
+   "slot": 3,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.small_freighter",
+    "mod_data": {},
+    "name": "Design 3",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.quick_jump_5"
+     },
+     {
+      "count": 1,
+      "part": "part.scanner.pick_pocket_scanner"
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 0,
+    "remaining": 0,
+    "slot": 3,
+    "transferred": false,
+    "turn_designed": 16
+   },
+   "slot": 3,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.small_freighter",
+    "mod_data": {},
+    "name": "Design 3",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.quick_jump_5"
+     },
+     {
+      "count": 1,
+      "part": "part.scanner.pick_pocket_scanner"
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 0,
+    "remaining": 0,
+    "slot": 3,
+    "transferred": false,
+    "turn_designed": 16
+   },
+   "slot": 3,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": 3,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 77,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 79,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 5,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 16
+}
