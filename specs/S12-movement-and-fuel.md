@@ -163,7 +163,9 @@ For a move of distance d (light years) at warp w:
 
 (Community check: 1 mg moves 200 kT one light year at fuel factor 100, which is the same ÷ 20000.)
 
-The same routine also gives the fleet's range with its current fuel: (fuel × 1000) div (usage for 1000 ly).
+The same routine also gives the fleet's range with its current fuel: (fuel × 1000) div u, where u = usage for 1000
+ly div 10 (**truncated**, not rounded up as in step 4; `MoveFleets@10a8:1f18` and the route warp, S11, both use this
+form); when u is 0 the range is unlimited.
 
 ### Moving
 

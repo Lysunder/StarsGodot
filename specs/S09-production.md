@@ -4,8 +4,8 @@ Status: draft (2026-10-02), second pass. Read from the decompiled code, with the
 (`DoProduction`), whose control flow the decompiler garbles. Not yet harness-verified: no fixture has a production
 queue yet (computer players' queues are made and spent inside the original's turn run, so they never appear in the
 files; human queues need order files, S23). Packet launching is summarized here and specified with S14.
-Implemented in `core/rules/production.gd` and `production_costs.gd` (2026-10-02; packets 2026-10-07, S14), except route following for new fleets (S11) and Alternate Reality default orders; those items are dropped
-from the queue with a warning until their specs are done.
+Implemented in `core/rules/production.gd` and `production_costs.gd` (2026-10-02; packets 2026-10-07, S14; route
+following and default orders for new fleets 2026-10-13, S11).
 References: `DoProduction@10b0:0000`, `Production_SpendOnItem@10b0:0756`, `Production_CompleteItem@10b0:0e68`,
 `GetProductionItemCost@10c8:21e4`, `Design_ComputeCost@1048:7a92`, `Planet_FreeQueue@10b0:36d6`,
 `Queue_RemoveShipItems@10c0:4900`, `Queue_RemovePacketItems@10c0:47ea`, `BestPlanetaryScanner`,
@@ -203,11 +203,14 @@ Ships are built only on a planet with a starbase.
 1. **Fewer than 512 fleets:** a new fleet (S03: the player's lowest free fleet number) is created at the planet with
    all n ships of the design in one stack, full fuel (S12), no cargo, and one waypoint at the planet. The design's
    built and existing counts grow by n. Then:
-   - if the planet has a route (S11), the fleet gets a second waypoint at the route's destination with the route
-     task, at a warp chosen as `Fleet_FollowRoute` does (S11);
-   - otherwise default orders: a fleet with mining robots built over an Alternate Reality race's own planet is set
-     to remote-mine it (other new fleets get no orders; the merge-with-a-miner rule applies only to unowned planets,
-     S11).
+   - if the planet has a route (S11), the fleet follows it (S11 "Route": a second waypoint at the route's
+     destination with the route task); the message is **`production.ship_routed`** `[planet, design, destination]`
+     (0x031) for one ship or **`production.ships_routed`** `[planet, count, design, destination]` (0x032) for
+     more, or, when the chosen warp is 0, **`production.ship_not_routed`** (0x033) and
+     **`production.ships_not_routed`** (0x034) with the same parameters, goto the new fleet;
+   - otherwise default orders (S11 "Route"): a fleet with mining robots built over an Alternate Reality race's own
+     planet is set to remote-mine it (other new fleets get no orders; the merge-with-a-miner rule applies only to
+     unowned planets), and the usual built messages.
 2. **512 fleets:** the ships join the first of the player's fleets (fleet order) at the planet's position whose
    stack of that design holds fewer than 32766 − n ships. Damage carries over: with N ships in the stack, p its
    damaged percentage and D its damage (in 1/500 of the design's armor A): if N = 0 or p = 0 the stack becomes

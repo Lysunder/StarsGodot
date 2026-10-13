@@ -2578,5 +2578,185 @@
       "planet",
       "axis_value"
     ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.scrapped_recycled",
+    "params": [
+      "fleet_designs",
+      "amount",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.scrapped_starbase_recycled",
+    "params": [
+      "fleet_designs",
+      "amount",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_recycled",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_starbase_recycled",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_part_recycled",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "number",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.ships_scrapped_level_recycled",
+    "params": [
+      "fleet",
+      "amount",
+      "planet",
+      "number",
+      "field"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ship_routed",
+    "params": [
+      "planet",
+      "design",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ships_routed",
+    "params": [
+      "planet",
+      "number",
+      "design",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ship_not_routed",
+    "params": [
+      "planet",
+      "design",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.production.ships_not_routed",
+    "params": [
+      "planet",
+      "number",
+      "design",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.rerouted",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.reroute_no_fuel",
+    "params": [
+      "fleet",
+      "planet",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.transfer_short",
+    "params": [
+      "object",
+      "number",
+      "cargo",
+      "number"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.packet_short",
+    "params": [
+      "fleet",
+      "cargo",
+      "number",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.packet_none",
+    "params": [
+      "fleet",
+      "cargo",
+      "number",
+      "cargo"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.dropped_colonists_died",
+    "params": [
+      "colonists",
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.dropped_colonists_cannot_live",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.planet.dropped_colonists_starbase",
+    "params": [
+      "planet"
+    ]
+  },
+  {
+    "type": "message",
+    "id": "message.fleet.stole",
+    "params": [
+      "fleet",
+      "amount",
+      "cargo",
+      "fleet"
+    ]
   }
 ]

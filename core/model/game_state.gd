@@ -33,6 +33,11 @@ var history: Array = []
 var mod_data: Dictionary = {}
 ## Turn-only: per owner, the numbers of fleets retired this turn ({number: true}).
 var retired_fleet_numbers: Dictionary = {}
+## Turn-only: per planet id, the resources Ultimate Recycling banked there this turn (S11).
+var recycled: Dictionary = {}
+## Turn-only: colonists dropped by hand on planets the player doesn't own, waiting for the turn's
+## first ground combat (S17): {fleet, player, planet, colonists, owned}.
+var dropped_colonists: Array = []
 
 
 func _schema() -> Array:

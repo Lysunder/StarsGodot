@@ -319,18 +319,20 @@ static func _cargo_transfer(
 		planet = state.planet(other["planet"]) if other["planet"] is int else null
 		if planet == null or fleet.planet != planet.id:
 			return "the fleet is not at that planet"
-		if planet.owner != player:
-			return "transfers with other players' planets are not implemented yet"
 	elif other.has("fleet"):
 		var number: Variant = other["fleet"]
 		var owner: Variant = other.get("owner", player)
 		partner = state.fleet(owner, number) if number is int and owner is int else null
 		if partner == null or partner == fleet or partner.x != fleet.x or partner.y != fleet.y:
 			return "no such fleet here"
-		if partner.owner != player:
-			return "transfers with other players' fleets are not implemented yet"
 	else:
 		return "bad cargo transfer"
+	# S11: loads come only from the player's own planets and fleets (and packets), or by theft
+	var foreign := (
+		(planet != null and planet.owner != player) or (partner != null and partner.owner != player)
+	)
+	# shortfall messages, in the original's order: the givers' (by cargo type), then the receivers'
+	var short: Array = [[], []]
 	for loading in [false, true]:
 		for c in Fleet.CARGO_FUEL + 1:
 			var amount: int = amounts[c]
@@ -338,21 +340,39 @@ static func _cargo_transfer(
 				continue
 			if planet != null and c == Fleet.CARGO_FUEL:
 				continue
-			if (jettison and loading) or (pile != null and c >= Fleet.CARGO_COLONISTS):
+			# another player's fleet takes only fuel (fix B20, as with transport tasks)
+			if partner != null and partner.owner != player and not loading:
+				if c != Fleet.CARGO_FUEL:
+					continue
+			if jettison and loading:
 				continue
+			if (
+				foreign
+				and loading
+				and not WaypointTasks.can_steal(state, content, fleet, partner, planet, c)
+			):
+				continue
+			if pile != null and c >= Fleet.CARGO_COLONISTS:
+				continue
+			var want := absi(amount)
 			var giver_has := 0
-			var room := 0
+			var room := 1 << 53
 			if loading:
 				giver_has = pile.minerals[c] if pile != null else _holder_amount(partner, planet, c)
 				room = _room(state, content, fleet, c)
 			else:
 				giver_has = fleet.cargo[c]
-				room = 1 << 53
 				if partner != null:
 					room = _room(state, content, partner, c)
 				elif pile != null:
 					room = maxi(Packets.slack(pile), 0)
-			var moved := mini(absi(amount), mini(giver_has, room))
+			var given := mini(want, maxi(giver_has, 0))
+			var moved := mini(given, room)
+			var fleet_gives: bool = not loading
+			if given < want:
+				short[0].append(_short(fleet, c, want, given, fleet_gives, pile, true))
+			if moved < given and not jettison:
+				short[1].append(_short(fleet, c, given, moved, fleet_gives, pile, false))
 			if moved <= 0:
 				continue
 			var sign := 1 if loading else -1
@@ -363,11 +383,59 @@ static func _cargo_transfer(
 				pile.minerals[c] -= sign * moved
 			elif partner != null:
 				partner.cargo[c] -= sign * moved
+			elif c == Fleet.CARGO_COLONISTS and planet.owner != player:
+				# dropped on another player's or an unowned planet: ground combat (S17)
+				_drop_colonists(state, fleet, planet, moved)
 			elif c == Fleet.CARGO_COLONISTS:
 				planet.population -= sign * moved
 			else:
 				planet.surface[c] -= sign * moved
+	for messages: Array in short:
+		for m: Array in messages:
+			TurnMessages.add(
+				state, content, player, m[0], {"fleet": fleet.number, "owner": player}, m[1]
+			)
 	return ""
+
+
+## A hand transfer that moved less than asked (S11): 0x0dd for a fleet or planet, 0x0db / 0x0dc on
+## the packet's side. Amounts are signed from that side's view (negative: it gives).
+static func _short(
+	fleet: Fleet, c: int, asked: int, done: int, fleet_gives: bool, pile: Packet, giving: bool
+) -> Array:
+	var sign := -1 if giving else 1
+	var word := fleet.owner * 512 + fleet.number
+	var packet_side := pile != null and fleet_gives != giving
+	if packet_side:
+		var type := "message.fleet.packet_short" if done != 0 else "message.fleet.packet_none"
+		return [type, [word, c, done if giving else -done, c]]
+	return [
+		"message.fleet.transfer_short",
+		[WaypointTasks.FLEET_OBJECT + word, sign * (asked - done), c, sign * asked]
+	]
+
+
+## Colonists dropped by hand on a planet the player doesn't own become a ground combat record for
+## the turn's first ground combat (S17 "Colonists dropped by hand").
+static func _drop_colonists(state: GameState, fleet: Fleet, planet: Planet, colonists: int) -> void:
+	var word := fleet.owner * 512 + fleet.number
+	for d: Dictionary in state.dropped_colonists:
+		if d.fleet == word and d.planet == planet.id:
+			d.colonists += colonists
+			return
+	(
+		state
+		. dropped_colonists
+		. append(
+			{
+				"fleet": word,
+				"player": fleet.owner,
+				"planet": planet.id,
+				"colonists": colonists,
+				"owned": planet.owner >= 0,
+			}
+		)
+	)
 
 
 static func _holder_amount(partner: Fleet, planet: Planet, c: int) -> int:

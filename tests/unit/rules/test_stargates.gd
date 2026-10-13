@@ -70,13 +70,13 @@ func _types(s: GameState) -> Array:
 
 func test_damage_matches_the_worked_example() -> void:
 	var gate := {"gate_mass": 100, "gate_range": 250}
-	assert_int(Stargates._damage(gate, gate, 300, 150)).is_equal(27)
-	assert_int(Stargates._damage(gate, gate, 200, 50)).is_equal(0)
-	assert_int(Stargates._damage(gate, gate, 1251, 50)).is_equal(-1)
-	assert_int(Stargates._damage(gate, gate, 200, 501)).is_equal(-2)
-	assert_int(Stargates._damage(gate, gate, 1250, 50)).is_equal(100)
+	assert_int(Stargates.damage_percent(gate, gate, 300, 150)).is_equal(27)
+	assert_int(Stargates.damage_percent(gate, gate, 200, 50)).is_equal(0)
+	assert_int(Stargates.damage_percent(gate, gate, 1251, 50)).is_equal(-1)
+	assert_int(Stargates.damage_percent(gate, gate, 200, 501)).is_equal(-2)
+	assert_int(Stargates.damage_percent(gate, gate, 1250, 50)).is_equal(100)
 	var unlimited := {"gate_mass": -1, "gate_range": -1}
-	assert_int(Stargates._damage(unlimited, unlimited, 5000, 5000)).is_equal(0)
+	assert_int(Stargates.damage_percent(unlimited, unlimited, 5000, 5000)).is_equal(0)
 
 
 func test_a_jump_within_the_limits_arrives_without_fuel() -> void:

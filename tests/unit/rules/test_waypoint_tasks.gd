@@ -416,3 +416,74 @@ func test_tech_bonus_learns_a_trader_part_seen() -> void:
 			assert_array(copy.trader_parts).is_equal(["part.beam.multi_contained_munition"])
 			break
 	assert_bool(learned).is_true()
+
+
+func test_ultimate_recycling_banks_resources_for_production() -> void:
+	var s := _game()
+	var race := s.players[0].race
+	race.lesser_traits.assign(["trait.lrt.UR"])
+	var f := _fleet(s, 0, 2, "scrap")
+	var cost := _cost(s)
+	var pl := s.planets[0]
+	var r := PlanetEconomy.resources(pl, race, _content)
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(1)
+	var bank := 2 * cost[3]
+	assert_int(s.recycled[0]).is_equal(bank)
+	assert_array(pl.surface).is_equal(
+		[9 * 2 * cost[0] / 20, 9 * 2 * cost[1] / 20, 9 * 2 * cost[2] / 20]
+	)
+	assert_array(_types(s)).contains(
+		["message.fleet.scrapped_recycled", "message.planet.ships_scrapped_recycled"]
+	)
+	var said: Dictionary = s.messages[0][0]
+	assert_int(said["params"][3]).is_equal(bank * r / (bank + r))
+	# this turn's production gets r + B × r / (B + r)
+	var research: Array[int] = [0, 0]
+	Production.new(s, _content, StarsRandom.new()).run_planet(pl, research)
+	assert_int(research[0]).is_equal(r + bank * r / (bank + r))
+	# the bank saturates (fix B40)
+	s.recycled[0] = WaypointTasks.RECYCLING_MAX - 1
+	_fleet(s, 0, 2, "scrap")
+	_tasks(s).run_pass(1)
+	assert_int(s.recycled[0]).is_equal(WaypointTasks.RECYCLING_MAX)
+
+
+func test_stealing_with_a_theft_scanner() -> void:
+	var s := _game()
+	var thief := s.players[0].ship_design(1)
+	thief.parts.append(DesignSlot.new("part.scanner.pick_pocket_scanner", 1))
+	var theirs := _fleet(s, 1, 1)
+	theirs.cargo.assign([0, 9, 0, 0, 0])
+	var f := s.add_fleet(0, 512)
+	f.x = 100
+	f.y = 100
+	f.planet = 0
+	f.add_ships(0, 1)
+	f.add_ships(1, 1)
+	f.waypoints.append(Waypoint.new(100, 100))
+	_transport(f, {1: ["load_all", 0]})
+	f.waypoints[0].target = "fleet"
+	f.waypoints[0].target_owner = 1
+	f.waypoints[0].target_id = theirs.number
+	TurnMessages.clear(s)
+	_tasks(s).run_pass(4)
+	# fix B41: the theft the original's code means to do
+	assert_array([f.cargo[1], theirs.cargo[1]]).is_equal([9, 0])
+	var m: Dictionary = s.messages[0][0]
+	assert_array([m.type, m.params]).is_equal(
+		["message.fleet.stole", [f.number, 9, 1, 512 + theirs.number]]
+	)
+	# a Pick Pocket can't take minerals from a planet; a Robber Baron can
+	var planet := s.planets[0]
+	planet.owner = 1
+	planet.surface.assign([30, 0, 0])
+	_transport(f, {0: ["load", 5]})
+	f.waypoints[0].target = "planet"
+	f.waypoints[0].target_id = 0
+	_tasks(s).run_pass(4)
+	assert_int(f.cargo[0]).is_equal(0)
+	thief.parts[thief.parts.size() - 1] = DesignSlot.new("part.scanner.robber_baron_scanner", 1)
+	_transport(f, {0: ["load", 5]})
+	_tasks(s).run_pass(4)
+	assert_array([f.cargo[0], planet.surface[0]]).is_equal([5, 25])

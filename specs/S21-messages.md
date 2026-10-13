@@ -87,8 +87,8 @@ Per planet in planet order (the production phase):
      (Earlier plural messages are not merged: the original's `RemoveMessages` matches the single message number
      only.)
    - Ships: the new fleet (S09 step 6a) gets **`production.ship_built`** `[planet, design]` for one ship, or
-     **`production.ships_built`** `[planet, count, design]`, goto the new fleet. (A planet with a route sends other
-     messages; routes are not built yet. At the fleet limit the ships join a fleet: not seen yet.)
+     **`production.ships_built`** `[planet, count, design]`, goto the new fleet. (A planet with a route sends the
+     route forms instead, S09. At the fleet limit the ships join a fleet: not seen yet.)
    - Terraforming, per step that changed an axis: **`production.terraformed`** `[planet, up, axis, axis_value]`,
      goto the planet: `up` 1 when the value went up, 0 when it went down; `axis_value` the axis's new value.
 3. After the queue: **`production.queue_done`** `[planet]`, goto the planet, when the queue is now empty, or when
@@ -180,36 +180,33 @@ Battles (S16), bombing and ground combat (S17), fleets following fleets (S12), p
 wormholes (S12), random events and the Mystery Trader (S18), score and victory (S20): their messages are listed in
 their specs. What is still missing is in "Catalog coverage" below.
 
-## Catalog coverage (2026-10-12)
+## Catalog coverage (2026-10-13)
 
 The original's message table has 446 entries (`message_templates`); 61 of them (0x181 … 0x1bf) are other data,
-leaving 385 messages. 287 have a content type here (`legacy_ids`), all with our own wording. No fixture turn holds
+leaving 385 messages. 306 have a content type here (`legacy_ids`), all with our own wording. No fixture turn holds
 a message without one (none is imported as `legacy.message.N`; rand1's 104 turns included). The rest:
 
+- **Never sent in 2.6i (12):** the reports of the cross-player transfer queue, 0x042 … 0x04d, which nothing fills
+  (S11 `cargo_transfer`).
 - **Never sent here (9):** checks of the registration and the race file's integrity (0x100 … 0x107, 0x117); and
   0x180, the battle board limit (fix B08, S16).
 - **Client side (8):** written by the original's client when it reads a turn: new planets found (0x0aa … 0x0ae,
   0x15d), a packet on a collision course, a starbase finishing its queue (0x151, 0x152). For the user interface (M11).
-- **With rules not built yet:**
-  - hand transfers to other players' fleets and planets (S11): the transfer reports 0x042 … 0x049, 0x04a … 0x04d,
-    0x0dd, and the colonists dropped by hand 0x002, 0x057, 0x058 (S17);
-  - new ships following their planet's route (S09/S11): 0x031 … 0x034;
-  - Ultimate Recycling's resources from scrapped ships (S11): 0x05c, 0x05d, 0x13e, 0x13f, 0x142, 0x143;
-  - stealing cargo from other players' fleets (Robber Baron scanner, Super Stealth): 0x119;
 - **Sent from a computed number, or unused in 2.6i (to trace with their subsystem):** battle summaries 0x00e …
   0x022, 0x013, defenses upgraded 0x03b, older bombing forms 0x065, 0x06f, 0x16b, 0x175, loads from other fleets
   0x079, 0x07a, auto-build limits 0x0af … 0x0b4, remote terraforming done 0x0bd, a starbase hull learned 0x0d0,
-  packet pickups 0x0db, 0x0dc, packets without minerals 0x0fc, 0x112, 0x17f, a Trader variant 0x10d, transfer
-  refusals 0x11c, 0x11d, 0x124, 0x125, rerouting 0x127, 0x128, over-limit orders 0x12a, 0x12f, battle recording
-  counts 0x153, 0x154, and 0x11a (unused).
-
-Added in this pass (each with its rule's spec): task refusals, which also end the task like any finished task
-(colonize 0x051 … 0x054, merge 0x0f5, 0x0f6, remote mining 0x075 … 0x077, giving fleets away 0x148 … 0x14c, transport
-0x055, 0x056, 0x11e, 0x120, 0x123, 0x135, 0x155, 0x165), transport shortfalls (0x121, 0x122) and fuel for the next
-waypoint (0x03c, 0x03d, 0x126); production (starbases 0x0cd … 0x0cf, a planetary scanner 0x07c, a Genesis Device
-0x11b, alchemy 0x08c, a second scanner 0x0b9, lost plans 0x04f, the fleet limit 0x0ba, 0x139); movement (Radiating
-Hydro-Ram Scoop 0x074, Cheap Engines failing 0x0f2, overgating 0x0eb); spying (0x159); Mystery Trader parts learned
-from wreckage and scrapped ships (0x13a … 0x13d, S24); Packet Physics terraforming (0x131 … 0x134, S14, fix B39).
+  packets without minerals 0x0fc, 0x112, 0x17f, a Trader variant 0x10d, transfer refusals 0x11c, 0x11d, 0x124,
+  0x125, over-limit orders 0x12a, 0x12f, battle recording counts 0x153, 0x154, and 0x11a (unused).
+ Every rule the catalog needs is built (2026-10-13). Added in this pass (each with its rule's spec): task refusals,
+which also end the task like any finished task (colonize 0x051 … 0x054, merge 0x0f5, 0x0f6, remote mining 0x075 … 0x077,
+giving fleets away 0x148 … 0x14c, transport 0x055, 0x056, 0x11e, 0x120, 0x123, 0x135, 0x155, 0x165), transport
+shortfalls (0x121, 0x122) and fuel for the next waypoint (0x03c, 0x03d, 0x126); production (starbases 0x0cd … 0x0cf, a
+planetary scanner 0x07c, a Genesis Device 0x11b, alchemy 0x08c, a second scanner 0x0b9, lost plans 0x04f, the fleet
+limit 0x0ba, 0x139); movement (Radiating Hydro-Ram Scoop 0x074, Cheap Engines failing 0x0f2, overgating 0x0eb); spying
+(0x159); Mystery Trader parts learned from wreckage and scrapped ships (0x13a … 0x13d, S24); Packet Physics terraforming
+(0x131 … 0x134, S14, fix B39); Ultimate Recycling (0x05c, 0x05d, 0x13e, 0x13f, 0x142, 0x143, S11); routes (new ships
+0x031 … 0x034, S09; rerouting 0x127, 0x128, S11); hand transfer shortfalls (0x0db, 0x0dc, 0x0dd, S11) and colonists
+dropped by hand (0x002, 0x057, 0x058, S17); stealing (0x119, S11, fix B41).
 
 ## Filters
 

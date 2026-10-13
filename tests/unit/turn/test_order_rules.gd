@@ -193,3 +193,80 @@ func test_jettison_and_salvage_transfers() -> void:
 	assert_str(OrderRules.apply(s, _content, 0, from_pile)).is_empty()
 	assert_int(f.cargo[1]).is_equal(7)
 	assert_int(pile.minerals[1]).is_equal(0)
+
+
+func test_hand_transfers_with_other_players() -> void:
+	var s := GameState.new()
+	for i in 2:
+		var p := Player.new()
+		p.index = i
+		p.relations.assign(["neutral", "neutral"])
+		p.race = RacePresets.make(_content, RacePresets.ids(_content)[0])
+		var d := Design.new()
+		d.slot = 0
+		d.hull = "hull.medium_freighter" if i == 0 else "hull.small_freighter"
+		d.parts.assign([DesignSlot.new("part.engine.long_hump_6", 1)])
+		p.set_design(d, false)
+		s.players.append(p)
+	for i in 2:
+		var pl := Planet.new()
+		pl.id = i
+		pl.x = 50
+		pl.y = 50
+		pl.owner = -1 if i == 0 else 1
+		pl.population = 500
+		s.planets.append(pl)
+	var f := s.add_fleet(0, 512)
+	f.x = 50
+	f.y = 50
+	f.planet = 0
+	f.add_ships(0, 1)
+	f.cargo.assign([200, 0, 0, 10, 0])
+	var theirs := s.add_fleet(1, 512)
+	theirs.x = 50
+	theirs.y = 50
+	theirs.add_ships(0, 1)
+	theirs.cargo.assign([0, 30, 0, 0, 0])
+	f.cargo[4] = 200
+	var room := OrderRules._room(s, _content, theirs, 4)
+	var order := {
+		"type": "cargo_transfer",
+		"owner": 0,
+		"fleet": f.number,
+		"other": {"fleet": theirs.number, "owner": 1},
+		"amounts": [-50, 30, 0, 0, -200]
+	}
+	TurnMessages.clear(s)
+	assert_str(_apply(s, 0, order)).is_empty()
+	# only fuel goes to another player's fleet, as much as fits; the rest stays aboard (fix B20);
+	# nothing loads from it without a stealing scanner
+	assert_array(f.cargo).is_equal([200, 0, 0, 10, 200 - room])
+	assert_array(theirs.cargo).is_equal([0, 30, 0, 0, room])
+	var m: Dictionary = s.messages[0][0]
+	assert_str(m.type).is_equal("message.fleet.transfer_short")
+	var word := f.number
+	assert_array(m.params).is_equal([WaypointTasks.FLEET_OBJECT + word, 200 - room, 4, 200])
+	# colonists dropped on an unowned planet die at the first ground combat
+	order["other"] = {"planet": 0}
+	order["amounts"] = [0, 0, 0, -4, 0]
+	assert_str(_apply(s, 0, order)).is_empty()
+	assert_int(f.cargo[3]).is_equal(6)
+	assert_int(s.dropped_colonists.size()).is_equal(1)
+	var combat := GroundCombat.new(s, _content, StarsRandom.new())
+	assert_int(s.dropped_colonists.size()).is_equal(0)
+	TurnMessages.clear(s)
+	combat.resolve()
+	m = s.messages[0][0]
+	assert_array([m.type, m.params]).is_equal(["message.planet.dropped_colonists_died", [4, 0]])
+	assert_int(s.planets[0].owner).is_equal(-1)
+	# on another player's planet with a starbase the starbase kills them
+	s.planets[1].starbase = Starbase.new()
+	f.planet = 1
+	order["other"] = {"planet": 1}
+	assert_str(_apply(s, 0, order)).is_empty()
+	combat = GroundCombat.new(s, _content, StarsRandom.new())
+	TurnMessages.clear(s)
+	combat.resolve()
+	m = s.messages[0][0]
+	assert_array([m.type, m.params]).is_equal(["message.planet.dropped_colonists_starbase", [1]])
+	assert_int(s.planets[1].population).is_equal(500)

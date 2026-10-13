@@ -81,6 +81,8 @@ static func generate(
 ) -> PackedStringArray:
 	TurnMessages.clear(state)
 	state.retired_fleet_numbers.clear()
+	state.recycled.clear()
+	state.dropped_colonists.clear()
 	var ctx := TurnContext.new(state, content, orders)
 	pipeline().run(ctx)
 	return ctx.rejected_orders

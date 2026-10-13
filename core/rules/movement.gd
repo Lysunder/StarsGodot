@@ -91,13 +91,15 @@ static func _usage(
 	return usage
 
 
-## How far the fleet gets on its fuel at `warp` (S12): (fuel x 1000) div (fuel for 1000 ly).
+## How far the fleet gets on its fuel at `warp` (S12): (fuel x 1000) div (the use for 1000 ly,
+## truncated to mg).
 static func fuel_range(fleet: Fleet, owner: Player, warp: int, content: ContentRegistry) -> int:
-	var probe := fuel_needed(fleet, owner, warp, RANGE_PROBE, content)
+	var usage := _usage(fleet, owner, warp, RANGE_PROBE, content)
+	if usage >= CANNOT_MOVE:
+		return 0
+	var probe := usage / FUEL_ROUNDING
 	if probe == 0:
 		return CANNOT_MOVE
-	if probe >= CANNOT_MOVE:
-		return 0
 	return fleet.cargo[Fleet.CARGO_FUEL] * RANGE_PROBE / probe
 
 
@@ -113,7 +115,7 @@ static func design_range(design: Design, owner: Player, warp: int, content: Cont
 		* PartRules.mass(design, content)
 		/ FUEL_DIVISOR
 	)
-	var probe := (usage + FUEL_ROUNDING - 1) / FUEL_ROUNDING
+	var probe := usage / FUEL_ROUNDING
 	if probe == 0:
 		return CANNOT_MOVE
 	return PartRules.fuel_capacity(design, content) * RANGE_PROBE / probe

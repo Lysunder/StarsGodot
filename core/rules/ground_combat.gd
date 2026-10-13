@@ -1,8 +1,9 @@
 class_name GroundCombat
 extends RefCounted
 ## Ground combat (spec S17 "Ground combat", `ResolveGroundCombat@10b0:1e82`): colonists landed on
-## planets during a task pass are recorded per fleet and planet, then each planet is colonized or
-## fought for, between the task passes of each pair (S02 5c and 16d).
+## planets during a task pass, or dropped by hand with the orders, are recorded per fleet and
+## planet, then each planet is colonized or fought for, between the task passes of each pair
+## (S02 5c and 16d).
 
 const TROOPS_PCT_DEFAULT := 110
 const DEFENSE_PCT_DEFAULT := 100
@@ -21,12 +22,17 @@ class Colonization:
 	var player: int
 	var planet: int
 	var colonists: int
+	## The planet had an owner when the colonists landed (hand drops record it; tasks always set it).
+	var owned: bool
 
-	func _init(p_fleet: int, p_player: int, p_planet: int, p_colonists: int) -> void:
+	func _init(
+		p_fleet: int, p_player: int, p_planet: int, p_colonists: int, p_owned := true
+	) -> void:
 		fleet = p_fleet
 		player = p_player
 		planet = p_planet
 		colonists = p_colonists
+		owned = p_owned
 
 
 var _state: GameState
@@ -39,6 +45,10 @@ func _init(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void
 	_state = state
 	_content = content
 	_rng = rng
+	# colonists dropped by hand with this turn's orders come first (S17)
+	for d: Dictionary in state.dropped_colonists:
+		_pending.append(Colonization.new(d.fleet, d.player, d.planet, d.colonists, d.owned))
+	state.dropped_colonists.clear()
 
 
 func record(fleet: Fleet, planet: Planet, colonists: int) -> void:
@@ -75,7 +85,7 @@ func _ground_combat(planet: Planet) -> void:
 	var strength := {}
 	var total := 0
 	for c in _pending:
-		if c.planet != planet.id:
+		if c.planet != planet.id or _turned_away(c, planet):
 			continue
 		var race := _state.player(c.player).race
 		var pct := RaceMath.trait_param(race, _content, "invasion.troops_pct", TROOPS_PCT_DEFAULT)
@@ -167,6 +177,24 @@ func _ground_combat(planet: Planet) -> void:
 
 ## The defenders win: every invader is told (in player order), each time with the planet's owner;
 ## the defenders lose their share.
+func _turned_away(c: Colonization, planet: Planet) -> bool:
+	var at := {"planet": planet.id}
+	var race := _state.player(c.player).race
+	if (
+		RaceMath.trait_param(race, _content, "colony.starbase", 0)
+		and (not c.owned or planet.owner >= 0)
+	):
+		# a race that lives in space can't land colonists on a planet's surface
+		_message_to(c.player, "planet.dropped_colonists_cannot_live", at, [planet.id])
+	elif planet.owner < 0 and not c.owned:
+		_message_to(c.player, "planet.dropped_colonists_died", at, [c.colonists, planet.id])
+	elif planet.owner >= 0 and planet.starbase != null:
+		_message_to(c.player, "planet.dropped_colonists_starbase", at, [planet.id])
+	else:
+		return false
+	return true
+
+
 func _invaders_lose(
 	planet: Planet, colonists: Dictionary, through: float, total: int, defense: int
 ) -> void:

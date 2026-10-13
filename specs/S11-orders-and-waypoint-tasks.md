@@ -1,25 +1,26 @@
 # S11 Orders and waypoint tasks
-
-Status: draft (2026-09-30), second pass. Structure, colonize, scrap, remote mining, mine laying and task completion
+ Status: draft (2026-09-30), second pass. Structure, colonize, scrap, remote mining, mine laying and task completion
 read from the code; transport amounts partly (see "Open questions"). Order application started (2026-10-03): the
-production queue, research and planet orders are implemented (`core/turn/order_rules.gd`) and match the original in
-a harness game with orders given in the client. Waypoint orders, transport at the owner's planet, colonize and
-colonizing empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), matching the original in terra1 turns
-0-2. Fleet orders (split, ship moves, merge, repeat, rename, battle plan) added from the code (2026-10-04,
-`core/rules/fleet_orders.gd`); ship moves, split, repeat and battle plan match the original in terra1 turn 28
-(the client's merge button sends ship moves); merge orders (block 37) and damage not seen yet. Merge, scrap (at a
-planet) and transfer tasks added (2026-10-04), matching the original in terra1 turn 29. Player defaults (default queue
-for new colonies) added (2026-10-04), matching the original in terra1 turns 30-33; the Alternate Reality colony
-starbase and the trait skips are not seen yet. Transport with every partner (2026-10-04): unloading minerals and an invasion at
-another player's planet match the original in terra1 turns 36-40 (ground combat itself is S17); the refusals,
-fleet partners and fix B26 have unit tests only. Design orders (block 27) added (2026-10-04), matching the original in
-terra1 turn 42 (create, replace, delete); deleting a design with ships and fix B19 have unit tests only. Fill, wait,
-set amount and set waypoint actions added (2026-10-04); fill, wait and set amount (unloading) match the original in
-terra1 turn 45; the waiting cases and set waypoint have unit tests only.
-References: `ApplyLoggedOrders@1040:649a`, `ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`,
-`DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`, `TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`,
-`RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`, `Fleet_SetDefaultOrders@1078:17c2`,
-`Fleet_MiningRate@1078:193e`, `Fleet_MineLayRate@1078:1aea`, `ProcessCargoTransferQueue@10b0:1c2c`.
+production queue, research and planet orders are implemented (`core/turn/order_rules.gd`) and match the original in a
+harness game with orders given in the client. Waypoint orders, transport at the owner's planet, colonize and colonizing
+empty planets added (2026-10-04, `core/rules/waypoint_tasks.gd`), matching the original in terra1 turns 0-2. Fleet
+orders (split, ship moves, merge, repeat, rename, battle plan) added from the code (2026-10-04,
+`core/rules/fleet_orders.gd`); ship moves, split, repeat and battle plan match the original in terra1 turn 28 (the
+client's merge button sends ship moves); merge orders (block 37) and damage not seen yet. Merge, scrap (at a planet) and
+transfer tasks added (2026-10-04), matching the original in terra1 turn 29. Player defaults (default queue for new
+colonies) added (2026-10-04), matching the original in terra1 turns 30-33; the Alternate Reality colony starbase and the
+trait skips are not seen yet. Transport with every partner (2026-10-04): unloading minerals and an invasion at another
+player's planet match the original in terra1 turns 36-40 (ground combat itself is S17); the refusals, fleet partners and
+fix B26 have unit tests only. Design orders (block 27) added (2026-10-04), matching the original in terra1 turn 42
+(create, replace, delete); deleting a design with ships and fix B19 have unit tests only. Fill, wait, set amount and set
+waypoint actions added (2026-10-04); fill, wait and set amount (unloading) match the original in terra1 turn 45; the
+waiting cases and set waypoint have unit tests only. Routes and default orders, Ultimate Recycling's resources, hand transfers with other players' fleets and planets,
+and stealing (fix B41) added from the code (2026-10-13); unit tests only, no fixture has them yet.
+References: `ApplyLoggedOrders@1040:649a`,
+`ApplyOrderBlock@1040:651e`, `DoWaypointTasks@10a8:0e92`, `DoWaypointTaskPass@10a8:3ec6`, `CreateFleet@1030:1f2e`,
+`TransferCargo@1048:3aec`, `MergeFleets@1048:78b6`, `RecordTransfer@10b0:2fda`, `Fleet_FollowRoute@1078:13f8`,
+`Fleet_SetDefaultOrders@1078:17c2`, `Fleet_MiningRate@1078:193e`, `Fleet_MineLayRate@1078:1aea`,
+`ProcessCargoTransferQueue@10b0:1c2c`.
 
 ## Summary
 
@@ -39,15 +40,14 @@ Our order file format is our own (D6). This spec defines what each order means a
 - The global fleet list.
 
 ## Fleet order
-
-The game keeps its fleet list sorted by owner (player index), then by fleet number. A new fleet takes the lowest
-free number for its owner and is inserted at its sorted place. A fleet that loses all its ships during the turn
-(destroyed in battle or by mines, lost in flight, scrapped, used to colonize, absorbed by the Mystery Trader) keeps
-its number taken until the turn ends: the original only marks it empty and drops it when it writes the turn's files.
-Merges, splits and ship moves (`DeleteFleet`) free the number at once (seen in rand1 turn 46: a fleet scrapped at a
-starbase, then ships built the same year got the next number, not its). **Every per-fleet step in the turn uses this order**:
-all of player 0's fleets by number, then player 1's, and so on. No random player order was found in the task passes
-(see S02, which records the community belief that load tasks use a random player order).
+ The game keeps its fleet list sorted by owner (player index), then by fleet number. A new fleet takes the lowest free
+number for its owner and is inserted at its sorted place. A fleet that loses all its ships during the turn (destroyed in
+battle or by mines, lost in flight, scrapped, used to colonize, absorbed by the Mystery Trader) keeps its number taken
+until the turn ends: the original only marks it empty and drops it when it writes the turn's files. Merges, splits and
+ship moves (`DeleteFleet`) free the number at once (seen in rand1 turn 46: a fleet scrapped at a starbase, then ships
+built the same year got the next number, not its). **Every per-fleet step in the turn uses this order**: all of player
+0's fleets by number, then player 1's, and so on. No random player order was found in the task passes (see S02, which
+records the community belief that load tasks use a random player order).
 
 ## Orders
 
@@ -140,10 +140,22 @@ the fleets of a ship move have the same owner, and trusts the client for the res
   what it has, unloads only its rounding room, S14). Unloads (negative) go first, then
   loads, each type in order; each is limited by what the giver has and the receiver's free space (cargo or fuel;
   planets take anything but fuel). What the receiver can't take stays with the giver (fix B20: the original lets it
-  vanish). Built so far: the fleet's owner's own planet at the fleet's location, and the owner's fleets at the same
-  position, jettisoning, and packets and salvage; transfers with other players' planets or fleets (queued in the
-  original, S02 5f) are rejected for now. Blocks 1, 2 and 25 (amounts of 1, 2 or 4 bytes). `ApplyOrderBlock@1040:651e`,
-  `TransferCargo@1048:3aec`.
+  vanish). Blocks 1, 2 and 25 (amounts of 1, 2 or 4 bytes). `ApplyOrderBlock@1040:651e`, `TransferCargo@1048:3aec`.
+  - **Other players' planets and fleets** (and unowned planets): unloads happen at once, as with the player's own,
+    except that another player's fleet takes only fuel (fix B20, as in transport tasks). Colonists unloaded onto a
+    planet the player doesn't own are not added to it: they become a ground combat record of the fleet (with "the planet
+    had an owner" set as it is now) and are resolved at the turn's first ground combat, before any task pass's records
+    (S17 "Colonists dropped by hand"). Loads from another player's planet or fleet are skipped unless the fleet can
+    steal them ("Stealing" below; no message). (The original applies them unchecked and relies on its client; it also
+    has a queue for such transfers with reports 0x042 … 0x04d, but in 2.6i nothing ever adds to that queue, so those
+    messages are never sent. A load of colonists from another player's planet takes back colonists the player's fleets
+    dropped there earlier in the same orders; our client nets such pairs before writing the orders.)
+  - **Shortfalls:** each side that moves less than asked sends the fleet's owner a message, givers first (in cargo
+    type order) and then receivers: **`fleet.transfer_short`** `[object, short, cargo, asked]` (0x0dd) naming the
+    fleet (`object` = 32768 + its `fleet` value), with `short` and `asked` signed from that side's view (negative when
+    it gives); on a packet's or salvage pile's side **`fleet.packet_short`** `[fleet, cargo, amount, cargo]` (0x0db)
+    or, when nothing moved, **`fleet.packet_none`** (0x0dc), `amount` positive for what the fleet got. Jettisoned
+    cargo has no receiver; colonists dropped on another player's planet are never short.
 - **`design_change`** `{starbase, slot, design}`: creates the player's ship design (slot 0–15) or starbase design
   (slot 0–9) in that slot, or replaces it. A design that still has ships (or starbases) in existence can't be
   changed (only deleted). The design must be valid (S04: a hull of the right kind, one entry per hull slot, each part
@@ -215,7 +227,7 @@ task data is cleared with it.
 | 5 | scrap | pass 1 only |
 | 6 | lay mines | pass 3 (S13). A Space Demolition fleet also lays mines while its next waypoint has the lay-mines task. |
 | 7 | patrol | handled with movement and battles (S12, S16) |
-| 8 | route | an idle fleet (one waypoint) at its own planet that has a route follows the route; in pass 4 an idle fleet without a route gets default orders |
+| 8 | route | every pass: an idle fleet (one waypoint) at its own planet that has a route follows the route; in pass 4 an idle fleet at another planet gets default orders ("Route") |
 | 9 | transfer fleet to another player | pass 4 only |
 
 **Passes** (S02): pass 1 and 2 use the waypoint the fleet starts the turn at (waypoint 0), before movement. Passes 3
@@ -293,9 +305,19 @@ passes yet.
 **Loading** (passes 2 and 4) works only from the fleet owner's own planet or own fleets. From anything else (another
 player's or an unowned planet, another player's fleet, deep space) the load is skipped. **Fix B26/B15:** the original
 keeps the task, so the fleet waits at waypoint 0 until the load is canceled in pass 4 and loses its move; we skip the
-impossible load, the task completes and the fleet moves on. (Stealing cargo with a robber-baron scanner, message
-"has stolen", and picking up minerals from one's own remote-mining fleet at an unowned planet are not built yet;
-see "Open questions".) The load pass ends the task unless an action waits.
+impossible load, the task completes and the fleet moves on. (Picking up minerals from one's own remote-mining
+fleet at an unowned planet before movement is not built yet; see "Open questions".) The load pass ends the task
+unless an action waits.
+
+**Stealing** (fix B41): a fleet with a cargo-stealing scanner (Pick Pocket or Robber Baron, tag `steals_from_fleets`;
+only Super Stealth races can build them) may load any cargo type from another player's fleet, and one with a
+mineral-stealing scanner (Robber Baron, tag `steals_from_planets`) may load minerals from another player's planet's
+surface, by transport task and by hand. A theft from a fleet sends the thief **`fleet.stole`**
+`[fleet, amount, cargo, victim fleet]` (0x119, goto the fleet) instead of the "loaded" message; a theft from a planet
+sends the usual "loaded" message; the victim is not told. The original means transport loads to steal (its help says
+so, and the code marks the theft and has the message), but the scanner check in `DoWaypointTaskPass` asks
+`Fleet_CalcScannerRanges@1030:32a6` to add the theft flags only to a value that is already non-zero, and passes 0, so
+task theft never happens in 2.6i; theft by hand works because the host applies hand loads unchecked.
 
 ### Colonize
 
@@ -350,15 +372,24 @@ cost of that mineral, divided by 4 (rounded down, per stack) for a transferred d
 - Minerals in the cargo are added in full; colonists in the cargo join the population if the planet is the fleet
   owner's own.
 - The recovery goes to the planet whoever owns it, and the Ultimate Recycling check is on the **planet's owner**.
-- With Ultimate Recycling the ships' resource cost R (capped at 65,535) is also banked for the planet's next year;
-  the message reports R × r / (R + r), where r is the planet's resources.
+- **Ultimate Recycling resources** (trait parameter `scrap.recycling`, the planet's owner; scrap task only, not
+  colonize): R = Σ over stacks of ships × the design's resource cost (a quarter, per stack, for a transferred design;
+  the Bleeding Edge recomputation and fix B14 as for the minerals), capped at 65,535 per fleet. R is added to the
+  planet's recycling bank, which lasts for this turn generation only (all banks start at 0 when the host starts the
+  turn). In this turn's production (S09) a planet with resources r > 0 and a bank B > 0 produces
+  r + B × r / (B + r) (truncated) instead of r, with or without a queue. **Fix B40:** the original keeps the bank in
+  16 bits, so banks above 65,535 wrap; ours saturates at 65,535.
+- With Ultimate Recycling the messages change: the fleet's owner gets "dismantled … Ultimate Recycling made n
+  resources available" (0x05c, at a starbase 0x05d) `[fleet_designs, amount, planet, resources]`, and the planet's
+  owner the matching form (0x142, at a starbase 0x143) `[fleet, amount, planet, resources]`, or with a tech bonus at
+  the starbase 0x13e (a Mystery Trader part, `… resources, bit`) or 0x13f (a level, `… resources, field`). The
+  resources reported are R × r / (R + r), with this fleet's R (not the bank) and r the planet's resources for its
+  owner at that moment (`Planet_GetResources@1040:4de8`); 0 when R is 0.
 - Bleeding Edge Technology: the design's cost is recomputed with the scrapper's current tech first.
 - Designs marked as having parts the player can no longer build count at a quarter of their cost.
 - Scrapping at a planet with a starbase can give the planet's owner tech (S24): once per turn per player, a 50%
   roll, then a Mystery Trader part or tech points in a field where the scrapped designs need more tech than the
   owner has (`TryTechBonus@10e8:6112`); it draws from the generator even when nothing is gained (S24).
-- Ultimate Recycling (trait parameter `scrap.recycling`) also banks the ships' resource cost for the planet's next
-  year; not built yet.
 - In deep space the minerals become salvage (S14); not built yet.
 - Each design's existing count drops by its ships, as for colonize.
 
@@ -426,10 +457,46 @@ flag; not modelled.)
   The giver's fleet is deleted and its designs' existing counts drop.
 - `DoWaypointTaskPass@10a8:3ec6` (task 9), `FindIdenticalDesign@1030:4dcc`.
 
-### Default orders
+### Route
 
-An idle fleet without a route gets default orders in pass 4: a fleet with mining robots at a planet gets the remote
-mining task, or merges into a mining fleet already there.
+The route task (8) acts in every pass on a fleet whose current waypoint has it, when the fleet has only that waypoint
+and sits at a planet:
+
+- **At its owner's planet with a route:** the fleet follows the route (below) and its owner gets "rerouted"
+  **`fleet.rerouted`** `[fleet, planet, destination]` (0x127), or, when the chosen warp is 0,
+  **`fleet.reroute_no_fuel`** (0x128, same parameters: it waits for orders), goto the fleet. Once it has two waypoints
+  the task no longer acts this turn.
+- **Otherwise, in pass 4 only:** default orders (below), and then, if they gave the fleet the merge task, the merge
+  is carried out at once (as in "Merge with fleet").
+
+New fleets built at a planet with a route follow it as well (S09).
+
+**Following a route** (`Fleet_FollowRoute@1078:13f8`): the fleet gets a second waypoint at the route's destination
+planet with the route task, and the warp chosen here:
+
+1. w = the fleet's default warp (S15 "Default warp"); d = the distance from the fleet to the destination, plus 0.999,
+   truncated.
+2. When the destination has the same owner as the planet the fleet is at and both have starbases:
+   - **Stargate:** when the fleet carries no minerals and no colonists, both starbases have a stargate (the first
+     gate part of each starbase design, S12) and a jump of d light years with the fleet's heaviest design (the
+     mass of one ship of each design the fleet has) would lose 0% (`Fleet_StargateRange@1078:0e10`, S12
+     "Stargates": the loss percent, (10000 − S) div 100, is 0), w = 11 (use the gate).
+   - **Dock:** when w is below 9 and the destination's starbase design has a dock (any size), w becomes the highest
+     warp from 9 down whose fuel range (S12 "Fuel use": with the current fuel) is at least d; 0 when none is.
+3. When 0 < w < 11: **ease off:** q = (d div w) div w; while w > 2 and (d div (w − 1)) div (w − 1) ≤ q, w = w − 1.
+   Then **fuel:** while w > 0 and the fuel needed for d light years at warp w (S12) is more than the fleet's fuel,
+   w = w − 1.
+4. The new waypoint's warp is w (0 means the fleet stays: it has no fuel for the trip at any speed).
+
+**Default orders** (`Fleet_SetDefaultOrders@1078:17c2`), for a fleet at a planet: when the planet is unowned, or is
+the fleet owner's own and the owner is an Alternate Reality race (trait parameter `colony.starbase`), and the fleet's
+mining rate is above 0:
+
+- at an unowned planet, the first other fleet of the same owner (fleet order) at the same position with a mining
+  rate from 1 to 3,999 becomes the target of a merge task on the fleet's current waypoint (target type fleet);
+- otherwise the current waypoint gets the remote mining task.
+
+In every case the fleet's battle plan becomes the default plan (0).
 
 ## Validation
 

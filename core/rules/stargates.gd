@@ -76,7 +76,7 @@ static func jump(
 		if stack.count <= 0:
 			continue
 		var mass := PartRules.mass(owner.ship_design(stack.design), content)
-		var result := _damage(source_gate, destination_gate, distance, mass)
+		var result := damage_percent(source_gate, destination_gate, distance, mass)
 		if result == -1:
 			_refuse(state, content, fleet, "gate_out_of_range", [source_id, destination.id])
 			return "stayed"
@@ -192,7 +192,9 @@ static func _unload(
 
 ## A design's damage percent through the gates (`Fleet_StargateRange`): -1 out of range, -2 too
 ## massive, else 0 (no damage) to 100 (all lost).
-static func _damage(source: Dictionary, destination: Dictionary, distance: int, mass: int) -> int:
+static func damage_percent(
+	source: Dictionary, destination: Dictionary, distance: int, mass: int
+) -> int:
 	var reach: int = source["gate_range"]
 	if reach < 0:
 		reach = UNLIMITED_RANGE

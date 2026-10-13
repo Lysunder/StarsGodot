@@ -49,6 +49,9 @@ func run_planet(planet: Planet, research: Array[int]) -> void:
 	var owner := planet.owner
 	var player := _state.player(owner)
 	var r := PlanetEconomy.resources(planet, player.race, _content)
+	var bank: int = _state.recycled.get(planet.id, 0)
+	if r > 0 and bank > 0:
+		r += bank * r / (bank + r)
 	if planet.queue.is_empty():
 		_message(owner, "production.queue_empty", planet, [planet.id])
 		research[owner] += r
@@ -440,10 +443,24 @@ func _complete_ships(planet: Planet, player: Player, slot: int, n: int) -> bool:
 	wp.target = "planet"
 	wp.target_id = planet.id
 	fleet.waypoints.append(wp)
-	if planet.route >= 0:
-		push_warning("planet %d: new fleets do not follow routes yet (S11)" % planet.id)
 	var design_word := player.index * 32 + slot
 	var goto := {"fleet": fleet.number, "owner": player.index}
+	if planet.route >= 0:
+		var warp := Routes.follow(_state, _content, fleet, planet)
+		var kind := "routed" if warp != 0 else "not_routed"
+		var params := [planet.id, design_word, planet.route]
+		if n > 1:
+			params = [planet.id, n, design_word, planet.route]
+		TurnMessages.add(
+			_state,
+			_content,
+			player.index,
+			"message.production.%s_%s" % ["ship" if n == 1 else "ships", kind],
+			goto,
+			params
+		)
+		return true
+	Routes.default_orders(_state, _content, fleet, planet)
 	if n == 1:
 		TurnMessages.add(
 			_state,

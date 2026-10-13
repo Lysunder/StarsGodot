@@ -1931,5 +1931,62 @@
   },
   "message.planet.packet_terraformed_yours": {
     "message": 308
+  },
+  "message.fleet.scrapped_recycled": {
+    "message": 92
+  },
+  "message.fleet.scrapped_starbase_recycled": {
+    "message": 93
+  },
+  "message.planet.ships_scrapped_recycled": {
+    "message": 322
+  },
+  "message.planet.ships_scrapped_starbase_recycled": {
+    "message": 323
+  },
+  "message.planet.ships_scrapped_part_recycled": {
+    "message": 318
+  },
+  "message.planet.ships_scrapped_level_recycled": {
+    "message": 319
+  },
+  "message.production.ship_routed": {
+    "message": 49
+  },
+  "message.production.ships_routed": {
+    "message": 50
+  },
+  "message.production.ship_not_routed": {
+    "message": 51
+  },
+  "message.production.ships_not_routed": {
+    "message": 52
+  },
+  "message.fleet.rerouted": {
+    "message": 295
+  },
+  "message.fleet.reroute_no_fuel": {
+    "message": 296
+  },
+  "message.fleet.transfer_short": {
+    "message": 221
+  },
+  "message.fleet.packet_short": {
+    "message": 219
+  },
+  "message.fleet.packet_none": {
+    "message": 220
+  },
+  "message.planet.dropped_colonists_died": {
+    "message": 2
+  },
+  "message.planet.dropped_colonists_cannot_live": {
+    "message": 87
+  },
+  "message.planet.dropped_colonists_starbase": {
+    "message": 88
+  },
+  "message.fleet.stole": {
+    "message": 281
   }
 }

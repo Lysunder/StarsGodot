@@ -160,9 +160,20 @@ for each:
    research points of step 5 there, with **`planet.artifact_found`** `[planet, field, points]` (goto research;
    seen in rand1 turn 11).
 
-(The original also resolves colonists dropped by hand from the orders, `ApplyOrderBlock`: an Alternate Reality
-race's, or any onto a planet with a starbase, die, and colonists dropped on an unowned planet without colonizing die
-too. Hand transfers to other players' planets are not built yet, S11.)
+**Colonists dropped by hand** (S11 `cargo_transfer` onto a planet the player doesn't own; `ApplyOrderBlock@1040:651e`)
+are records like the task records, but each remembers whether the planet had an owner when they were dropped (task
+records always count as "had an owner"). Ground combat looks at each of a planet's records first (in record order):
+
+- the player lives in space (Alternate Reality, trait parameter `colony.starbase`) and the planet had no owner when
+  they were dropped or has one now: they die, **`planet.dropped_colonists_cannot_live`** `[planet]` (0x057);
+- otherwise, the planet has no owner now and had none when they were dropped: they die,
+  **`planet.dropped_colonists_died`** `[colonists, planet]` (0x002);
+- otherwise, the planet has an owner and a starbase: the starbase kills them, **`planet.dropped_colonists_starbase`**
+  `[planet]` (0x058);
+- otherwise they take part as usual.
+
+All three messages go to the dropping player, goto the planet. A planet where every record was turned away has no
+fight (no messages, no losses).
 
 ## Randomness
 

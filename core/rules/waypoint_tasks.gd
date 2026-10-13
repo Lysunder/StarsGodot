@@ -2,12 +2,12 @@ class_name WaypointTasks
 extends RefCounted
 ## Waypoint tasks (spec S11): the four task passes, and resolving colonization (S17).
 ##
-## Built so far: transport to and from the fleet owner's own planet (load all, unload all, load n,
-## unload n; minerals and colonists), colonize, colonizing empty planets, merge, scrap at a planet
-## and in deep space (salvage, S14) and transfer (with the S24 tech bonus at a starbase). Other
-## tasks, transport to and from salvage and packets, and Ultimate Recycling's resources wait for
-## their specs; they warn.
+## Every task is built: transport, colonize, remote mining, merge, scrap (with Ultimate
+## Recycling and the S24 tech bonus), lay mines, route and default orders (Routes), and transfer.
+## Patrol acts with movement and battles.
 
+## Ultimate Recycling banks at most this many resources per fleet and per planet (S11, fix B40).
+const RECYCLING_MAX := 65535
 const CARGO_COLONISTS := 3
 const COLONIZER_TAG := "colonizer"
 const MINERAL_RETURN := [3, 4]
@@ -86,7 +86,9 @@ func run_pass(pass_number: int) -> void:
 				if pass_number == 3 and fleet.waypoints.size() > 1:
 					if fleet.waypoints[1].task == "lay_mines" and _lays_while_moving(fleet):
 						Minefields.lay(_state, _content, fleet, fleet.waypoints[1], true)
-			"patrol", "route":
+			"route":
+				_route(fleet, wp)
+			"patrol":
 				pass
 			_:
 				push_warning("waypoint task %s is not implemented yet" % wp.task)
@@ -225,6 +227,8 @@ func _find_packet(owner: int, number: int) -> Packet:
 func _refused_load(fleet: Fleet, other: Fleet, planet: Planet, c: int) -> bool:
 	if _pass != 4 or _pile != null or _site != null:
 		return false
+	if can_steal(_state, _content, fleet, other, planet, c):
+		return false
 	var type := ""
 	if planet != null:
 		if planet.owner == fleet.owner or c == Fleet.CARGO_FUEL:
@@ -359,8 +363,30 @@ func _can_load(fleet: Fleet, other: Fleet, planet: Planet, c: int) -> bool:
 	if _pile != null:
 		return c < CARGO_COLONISTS
 	if other != null:
-		return other.owner == fleet.owner
-	return planet != null and planet.owner == fleet.owner and c != Fleet.CARGO_FUEL
+		return other.owner == fleet.owner or can_steal(_state, _content, fleet, other, null, c)
+	if planet == null:
+		return false
+	if planet.owner == fleet.owner:
+		return c != Fleet.CARGO_FUEL
+	return can_steal(_state, _content, fleet, null, planet, c)
+
+
+## S11 "Stealing" (fix B41): a fleet with a cargo-stealing scanner (tag `steals_from_fleets`)
+## takes any cargo from another player's fleet; one with a mineral-stealing scanner (tag
+## `steals_from_planets`) takes minerals from another player's planet.
+static func can_steal(
+	state: GameState, content: ContentRegistry, fleet: Fleet, other: Fleet, planet: Planet, c: int
+) -> bool:
+	var scanner := Scanning.fleet_scanner(fleet, state.player(fleet.owner), content)
+	if other != null:
+		return other.owner != fleet.owner and scanner.cargo
+	return (
+		planet != null
+		and planet.owner >= 0
+		and planet.owner != fleet.owner
+		and c < CARGO_COLONISTS
+		and scanner.minerals
+	)
 
 
 ## n percent of the fleet's capacity for cargo type `c` (fuel capacity for fuel), the capacity
@@ -420,7 +446,10 @@ func _load(fleet: Fleet, other: Fleet, planet: Planet, c: int, want: int) -> int
 		planet.population -= moved
 	else:
 		planet.surface[c] -= moved
-	_load_message(fleet, c, moved, _where(other, planet))
+	if other != null and other.owner != fleet.owner:
+		_fleet_message(fleet, "fleet.stole", [_fleet_word(fleet), moved, c, _fleet_word(other)])
+	else:
+		_load_message(fleet, c, moved, _where(other, planet))
 	return moved
 
 
@@ -570,29 +599,30 @@ func _ships_value(fleet: Fleet, owner: Player) -> Array[int]:
 ## planet's owner (none for an unowned planet).
 ## The scrap messages; `gained` is the planet owner's tech bonus try (S24, at a starbase): a field
 ## + 1 or -(Mystery Trader bit + 1) changes that owner's message.
-func _scrap_messages(fleet: Fleet, planet: Planet, deposited: int, gained := 0) -> void:
+func _scrap_messages(
+	fleet: Fleet, planet: Planet, deposited: int, gained := 0, recycled := -1
+) -> void:
 	var at_starbase := planet.starbase != null
 	var goto := {"planet": planet.id}
 	var described := FleetOrders.designs_word(fleet, _state.player(fleet.owner), _content)
-	TurnMessages.add(
-		_state,
-		_content,
-		fleet.owner,
-		"message.fleet.scrapped_starbase" if at_starbase else "message.fleet.scrapped",
-		goto,
-		[described, deposited, planet.id]
-	)
+	var type := "scrapped_starbase" if at_starbase else "scrapped"
+	var params := [described, deposited, planet.id]
+	var extra := []
+	if recycled >= 0:
+		type += "_recycled"
+		extra = [recycled]
+	TurnMessages.add(_state, _content, fleet.owner, "message.fleet." + type, goto, params + extra)
 	if planet.owner < 0:
 		return
-	var said := [_fleet_word(fleet), deposited, planet.id]
+	var said := [_fleet_word(fleet), deposited, planet.id] + extra
 	if gained > 0:
 		TurnMessages.add(
 			_state,
 			_content,
 			planet.owner,
-			"message.planet.ships_scrapped_level",
+			"message.planet.ships_scrapped_level" + ("_recycled" if recycled >= 0 else ""),
 			{"research": true},
-			said + [gained - 1, 0]
+			said + ([gained - 1] if recycled >= 0 else [gained - 1, 0])
 		)
 	elif gained < 0:
 		var item := MysteryTrader.item_of(_content, -gained - 1)
@@ -600,23 +630,15 @@ func _scrap_messages(fleet: Fleet, planet: Planet, deposited: int, gained := 0) 
 			_state,
 			_content,
 			planet.owner,
-			"message.planet.ships_scrapped_part",
+			"message.planet.ships_scrapped_part" + ("_recycled" if recycled >= 0 else ""),
 			{"item": item},
 			said + [-gained - 1]
 		)
 	else:
-		TurnMessages.add(
-			_state,
-			_content,
-			planet.owner,
-			(
-				"message.planet.ships_scrapped_starbase"
-				if at_starbase
-				else "message.planet.ships_scrapped"
-			),
-			goto,
-			said
-		)
+		type = "ships_scrapped_starbase" if at_starbase else "ships_scrapped"
+		if recycled >= 0:
+			type += "_recycled"
+		TurnMessages.add(_state, _content, planet.owner, "message.planet." + type, goto, said)
 
 
 ## The fleet's ships are gone: their designs' existing counts drop and the fleet is deleted.
@@ -655,6 +677,23 @@ func _merge(fleet: Fleet, wp: Waypoint) -> void:
 		[described, _fleet_word(target)]
 	)
 	FleetOrders.move_ships(_state, _content, target, fleet, ships, -1)
+
+
+## S11 "Route": an idle fleet at its owner's planet with a route follows it; in pass 4 an idle
+## fleet at another planet gets default orders (a merge they give is done at once).
+func _route(fleet: Fleet, wp: Waypoint) -> void:
+	if fleet.waypoints.size() != 1 or fleet.planet < 0:
+		return
+	var planet := _state.planet(fleet.planet)
+	if planet.owner == fleet.owner and planet.route >= 0:
+		var warp := Routes.follow(_state, _content, fleet, planet)
+		_fleet_message(
+			fleet,
+			"fleet.rerouted" if warp != 0 else "fleet.reroute_no_fuel",
+			[_fleet_word(fleet), planet.id, planet.route]
+		)
+	elif _pass == 4 and Routes.default_orders(_state, _content, fleet, planet) != null:
+		_merge(fleet, wp)
 
 
 ## S11 "Remote mining" (pass 3, fleets that didn't move): an unowned planet is mined at the
@@ -730,8 +769,9 @@ func _scrap(fleet: Fleet) -> void:
 		deposited += amount
 	if planet.owner == fleet.owner:
 		planet.population += fleet.cargo[CARGO_COLONISTS]
+	var recycled := -1
 	if recycling:
-		push_warning("resources from Ultimate Recycling are not implemented yet")
+		recycled = _recycle(planet, mini(value[3], RECYCLING_MAX))
 	var gained := 0
 	if planet.starbase != null and planet.owner >= 0:
 		gained = TechGain.try_bonus(
@@ -740,8 +780,18 @@ func _scrap(fleet: Fleet) -> void:
 			_content,
 			_rng
 		)
-	_scrap_messages(fleet, planet, deposited, gained)
+	_scrap_messages(fleet, planet, deposited, gained, recycled)
 	_dismantle(fleet)
+
+
+## S11 "Ultimate Recycling resources": banks `r` resources at the planet for this turn's
+## production (at most RECYCLING_MAX, fix B40) and returns what the messages report.
+func _recycle(planet: Planet, r: int) -> int:
+	_state.recycled[planet.id] = mini(_state.recycled.get(planet.id, 0) + r, RECYCLING_MAX)
+	if r <= 0:
+		return 0
+	var have := PlanetEconomy.resources(planet, _state.player(planet.owner).race, _content)
+	return r * have / (r + have)
 
 
 ## S11 "Scrap" in deep space (S14 "Salvage"): a third of the ships' minerals and the cargo's
