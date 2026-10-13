@@ -174,10 +174,49 @@ planet to planet, as in the original.
   forms `[fleet, planet, value]` when the value didn't change; goto the fleet. When the planet is someone else's
   and its value changed, its owner gets the same message, goto the planet. Values are the planet owner's.
 
-### Not built yet
+### Other subsystems
 
-Battles, ground combat and bombing, fleets following fleets, packets, minefields, wormholes, the Mystery Trader and
-random events: their messages come with their rules.
+Battles (S16), bombing and ground combat (S17), fleets following fleets (S12), packets (S14), minefields (S13),
+wormholes (S12), random events and the Mystery Trader (S18), score and victory (S20): their messages are listed in
+their specs. What is still missing is in "Catalog coverage" below.
+
+## Catalog coverage (2026-10-12)
+
+The original's message table has 446 entries (`message_templates`); 238 have a content type here (`legacy_ids`), all
+with our own wording. No fixture turn holds a message without one (none is imported as `legacy.message.N`; rand1's
+104 turns included). The 208 others, by where the original sends them:
+
+- **Not messages (61, 0x181 … 0x1bf):** the table's tail holds other data.
+- **Never sent here (9):** checks of the registration and the race file's integrity (0x100 … 0x107, 0x117); and
+  0x180, the battle board limit (fix B08, S16).
+- **Client side (8):** written by the original's client when it reads a turn, not by the host: new planets found
+  (0x0aa … 0x0ae, 0x15d), a packet on a collision course and a starbase finishing its queue (0x151, 0x152). They
+  belong to the user interface (M11).
+- **Turn messages of rules built here, still to add (62):**
+  - waypoint task refusals and side cases (32, `DoWaypointTaskPass`): colonize, remote mining, merge, transport and
+    load failures, colonists beamed to deep space or unowned planets, the scrap variants with tech gained (S24),
+    fleets given away refused: 0x03c, 0x03d, 0x051 … 0x056, 0x075 … 0x077, 0x0f5, 0x0f6, 0x119, 0x11e, 0x120 …
+    0x123, 0x126, 0x135, 0x13c … 0x13f, 0x148 … 0x14c, 0x155, 0x165;
+  - production (7, `Production_CompleteItem`): lost plans, a planetary scanner, the fleet limit, a starbase
+    built, a Genesis Device: 0x04f, 0x07c, 0x0ba, 0x0cd, 0x0cf, 0x11b, 0x139; and 0x08c (alchemy), 0x0b9 (a second
+    scanner);
+  - Packet Physics packets terraforming (4, `MoveSpaceObjects`): 0x131 … 0x134;
+  - ground combat side cases (3): 0x002, 0x057, 0x058;
+  - movement (2): 0x074 (colonists killed by a Radiating Hydro-Ram Scoop: S12 step 7, specified but not built yet),
+    0x0f2 (Cheap Engines failing to start);
+  - one each: 0x013 (battle), 0x0dd (hand transfers, S11), 0x0eb (overgating losses, S12), 0x159 (spying,
+    S05).
+- **Manual cargo transfers (8, `ProcessCargoTransferQueue`, 0x042 … 0x049):** with the hand transfers to other
+  players' fleets and planets (S11, not built).
+- **Sent from a computed number (69):** ids reached as a base plus an offset (the code names only the base), or
+  left over from older versions: battle summaries 0x00e … 0x022, routing of new ships 0x031 … 0x034, defenses
+  upgraded 0x03b, failed transfers 0x04a … 0x04d, scrap variants 0x05c, 0x05d, 0x142, 0x143, older bombing forms
+  0x065, 0x06f, 0x16b, 0x175, loads from other fleets 0x079, 0x07a, auto-build limits 0x0af … 0x0b4, remote
+  terraforming done 0x0bd, a dock built 0x0ce, a starbase hull learned 0x0d0, packet pickups 0x0db, 0x0dc, packets
+  without minerals 0x0fc, 0x112, 0x17f, a Trader variant 0x10d, transfer refusals 0x11c, 0x11d, 0x124, 0x125,
+  rerouting 0x127, 0x128, over-limit orders 0x12a, 0x12f, battle salvage of plans 0x13a, 0x13b, battle recording
+  counts 0x153, 0x154, and 0x11a (unused). Each is to be traced to its sender when its subsystem is checked; some
+  will prove unused in 2.6i.
 
 ## Filters
 
