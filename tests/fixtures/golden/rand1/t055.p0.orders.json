@@ -1,0 +1,145 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "count": 1,
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 18,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 5,
+    "x": 1240,
+    "y": 1145
+   }
+  },
+  {
+   "amounts": [
+    0,
+    5040,
+    0,
+    0,
+    0
+   ],
+   "fleet": 3,
+   "other": {
+    "planet": 18
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 3,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "none",
+    "target_id": -1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1225,
+    "y": 1079
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 4,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 2,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 99,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 18,
+   "type": "production_queue"
+  },
+  {
+   "field": 1,
+   "next": 7,
+   "percent": 50,
+   "type": "research"
+  }
+ ],
+ "player": 0,
+ "turn": 55
+}

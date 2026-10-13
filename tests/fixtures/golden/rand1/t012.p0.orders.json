@@ -1,0 +1,255 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    75,
+    0
+   ],
+   "fleet": 8,
+   "other": {
+    "planet": 18
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 8,
+   "owner": 0,
+   "type": "fleet_split"
+  },
+  {
+   "fleet": 8,
+   "other": 2,
+   "owner": 0,
+   "ships": [
+    {
+     "count": -1,
+     "design": 2
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 8,
+   "owner": 0,
+   "type": "fleet_split"
+  },
+  {
+   "fleet": 8,
+   "other": 9,
+   "owner": 0,
+   "ships": [
+    {
+     "count": -1,
+     "design": 2
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 8,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 7,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1094,
+    "y": 1239
+   }
+  },
+  {
+   "fleet": 8,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 7,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1094,
+    "y": 1239
+   }
+  },
+  {
+   "fleet": 9,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 10,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1122,
+    "y": 1237
+   }
+  },
+  {
+   "fleet": 9,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 10,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1122,
+    "y": 1237
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 11,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1149,
+    "y": 1251
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 11,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1149,
+    "y": 1251
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 1,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_defenses",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_max_terraform",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 13,
+   "type": "production_queue"
+  },
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 13,
+   "route": -1,
+   "type": "planet_settings"
+  }
+ ],
+ "player": 0,
+ "turn": 12
+}

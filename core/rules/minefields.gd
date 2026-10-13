@@ -723,7 +723,7 @@ static func decay_all(state: GameState, content: ContentRegistry) -> void:
 			field.mines -= lost
 	for fleet in state.fleets.duplicate():
 		if fleet.stacks.is_empty():
-			FleetOrders.delete_fleet(state, fleet, fleet.owner)
+			FleetOrders.delete_fleet(state, fleet, fleet.owner, true)
 
 
 ## Planets inside the field (`Minefield_Radius@1100:01a0`, which counts them).

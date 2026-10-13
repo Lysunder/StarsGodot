@@ -1,8 +1,10 @@
 # S18 Random events and the Mystery Trader
 
 Status: draft (2026-10-12). Read from the code (the Trader's movement from the disassembly); built
-(`core/rules/random_events.gd`, `core/rules/mystery_trader.gd`) and unit-tested; not yet seen in a harness game
-(every fixture so far has random events off).
+(`core/rules/random_events.gd`, `core/rules/mystery_trader.gd`). Verified by rand1 (tiny universe, random events
+on), turns 0-66: the event draws every year, an environment change, Traders arriving, moving, turning back and
+leaving, fleets refused, and a fleet absorbed for a part (turn 63). Not yet seen in a game: comets, mineral
+deposits, the research and ship rewards, computer players trading from planets.
 References: `DoProduction@10b0:0000` (calls the events), `DoRandomEvents@10b0:1c1a`,
 `RandomEvent_CometStrike@10b0:33aa`, `RandomEvent_EnvironmentChange@10b0:3784`,
 `RandomEvent_MineralDeposit@10b0:3898`, `RandomEvent_MysteryTrader@10b0:3932`, `Planet_FreeQueue@10b0:36d6`,
@@ -127,8 +129,10 @@ For each trader, in order:
    **`trader.course_changed`** `[trader]`.
 2. It moves w² ly toward its destination like a fleet that moves part of the way (S12: each axis by its share,
    rounded half away from zero), unless w² ≥ trunc(distance), or the step lands on the destination: then it
-   **arrives**: it is placed on the destination, w = max(w − 2, 6) + 1, it gets a new destination as in step 1, and
-   every player gets **`trader.turned_back`** `[trader]`. It doesn't move further this year.
+   **arrives**. When any other trader is in space, this one leaves known space; otherwise it leaves when `random(2)`
+   is 0 (no message either way). Else it **turns back**: it is placed on the destination, w = max(w − 2, 6) + 1, it
+   gets a new destination as in step 1, and every player gets **`trader.turned_back`** `[trader]`. It doesn't move
+   further this year. (Seen in rand1 turn 43: the roll comes between the startle roll and the new destination.)
 3. When there is any trader, the waypoint targets are updated (S12 `UpdateWaypointTargets`, with its draws); a
    waypoint that targets a trader follows it (deep space when it is gone).
 
@@ -142,7 +146,9 @@ For each trader, in order:
      `[fleet]` (goto the fleet). Next fleet.
    - The trader has met the owner already: **`trader.recovering`** `[fleet]` (goto the fleet). Next fleet.
    - Otherwise the trader has met the owner from now on; the owner's **`fleet.completed`** message for this fleet is
-     removed, and the fleet is **absorbed** (it is gone, with its cargo). Then:
+     removed, and the fleet is **absorbed**: it is gone, with its cargo, and its ships leave their designs' count in
+     service. From here on the messages name it by its main design (`fleet_designs`, S21, the `fleet` of the
+     messages below; "refused" and "recovering" use the plain fleet). Then:
      - **Research** (the trader's item is research, or the owner has it already): when every tech field of the owner
        is at the top level: `random(5)`: 0 gives **`trader.nothing_to_teach`** `[fleet]`; otherwise go on as for a part
        below. Else levels L = min((M − 5000) div 1200 + 6, 10), then by the owner's tech level total T: 1 when T ≥
@@ -210,8 +216,6 @@ Content: the Trader's items and ship designs, `mystery_trader` parts. Formula id
 ## Open questions
 
 1. The option bit 0x04 that stops the extra Trader ships after year 100: which New Game option it is.
-2. How the original numbers a new trader (we take the lowest free number), and whether a trader ever leaves (none seen yet: it bounces between edges).
+2. Answered: a new trader takes the lowest free number (rand1 turn 49 reused 0).
 3. Message parameters to confirm against a harness game (several message calls lost their arguments in the
    decompilation).
-4. Whether ships absorbed by a trader leave their designs' count in service (the original only marks the fleet as
-   having no ships; we leave the counts alone).

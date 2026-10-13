@@ -1,0 +1,178 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 0,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 18,
+    "target_owner": -1,
+    "task": "scrap",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 1,
+    "x": 1240,
+    "y": 1145
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "trader",
+    "target_id": 1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1020,
+    "y": 1100
+   }
+  },
+  {
+   "count": 1,
+   "fleet": 2,
+   "index": 2,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "fleet": 7,
+   "fleets": [
+    3
+   ],
+   "owner": 0,
+   "type": "fleet_merge"
+  },
+  {
+   "amounts": [
+    3401,
+    1508,
+    131,
+    0,
+    0
+   ],
+   "fleet": 7,
+   "other": {
+    "planet": 18
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "trader",
+    "target_id": 1,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1020,
+    "y": 1100
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 24,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 400,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 400,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 18,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 45
+}

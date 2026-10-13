@@ -31,6 +31,8 @@ var views: Array = []
 ## Per player, score history (S20).
 var history: Array = []
 var mod_data: Dictionary = {}
+## Turn-only: per owner, the numbers of fleets retired this turn ({number: true}).
+var retired_fleet_numbers: Dictionary = {}
 
 
 func _schema() -> Array:
@@ -129,15 +131,37 @@ func space_objects() -> Array[ModelObject]:
 
 
 ## Creates a fleet of the owner with the lowest free number, inserted in order. Returns null when
-## the owner already has `limit` fleets.
+## the owner already has `limit` fleets. Numbers of fleets retired this turn are not free.
 func add_fleet(owner: int, limit: int) -> Fleet:
 	var created := Fleet.new()
 	created.owner = owner
-	return _insert_numbered(fleets, created, limit) as Fleet
+	var retired: Dictionary = retired_fleet_numbers.get(owner, {})
+	var at := _search(fleets, owner, 0)
+	var number := 0
+	while true:
+		if at < fleets.size() and _key_of(fleets[at]) == [owner, number]:
+			at += 1
+		elif not retired.has(number):
+			break
+		number += 1
+	if number >= limit:
+		return null
+	created.number = number
+	fleets.insert(at, created)
+	return created
 
 
 func remove_fleet(f: Fleet) -> void:
 	fleets.erase(f)
+
+
+## Removes a fleet that lost all its ships; its number stays taken for the rest of the turn (the
+## original keeps such a fleet, marked empty, until it writes the turn's files).
+func retire_fleet(f: Fleet) -> void:
+	fleets.erase(f)
+	if not retired_fleet_numbers.has(f.owner):
+		retired_fleet_numbers[f.owner] = {}
+	retired_fleet_numbers[f.owner][f.number] = true
 
 
 func add_minefield(owner: int, limit: int) -> Minefield:

@@ -571,7 +571,7 @@ func _dismantle(fleet: Fleet) -> void:
 	var owner := _state.player(fleet.owner)
 	for stack in fleet.stacks:
 		owner.ship_design(stack.design).remaining -= stack.count
-	FleetOrders.delete_fleet(_state, fleet, -1)
+	FleetOrders.delete_fleet(_state, fleet, -1, true)
 
 
 ## S11 "Merge with fleet": the fleet's ships join the target fleet of waypoint 0, which must be the
@@ -993,6 +993,6 @@ func _found_colony(planet: Planet, player: int, population: int) -> void:
 			if population < ARTIFACT_FULL_POPULATION:
 				points = population * points / ARTIFACT_FULL_POPULATION
 			_message_to(
-				player, "planet.artifact_found", {"planet": planet.id}, [planet.id, field, points]
+				player, "planet.artifact_found", {"research": true}, [planet.id, field, points]
 			)
 			_state.player(player).research_points[field] += points

@@ -135,7 +135,7 @@ static func fuel_capacity(fleet: Fleet, owner: Player, content: ContentRegistry)
 static func move_all(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void:
 	for fleet in state.fleets:
 		fleet.did_not_move = true
-	# chaser -> {budget (left), moved, fuel (used so far this turn)}
+	# chaser -> {budget (left), moved, fuel (used so far this turn), range (fuel range at the start)}
 	var chasers := {}
 	# fleets lost in stargates, deleted after movement
 	var lost: Array[Fleet] = []
@@ -162,11 +162,11 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 	for fleet in state.fleets:
 		_advance_waypoints(state, content, fleet)
 	for fleet in lost:
-		FleetOrders.delete_fleet(state, fleet, fleet.owner)
+		FleetOrders.delete_fleet(state, fleet, fleet.owner, true)
 	# fleets destroyed by mines
 	for fleet in state.fleets.duplicate():
 		if fleet.stacks.is_empty():
-			FleetOrders.delete_fleet(state, fleet, fleet.owner)
+			FleetOrders.delete_fleet(state, fleet, fleet.owner, true)
 
 
 static func _move(
@@ -189,14 +189,18 @@ static func _move(
 		and rng.random(FAILURE_CHANCE) == 0
 	):
 		return
+	# the fuel range is taken before the year's losses in flight (seen in rand1 turn 54)
+	var fuel_reach := fuel_range(fleet, owner, next.warp, content)
 	if next.warp < Waypoint.WARP_STARGATE:
 		_transit_losses(state, content, fleet, owner)
 		if next.warp == WARP10 and not _warp10_damage(state, content, rng, fleet, owner):
 			return
 	if next.target == "fleet" and state.fleet(next.target_owner, next.target_id) != null:
-		chasers[fleet] = {"budget": next.warp * next.warp, "moved": 0, "fuel": 0}
+		chasers[fleet] = {
+			"budget": next.warp * next.warp, "moved": 0, "fuel": 0, "range": fuel_reach
+		}
 		return
-	_step(state, content, rng, fleet, next.warp * next.warp, {})
+	_step(state, content, rng, fleet, next.warp * next.warp, {"range": fuel_reach})
 
 
 ## S12 "Alternate Reality colonists in transit": colonists aboard a moving fleet of a race with
@@ -303,7 +307,8 @@ static func _chase(
 
 
 ## Moves the fleet up to `budget` light years toward its next waypoint (S12 "Moving"). `chase` is
-## a chaser's state ({} otherwise): its fuel is charged for the whole distance chased so far.
+## a chaser's state, whose fuel is charged for the whole distance chased so far; any fleet's
+## "range" is its fuel range taken before the year's losses in flight.
 ## Returns true when a chaser moved without arriving and can go on.
 static func _step(
 	state: GameState,
@@ -322,7 +327,7 @@ static func _step(
 	var warp := next.warp
 	var move := mini(budget, whole)
 	var moved: int = chase.get("moved", 0)
-	var reach := maxi(fuel_range(fleet, owner, warp, content) - moved, 0)
+	var reach := maxi(int(chase.get("range", fuel_range(fleet, owner, warp, content))) - moved, 0)
 	var used := 0
 	if reach < move:
 		fleet.cargo[Fleet.CARGO_FUEL] = 0
@@ -332,7 +337,7 @@ static func _step(
 		# a chaser's fuel is charged for the whole distance chased so far
 		fleet.cargo[Fleet.CARGO_FUEL] += int(chase.get("fuel", 0))
 		used = fuel_needed(fleet, owner, warp, moved + move, content)
-		if not chase.is_empty():
+		if chase.has("budget"):
 			chase["fuel"] = used
 		fleet.cargo[Fleet.CARGO_FUEL] = maxi(fleet.cargo[Fleet.CARGO_FUEL] - used, 0)
 	# out of fuel: the tank ran dry short of the target (or the fleet could not move at all)
@@ -403,7 +408,7 @@ static func _step(
 					{"fleet": fleet.number, "owner": fleet.owner},
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
-	return not chase.is_empty() and not arrived and not out_of_fuel and hit < 0
+	return chase.has("budget") and not arrived and not out_of_fuel and hit < 0
 
 
 ## A fleet arriving on a wormhole its waypoint targets comes out at the other end (S12 step 8): both

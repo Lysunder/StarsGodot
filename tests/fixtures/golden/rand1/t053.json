@@ -1,0 +1,3394 @@
+{
+ "format": "starsgodot-save",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "mods": [
+  {
+   "id": "core",
+   "version": "0.1.0"
+  }
+ ],
+ "ruleset_hash": "",
+ "state": {
+  "battles": [],
+  "fleets": [
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     262
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 1,
+    "owner": 0,
+    "planet": -1,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 1,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "none",
+      "target_id": -1,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 6,
+      "x": 1380,
+      "y": 1266
+     }
+    ],
+    "x": 1380,
+    "y": 1266
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     2397,
+     2273,
+     580,
+     0,
+     11250
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 2,
+    "owner": 0,
+    "planet": 18,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 25,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 6,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 18,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 7,
+      "x": 1240,
+      "y": 1145
+     }
+    ],
+    "x": 1240,
+    "y": 1145
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     10800
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 3,
+    "owner": 0,
+    "planet": 18,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 24,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 6,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 18,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1240,
+      "y": 1145
+     }
+    ],
+    "x": 1240,
+    "y": 1145
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     29
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 6,
+    "owner": 0,
+    "planet": -1,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 7,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "none",
+      "target_id": -1,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 6,
+      "x": 1380,
+      "y": 1266
+     }
+    ],
+    "x": 1380,
+    "y": 1266
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     3401,
+     1508,
+     131,
+     0,
+     10800
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 7,
+    "owner": 0,
+    "planet": 18,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 3,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     {
+      "count": 23,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 6,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 18,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 8,
+      "x": 1240,
+      "y": 1145
+     }
+    ],
+    "x": 1240,
+    "y": 1145
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     300
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 0,
+    "owner": 1,
+    "planet": 6,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 0,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 6,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1084,
+      "y": 1116
+     }
+    ],
+    "x": 1084,
+    "y": 1116
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     200
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 1,
+    "owner": 1,
+    "planet": 6,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 1,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 6,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1084,
+      "y": 1116
+     }
+    ],
+    "x": 1084,
+    "y": 1116
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     400
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 2,
+    "owner": 1,
+    "planet": 6,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 2,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 6,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1084,
+      "y": 1116
+     }
+    ],
+    "x": 1084,
+    "y": 1116
+   },
+   {
+    "battle_plan": 0,
+    "cargo": [
+     0,
+     0,
+     0,
+     0,
+     400
+    ],
+    "mod_data": {},
+    "name": "",
+    "number": 3,
+    "owner": 1,
+    "planet": 6,
+    "repeat": false,
+    "stacks": [
+     {
+      "count": 1,
+      "damage": 0,
+      "damaged_percent": 0,
+      "design": 3,
+      "paid": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "waypoints": [
+     {
+      "target": "planet",
+      "target_id": 6,
+      "target_owner": -1,
+      "task": "none",
+      "task_data": {},
+      "warp": 0,
+      "x": 1084,
+      "y": 1116
+     }
+    ],
+    "x": 1084,
+    "y": 1116
+   }
+  ],
+  "history": [],
+  "messages": [
+   [
+    {
+     "goto": {
+      "score": true
+     },
+     "params": [],
+     "type": "message.game.won"
+    },
+    {
+     "goto": {
+      "fleet": 2,
+      "owner": 0
+     },
+     "params": [
+      2
+     ],
+     "type": "message.fleet.completed"
+    },
+    {
+     "goto": {
+      "planet": 7
+     },
+     "params": [
+      7
+     ],
+     "type": "message.production.mine_built"
+    },
+    {
+     "goto": {
+      "planet": 7
+     },
+     "params": [
+      7
+     ],
+     "type": "message.production.factory_built"
+    },
+    {
+     "goto": {
+      "planet": 10
+     },
+     "params": [
+      10,
+      0,
+      2,
+      602
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 11
+     },
+     "params": [
+      11,
+      1,
+      0,
+      27
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 11
+     },
+     "params": [
+      11
+     ],
+     "type": "message.production.factory_built"
+    },
+    {
+     "goto": {
+      "planet": 13
+     },
+     "params": [
+      13,
+      1,
+      2,
+      555
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 13
+     },
+     "params": [
+      5,
+      13
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 13
+     },
+     "params": [
+      5,
+      13
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 13
+     },
+     "params": [
+      5,
+      13
+     ],
+     "type": "message.production.defenses_built"
+    },
+    {
+     "goto": {
+      "planet": 18
+     },
+     "params": [
+      81,
+      18
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 28
+     },
+     "params": [
+      28,
+      1,
+      0,
+      42
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 28
+     },
+     "params": [
+      5,
+      28
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 28
+     },
+     "params": [
+      5,
+      28
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "planet": 28
+     },
+     "params": [
+      28
+     ],
+     "type": "message.production.defense_built"
+    },
+    {
+     "goto": {
+      "planet": 28
+     },
+     "params": [
+      28,
+      1,
+      0,
+      43
+     ],
+     "type": "message.production.terraformed"
+    },
+    {
+     "goto": {
+      "planet": 29
+     },
+     "params": [
+      3,
+      29
+     ],
+     "type": "message.production.factories_built"
+    },
+    {
+     "goto": {
+      "planet": 29
+     },
+     "params": [
+      4,
+      29
+     ],
+     "type": "message.production.mines_built"
+    },
+    {
+     "goto": {
+      "trader": 1
+     },
+     "params": [
+      24577
+     ],
+     "type": "message.trader.arrived"
+    }
+   ],
+   [
+    {
+     "goto": {
+      "score": true
+     },
+     "params": [
+      [
+       0
+      ]
+     ],
+     "type": "message.game.won_by_other"
+    },
+    {
+     "goto": {
+      "planet": 6
+     },
+     "params": [
+      6
+     ],
+     "type": "message.production.queue_empty"
+    },
+    {
+     "goto": {
+      "research": true
+     },
+     "params": [
+      12,
+      0,
+      0
+     ],
+     "type": "message.research.level"
+    },
+    {
+     "goto": {
+      "trader": 1
+     },
+     "params": [
+      24577
+     ],
+     "type": "message.trader.arrived"
+    }
+   ]
+  ],
+  "minefields": [],
+  "mod_data": {},
+  "packets": [],
+  "planets": [
+   {
+    "artifact": true,
+    "concentration": [
+     79,
+     75,
+     9
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     79,
+     66,
+     69
+    ],
+    "environment_original": [
+     79,
+     66,
+     69
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 0,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 0",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1046,
+    "y": 1190
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     21,
+     62,
+     25
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     58,
+     24,
+     68
+    ],
+    "environment_original": [
+     58,
+     24,
+     68
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 1,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 1",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1051,
+    "y": 1218
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     22,
+     19,
+     63
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     10,
+     74,
+     26
+    ],
+    "environment_original": [
+     10,
+     74,
+     26
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 2,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 2",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1052,
+    "y": 1344
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     70,
+     110,
+     26
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     65,
+     21,
+     18
+    ],
+    "environment_original": [
+     65,
+     21,
+     18
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 3,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 3",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1054,
+    "y": 1256
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     46,
+     65,
+     79
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     95,
+     8,
+     85
+    ],
+    "environment_original": [
+     95,
+     8,
+     85
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 4,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 4",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1068,
+    "y": 1177
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     24,
+     57,
+     52
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     49,
+     77,
+     96
+    ],
+    "environment_original": [
+     49,
+     77,
+     96
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 5,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 5",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1073,
+    "y": 1010
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     77,
+     73,
+     30
+    ],
+    "concentration_fraction": [
+     121,
+     164,
+     137
+    ],
+    "defenses": 10,
+    "environment": [
+     50,
+     50,
+     50
+    ],
+    "environment_original": [
+     50,
+     50,
+     50
+    ],
+    "extra_colonists": 27,
+    "factories": 10,
+    "has_scanner": true,
+    "homeworld": true,
+    "id": 6,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 4,
+    "mines": 10,
+    "mod_data": {},
+    "name": "Planet 6",
+    "owner": 1,
+    "population": 8795,
+    "queue": [],
+    "route": -1,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
+    "surface": [
+     1261,
+     1161,
+     783
+    ],
+    "x": 1084,
+    "y": 1116
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     2,
+     5,
+     57
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     182
+    ],
+    "defenses": 1,
+    "environment": [
+     18,
+     37,
+     40
+    ],
+    "environment_original": [
+     17,
+     37,
+     40
+    ],
+    "extra_colonists": 39,
+    "factories": 10,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 7,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 6,
+    "mod_data": {},
+    "name": "Planet 7",
+    "owner": 0,
+    "population": 103,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.mines",
+      "progress": 39,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     13,
+     4,
+     32
+    ],
+    "x": 1094,
+    "y": 1239
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     14,
+     91,
+     3
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     27,
+     57,
+     83
+    ],
+    "environment_original": [
+     27,
+     57,
+     83
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 8,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 8",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1107,
+    "y": 1056
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     27,
+     60,
+     68
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     20,
+     51,
+     78
+    ],
+    "environment_original": [
+     20,
+     51,
+     78
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 9,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 9",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1113,
+    "y": 1113
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     75,
+     20,
+     18
+    ],
+    "concentration_fraction": [
+     223,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     38,
+     38,
+     90
+    ],
+    "environment_original": [
+     38,
+     38,
+     91
+    ],
+    "extra_colonists": 26,
+    "factories": 2,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 10,
+    "leftover_to_research": true,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 2,
+    "mod_data": {},
+    "name": "Planet 10",
+    "owner": 0,
+    "population": 21,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.defenses",
+      "progress": 25,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     55,
+     15,
+     7
+    ],
+    "x": 1122,
+    "y": 1237
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     46,
+     49,
+     19
+    ],
+    "concentration_fraction": [
+     140,
+     113,
+     219
+    ],
+    "defenses": 0,
+    "environment": [
+     27,
+     65,
+     53
+    ],
+    "environment_original": [
+     23,
+     65,
+     53
+    ],
+    "extra_colonists": 80,
+    "factories": 15,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 11,
+    "leftover_to_research": true,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 25,
+    "mod_data": {},
+    "name": "Planet 11",
+    "owner": 0,
+    "population": 301,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.factories",
+      "progress": 29,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     154,
+     147,
+     7
+    ],
+    "x": 1149,
+    "y": 1251
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     96,
+     12,
+     77
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     87,
+     29,
+     52
+    ],
+    "environment_original": [
+     87,
+     29,
+     52
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 12,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 12",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1152,
+    "y": 1140
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     68,
+     22,
+     73
+    ],
+    "concentration_fraction": [
+     159,
+     153,
+     47
+    ],
+    "defenses": 37,
+    "environment": [
+     44,
+     51,
+     43
+    ],
+    "environment_original": [
+     44,
+     51,
+     41
+    ],
+    "extra_colonists": 67,
+    "factories": 98,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 13,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 89,
+    "mod_data": {},
+    "name": "Planet 13",
+    "owner": 0,
+    "population": 2874,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.terraform",
+      "progress": 79,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     436,
+     16,
+     78
+    ],
+    "x": 1168,
+    "y": 1167
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     101,
+     99,
+     33
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     64,
+     54,
+     25
+    ],
+    "environment_original": [
+     64,
+     54,
+     25
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 14,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 14",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1194,
+    "y": 1167
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     68,
+     81,
+     84
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     5,
+     28,
+     6
+    ],
+    "environment_original": [
+     5,
+     28,
+     6
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 15,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 15",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1194,
+    "y": 1246
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     70,
+     21,
+     15
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     93,
+     37,
+     62
+    ],
+    "environment_original": [
+     93,
+     37,
+     62
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 16,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 16",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1226,
+    "y": 1324
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     50,
+     72,
+     72
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     61,
+     17,
+     81
+    ],
+    "environment_original": [
+     61,
+     17,
+     81
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 17,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 17",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1233,
+    "y": 1108
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     38,
+     37,
+     20
+    ],
+    "concentration_fraction": [
+     222,
+     245,
+     122
+    ],
+    "defenses": 10,
+    "environment": [
+     50,
+     50,
+     50
+    ],
+    "environment_original": [
+     50,
+     50,
+     50
+    ],
+    "extra_colonists": 3,
+    "factories": 766,
+    "has_scanner": true,
+    "homeworld": true,
+    "id": 18,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 4,
+    "mines": 903,
+    "mod_data": {},
+    "name": "Planet 18",
+    "owner": 0,
+    "population": 10453,
+    "queue": [
+     {
+      "count": 137,
+      "design": -1,
+      "item": "production_item.factories",
+      "progress": 74,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 10,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": {
+     "damage": 0,
+     "design": 0
+    },
+    "surface": [
+     2639,
+     5574,
+     0
+    ],
+    "x": 1240,
+    "y": 1145
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     64,
+     25,
+     85
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     41,
+     40,
+     9
+    ],
+    "environment_original": [
+     41,
+     40,
+     9
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 19,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 19",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1254,
+    "y": 1338
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     55,
+     73,
+     13
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     11,
+     11,
+     14
+    ],
+    "environment_original": [
+     11,
+     11,
+     14
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 20,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 20",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1258,
+    "y": 1075
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     48,
+     18,
+     59
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     14,
+     72,
+     74
+    ],
+    "environment_original": [
+     14,
+     72,
+     74
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 21,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 21",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1265,
+    "y": 1229
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     12,
+     21,
+     67
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     32,
+     89,
+     82
+    ],
+    "environment_original": [
+     32,
+     89,
+     82
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 22,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 22",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1271,
+    "y": 1324
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     14,
+     53,
+     53
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     94,
+     14,
+     29
+    ],
+    "environment_original": [
+     94,
+     14,
+     29
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 23,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 23",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1307,
+    "y": 1267
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     28,
+     7,
+     82
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     67,
+     33,
+     90
+    ],
+    "environment_original": [
+     67,
+     33,
+     90
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 24,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 24",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1311,
+    "y": 1363
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     19,
+     80,
+     59
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     54,
+     80,
+     23
+    ],
+    "environment_original": [
+     54,
+     80,
+     23
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 25,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 25",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1329,
+    "y": 1291
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     78,
+     28,
+     54
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     80,
+     88,
+     72
+    ],
+    "environment_original": [
+     80,
+     88,
+     72
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 26,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 26",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1331,
+    "y": 1159
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     28,
+     192,
+     63
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     44,
+     39,
+     94
+    ],
+    "environment_original": [
+     44,
+     39,
+     94
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 27,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 27",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1333,
+    "y": 1192
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     7,
+     66,
+     79
+    ],
+    "concentration_fraction": [
+     224,
+     253,
+     197
+    ],
+    "defenses": 14,
+    "environment": [
+     43,
+     50,
+     50
+    ],
+    "environment_original": [
+     39,
+     50,
+     47
+    ],
+    "extra_colonists": 42,
+    "factories": 100,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 28,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 85,
+    "mod_data": {},
+    "name": "Planet 28",
+    "owner": 0,
+    "population": 3007,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.terraform",
+      "progress": 80,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     3,
+     480,
+     202
+    ],
+    "x": 1337,
+    "y": 1101
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     91,
+     26,
+     65
+    ],
+    "concentration_fraction": [
+     153,
+     203,
+     192
+    ],
+    "defenses": 2,
+    "environment": [
+     41,
+     34,
+     36
+    ],
+    "environment_original": [
+     41,
+     34,
+     36
+    ],
+    "extra_colonists": 29,
+    "factories": 38,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 29,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 38,
+    "mod_data": {},
+    "name": "Planet 29",
+    "owner": 0,
+    "population": 382,
+    "queue": [
+     {
+      "count": 1,
+      "design": -1,
+      "item": "production_item.defenses",
+      "progress": 5,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     339,
+     93,
+     91
+    ],
+    "x": 1342,
+    "y": 1079
+   },
+   {
+    "artifact": true,
+    "concentration": [
+     70,
+     55,
+     18
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     44,
+     23,
+     35
+    ],
+    "environment_original": [
+     44,
+     23,
+     35
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 30,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 30",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1357,
+    "y": 1265
+   },
+   {
+    "artifact": null,
+    "concentration": [
+     85,
+     114,
+     85
+    ],
+    "concentration_fraction": [
+     0,
+     0,
+     0
+    ],
+    "defenses": 0,
+    "environment": [
+     63,
+     18,
+     94
+    ],
+    "environment_original": [
+     63,
+     18,
+     94
+    ],
+    "extra_colonists": 0,
+    "factories": 0,
+    "has_scanner": false,
+    "homeworld": false,
+    "id": 31,
+    "leftover_to_research": false,
+    "mass_driver_target": -1,
+    "mass_driver_warp": 0,
+    "mines": 0,
+    "mod_data": {},
+    "name": "Planet 31",
+    "owner": -1,
+    "population": 0,
+    "queue": [],
+    "route": -1,
+    "starbase": null,
+    "surface": [
+     0,
+     0,
+     0
+    ],
+    "x": 1366,
+    "y": 1095
+   }
+  ],
+  "players": [
+   {
+    "active": true,
+    "ai": "",
+    "ai_level": 0,
+    "battle_plans": [
+     {
+      "attack": 2,
+      "name": "Plan 0",
+      "number": 0,
+      "primary_target": 3,
+      "secondary_target": 1,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 1",
+      "number": 1,
+      "primary_target": 2,
+      "secondary_target": 3,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 2",
+      "number": 2,
+      "primary_target": 3,
+      "secondary_target": 4,
+      "tactic": 3
+     },
+     {
+      "attack": 2,
+      "name": "Plan 3",
+      "number": 3,
+      "primary_target": 5,
+      "secondary_target": 0,
+      "tactic": 1
+     },
+     {
+      "attack": 2,
+      "name": "Plan 4",
+      "number": 4,
+      "primary_target": 1,
+      "secondary_target": 0,
+      "tactic": 0
+     }
+    ],
+    "default_leftover_to_research": true,
+    "default_queue": [
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_factories",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_mines",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_defenses",
+      "progress": 0,
+      "starbase": false
+     },
+     {
+      "count": 5,
+      "design": -1,
+      "item": "production_item.auto_max_terraform",
+      "progress": 0,
+      "starbase": false
+     }
+    ],
+    "eliminated": false,
+    "homeworld": 18,
+    "index": 0,
+    "knowledge": {},
+    "message_filters": [],
+    "mod_data": {},
+    "next_research_field": 7,
+    "race": {
+     "cheap_factories": false,
+     "factories_operated": 10,
+     "factory_cost": 10,
+     "factory_output": 10,
+     "growth_rate": 15,
+     "hab_center": [
+      50,
+      50,
+      50
+     ],
+     "hab_high": [
+      85,
+      85,
+      72
+     ],
+     "hab_low": [
+      15,
+      15,
+      28
+     ],
+     "leftover_points": "surface_minerals",
+     "lesser_traits": [
+      "trait.lrt.TT"
+     ],
+     "logo": 16,
+     "mine_cost": 5,
+     "mine_output": 10,
+     "mines_operated": 10,
+     "mod_data": {},
+     "name": "Race 0",
+     "plural_name": "Races 0",
+     "primary_trait": "trait.prt.JoaT",
+     "random": false,
+     "research_costs": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "resources_per_colonist": 10,
+     "techs_start_at_3": false
+    },
+    "rank": 1,
+    "relations": [
+     "neutral",
+     "neutral"
+    ],
+    "research_field": 0,
+    "research_percent": 35,
+    "research_points": [
+     1650,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "score": {
+     "capitals": 0,
+     "escorts": 0,
+     "met": [
+      "owns_planets",
+      "tech_level",
+      "exceeds_second",
+      "highest_score"
+     ],
+     "planets": 7,
+     "rank": 1,
+     "resources": 2741,
+     "score": 204,
+     "starbases": 1,
+     "tech": 48,
+     "unarmed": 75,
+     "winner": true
+    },
+    "ship_designs": [
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.beam.x_ray_laser"
+       }
+      ],
+      "picture": 17,
+      "remaining": 0,
+      "slot": 0,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 1",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 18,
+      "remaining": 1,
+      "slot": 1,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 6,
+      "hull": "hull.colony_ship",
+      "mod_data": {},
+      "name": "Design 2",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.colonization_module"
+       }
+      ],
+      "picture": 60,
+      "remaining": 0,
+      "slot": 2,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.medium_freighter",
+      "mod_data": {},
+      "name": "Design 3",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.armor.crobmnium"
+       }
+      ],
+      "picture": 4,
+      "remaining": 1,
+      "slot": 3,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.destroyer",
+      "mod_data": {},
+      "name": "Design 4",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.beam.x_ray_laser"
+       },
+       {
+        "count": 1,
+        "part": "part.torpedo.alpha_torpedo"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 2,
+        "part": "part.armor.crobmnium"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       },
+       {
+        "count": 1,
+        "part": "part.electrical.battle_computer"
+       }
+      ],
+      "picture": 24,
+      "remaining": 0,
+      "slot": 4,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.mini_miner",
+      "mod_data": {},
+      "name": "Design 5",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.rhino_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mining_robot.robo_mini_miner"
+       },
+       {
+        "count": 1,
+        "part": "part.mining_robot.robo_mini_miner"
+       }
+      ],
+      "picture": 85,
+      "remaining": 0,
+      "slot": 5,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 72,
+      "hull": "hull.medium_freighter",
+      "mod_data": {},
+      "name": "Design 6",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.radiating_hydro_ram_scoop"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 0,
+        "part": ""
+       }
+      ],
+      "picture": 4,
+      "remaining": 72,
+      "slot": 6,
+      "transferred": false,
+      "turn_designed": 42
+     },
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 7",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.long_hump_6"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 0,
+        "part": ""
+       }
+      ],
+      "picture": 17,
+      "remaining": 1,
+      "slot": 7,
+      "transferred": false,
+      "turn_designed": 43
+     }
+    ],
+    "starbase_designs": [
+     {
+      "built": 1,
+      "hull": "hull.space_station",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       }
+      ],
+      "picture": 136,
+      "remaining": 1,
+      "slot": 0,
+      "transferred": false,
+      "turn_designed": 1
+     }
+    ],
+    "tech_levels": [
+     8,
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "trader_parts": []
+   },
+   {
+    "active": true,
+    "ai": "",
+    "ai_level": 0,
+    "battle_plans": [
+     {
+      "attack": 2,
+      "name": "Plan 0",
+      "number": 0,
+      "primary_target": 3,
+      "secondary_target": 1,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 1",
+      "number": 1,
+      "primary_target": 2,
+      "secondary_target": 3,
+      "tactic": 4
+     },
+     {
+      "attack": 2,
+      "name": "Plan 2",
+      "number": 2,
+      "primary_target": 3,
+      "secondary_target": 4,
+      "tactic": 3
+     },
+     {
+      "attack": 2,
+      "name": "Plan 3",
+      "number": 3,
+      "primary_target": 5,
+      "secondary_target": 0,
+      "tactic": 1
+     },
+     {
+      "attack": 2,
+      "name": "Plan 4",
+      "number": 4,
+      "primary_target": 1,
+      "secondary_target": 0,
+      "tactic": 0
+     }
+    ],
+    "default_leftover_to_research": false,
+    "default_queue": [],
+    "eliminated": false,
+    "homeworld": 6,
+    "index": 1,
+    "knowledge": {},
+    "message_filters": [],
+    "mod_data": {},
+    "next_research_field": 6,
+    "race": {
+     "cheap_factories": false,
+     "factories_operated": 10,
+     "factory_cost": 10,
+     "factory_output": 10,
+     "growth_rate": 15,
+     "hab_center": [
+      50,
+      50,
+      50
+     ],
+     "hab_high": [
+      85,
+      85,
+      85
+     ],
+     "hab_low": [
+      15,
+      15,
+      15
+     ],
+     "leftover_points": "surface_minerals",
+     "lesser_traits": [],
+     "logo": 1,
+     "mine_cost": 5,
+     "mine_output": 10,
+     "mines_operated": 10,
+     "mod_data": {},
+     "name": "Race 1",
+     "plural_name": "Races 1",
+     "primary_trait": "trait.prt.SD",
+     "random": false,
+     "research_costs": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "resources_per_colonist": 10,
+     "techs_start_at_3": false
+    },
+    "rank": 2,
+    "relations": [
+     "neutral",
+     "neutral"
+    ],
+    "research_field": 0,
+    "research_percent": 15,
+    "research_points": [
+     38,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "score": {
+     "capitals": 0,
+     "escorts": 0,
+     "met": [],
+     "planets": 1,
+     "rank": 2,
+     "resources": 889,
+     "score": 72,
+     "starbases": 1,
+     "tech": 16,
+     "unarmed": 4,
+     "winner": false
+    },
+    "ship_designs": [
+     {
+      "built": 1,
+      "hull": "hull.scout",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.bat_scanner"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.fuel_tank"
+       }
+      ],
+      "picture": 16,
+      "remaining": 1,
+      "slot": 0,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.colony_ship",
+      "mod_data": {},
+      "name": "Design 1",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 1,
+        "part": "part.mechanical.colonization_module"
+       }
+      ],
+      "picture": 60,
+      "remaining": 1,
+      "slot": 1,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.mini_mine_layer",
+      "mod_data": {},
+      "name": "Design 2",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 2,
+        "part": "part.mine_layer.mine_dispenser_40"
+       },
+       {
+        "count": 2,
+        "part": "part.mine_layer.mine_dispenser_40"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.bat_scanner"
+       }
+      ],
+      "picture": 108,
+      "remaining": 1,
+      "slot": 2,
+      "transferred": false,
+      "turn_designed": 1
+     },
+     {
+      "built": 1,
+      "hull": "hull.mini_mine_layer",
+      "mod_data": {},
+      "name": "Design 3",
+      "parts": [
+       {
+        "count": 1,
+        "part": "part.engine.quick_jump_5"
+       },
+       {
+        "count": 2,
+        "part": "part.mine_layer.speed_trap_20"
+       },
+       {
+        "count": 2,
+        "part": "part.mine_layer.speed_trap_20"
+       },
+       {
+        "count": 1,
+        "part": "part.scanner.bat_scanner"
+       }
+      ],
+      "picture": 108,
+      "remaining": 1,
+      "slot": 3,
+      "transferred": false,
+      "turn_designed": 1
+     }
+    ],
+    "starbase_designs": [
+     {
+      "built": 1,
+      "hull": "hull.space_station",
+      "mod_data": {},
+      "name": "Design 0",
+      "parts": [
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.beam.laser"
+       },
+       {
+        "count": 0,
+        "part": ""
+       },
+       {
+        "count": 8,
+        "part": "part.shield.mole_skin_shield"
+       }
+      ],
+      "picture": 136,
+      "remaining": 1,
+      "slot": 0,
+      "transferred": false,
+      "turn_designed": 1
+     }
+    ],
+    "tech_levels": [
+     12,
+     0,
+     2,
+     0,
+     0,
+     2
+    ],
+    "trader_parts": []
+   }
+  ],
+  "rng": {
+   "game_seed": 0,
+   "streams": {
+    "classic": {
+     "s1": 5,
+     "s2": 673
+    }
+   }
+  },
+  "settings": {
+   "accelerated_start": false,
+   "computer_alliances": false,
+   "density": "normal",
+   "galaxy_clumping": false,
+   "max_minerals": false,
+   "mods": [
+    {
+     "id": "core",
+     "version": "0.1.0"
+    }
+   ],
+   "no_random_events": false,
+   "player_positions": "moderate",
+   "public_scores": false,
+   "ruleset_hash": "",
+   "slow_tech": false,
+   "tutorial": false,
+   "universe_width": 400,
+   "victory": {
+    "capital_ships": {
+     "on": false,
+     "value": 10
+    },
+    "criteria": 1,
+    "exceeds_second": {
+     "on": false,
+     "value": 20
+    },
+    "highest_score": {
+     "on": true,
+     "value": 30
+    },
+    "min_years": 30,
+    "owns_planets": {
+     "on": true,
+     "value": 20
+    },
+    "production": {
+     "on": false,
+     "value": 10
+    },
+    "score": {
+     "on": false,
+     "value": 1000
+    },
+    "tech_fields": 2,
+    "tech_level": {
+     "on": false,
+     "value": 8
+    }
+   }
+  },
+  "traders": [
+   {
+    "destination_x": 1380,
+    "destination_y": 1352,
+    "item": "part.armor.mega_poly_shell",
+    "met": [],
+    "mod_data": {},
+    "number": 0,
+    "warp": 10,
+    "x": 1380,
+    "y": 1166
+   },
+   {
+    "destination_x": 1380,
+    "destination_y": 1066,
+    "item": "part.armor.mega_poly_shell",
+    "met": [],
+    "mod_data": {},
+    "number": 1,
+    "warp": 11,
+    "x": 1020,
+    "y": 1100
+   }
+  ],
+  "turn": 53,
+  "views": [
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [],
+    "packets": [],
+    "planets": {
+     "23": 3,
+     "25": 3,
+     "30": 3
+    },
+    "starbase_designs": {},
+    "traders": [
+     0,
+     1
+    ],
+    "wormholes": []
+   },
+   {
+    "designs": {},
+    "fleets": {},
+    "met": [],
+    "packets": [],
+    "planets": {},
+    "starbase_designs": {},
+    "traders": [
+     0,
+     1
+    ],
+    "wormholes": []
+   }
+  ],
+  "wormholes": [
+   {
+    "age": 4,
+    "mod_data": {},
+    "number": 0,
+    "other_end": 1,
+    "seen_by": [],
+    "stability": 1,
+    "tracked_by": [],
+    "x": 1227,
+    "y": 1383
+   },
+   {
+    "age": 1,
+    "mod_data": {},
+    "number": 1,
+    "other_end": 0,
+    "seen_by": [],
+    "stability": 2,
+    "tracked_by": [],
+    "x": 1126,
+    "y": 1034
+   },
+   {
+    "age": 22,
+    "mod_data": {},
+    "number": 2,
+    "other_end": 3,
+    "seen_by": [],
+    "stability": 0,
+    "tracked_by": [],
+    "x": 1151,
+    "y": 1061
+   },
+   {
+    "age": 14,
+    "mod_data": {},
+    "number": 3,
+    "other_end": 2,
+    "seen_by": [],
+    "stability": 0,
+    "tracked_by": [],
+    "x": 1266,
+    "y": 1377
+   }
+  ]
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 6,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "trader",
+    "target_id": 0,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1380,
+    "y": 1066
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 24,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 18,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 44
+}

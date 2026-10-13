@@ -1,0 +1,68 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 28,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 29,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "leftover_to_research": false,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 7,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.medium_freighter",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 4,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 27
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "slot": 6,
+   "starbase": false,
+   "type": "design_delete"
+  }
+ ],
+ "player": 0,
+ "turn": 27
+}

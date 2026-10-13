@@ -157,7 +157,8 @@ for each:
    strength - second) div the winner's strength; at least 1.
 7. The planet becomes the winner's (S11 "Colonizing an empty planet" step 4: default queue and settings, an Alternate
    Reality starbase; a taken planet too). An artifact found there (only on a planet that had no owner) gives the
-   research points of step 5 there, with **`planet.artifact_found`** `[planet, field, points]`.
+   research points of step 5 there, with **`planet.artifact_found`** `[planet, field, points]` (goto research;
+   seen in rand1 turn 11).
 
 (The original also resolves colonists dropped by hand from the orders, `ApplyOrderBlock`: an Alternate Reality
 race's, or any onto a planet with a starbase, die, and colonists dropped on an unowned planet without colonizing die

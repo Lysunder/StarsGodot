@@ -1,0 +1,106 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.medium_freighter",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 4,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 42
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "design": {
+    "built": 0,
+    "hull": "hull.medium_freighter",
+    "mod_data": {},
+    "name": "Design 6",
+    "parts": [
+     {
+      "count": 1,
+      "part": "part.engine.radiating_hydro_ram_scoop"
+     },
+     {
+      "count": 0,
+      "part": ""
+     },
+     {
+      "count": 0,
+      "part": ""
+     }
+    ],
+    "picture": 4,
+    "remaining": 0,
+    "slot": 6,
+    "transferred": false,
+    "turn_designed": 42
+   },
+   "slot": 6,
+   "starbase": false,
+   "type": "design_change"
+  },
+  {
+   "items": [
+    {
+     "count": 25,
+     "design": 6,
+     "item": "",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 18,
+   "type": "production_queue"
+  },
+  {
+   "leftover_to_research": true,
+   "mass_driver_target": -1,
+   "mass_driver_warp": 4,
+   "planet": 18,
+   "route": -1,
+   "type": "planet_settings"
+  },
+  {
+   "fleet": 1,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "trader",
+    "target_id": 0,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1140,
+    "y": 1089
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 42
+}

@@ -110,11 +110,13 @@ static func _cargo_lost(fleet: Fleet, caps: Array) -> Array[int]:
 	var total := 0
 	for c in Fleet.CARGO_FUEL:
 		total += fleet.cargo[c]
-	var left: int = caps[3] * total / caps[1]
+	var share: int = caps[3] * total / caps[1]
+	var left := share
 	if left == 0 or total == 0:
 		return lost
+	# each type's share of the whole loss, rounded down (S11), then one more each while some is left
 	for c in Fleet.CARGO_FUEL:
-		var take := mini(left * fleet.cargo[c] / total, left)
+		var take := mini(share * fleet.cargo[c] / total, left)
 		lost[c] += take
 		left -= take
 	for c in Fleet.CARGO_FUEL:
@@ -190,8 +192,15 @@ static func remove_design_ships(
 ## Removes a fleet; waypoints of other fleets that target it now target what is at its position:
 ## another fleet (the first of `preferred_owner`, else the first in fleet order), else the planet,
 ## else deep space (S11 "Deleting a fleet").
-static func delete_fleet(state: GameState, fleet: Fleet, preferred_owner: int) -> void:
-	state.remove_fleet(fleet)
+## `retired`: the fleet lost its ships (battle, mines, scrapping, colonizing, the Mystery Trader):
+## its number stays taken this turn. Merges, splits and ship moves free it at once (`DeleteFleet`).
+static func delete_fleet(
+	state: GameState, fleet: Fleet, preferred_owner: int, retired := false
+) -> void:
+	if retired:
+		state.retire_fleet(fleet)
+	else:
+		state.remove_fleet(fleet)
 	var here: Fleet = null
 	for f in state.fleets:
 		if f.x == fleet.x and f.y == fleet.y:

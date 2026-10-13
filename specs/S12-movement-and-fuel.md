@@ -110,7 +110,7 @@ B = w². Later passes (up to 11 in all) repeat while any chaser has budget left:
 3. The move toward the target's position is made as for any fleet (distance rounded up, arrival, rounding, ram
    scoops for this step), except that fuel is charged for the whole distance chased so far: the fuel already used
    this turn is put back and the use for (moved + step) is taken. The fuel range used to cut the move short is the
-   range with the fuel left, less what was moved.
+   range taken before the first step, less what was moved.
 4. If it didn't arrive, the step is added to what was moved and taken from the budget; with budget left (and fuel),
    it takes part in the next pass.
 5. A fleet arriving on its target in a later pass marks the target as finished moving (the original then stops a
@@ -142,7 +142,10 @@ The engines are tagged `warp10_safe` in content.
 An Alternate Reality fleet carrying more than 10 colonists (cargo units) loses (colonists + 11) × 3 div 100 of them
 when it moves (trait parameter `movement.transit_loss_pct` 3): **`fleet.colonists_died_in_transit`**
 `[colonists, fleet]`. Order for a moving fleet, once, before its first step: the Cheap Engines roll, then these
-losses, then the warp-10 rolls; none of them for stargate travel.
+losses, then the warp-10 rolls; none of them for stargate travel. The fleet's fuel range (which cuts a move short
+when the fuel runs out) is taken before all three: a fleet that loses ships to its warp-10 rolls still goes as far as
+its full tank and ships allowed (seen in rand1 turn 54: 24 freighters, 4 lost, out of fuel after 43 ly where the
+survivors alone would have made 44).
 
 ### Fuel use
 

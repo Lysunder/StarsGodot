@@ -127,7 +127,7 @@ static func _arrival_item(content: ContentRegistry, rng: StarsRandom, t: int, wa
 
 ## S18 "The Trader moves": phase 8, after the packets. Waypoints follow afterwards (the caller).
 static func move_all(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void:
-	for trader in state.traders:
+	for trader: Trader in state.traders.duplicate():
 		if trader.warp <= WARP_MAX_STARTLED and rng.random(25) == 0:
 			if rng.random(3) == 0:
 				_new_destination(state, rng, trader)
@@ -146,6 +146,11 @@ static func move_all(state: GameState, content: ContentRegistry, rng: StarsRando
 				trader.x = x
 				trader.y = y
 				continue
+		# at its destination it leaves known space when another trader is about, else half the
+		# time; otherwise it turns back
+		if state.traders.size() > 1 or rng.random(2) == 0:
+			state.traders.erase(trader)
+			continue
 		trader.x = trader.destination_x
 		trader.y = trader.destination_y
 		trader.warp = maxi(trader.warp - 2, WARP_MIN_TURNED) + 1
@@ -184,7 +189,7 @@ static func meet_all(state: GameState, content: ContentRegistry, rng: StarsRando
 				i += 1
 		_meet_planets(state, content, rng, trader)
 	for fleet in absorbed:
-		FleetOrders.delete_fleet(state, fleet, fleet.owner)
+		FleetOrders.delete_fleet(state, fleet, fleet.owner, true)
 
 
 ## One fleet on the trader's position. Returns a fleet of ships the trader gave, or null.
@@ -209,6 +214,10 @@ static func _meet_fleet(
 		return null
 	_mark_met(trader, fleet.owner)
 	_remove_completed(state, fleet)
+	# the messages describe the fleet by its main design (`Fleet_MsgRef`); its ships leave service
+	word = FleetOrders.designs_word(fleet, owner, content)
+	for stack in fleet.stacks:
+		owner.ship_design(stack.design).remaining -= stack.count
 	fleet.stacks.clear()
 	absorbed.append(fleet)
 	var top := content.constant("constant.research.max_level")

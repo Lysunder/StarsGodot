@@ -2115,7 +2115,7 @@
     "type": "message",
     "id": "message.trader.research",
     "params": [
-      "fleet",
+      "fleet_designs",
       "number"
     ]
   },
@@ -2123,7 +2123,7 @@
     "type": "message",
     "id": "message.trader.research_all_parts",
     "params": [
-      "fleet",
+      "fleet_designs",
       "number"
     ]
   },
@@ -2131,35 +2131,35 @@
     "type": "message",
     "id": "message.trader.part",
     "params": [
-      "fleet"
+      "fleet_designs"
     ]
   },
   {
     "type": "message",
     "id": "message.trader.hull",
     "params": [
-      "fleet"
+      "fleet_designs"
     ]
   },
   {
     "type": "message",
     "id": "message.trader.planetary",
     "params": [
-      "fleet"
+      "fleet_designs"
     ]
   },
   {
     "type": "message",
     "id": "message.trader.nothing_to_teach",
     "params": [
-      "fleet"
+      "fleet_designs"
     ]
   },
   {
     "type": "message",
     "id": "message.trader.ships",
     "params": [
-      "fleet",
+      "fleet_designs",
       "number"
     ]
   },
@@ -2167,7 +2167,7 @@
     "type": "message",
     "id": "message.trader.ships_no_room",
     "params": [
-      "fleet"
+      "fleet_designs"
     ]
   }
 ]

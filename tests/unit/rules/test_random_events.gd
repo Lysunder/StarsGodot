@@ -152,10 +152,40 @@ func test_trader_moves_and_turns_back() -> void:
 	MysteryTrader.move_all(s, _content, StarsRandom.new(5, 673))
 	# warp 13: 169 ly a year, no startling above warp 12
 	assert_array([t.x, t.y]).is_equal([1269, 1100])
-	MysteryTrader.move_all(s, _content, StarsRandom.new(5, 673))
+	# at the edge: random(2) not 0 turns it back
+	MysteryTrader.move_all(s, _content, _rolling(2, false))
 	assert_array([t.x, t.y]).is_equal([1380, 1100])
 	assert_int(t.warp).is_equal(12)
 	assert_str(s.messages[0][-1].type).is_equal("message.trader.turned_back")
+
+
+func test_trader_leaves_at_its_destination() -> void:
+	var s := _world()
+	var t := _trader(s, "research")
+	t.x = 1300
+	MysteryTrader.move_all(s, _content, _rolling(2, true))
+	assert_array(s.traders).is_empty()
+	# with another trader about it leaves without a roll
+	var two := _world()
+	var first := _trader(two, "research")
+	first.x = 1300
+	var other := _trader(two, "ships")
+	other.x = 1020
+	other.destination_x = 1020
+	other.destination_y = 1380
+	MysteryTrader.move_all(two, _content, _rolling(2, false))
+	assert_array(two.traders.map(func(x: Trader) -> int: return x.number)).is_equal([other.number])
+
+
+## A generator whose first `random(n)` is 0 (`zero`) or not.
+func _rolling(n: int, zero: bool) -> StarsRandom:
+	var rng := StarsRandom.new(5, 673)
+	for i in 5000:
+		var probe := StarsRandom.new(rng.s1, rng.s2)
+		if (probe.random(n) == 0) == zero:
+			return rng
+		rng.random(n)
+	return null
 
 
 func _fleet(s: GameState, owner: int, minerals: int) -> Fleet:

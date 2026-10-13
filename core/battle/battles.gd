@@ -66,7 +66,7 @@ static func run_all(
 		finish(state, content, rng, fixes, battle, group, engine, place)
 	for fleet in state.fleets.duplicate():
 		if fleet.stacks.is_empty():
-			FleetOrders.delete_fleet(state, fleet, fleet.owner)
+			FleetOrders.delete_fleet(state, fleet, fleet.owner, true)
 
 
 ## What the results need from before the battle: its id, the starbase's owner (-1 for none) and

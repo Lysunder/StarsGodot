@@ -1,0 +1,277 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "amounts": [
+    0,
+    0,
+    0,
+    50,
+    0
+   ],
+   "fleet": 6,
+   "other": {
+    "planet": 18
+   },
+   "owner": 0,
+   "type": "cargo_transfer"
+  },
+  {
+   "fleet": 6,
+   "owner": 0,
+   "type": "fleet_split"
+  },
+  {
+   "fleet": 6,
+   "other": 7,
+   "owner": 0,
+   "ships": [
+    {
+     "count": -1,
+     "design": 2
+    }
+   ],
+   "type": "fleet_move_ships"
+  },
+  {
+   "fleet": 6,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 28,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1337,
+    "y": 1101
+   }
+  },
+  {
+   "fleet": 6,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 28,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1337,
+    "y": 1101
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 29,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1342,
+    "y": 1079
+   }
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 29,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 6,
+    "x": 1342,
+    "y": 1079
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 13,
+    "target_owner": -1,
+    "task": "colonize",
+    "task_data": {
+     "raw": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "warp": 7,
+    "x": 1168,
+    "y": 1167
+   }
+  },
+  {
+   "items": [
+    {
+     "count": 3,
+     "design": 2,
+     "item": "",
+     "progress": 71,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 89,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 10,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 100,
+     "design": -1,
+     "item": "production_item.factories",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "planet": 18,
+   "type": "production_queue"
+  }
+ ],
+ "player": 0,
+ "turn": 11
+}

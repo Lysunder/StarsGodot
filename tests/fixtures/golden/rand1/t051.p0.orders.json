@@ -1,0 +1,140 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 28,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 6,
+    "x": 1337,
+    "y": 1101
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_change",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 28,
+    "target_owner": -1,
+    "task": "transport",
+    "task_data": {
+     "cargo": [
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "none",
+       "amount": 0
+      },
+      {
+       "action": "load_all",
+       "amount": 0
+      }
+     ]
+    },
+    "warp": 6,
+    "x": 1337,
+    "y": 1101
+   }
+  },
+  {
+   "count": 1,
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "count": 1,
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "count": 1,
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "fleet": 7,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 18,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 8,
+    "x": 1240,
+    "y": 1145
+   }
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 18,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1240,
+    "y": 1145
+   }
+  },
+  {
+   "count": 1,
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_delete"
+  },
+  {
+   "fleet": 2,
+   "index": 1,
+   "owner": 0,
+   "type": "waypoint_add",
+   "waypoint": {
+    "target": "planet",
+    "target_id": 18,
+    "target_owner": -1,
+    "task": "none",
+    "task_data": {},
+    "warp": 7,
+    "x": 1240,
+    "y": 1145
+   }
+  }
+ ],
+ "player": 0,
+ "turn": 51
+}

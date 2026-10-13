@@ -80,6 +80,7 @@ static func generate(
 	state: GameState, content: ContentRegistry, orders: Array[OrderSet] = []
 ) -> PackedStringArray:
 	TurnMessages.clear(state)
+	state.retired_fleet_numbers.clear()
 	var ctx := TurnContext.new(state, content, orders)
 	pipeline().run(ctx)
 	return ctx.rejected_orders

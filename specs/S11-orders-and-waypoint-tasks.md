@@ -41,7 +41,11 @@ Our order file format is our own (D6). This spec defines what each order means a
 ## Fleet order
 
 The game keeps its fleet list sorted by owner (player index), then by fleet number. A new fleet takes the lowest
-free number for its owner and is inserted at its sorted place. **Every per-fleet step in the turn uses this order**:
+free number for its owner and is inserted at its sorted place. A fleet that loses all its ships during the turn
+(destroyed in battle or by mines, lost in flight, scrapped, used to colonize, absorbed by the Mystery Trader) keeps
+its number taken until the turn ends: the original only marks it empty and drops it when it writes the turn's files.
+Merges, splits and ship moves (`DeleteFleet`) free the number at once (seen in rand1 turn 46: a fleet scrapped at a
+starbase, then ships built the same year got the next number, not its). **Every per-fleet step in the turn uses this order**:
 all of player 0's fleets by number, then player 1's, and so on. No random player order was found in the task passes
 (see S02, which records the community belief that load tasks use a random player order).
 
