@@ -96,7 +96,12 @@ static func rows(view: PlayerView, report: String) -> Array[Dictionary]:
 			return _planet_rows(view)
 		FLEETS:
 			return _fleet_rows(view)
-	# other players' fleets need visibility (M8) and battles need combat (M9)
+		BATTLES:
+			var out: Array[Dictionary] = []
+			for b in BattleReplay.battles(view):
+				out.append(BattleReplay.summary_row(view, b))
+			return out
+	# other players' fleets need visibility in the views (S15)
 	return []
 
 

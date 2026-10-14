@@ -431,6 +431,27 @@ Setup: `random(15)` per ship token with an engine; the shuffle (one draw per tok
 jitter, and the firing draws (part 3b). After each battle: the tech bonus tries, in player order (S24: `random(100)`,
 then 13 × `random(13)` and up to 6 × `random(6)` when it passes).
 
+## Playback (battle viewer)
+
+The viewer (`RunVcrDlg@10e0:0000`, `VCR_SeekTo@10e0:053e`, `VCR_TokenStatus@10e0:0f74`) replays a record without
+the rules. Step −1 is the board at the start; step k shows event k. Going on to step k moves event k's token to its
+square (255: it leaves the board) and lands its hits; when event k's round is later than any before, every token with
+state bit 3 first regenerates a tenth of its full shields per ship (capped at full). A hit takes its killed ships off
+the target's count, sets the target's damage word to the recorded one, and, when the target has shields and the hit
+did shield damage (unpacked), sets its shields per ship to 0 if the shield damage is at least shields × the ships left,
+else lowers them by the shield damage div the ships left. Going back replays from the start.
+
+For display, a token's armor left is count × armor, plus, when it is damaged, (−(damage >> 7) × armor / 10) × n / 50
+(truncating towards zero) for n = max(1, count × (damage & 127) / 100) damaged ships; each damaged ship's damage is
+shown as max(1, (damage div 5) >> 7) percent. A step's armor damage is the armor its targets had before the step less
+after it. Movement is shown as (rating + 2) / 4 moves a round.
+
+**Battle Summary report** (`Battle_CountShips@10e0:02aa`, `Battle_CountLosses@10e0:03b8`), per battle the player was
+in: the location; "O" when the player had a starbase there, else "T" when another player did; the sides; ships at the
+start (each token's count, starbases included) in all, the player's and the others'; ship tokens (no starbases) by
+hull class: unarmed (classes 0, 1, 6, 7), scout (2), warship (3), utility (4), bomber (5); the ships the player and the
+others lost (the hits' killed counts by the target's owner), and what each side had left.
+
 ## Files (harness)
 
 A record goes into each participant's turn file as block type 31; a record over 1 KiB continues in blocks of type 39

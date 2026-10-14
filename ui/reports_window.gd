@@ -10,10 +10,13 @@ extends Window
 ## Clicking a row puts its planet or fleet under command; some cells do more: a planet's
 ## Production opens the Production dialog, its Starbase shows the design while the button is held;
 ## a fleet's Composition shows its ships while held, its Fuel and Cargo open the cargo transfer.
+## A battle's row selects the planet it was at; clicking it again (or the first time, for a battle
+## in deep space) opens the battle viewer.
 
 signal goto(kind: String, id: int)
 signal production_requested(planet: int)
 signal cargo_requested(fleet: int)
+signal battle_requested(id: int)
 
 const TITLES := {
 	ReportView.PLANETS: ["Planet Summary Report", "Planet"],
@@ -30,6 +33,8 @@ var _menu: PopupMenu
 ## What each menu item does: {kind: "sort" | "hide" | "show", column, sub, forward}.
 var _menu_actions: Array[Dictionary] = []
 var _popup: HoldPopup
+## The battle whose row was clicked last (-1 none).
+var _battle: int = -1
 
 
 func _init() -> void:
@@ -200,6 +205,13 @@ func _on_cell_pressed(row: Dictionary, column: String, button: int, at: Vector2)
 		goto.emit("fleet", number)
 		if column == "fuel" or column == "cargo":
 			cargo_requested.emit(number)
+	elif report == ReportView.BATTLES and button == MOUSE_BUTTON_LEFT:
+		var id: int = row["id"]
+		if row["planet"] >= 0 and id != _battle:
+			goto.emit("planet", row["planet"])
+		else:
+			battle_requested.emit(id)
+		_battle = id
 
 
 func _hold(content: Control, at: Vector2) -> void:

@@ -35,6 +35,7 @@ var _designer: ShipDesigner
 var _plans: BattlePlansDialog
 var _relations: RelationsDialog
 var _reports: ReportsWindow
+var _battle_viewer: BattleViewer
 var _about: AcceptDialog
 
 
@@ -100,6 +101,9 @@ func _ready() -> void:
 		func(number: int) -> void: _command.open_cargo(GameSession.view.fleet_info(number))
 	)
 	add_child(_reports)
+	_battle_viewer = BattleViewer.new()
+	add_child(_battle_viewer)
+	_reports.battle_requested.connect(_battle_viewer.open)
 	_about = AcceptDialog.new()
 	_about.title = "About StarsGodot"
 	_about.dialog_text = (
@@ -174,9 +178,15 @@ func _on_goto(kind: String, id: int) -> void:
 
 
 ## A message's Goto (S21): a planet or one of the player's fleets in the scanner, research in the
-## Research window, hulls in the ship designer.
+## Research window, hulls in the ship designer, a battle in the battle viewer (and its planet in
+## the scanner).
 func _on_message_goto(goto: Dictionary) -> void:
-	if goto.has("planet"):
+	if goto.has("battle"):
+		var b := BattleReplay.find(GameSession.view, goto["battle"])
+		if int(b.get("planet", -1)) >= 0:
+			_map.select("planet", b["planet"])
+		_battle_viewer.open(goto["battle"])
+	elif goto.has("planet"):
 		_map.select("planet", goto["planet"])
 	elif goto.has("fleet") and goto.get("owner", -1) == GameSession.PLAYER:
 		if GameSession.view.state.fleet(GameSession.PLAYER, goto["fleet"]) != null:
