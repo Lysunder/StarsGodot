@@ -28,7 +28,7 @@ var battles: Array = []
 ## Each player's view of the turn (S15): what the player's scanners saw of the other players.
 ## One dictionary per player, or empty when not known (fixtures without the players' files).
 var views: Array = []
-## Per player, score history (S20).
+## The score history (S20 "History"): one entry a turn, {turn, records: per player}.
 var history: Array = []
 var mod_data: Dictionary = {}
 ## Turn-only: per owner, the numbers of fleets retired this turn ({number: true}).

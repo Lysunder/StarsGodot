@@ -28,6 +28,10 @@ const CONDITIONS: Array[String] = [
 	"highest_score",
 ]
 const SCORE_GOTO := {"score": true}
+## The record fields kept in the score history (the Score report's graph, S20 "History").
+const HISTORY_FIELDS := [
+	"planets", "starbases", "unarmed", "escorts", "capitals", "tech", "resources", "score", "rank"
+]
 
 
 ## Formula `score.ship_rating` (`Design_Evaluate@1030:079e`): a design's fighting value.
@@ -210,6 +214,17 @@ static func update(state: GameState, content: ContentRegistry) -> void:
 			else:
 				_first(state, content, p, "message.game.dead", [])
 	_sort_met(state)
+
+
+## Adds this turn's records to the history: {turn, records: one per player, HISTORY_FIELDS}.
+static func note_history(state: GameState) -> void:
+	var records: Array = []
+	for player in state.players:
+		var r := {}
+		for f: String in HISTORY_FIELDS:
+			r[f] = int(player.score.get(f, 0))
+		records.append(r)
+	state.history.append({"turn": state.turn, "records": records})
 
 
 static func _declare_winners(

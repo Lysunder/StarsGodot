@@ -59,7 +59,7 @@ files are read only by the dev harness (S23).
 | `rng` | the random streams (S01): game seed and each stream's state |
 | `messages` | per player, this turn's messages (S21) |
 | `battles` | this turn's battle records (S16) |
-| `history` | per player, score history (S20) |
+| `history` | the score history: per turn, every player's record (S20 "History") |
 | `mod_data` | per mod |
 
 ### Settings

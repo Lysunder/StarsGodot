@@ -119,6 +119,23 @@ value back.)
 
 The messages come again every turn the conditions still hold; the game goes on.
 
+### History
+
+After the update, the turn's records are added to the game's `history`: {turn, records}, one record per player with
+its planets, starbases, unarmed, escort and capital ships, tech total, resources, score and rank. The original keeps
+these in each player's history file (`.h`, `WriteHistoryFile@1040:80da`) from the score records in the player's turn
+files, so the golden fixtures don't hold them (the golden turns ignore `history`).
+
+### What a player sees (score report)
+
+A player's turn file has the player's own score record, and every player's when the game has public scores and the
+turn is above 19 (`WriteGameFile@1068:35b0`, block 45; the original also writes the record of a player whose player
+flag bit 0 is set, open item). The score report (`SCOREXDLG@10f8:0a66`) shows those records only, in three views
+the Switch button goes round: the table (planets, starbases, unarmed, escort and capital ships, tech levels,
+resources, score and rank per player), the victory conditions (the conditions switched on, the number a winner
+must meet and the years before a winner, with the conditions each player met this turn), and the history graph of
+one of the first eight figures over the years (`Score_DrawHistoryGraph@10f8:1a0e`, the figure picked by clicking it).
+
 ## Randomness
 
 None.
@@ -149,6 +166,6 @@ Formula ids: `score.player` (the score and record), `score.ship_rating`. Victory
 
 ## Open questions
 
-1. The original keeps each turn's records in the history file (`.h`) for the score graph; our `history` is not
-   filled yet.
+1. Player flag bit 0 also puts a player's score record in every turn file (see "What a player sees"); what sets it
+   is not known yet.
 2. A harness game that ends is still needed: capital ships, an elimination, then a win by conditions.

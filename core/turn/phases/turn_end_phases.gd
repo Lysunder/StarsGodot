@@ -25,6 +25,7 @@ class ScoreUpdate:
 
 	func run(ctx: TurnContext) -> void:
 		Score.update(ctx.state, ctx.content)
+		Score.note_history(ctx.state)
 
 
 ## 26: one draw the original stores in its settings word (purpose open, S02).

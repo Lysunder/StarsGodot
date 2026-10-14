@@ -22,6 +22,7 @@ const MENU_END_TURN := 20
 const MENU_ABOUT := 40
 ## Report menu items are this plus the index in ReportView.REPORTS.
 const MENU_REPORT := 50
+const MENU_SCORE := 60
 ## View > Font items are this plus the index in ClassicTheme.FONTS.
 const MENU_FONT := 30
 
@@ -36,6 +37,7 @@ var _plans: BattlePlansDialog
 var _relations: RelationsDialog
 var _reports: ReportsWindow
 var _battle_viewer: BattleViewer
+var _score: ScoreWindow
 var _about: AcceptDialog
 
 
@@ -104,6 +106,8 @@ func _ready() -> void:
 	_battle_viewer = BattleViewer.new()
 	add_child(_battle_viewer)
 	_reports.battle_requested.connect(_battle_viewer.open)
+	_score = ScoreWindow.new()
+	add_child(_score)
 	_about = AcceptDialog.new()
 	_about.title = "About StarsGodot"
 	_about.dialog_text = (
@@ -154,6 +158,8 @@ func _build_menu() -> void:
 	report.add_item("Fleets...", MENU_REPORT + 1)
 	report.add_item("Others' Fleets...", MENU_REPORT + 2)
 	report.add_item("Battles...", MENU_REPORT + 3)
+	report.add_separator()
+	report.add_item("Score...", MENU_SCORE, KEY_F10)
 	report.id_pressed.connect(_on_menu)
 	menu.add_child(report)
 	var help := PopupMenu.new()
@@ -179,9 +185,11 @@ func _on_goto(kind: String, id: int) -> void:
 
 ## A message's Goto (S21): a planet or one of the player's fleets in the scanner, research in the
 ## Research window, hulls in the ship designer, a battle in the battle viewer (and its planet in
-## the scanner).
+## the scanner), the score report.
 func _on_message_goto(goto: Dictionary) -> void:
-	if goto.has("battle"):
+	if goto.has("score"):
+		_score.open()
+	elif goto.has("battle"):
 		var b := BattleReplay.find(GameSession.view, goto["battle"])
 		if int(b.get("planet", -1)) >= 0:
 			_map.select("planet", b["planet"])
@@ -236,6 +244,8 @@ func _on_menu(menu_id: int) -> void:
 				_reports.cycle()
 			else:
 				_reports.open(ReportView.PLANETS)
+		MENU_SCORE:
+			_score.open()
 		MENU_REPORT + 1, MENU_REPORT + 2, MENU_REPORT + 3:
 			_reports.open(ReportView.REPORTS[menu_id - MENU_REPORT])
 

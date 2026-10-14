@@ -3,15 +3,18 @@ extends GdUnitTestSuite
 ## (tNNN.pP.orders.json), our turn generation must give the original's next turn exactly. Only the
 ## random streams are ignored (a fixture holds the state at the start of the next turn's
 ## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
-## design keeps the giver's name, S11) and battle plan names (neutral names by number, while a
-## deleted plan's successors keep theirs, S11), plus what a game's phases not built yet would change
+## design keeps the giver's name, S11), battle plan names (neutral names by number, while a
+## deleted plan's successors keep theirs, S11) and the score history (the original keeps it in
+## the players' history files, S20), plus what a game's phases not built yet would change
 ## (GAME_IGNORE), or, for single turns, what a fixed bug changes (TURN_IGNORE, the S25 allowlist).
 ##
 ## The turns run in compat mode (D12): the test-only harness_compat mod puts back the original's
 ## behaviour for the few known bugs fixtures cannot avoid (B09), so everything around them is
 ## checked exactly.
 
-const IGNORE := ["/rng", "/players/*/ship_designs*/name", "/players/*/battle_plans*/name"]
+const IGNORE := [
+	"/rng", "/players/*/ship_designs*/name", "/players/*/battle_plans*/name", "/history*"
+]
 const GAME_IGNORE := {}
 ## Allowed divergences of single turns (the S25 allowlist): what a fixed bug changes.
 const TURN_IGNORE := {
