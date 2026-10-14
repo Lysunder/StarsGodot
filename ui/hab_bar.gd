@@ -47,7 +47,7 @@ func _draw() -> void:
 		var font := get_theme_default_font()
 		var fsize := get_theme_default_font_size()
 		var w := font.get_string_size("Immune", HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
-		draw_rect(Rect2(1, 1, size.x - 2, size.y - 2), EnvironmentGraph.BANDS[axis])
+		draw_rect(Rect2(1, 1, size.x - 2, size.y - 2), Palette.axis(axis))
 		draw_string(
 			font,
 			Vector2((size.x - w) / 2, (size.y + font.get_ascent(fsize)) / 2 - 2),
@@ -60,6 +60,6 @@ func _draw() -> void:
 		return
 	var low := _x(race.hab_low[axis])
 	var high := _x(race.hab_high[axis])
-	draw_rect(Rect2(low, 3, high - low, size.y - 6), EnvironmentGraph.BANDS[axis])
+	draw_rect(Rect2(low, 3, high - low, size.y - 6), Palette.axis(axis))
 	var mid := _x(race.hab_center[axis])
 	draw_line(Vector2(mid, 2), Vector2(mid, size.y - 2), EnvironmentGraph.MARK, 2.0)

@@ -79,7 +79,7 @@ func _ready() -> void:
 		var name := Label.new()
 		name.text = NAMES[c]
 		name.theme_type_variation = "BoldLabel"
-		name.add_theme_color_override("font_color", ClassicTheme.CARGO_COLORS[c])
+		name.add_theme_color_override("font_color", Palette.cargo(c))
 		name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name.custom_minimum_size = Vector2(90, 0)
 		grid.add_child(name)
@@ -266,12 +266,10 @@ func _show_side(widget: Control, c: int, amounts: Array[int], rooms: Array[int])
 	gauge.empty_colour = Gauge.COLONISTS_EMPTY if c == Fleet.CARGO_COLONISTS else Gauge.EMPTY
 	if c == Fleet.CARGO_FUEL:
 		gauge.show_values(
-			[[amounts[4], ClassicTheme.CARGO_COLORS[4]]],
-			rooms[1],
-			"%d of %dmg" % [amounts[4], rooms[1]]
+			[[amounts[4], Palette.cargo(4)]], rooms[1], "%d of %dmg" % [amounts[4], rooms[1]]
 		)
 		return
-	gauge.show_values([[amounts[c], ClassicTheme.CARGO_COLORS[c]]], rooms[0], "%dkT" % amounts[c])
+	gauge.show_values([[amounts[c], Palette.cargo(c)]], rooms[0], "%dkT" % amounts[c])
 
 
 func _on_ok() -> void:

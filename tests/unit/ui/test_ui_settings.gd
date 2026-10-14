@@ -25,3 +25,34 @@ func test_scale_follows_the_window_or_the_choice() -> void:
 func test_theme_takes_the_size() -> void:
 	assert_int(ClassicTheme.build(1, 20).default_font_size).is_equal(20)
 	assert_int(ClassicTheme.build(1).default_font_size).is_equal(14)
+
+
+func test_every_palette_has_every_colour() -> void:
+	var roles: Array = Palette.COLORS[Palette.STANDARD].keys()
+	for mode: String in Palette.MODES:
+		assert_array(Palette.COLORS[mode].keys()).contains_exactly_in_any_order(roles)
+	var before := Palette.mode
+	Palette.mode = Palette.RED_GREEN
+	assert_that(Palette.cargo(1)).is_equal(Palette.COLORS[Palette.RED_GREEN][Palette.BORANIUM])
+	assert_that(Palette.axis(2)).is_equal(Palette.COLORS[Palette.RED_GREEN][Palette.RADIATION])
+	Palette.mode = before
+
+
+func test_key_bindings_default_change_and_steal() -> void:
+	KeyBindings.path = "user://test_keys.cfg"
+	DirAccess.remove_absolute(KeyBindings.path)
+	assert_int(KeyBindings.key("reports")).is_equal(KEY_F3)
+	assert_str(KeyBindings.text(KeyBindings.key("save"))).is_equal("Ctrl+S")
+	KeyBindings.set_key("research", KEY_F3)
+	assert_int(KeyBindings.key("research")).is_equal(KEY_F3)
+	# the reports action lost the key
+	assert_int(KeyBindings.key("reports")).is_equal(0)
+	var press := InputEventKey.new()
+	press.keycode = KEY_F3
+	press.pressed = true
+	assert_bool(KeyBindings.matches(press, "research")).is_true()
+	assert_bool(KeyBindings.matches(press, "reports")).is_false()
+	KeyBindings.reset()
+	assert_int(KeyBindings.key("reports")).is_equal(KEY_F3)
+	DirAccess.remove_absolute(KeyBindings.path)
+	KeyBindings.path = UiSettings.PATH

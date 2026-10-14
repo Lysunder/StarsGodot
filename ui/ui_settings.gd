@@ -1,8 +1,9 @@
 class_name UiSettings
 extends RefCounted
 ## The player's interface settings (M11 step 10), kept in `user://settings.cfg` under [ui]: the
-## font (an index into ClassicTheme.FONTS), its size (one of the font's sizes) and the interface
-## scale (0 follows the window, else a percent). `apply` puts them into effect at once.
+## font (an index into ClassicTheme.FONTS), its size (one of the font's sizes), the interface
+## scale (0 follows the window, else a percent) and the colour palette (Palette.MODES); the keys
+## are KeyBindings'. `apply` puts them into effect at once.
 
 const PATH := "user://settings.cfg"
 ## The interface scale choices besides following the window, in percent.
@@ -37,6 +38,17 @@ static func size_for(font_index: int, wanted: int) -> int:
 	return wanted if (spec["sizes"] as Array).has(wanted) else int(spec["size"])
 
 
+static func palette() -> String:
+	var mode := str(_config().get_value("ui", "palette", Palette.STANDARD))
+	return mode if Palette.MODES.has(mode) else Palette.STANDARD
+
+
+static func save_palette(mode: String) -> void:
+	var cfg := _config()
+	cfg.set_value("ui", "palette", mode)
+	cfg.save(PATH)
+
+
 static func scale() -> int:
 	var percent := int(_config().get_value("ui", "scale", 0))
 	return percent if SCALES.has(percent) else 0
@@ -64,8 +76,11 @@ static func factor_for(window: Vector2, percent: int) -> float:
 	return clampf(snappedf(ratio, SCALE_STEP), SCALE_MIN, SCALE_MAX)
 
 
-## Puts the saved settings into effect: the theme and the interface scale.
+## Puts the saved settings into effect: the colour palette, the theme and the interface scale. The
+## rebuilt theme redraws everything (and tells listeners of the root's theme_changed, such as the
+## game screen's key bindings).
 static func apply(tree: SceneTree) -> void:
+	Palette.mode = palette()
 	var index := font()
 	tree.root.theme = ClassicTheme.build(index, font_size(index))
 	rescale(tree)

@@ -15,12 +15,8 @@ signal released
 
 const LINE := Color("808080")
 const SELECTED := Color("7f0000")
-const WARNING := Color("ff0000")
-const FULL := Color("007f00")
-const POOR := Color("7f7f00")
 ## The original's report colours for the parts of a several-number cell: ironium, boranium,
 ## germanium, colonists.
-const PART_COLORS := [Color("0000ff"), Color("007f00"), Color("ffff00"), Color("ffffff")]
 ## Characters per part of a several-number column.
 const PART_CHARS := {"minerals": 5, "mining": 4, "concentration": 4, "cargo": 5}
 const PAD := 4
@@ -246,7 +242,7 @@ func cell(column: String, row: Dictionary) -> Dictionary:
 		var parts := []
 		var values: Array = row[column]
 		for i in values.size():
-			parts.append([short_number(values[i]), PART_COLORS[i]])
+			parts.append([short_number(values[i]), Palette.cargo(i)])
 		return {"left": [], "right": [], "parts": parts}
 	match column:
 		"name":
@@ -254,15 +250,31 @@ func cell(column: String, row: Dictionary) -> Dictionary:
 			out["left"] = [[row["name"], SELECTED if own == highlight else black]]
 		"population":
 			var over: bool = row["population"] > row["max_population"]
-			out["right"] = [[CommandPane.thousands(row["population"]), WARNING if over else black]]
+			out["right"] = [
+				[
+					CommandPane.thousands(row["population"]),
+					Palette.color(Palette.TEXT_BAD) if over else black
+				]
+			]
 		"cap":
 			out["right"] = [["%d%%" % row["cap"], black]]
 		"value":
 			var v: int = row["value"]
-			var parts := [["%d%%" % v, WARNING if v < 0 else (POOR if v <= 10 else black)]]
+			var parts := [
+				[
+					"%d%%" % v,
+					(
+						Palette.color(Palette.TEXT_BAD)
+						if v < 0
+						else (Palette.color(Palette.TEXT_POOR) if v <= 10 else black)
+					)
+				]
+			]
 			var t: int = row["value_terraformed"]
 			if t > v:
-				parts.append([" (%d%%)" % t, POOR if t <= 10 else black])
+				parts.append(
+					[" (%d%%)" % t, Palette.color(Palette.TEXT_POOR) if t <= 10 else black]
+				)
 			out["right"] = parts
 		"production":
 			var p: Dictionary = row["production"]
@@ -274,9 +286,9 @@ func cell(column: String, row: Dictionary) -> Dictionary:
 			var most: int = row["max_" + column]
 			var colour := black
 			if n > most:
-				colour = WARNING
+				colour = Palette.color(Palette.TEXT_BAD)
 			elif n == most:
-				colour = FULL
+				colour = Palette.color(Palette.TEXT_GOOD)
 			out["right"] = [
 				["--" if column == "defenses" and n == 0 else CommandPane.thousands(n), colour]
 			]
@@ -290,15 +302,17 @@ func cell(column: String, row: Dictionary) -> Dictionary:
 		"eta":
 			var years: int = row["eta"]
 			var text := "%dy" % years if years >= 0 else "--"
-			out["right"] = [[text, WARNING if row["short_of_fuel"] else black]]
+			out["right"] = [
+				[text, Palette.color(Palette.TEXT_BAD) if row["short_of_fuel"] else black]
+			]
 		"task":
 			var task: String = row["task"]
 			out["left"] = [[SummaryPane._task_name(task) if task != "" else "", black]]
 		"fuel":
-			out["right"] = [[str(row["fuel"]), PART_COLORS[0] if row["short_of_fuel"] else black]]
+			out["right"] = [[str(row["fuel"]), Palette.cargo(0) if row["short_of_fuel"] else black]]
 		"composition":
 			var c: Dictionary = row["composition"]
-			out["left"] = [[c["name"], WARNING if c["damaged"] else black]]
+			out["left"] = [[c["name"], Palette.color(Palette.TEXT_BAD) if c["damaged"] else black]]
 			out["right"] = [[str(c["count"]) + ("+" if c["multi"] else " "), black]]
 		"cloak":
 			out["right"] = [["%d%%" % row["cloak"] if row["cloak"] > 0 else "--", black]]

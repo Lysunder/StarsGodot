@@ -6,7 +6,6 @@ extends Control
 ## could reach, and the current value in the original's units on the right.
 
 const LABELS := ["Gravity", "Temperature", "Radiation"]
-const BANDS := [Color("0000c0"), Color("c00000"), Color("00a000")]
 const BAR := Color.BLACK
 const MARK := Color.WHITE
 const LABEL_WIDTH := 100
@@ -55,9 +54,11 @@ func _draw() -> void:
 		var low: int = info["hab_low"][axis]
 		var high: int = info["hab_high"][axis]
 		if low < 0:
-			draw_rect(bar, BANDS[axis].darkened(0.4))
+			draw_rect(bar, Palette.axis(axis).darkened(0.4))
 		else:
-			draw_rect(Rect2(_x(bar, low), top, _x(bar, high) - _x(bar, low), ROW - 2), BANDS[axis])
+			draw_rect(
+				Rect2(_x(bar, low), top, _x(bar, high) - _x(bar, low), ROW - 2), Palette.axis(axis)
+			)
 		var mid := top + (ROW - 2) / 2.0
 		var now := _x(bar, info["environment"][axis])
 		var best := _x(bar, info["terraform_best"][axis])

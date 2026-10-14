@@ -45,13 +45,6 @@ const PERCENT := ["fill_percent", "wait_percent"]
 const BUTTON_WIDTH := 80
 const AMOUNT_WIDTH := 56
 ## A cargo type with a transport action is shown in green; a damaged ship's bar is red.
-const ACTION_SET := Color("007f00")
-const DAMAGE := Color("ff0000")
-## Production queue text by ProductionEstimate.When: all this year, some this year, later, never,
-## skipped this year.
-const QUEUE_COLORS := [
-	Color("007f00"), Color("0000ff"), Color("000000"), Color("ff0000"), Color("808080")
-]
 const LIST_HEIGHT := 96
 
 var kind: String = ""
@@ -192,11 +185,11 @@ static func thousands(n: int) -> String:
 ## white, so the cargo gauge is grey where empty).
 static func fill_gauges(info: Dictionary, fuel: Gauge, cargo: Gauge) -> void:
 	var c: Array = info["cargo"]
-	fuel.show_amount(c[Fleet.CARGO_FUEL], info["fuel_capacity"], ClassicTheme.CARGO_COLORS[4], "mg")
+	fuel.show_amount(c[Fleet.CARGO_FUEL], info["fuel_capacity"], Palette.cargo(4), "mg")
 	var segments := []
 	var total := 0
 	for i in 4:
-		segments.append([c[i], ClassicTheme.CARGO_COLORS[i]])
+		segments.append([c[i], Palette.cargo(i)])
 		total += c[i]
 	cargo.empty_colour = Gauge.COLONISTS_EMPTY
 	cargo.show_values(
@@ -238,7 +231,7 @@ func _planet_tiles() -> void:
 	)
 	t = _tile("Minerals on Hand")
 	for i in 3:
-		t.field(MINERALS[i], "%dkT" % info["surface"][i], ClassicTheme.CARGO_COLORS[i])
+		t.field(MINERALS[i], "%dkT" % info["surface"][i], Palette.cargo(i))
 	t.field("Mines", "%d of %d" % [info["operable_mines"], info["max_mines"]])
 	t.field("Factories", "%d of %d" % [info["operable_factories"], info["max_factories"]])
 	t = _tile("Status")
@@ -329,7 +322,7 @@ func _production_tile(info: Dictionary) -> void:
 		var right := "Up to %d" % q["count"] if q["auto"] else str(q["count"])
 		var colour := ClassicTheme.TEXT
 		if i < when.size():
-			colour = QUEUE_COLORS[when[i]]
+			colour = queue_color(when[i])
 		rows.append({"left": q["name"], "right": right, "colour": colour, "italic": q["auto"]})
 	var list := RowList.new(LIST_HEIGHT)
 	list.set_rows(rows, -1)
@@ -447,14 +440,19 @@ func _fleet_tiles() -> void:
 		g.gui_input.connect(_on_cargo_gauge_input.bind(info))
 	var held: Array = info["cargo"]
 	for i in 3:
-		t.field(MINERALS[i], "%dkT" % held[i], ClassicTheme.CARGO_COLORS[i])
-	t.field("Colonists", "%dkT" % held[3], ClassicTheme.CARGO_COLORS[3])
+		t.field(MINERALS[i], "%dkT" % held[i], Palette.cargo(i))
+	t.field("Colonists", "%dkT" % held[3], Palette.cargo(3))
 	t = _tile("Fleet Composition")
 	var ships := RowList.new(LIST_HEIGHT)
 	var ship_rows: Array[Dictionary] = []
 	for s: Dictionary in info["ships"]:
 		ship_rows.append(
-			{"left": s["name"], "right": str(s["count"]), "bar": s["damage"], "bar_colour": DAMAGE}
+			{
+				"left": s["name"],
+				"right": str(s["count"]),
+				"bar": s["damage"],
+				"bar_colour": Palette.color(Palette.TEXT_BAD)
+			}
 		)
 	ships.set_rows(ship_rows, -1)
 	t.body.add_child(ships)
@@ -629,7 +627,7 @@ func _fill_leg_fields(waypoints: Array) -> void:
 	fuel.text = "%dmg" % wp["fuel"]
 	var short: bool = wp["short_of_fuel"] or wp["cannot_move"]
 	if short:
-		fuel.add_theme_color_override("font_color", ClassicTheme.CARGO_COLORS[4])
+		fuel.add_theme_color_override("font_color", Palette.cargo(4))
 	else:
 		fuel.remove_theme_color_override("font_color")
 
@@ -655,8 +653,8 @@ func _transport_task(t: Tile, wp: Dictionary) -> void:
 	_cargo_shown = clampi(_cargo_shown, 0, CARGO.size() - 1)
 	kind_choice.select(_cargo_shown)
 	if cargo[_cargo_shown]["action"] != "none":
-		kind_choice.add_theme_color_override("font_color", ACTION_SET)
-		kind_choice.add_theme_color_override("font_hover_color", ACTION_SET)
+		kind_choice.add_theme_color_override("font_color", Palette.color(Palette.TEXT_GOOD))
+		kind_choice.add_theme_color_override("font_hover_color", Palette.color(Palette.TEXT_GOOD))
 	kind_choice.item_selected.connect(
 		func(i: int) -> void:
 			_cargo_shown = i
@@ -907,3 +905,18 @@ static func _index_of(table: Array, key: String) -> int:
 		if table[i][0] == key:
 			return i
 	return 0
+
+
+## Production queue text by ProductionEstimate.When: all this year, some this year, later, never,
+## skipped this year.
+static func queue_color(when: int) -> Color:
+	match when:
+		0:
+			return Palette.color(Palette.QUEUE_ALL)
+		1:
+			return Palette.color(Palette.QUEUE_SOME)
+		3:
+			return Palette.color(Palette.QUEUE_NEVER)
+		4:
+			return Color("808080")
+	return Color("000000")

@@ -13,8 +13,6 @@ const CELL := 44
 const GAP := 1
 const BACKGROUND := Color(0, 0, 0)
 const GRID := Color(0.22, 0.22, 0.28)
-const MINE := Color(0.3, 0.85, 0.35)
-const OTHER := Color(0.9, 0.3, 0.25)
 const SELECTED := Color(1.0, 0.9, 0.3)
 const BEAM := Color(1.0, 0.95, 0.5)
 const TORPEDO := Color(1.0, 0.6, 0.2)
@@ -88,7 +86,9 @@ func _draw_square(square: int) -> void:
 		return
 	var first := here[0]
 	var rec: Dictionary = replay.battle["tokens"][first]
-	var colour := MINE if int(rec["owner"]) == replay.view.player else OTHER
+	var colour := Palette.color(
+		Palette.MINE if int(rec["owner"]) == replay.view.player else Palette.OTHER
+	)
 	var c := square_center(square) + Vector2(0, -4)
 	var s := CELL / 64.0
 	if int(rec["kind"]) == BattleReplay.KIND_STARBASE:

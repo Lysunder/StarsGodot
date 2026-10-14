@@ -14,15 +14,6 @@ const NAVY := Color("000080")
 const TEXT := Color("000000")
 const TEXT_DISABLED := Color("808080")
 const TEXT_SELECTED := Color("ffffff")
-## Cargo colours, in cargo order (ironium, boranium, germanium, colonists, fuel): the mineral names
-## in tiles and dialogs and the segments of fuel and cargo gauges.
-const CARGO_COLORS := [
-	Color("0000ff"),
-	Color("007f00"),
-	Color("ffff00"),
-	Color("ffffff"),
-	Color("ff0000"),
-]
 ## How much a bold label thickens the font (FontVariation embolden).
 const EMBOLDEN := 0.8
 ## The bundled UI fonts, each with its usual size and the sizes the player may pick. Pixel fonts
@@ -196,6 +187,23 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	tile_body.set_content_margin_all(BEVEL + 2)
 	t.set_type_variation("TileBody", "PanelContainer")
 	t.set_stylebox("panel", "TileBody", tile_body)
+	# property sheet tabs: a raised page, the chosen tab joined to it, the others set back
+	var page := _bevel(true, FACE)
+	page.set_content_margin_all(BEVEL + 6)
+	t.set_stylebox("panel", "TabContainer", page)
+	var tab := _bevel(true, FACE)
+	tab.set_content_margin_all(BEVEL + 2)
+	tab.set_content_margin(SIDE_LEFT, BEVEL + 8)
+	tab.set_content_margin(SIDE_RIGHT, BEVEL + 8)
+	t.set_stylebox("tab_selected", "TabContainer", tab)
+	var back := tab.duplicate() as StyleBoxTexture
+	back.modulate_color = Color(0.92, 0.92, 0.92)
+	for style in ["tab_unselected", "tab_hovered", "tab_disabled"]:
+		t.set_stylebox(style, "TabContainer", back)
+	t.set_stylebox("tabbar_background", "TabContainer", none)
+	for colour in ["font_selected_color", "font_unselected_color", "font_hovered_color"]:
+		t.set_color(colour, "TabContainer", TEXT)
+	t.set_color("font_disabled_color", "TabContainer", TEXT_DISABLED)
 	var track := _bevel(false, FACE)
 	track.set_content_margin(SIDE_TOP, TRACK_HEIGHT / 2)
 	track.set_content_margin(SIDE_BOTTOM, TRACK_HEIGHT / 2)

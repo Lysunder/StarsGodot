@@ -20,7 +20,6 @@ const TEXT_SIZE := 16
 const BUTTON_WIDTH := 64
 const ICON_SIZE := Vector2(18, 18)
 const CHECK_COLOR := Color("0000ff")
-const CROSS_COLOR := Color("ff0000")
 const GLASS_COLOR := Color("000000")
 const WATERMARK_COLOR := Color("ffffff")
 const WATERMARK := "FILTERED"
@@ -319,9 +318,12 @@ func _show() -> void:
 func _draw_filter(b: Button) -> void:
 	var r := Rect2(Vector2.ZERO, b.size).grow(-4)
 	if is_filtered(current):
-		b.draw_line(r.position, r.end, CROSS_COLOR, 2.0)
+		b.draw_line(r.position, r.end, Palette.color(Palette.TEXT_BAD), 2.0)
 		b.draw_line(
-			Vector2(r.end.x, r.position.y), Vector2(r.position.x, r.end.y), CROSS_COLOR, 2.0
+			Vector2(r.end.x, r.position.y),
+			Vector2(r.position.x, r.end.y),
+			Palette.color(Palette.TEXT_BAD),
+			2.0
 		)
 	else:
 		var points := PackedVector2Array(

@@ -39,6 +39,8 @@ var _battle_viewer: BattleViewer
 var _score: ScoreWindow
 var _about: AcceptDialog
 var _settings: SettingsDialog
+## The menu items with a key binding: [menu, item id, KeyBindings action].
+var _keyed: Array[Array] = []
 
 
 func _ready() -> void:
@@ -127,7 +129,7 @@ func _build_menu() -> void:
 	add_child(menu)
 	var file := PopupMenu.new()
 	file.name = "File"
-	file.add_item("Save", MENU_SAVE, KEY_MASK_CTRL | KEY_S)
+	_keyed_item(file, "Save", MENU_SAVE, "save")
 	file.add_item("Close (Main Menu)", MENU_MAIN)
 	file.add_separator()
 	file.add_item("Exit", MENU_QUIT)
@@ -140,25 +142,25 @@ func _build_menu() -> void:
 	menu.add_child(view)
 	var turn := PopupMenu.new()
 	turn.name = "Turn"
-	turn.add_item("Generate", MENU_END_TURN, KEY_F9)
+	_keyed_item(turn, "Generate", MENU_END_TURN, "generate")
 	turn.id_pressed.connect(_on_menu)
 	menu.add_child(turn)
 	var commands := PopupMenu.new()
 	commands.name = "Commands"
-	commands.add_item("Ship Design...", MENU_DESIGN, KEY_F4)
-	commands.add_item("Research...", MENU_RESEARCH, KEY_F5)
-	commands.add_item("Battle Plans...", MENU_PLANS, KEY_F6)
-	commands.add_item("Player Relations...", MENU_RELATIONS, KEY_F7)
+	_keyed_item(commands, "Ship Design...", MENU_DESIGN, "ship_design")
+	_keyed_item(commands, "Research...", MENU_RESEARCH, "research")
+	_keyed_item(commands, "Battle Plans...", MENU_PLANS, "battle_plans")
+	_keyed_item(commands, "Player Relations...", MENU_RELATIONS, "relations")
 	commands.id_pressed.connect(_on_menu)
 	menu.add_child(commands)
 	var report := PopupMenu.new()
 	report.name = "Report"
-	report.add_item("Planets...", MENU_REPORT, KEY_F3)
+	_keyed_item(report, "Planets...", MENU_REPORT, "reports")
 	report.add_item("Fleets...", MENU_REPORT + 1)
 	report.add_item("Others' Fleets...", MENU_REPORT + 2)
 	report.add_item("Battles...", MENU_REPORT + 3)
 	report.add_separator()
-	report.add_item("Score...", MENU_SCORE, KEY_F10)
+	_keyed_item(report, "Score...", MENU_SCORE, "score")
 	report.id_pressed.connect(_on_menu)
 	menu.add_child(report)
 	var help := PopupMenu.new()
@@ -166,6 +168,29 @@ func _build_menu() -> void:
 	help.add_item("About StarsGodot...", MENU_ABOUT)
 	help.id_pressed.connect(_on_menu)
 	menu.add_child(help)
+	_apply_keys()
+	# Settings rebuild the theme when anything changes, the keys and colours included
+	get_tree().root.theme_changed.connect(_on_settings_changed)
+
+
+func _keyed_item(menu: PopupMenu, text: String, id: int, action: String) -> void:
+	menu.add_item(text, id)
+	_keyed.append([menu, id, action])
+
+
+## New settings: the keys, and the panes drawn again in the palette's colours.
+func _on_settings_changed() -> void:
+	_apply_keys()
+	if _command.kind != "" and _command.id >= 0:
+		_command.command(_command.kind, _command.id)
+	_summary.refresh()
+
+
+## The menu items' keys from KeyBindings.
+func _apply_keys() -> void:
+	for k: Array in _keyed:
+		var menu: PopupMenu = k[0]
+		menu.set_item_accelerator(menu.get_item_index(k[1]), KeyBindings.key(k[2]))
 
 
 func _on_selected(kind: String, id: int) -> void:
@@ -241,7 +266,7 @@ func _on_menu(menu_id: int) -> void:
 		MENU_REPORT:
 			# F3: the Planet report, then each report in turn, then closed; the menu item itself
 			# opens the Planet report
-			if Input.is_key_pressed(KEY_F3):
+			if KeyBindings.held("reports"):
 				_reports.cycle()
 			else:
 				_reports.open(ReportView.PLANETS)

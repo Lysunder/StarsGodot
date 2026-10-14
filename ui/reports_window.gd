@@ -1,9 +1,9 @@
 class_name ReportsWindow
 extends Window
 ## The report window (D15; the original's `REPORTDLG@10f8:0000`): one window showing one report at
-## a time, titled "Planet Summary Report -- 5 Planets" and so on. F3 opens the Planet report, and
-## each press after goes on to the Fleet, Others' Fleets and Battle reports, then closes it; Escape
-## closes it.
+## a time, titled "Planet Summary Report -- 5 Planets" and so on. The reports key (F3 unless
+## changed, KeyBindings) opens the Planet report, and each press after goes on to the Fleet,
+## Others' Fleets and Battle reports, then closes it; Escape closes it.
 ##
 ## Clicking a column label opens its menu: sort by it (forward or reverse; by each mineral in a
 ## column of several), hide it, or show a hidden column. The sort before becomes the second level.
@@ -75,7 +75,8 @@ func open(p_report: String) -> void:
 	grab_focus()
 
 
-## F3: the Planet report when closed, else the next report; after the Battle report, closes.
+## The reports key (F3): the Planet report when closed, else the next report; after the Battle
+## report, closes.
 func cycle() -> void:
 	if not visible:
 		open(ReportView.PLANETS)
@@ -113,13 +114,12 @@ func refresh() -> void:
 func _on_window_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
-	match (event as InputEventKey).keycode:
-		KEY_ESCAPE:
-			hide()
-			set_input_as_handled()
-		KEY_F3:
-			cycle()
-			set_input_as_handled()
+	if (event as InputEventKey).keycode == KEY_ESCAPE:
+		hide()
+		set_input_as_handled()
+	elif KeyBindings.matches(event, "reports"):
+		cycle()
+		set_input_as_handled()
 
 
 func _on_header_clicked(column: String, at: Vector2) -> void:

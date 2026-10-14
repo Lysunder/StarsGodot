@@ -25,16 +25,10 @@ const PICK_PIXELS := 10.0
 const DEFAULT_WARP := 6
 const COLOR_BACKGROUND := Color(0.02, 0.02, 0.06)
 const COLOR_UNOWNED := Color(0.55, 0.55, 0.6)
-const COLOR_MINE := Color(0.3, 0.85, 0.35)
-const COLOR_OTHER := Color(0.9, 0.3, 0.25)
-const COLOR_FLEET := Color(0.45, 0.75, 1.0)
-const COLOR_PATH := Color(0.45, 0.75, 1.0, 0.6)
-const COLOR_SELECTED := Color(1.0, 0.9, 0.3)
-const VALUE_GOOD := Color(0.2, 0.85, 0.3)
-const VALUE_BAD := Color(0.9, 0.2, 0.2)
+const PATH_ALPHA := 0.6
 ## Tallest mineral bar in the minerals views, in pixels.
 const MINERAL_BAR := 16.0
-const COLOR_SHORT := Color(1.0, 0.35, 0.3, 0.8)
+const SHORT_ALPHA := 0.8
 ## A press that moves less than this is a click, not a drag.
 const DRAG_PIXELS := 4.0
 ## The Shift crosshair: arm length in pixels (the image is 2 × arm + 1 wide).
@@ -184,7 +178,7 @@ func _draw() -> void:
 	for pl in view.planets():
 		var colour := COLOR_UNOWNED
 		if pl["owner"] >= 0:
-			colour = COLOR_MINE if pl["mine"] else COLOR_OTHER
+			colour = Palette.color(Palette.MINE if pl["mine"] else Palette.OTHER)
 		var radius := PLANET_RADIUS + (2.0 if pl["population"] > 0 else 0.0)
 		var at := to_screen(pl["x"], pl["y"])
 		if view_mode == View.NORMAL:
@@ -194,7 +188,7 @@ func _draw() -> void:
 		if pl["starbase"]:
 			draw_arc(at, radius + 3.0, 0.0, TAU, 16, colour, 1.0)
 		if selection_kind == "planet" and selection_id == pl["id"]:
-			draw_arc(at, radius + 6.0, 0.0, TAU, 24, COLOR_SELECTED, 1.5)
+			draw_arc(at, radius + 6.0, 0.0, TAU, 24, Palette.color(Palette.SELECTED), 1.5)
 		if show_names or zoom > 1.2:
 			draw_string(
 				get_theme_default_font(),
@@ -210,9 +204,9 @@ func _draw() -> void:
 		var tri := PackedVector2Array(
 			[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
 		)
-		draw_colored_polygon(tri, COLOR_FLEET)
+		draw_colored_polygon(tri, Palette.color(Palette.FLEET))
 		if selection_kind == "fleet" and selection_id == f.number:
-			draw_arc(at, 7.0, 0.0, TAU, 16, COLOR_SELECTED, 1.5)
+			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
 
 
@@ -229,14 +223,16 @@ func _draw_view(at: Vector2, pl: Dictionary) -> float:
 		View.VALUE:
 			var v: int = info["habitability"]
 			var r := 2.0 + 8.0 * absi(v) / 100.0
-			draw_circle(at, r, VALUE_GOOD if v > 0 else VALUE_BAD)
+			draw_circle(at, r, Palette.color(Palette.GOOD if v > 0 else Palette.BAD))
 			return r
 		View.POPULATION:
 			if info["population"] <= 0:
 				draw_circle(at, 1.5, COLOR_UNOWNED)
 				return 1.5
 			var r := 2.0 + sqrt(float(info["population"])) / 4.0
-			draw_circle(at, minf(r, 14.0), COLOR_MINE if info["mine"] else COLOR_OTHER)
+			draw_circle(
+				at, minf(r, 14.0), Palette.color(Palette.MINE if info["mine"] else Palette.OTHER)
+			)
 			return minf(r, 14.0)
 		View.SURFACE_MINERALS, View.CONCENTRATION:
 			var key := "surface" if view_mode == View.SURFACE_MINERALS else "concentration"
@@ -244,7 +240,7 @@ func _draw_view(at: Vector2, pl: Dictionary) -> float:
 			for m in 3:
 				var h := clampf(info[key][m] / full, 0.0, 1.0) * MINERAL_BAR
 				var x := at.x - 4.0 + m * 3.0
-				draw_rect(Rect2(x, at.y - h, 2.0, h), ClassicTheme.CARGO_COLORS[m])
+				draw_rect(Rect2(x, at.y - h, 2.0, h), Palette.cargo(m))
 			draw_circle(at, 1.5, COLOR_UNOWNED)
 			return 3.0
 	return PLANET_RADIUS
@@ -258,13 +254,15 @@ func _draw_path(f: Fleet) -> void:
 		var at := to_screen(wp.x, wp.y)
 		if i == _drag_waypoint:
 			at = _drag_to
-		var colour := COLOR_PATH
+		var colour := Palette.color(Palette.FLEET)
+		colour.a = PATH_ALPHA
 		if i < rows.size() and (rows[i]["short_of_fuel"] or rows[i]["cannot_move"]):
-			colour = COLOR_SHORT
+			colour = Palette.color(Palette.BAD)
+			colour.a = SHORT_ALPHA
 		draw_line(prev, at, colour, 1.5)
 		draw_circle(at, 2.5, colour)
 		if i == waypoint:
-			draw_arc(at, 6.0, 0.0, TAU, 16, COLOR_SELECTED, 1.5)
+			draw_arc(at, 6.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 		prev = at
 
 

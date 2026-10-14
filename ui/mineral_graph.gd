@@ -59,7 +59,7 @@ func _draw() -> void:
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			font_size,
-			ClassicTheme.CARGO_COLORS[m]
+			Palette.cargo(m)
 		)
 		var surface: int = info["surface"][m]
 		var w_surface := width * float(surface) / scale

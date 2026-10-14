@@ -177,7 +177,7 @@ func _build_stats(right: Control) -> void:
 	for i in 4:
 		var name := _bold(cost_grid, MINERALS[i] if i < 3 else "Resources")
 		if i < 3:
-			name.add_theme_color_override("font_color", ClassicTheme.CARGO_COLORS[i])
+			name.add_theme_color_override("font_color", Palette.cargo(i))
 		var value := Label.new()
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value.custom_minimum_size = Vector2(70, 0)

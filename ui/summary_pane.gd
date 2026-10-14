@@ -221,9 +221,9 @@ static func design_view(design: Design, starbase: bool) -> Control:
 	row.add_child(grid)
 	var cost: Array = stats["cost"]
 	var rows := [
-		["Ironium", "%dkT" % cost[0], ClassicTheme.CARGO_COLORS[0]],
-		["Boranium", "%dkT" % cost[1], ClassicTheme.CARGO_COLORS[1]],
-		["Germanium", "%dkT" % cost[2], ClassicTheme.CARGO_COLORS[2]],
+		["Ironium", "%dkT" % cost[0], Palette.cargo(0)],
+		["Boranium", "%dkT" % cost[1], Palette.cargo(1)],
+		["Germanium", "%dkT" % cost[2], Palette.cargo(2)],
 		["Resources", str(cost[3]), Color()],
 		["Mass", "%skT" % CommandPane.thousands(stats["mass"]), Color()],
 		["Max Fuel", "%smg" % CommandPane.thousands(stats["fuel"]), Color()],

@@ -60,7 +60,7 @@ func _ready() -> void:
 	for i in 4:
 		var name := _label(MINERALS[i] if i < 3 else "Resources", true)
 		if i < 3:
-			name.add_theme_color_override("font_color", ClassicTheme.CARGO_COLORS[i])
+			name.add_theme_color_override("font_color", Palette.cargo(i))
 		cost_grid.add_child(name)
 		var value := _label("", false)
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -192,7 +192,7 @@ func _show_queue() -> void:
 					"left": view.queue_item_name(view.player, q),
 					"right": ("Up to %d" % q.count) if auto else str(q.count),
 					"italic": auto,
-					"colour": CommandPane.QUEUE_COLORS[when[i]] if i < when.size() else Color.BLACK,
+					"colour": CommandPane.queue_color(when[i]) if i < when.size() else Color.BLACK,
 				}
 			)
 		)
