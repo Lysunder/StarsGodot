@@ -123,5 +123,22 @@ func test_production_estimate() -> void:
 	assert_int(when[0]).is_equal(ProductionEstimate.When.THIS_YEAR_ALL)
 	assert_int(when[1]).is_not_equal(ProductionEstimate.When.THIS_YEAR_ALL)
 	assert_int(e["years"]).is_greater(1)
+	# the first item is done this year; the second's first factory may come this year, its last later
+	assert_int(e["first"][0]).is_equal(1)
+	assert_int(e["last"][0]).is_equal(1)
+	assert_int(e["first"][1]).is_between(1, e["last"][1])
+	assert_int(e["last"][1]).is_equal(e["years"])
+	assert_str(ProductionDialog.completion_text(e, 0, false)).is_equal("1 year")
+	assert_array(["As needed", "Skipped"]).contains([ProductionDialog.completion_text(e, 2, true)])
 	home.queue.clear()
 	assert_int(ProductionEstimate.estimate(s, _content, home.id)["years"]).is_equal(0)
+
+
+func test_completion_text() -> void:
+	var e := {"items": [2, 2, 2, 3], "first": [3, 2, 4, 0], "last": [3, 5, 0, 0]}
+	assert_str(ProductionDialog.completion_text(e, 0, false)).is_equal("3 years")
+	assert_str(ProductionDialog.completion_text(e, 1, false)).is_equal("2 - 5 years")
+	assert_str(ProductionDialog.completion_text(e, 2, false)).is_equal("4 - ? years")
+	assert_str(ProductionDialog.completion_text(e, 3, false)).is_equal("Never")
+	e["items"][0] = ProductionEstimate.When.SKIPPED
+	assert_str(ProductionDialog.completion_text(e, 0, true)).is_equal("Skipped")

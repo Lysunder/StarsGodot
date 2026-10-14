@@ -3,10 +3,12 @@ extends AcceptDialog
 ## The production window (D15, the original's arrangement): the items the planet can build on the
 ## left with the cost of one under them, the buttons in the middle (Item Up, Add ->, <- Remove,
 ## Clear, Item Down), the queue on the right (its first row "-- Top of the Queue --" adds at the
-## top; rows coloured like the Production tile), and along the bottom "Contribute only leftover
-## resources to research", Prev, Next, OK and Cancel. Edits are kept here until OK (or Prev /
-## Next, which keep them and move to another planet); then one `production_queue` and, if the
-## box changed, one `planet_settings` order are sent. Shift adds or removes 10, Ctrl 100.
+## top; rows coloured like the Production tile) with the cost of the picked queue item under it
+## (all its units), how far its first unit is and when it will be done, and along the bottom
+## "Contribute only leftover resources to research", Prev, Next, OK and Cancel. Edits are kept
+## here until OK (or Prev / Next, which keep them and move to another planet); then one
+## `production_queue` and, if the box changed, one `planet_settings` order are sent.
+## Shift adds or removes 10, Ctrl 100.
 ## The diamond under the buttons lists the production templates: picking one replaces the queue's
 ## auto-build items with the template's (after the other items) and sets the box from it;
 ## "Customize..." opens the templates window (S09 "Production templates").
@@ -29,6 +31,11 @@ var _inventory: RowList
 var _queue: RowList
 var _cost_title: Label
 var _cost: Array[Label] = []
+var _queue_title: Label
+var _queue_cost: Array[Label] = []
+var _completion: Label
+## ProductionEstimate of the edited queue.
+var _estimate: Dictionary = {}
 var _leftover: CheckBox
 var _status: Label
 var _templates_menu: PopupMenu
@@ -54,19 +61,7 @@ func _ready() -> void:
 	left.add_child(_inventory)
 	_cost_title = _label("", true)
 	left.add_child(_cost_title)
-	var cost_grid := GridContainer.new()
-	cost_grid.columns = 2
-	left.add_child(cost_grid)
-	for i in 4:
-		var name := _label(MINERALS[i] if i < 3 else "Resources", true)
-		if i < 3:
-			name.add_theme_color_override("font_color", Palette.cargo(i))
-		cost_grid.add_child(name)
-		var value := _label("", false)
-		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		value.custom_minimum_size = Vector2(70, 0)
-		cost_grid.add_child(value)
-		_cost.append(value)
+	left.add_child(_cost_grid(_cost))
 	var middle := VBoxContainer.new()
 	middle.alignment = BoxContainer.ALIGNMENT_CENTER
 	lists.add_child(middle)
@@ -95,7 +90,13 @@ func _ready() -> void:
 	_queue = RowList.new(int(LIST_SIZE.y))
 	_queue.custom_minimum_size = LIST_SIZE
 	_queue.row_activated.connect(func(_i: int) -> void: _on_remove())
+	_queue.row_selected.connect(func(_i: int) -> void: _show_queue_cost())
 	right.add_child(_queue)
+	_queue_title = _label("", true)
+	right.add_child(_queue_title)
+	right.add_child(_cost_grid(_queue_cost))
+	_completion = _label("", false)
+	right.add_child(_completion)
 	var bottom := HBoxContainer.new()
 	box.add_child(bottom)
 	_leftover = CheckBox.new()
@@ -153,6 +154,23 @@ func _load(id: int) -> void:
 	_show_cost()
 
 
+## A cost box: each mineral and resources with its value label (appended to `values`).
+func _cost_grid(values: Array[Label]) -> GridContainer:
+	var grid := GridContainer.new()
+	grid.columns = 2
+	for i in 4:
+		var name := _label(MINERALS[i] if i < 3 else "Resources", true)
+		if i < 3:
+			name.add_theme_color_override("font_color", Palette.cargo(i))
+		grid.add_child(name)
+		var value := _label("", false)
+		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		value.custom_minimum_size = Vector2(70, 0)
+		grid.add_child(value)
+		values.append(value)
+	return grid
+
+
 func _label(text: String, bold: bool) -> Label:
 	var l := Label.new()
 	l.text = text
@@ -179,7 +197,8 @@ func _show_queue() -> void:
 		var q := ModelObject.object_from(QueueItem, d, "", errors) as QueueItem
 		if q != null:
 			planet.queue.append(q)
-	var when: Array = ProductionEstimate.estimate(copy, GameSession.content, planet_id)["items"]
+	_estimate = ProductionEstimate.estimate(copy, GameSession.content, planet_id)
+	var when: Array = _estimate["items"]
 	var rows: Array[Dictionary] = [{"left": TOP_ROW}]
 	var view := GameSession.view
 	for i in planet.queue.size():
@@ -197,6 +216,7 @@ func _show_queue() -> void:
 			)
 		)
 	_queue.set_rows(rows)
+	_show_queue_cost()
 
 
 ## "Cost of one <item>" for the picked item, per mineral and resources.
@@ -212,6 +232,50 @@ func _show_cost() -> void:
 	var cost := GameSession.view.unit_cost(planet_id, item)
 	for i in 4:
 		_cost[i].text = ("%dkT" % cost[i]) if i < 3 else str(cost[i])
+
+
+## The picked queue item: the cost of all its units, then "N% done" (its first unit) and when it
+## will be done.
+func _show_queue_cost() -> void:
+	var i := _queue_index()
+	if i < 0 or i >= _items.size():
+		_queue_title.text = ""
+		_completion.text = ""
+		for l in _queue_cost:
+			l.text = ""
+		return
+	var item: Dictionary = _items[i]
+	var count := int(item["count"])
+	var view := GameSession.view
+	var q := ModelObject.object_from(QueueItem, item, "", PackedStringArray()) as QueueItem
+	var name := view.queue_item_name(view.player, q)
+	_queue_title.text = "Cost of %d × %s" % [count, name]
+	var cost := view.unit_cost(planet_id, item)
+	for m in 4:
+		var total := cost[m] * count
+		_queue_cost[m].text = ("%dkT" % total) if m < 3 else str(total)
+	var done := "%d%% done, completion: " % int(item["progress"])
+	_completion.text = done + completion_text(_estimate, i, _is_auto(item))
+
+
+## When queue item `i` will be done, from a ProductionEstimate: "3 years", "2 - 5 years" (first
+## unit to last), "4 - ? years" (not all within the estimate), "Never", or for an auto item
+## "As needed" ("Skipped" when it builds nothing this year).
+static func completion_text(estimate: Dictionary, i: int, auto: bool) -> String:
+	var when: Array = estimate.get("items", [])
+	if i >= when.size():
+		return ""
+	if auto:
+		return "Skipped" if when[i] == ProductionEstimate.When.SKIPPED else "As needed"
+	var first: int = estimate["first"][i]
+	var last: int = estimate["last"][i]
+	if first == 0:
+		return "Never"
+	if last == 0:
+		return "%d - ? years" % first
+	if first != last:
+		return "%d - %d years" % [first, last]
+	return "1 year" if first == 1 else "%d years" % first
 
 
 func _step() -> int:

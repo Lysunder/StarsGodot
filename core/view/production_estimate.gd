@@ -1,9 +1,10 @@
 class_name ProductionEstimate
 extends RefCounted
 ## When a planet's queue items will be built (M11, the Production tile's colours and Completion
-## line): the planet's production (S09) is run year by year on a copy, with this year's
-## resources and mining but no population growth, and each queue item is followed until it is
-## done. It is an estimate for the player's eyes only and never changes the game.
+## line, the Production window's completion years): the planet's production (S09) is run year by
+## year on a copy, with mining and population growth after each year (as the original's estimate
+## does), and each queue item is followed until it is done. It is an estimate for the player's
+## eyes only and never changes the game.
 
 enum When { THIS_YEAR_ALL, THIS_YEAR_SOME, LATER, NEVER, SKIPPED }
 
@@ -11,12 +12,14 @@ enum When { THIS_YEAR_ALL, THIS_YEAR_SOME, LATER, NEVER, SKIPPED }
 const HORIZON := 100
 
 
-## {items: [When per queue item], years: years until every item but the auto items is built, 0
-## when there is none, or -1 for never}. An auto item that builds nothing this year is SKIPPED.
+## {items: [When per queue item], first: [the year the item's first unit is built, 0 if not within
+## the horizon], last: [the year the item is done, 0 if not within the horizon], years: years
+## until every item but the auto items is built, 0 when there is none, or -1 for never}. An auto
+## item that builds nothing this year is SKIPPED.
 static func estimate(state: GameState, content: ContentRegistry, planet_id: int) -> Dictionary:
 	var copy := state.copy() as GameState
 	var planet := copy.planet(planet_id)
-	var out := {"items": [], "years": -1}
+	var out := {"items": [], "first": [], "last": [], "years": -1}
 	if planet == null or planet.owner < 0:
 		return out
 	var race := copy.player(planet.owner).race
@@ -25,9 +28,13 @@ static func estimate(state: GameState, content: ContentRegistry, planet_id: int)
 	var tracked: Array[QueueItem] = planet.queue.duplicate()
 	var start: Array[int] = []
 	var when: Array[When] = []
+	var first: Array[int] = []
+	var last: Array[int] = []
 	for q in tracked:
 		start.append(q.count)
 		when.append(When.NEVER)
+		first.append(0)
+		last.append(0)
 	var research: Array[int] = []
 	research.resize(copy.players.size())
 	research.fill(0)
@@ -47,10 +54,14 @@ static func estimate(state: GameState, content: ContentRegistry, planet_id: int)
 			before.append(q.count)
 		production.run_planet(planet, research)
 		for i in tracked.size():
-			if when[i] != When.NEVER:
-				continue
 			var q := tracked[i]
 			var gone := not planet.queue.has(q)
+			if first[i] == 0 and (gone or q.count < start[i]):
+				first[i] = year
+			if last[i] == 0 and gone:
+				last[i] = year
+			if when[i] != When.NEVER:
+				continue
 			if year == 1:
 				if gone:
 					when[i] = When.THIS_YEAR_ALL
@@ -67,10 +78,13 @@ static func estimate(state: GameState, content: ContentRegistry, planet_id: int)
 				out["years"] = year
 			break
 		PlanetEconomy.mine(planet, race, content, rng)
+		PlanetEconomy.grow(planet, race, content, true)
 	for i in when.size():
 		if auto[i] and when[i] != When.THIS_YEAR_ALL and when[i] != When.THIS_YEAR_SOME:
 			when[i] = When.SKIPPED
 		elif when[i] == When.NEVER and start[i] > tracked[i].count:
 			when[i] = When.LATER
 	out["items"] = when
+	out["first"] = first
+	out["last"] = last
 	return out

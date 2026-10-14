@@ -1,13 +1,14 @@
 class_name MineralGraph
 extends Control
 ## The Selection Summary's mineral graph (D15): per mineral, a black bar with the surface amount
-## as a light bar (and next year's mining as a darker piece after it) on a kT scale, and the
-## mineral concentration as a diamond (the bar's width is concentration 100; a + past the end
-## means more). The scale is marked in 500 kT steps below.
+## as a bar in the mineral's colour (and next year's mining as a lighter piece after it) on a kT
+## scale, and the mineral concentration as a diamond (the bar's width is concentration 100; a +
+## past the end means more). The scale is marked in 500 kT steps below.
 
 const LABELS := ["Ironium", "Boranium", "Germanium"]
-const SURFACE := Color("c0c0c0")
-const MINED := Color("808080")
+## How much lighter next year's mining is than the surface bar (a darker blue would vanish on the
+## black).
+const MINED_LIGHTEN := 0.5
 const DIAMOND := Color("a0a0a0")
 const BAR := Color.BLACK
 const GRID := Color("404040")
@@ -63,10 +64,13 @@ func _draw() -> void:
 		)
 		var surface: int = info["surface"][m]
 		var w_surface := width * float(surface) / scale
-		draw_rect(Rect2(left, top + 2, w_surface, ROW - 6), SURFACE)
+		var colour := Palette.cargo(m)
+		draw_rect(Rect2(left, top + 2, w_surface, ROW - 6), colour)
 		var w_mined := width * float(mined[m]) / scale
 		if w_mined > 0.0:
-			draw_rect(Rect2(left + w_surface, top + 2, w_mined, ROW - 6), MINED)
+			draw_rect(
+				Rect2(left + w_surface, top + 2, w_mined, ROW - 6), colour.lightened(MINED_LIGHTEN)
+			)
 		var conc: int = info["concentration"][m]
 		var cx := left + width * minf(conc / 100.0, 1.0)
 		var cy := top + (ROW - 2) / 2.0

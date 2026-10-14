@@ -53,6 +53,9 @@ const GRABBER_SIZE := Vector2i(11, 21)
 const TRACK_HEIGHT := 4
 ## Side of a dropdown's arrow button, in pixels.
 const DROPDOWN_BUTTON := 16
+## The title bar's height (the window frame's top border) and its close button.
+const TITLE_BAR := 22
+const CLOSE_BUTTON := Vector2i(16, 14)
 ## Side of a check box or radio button, in pixels.
 const CHECK_SIZE := 13
 
@@ -147,7 +150,13 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	t.set_stylebox("embedded_border", "Window", _window_frame())
 	t.set_stylebox("embedded_unfocused_border", "Window", _window_frame())
 	t.set_color("title_color", "Window", TEXT_SELECTED)
-	t.set_constant("title_height", "Window", 20)
+	t.set_constant("title_height", "Window", TITLE_BAR - 2)
+	# Godot places the close button's top left corner at (right - h offset, top - v offset) from
+	# the window's content; centre it in the title bar, two pixels in from the right edge
+	t.set_icon("close", "Window", _close_button(false))
+	t.set_icon("close_pressed", "Window", _close_button(true))
+	t.set_constant("close_h_offset", "Window", CLOSE_BUTTON.x)
+	t.set_constant("close_v_offset", "Window", (TITLE_BAR + CLOSE_BUTTON.y) / 2)
 	t.set_stylebox("panel", "AcceptDialog", flat)
 	for type in ["HSplitContainer", "VSplitContainer"]:
 		t.set_constant("separation", type, 4)
@@ -314,6 +323,17 @@ static func _dropdown_arrow() -> ImageTexture:
 	return ImageTexture.create_from_image(img)
 
 
+## The title bar's close button: a small raised (or, pressed, sunken) button with an X.
+static func _close_button(pressed: bool) -> ImageTexture:
+	var img := _bevel_image(CLOSE_BUTTON.x, CLOSE_BUTTON.y, not pressed, FACE)
+	var shift := 1 if pressed else 0
+	for i in 6:
+		for dx in 2:
+			img.set_pixel(4 + i + dx + shift, 3 + i + shift, DARK)
+			img.set_pixel(10 - i + dx + shift, 3 + i + shift, DARK)
+	return ImageTexture.create_from_image(img)
+
+
 ## A w × h image of a two-pixel bevel: raised (light top left, dark bottom right) or sunken.
 static func _bevel_image(w: int, h: int, raised: bool, face: Color) -> Image:
 	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
@@ -347,10 +367,10 @@ static func _window_frame() -> StyleBoxFlat:
 	s.bg_color = FACE
 	s.border_color = SHADOW
 	s.set_border_width_all(2)
-	s.border_width_top = 22
+	s.border_width_top = TITLE_BAR
 	s.border_color = NAVY
 	s.expand_margin_left = 2
 	s.expand_margin_right = 2
 	s.expand_margin_bottom = 2
-	s.expand_margin_top = 22
+	s.expand_margin_top = TITLE_BAR
 	return s
