@@ -25,6 +25,11 @@ var extra_colonists: int = 0
 var mines: int = 0
 var factories: int = 0
 var defenses: int = 0
+## What other players see of an owned planet (S15 "Estimates"): its population in units of 400
+## colonists (0..4090; 0 when it has none or its owner hides it), and how well its defenses cover
+## it, 1..15 (0 without defenses).
+var population_estimate: int = 0
+var defense_estimate: int = 0
 var homeworld: bool = false
 ## A planetary scanner has been built (S15).
 var has_scanner: bool = false
@@ -64,6 +69,8 @@ func _schema() -> Array:
 		["mines", Kind.INT],
 		["factories", Kind.INT],
 		["defenses", Kind.INT],
+		["population_estimate", Kind.INT],
+		["defense_estimate", Kind.INT],
 		["homeworld", Kind.BOOL],
 		["has_scanner", Kind.BOOL],
 		["starbase", Kind.OBJECT_OR_NULL, Starbase],

@@ -603,6 +603,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      5,
@@ -627,6 +628,7 @@
     "name": "Planet 0",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -650,6 +652,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      3,
@@ -674,6 +677,7 @@
     "name": "Planet 1",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -697,6 +701,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      80,
@@ -721,6 +726,7 @@
     "name": "Planet 2",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -744,6 +750,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      61,
@@ -768,6 +775,7 @@
     "name": "Planet 3",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -791,6 +799,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      31,
@@ -815,6 +824,7 @@
     "name": "Planet 4",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -838,6 +848,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      16,
@@ -862,6 +873,7 @@
     "name": "Planet 5",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -885,6 +897,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      41,
@@ -909,6 +922,7 @@
     "name": "Planet 6",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -932,6 +946,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      77,
@@ -956,6 +971,7 @@
     "name": "Planet 7",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -979,6 +995,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -1003,6 +1020,7 @@
     "name": "Planet 8",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1026,6 +1044,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      9,
@@ -1050,6 +1069,7 @@
     "name": "Planet 9",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1073,6 +1093,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      7,
@@ -1097,6 +1118,7 @@
     "name": "Planet 10",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1120,6 +1142,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -1144,6 +1167,7 @@
     "name": "Planet 11",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1167,6 +1191,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      66,
@@ -1191,6 +1216,7 @@
     "name": "Planet 12",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1214,6 +1240,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      35,
@@ -1238,6 +1265,7 @@
     "name": "Planet 13",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1261,6 +1289,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -1285,6 +1314,7 @@
     "name": "Planet 14",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1308,6 +1338,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -1332,6 +1363,7 @@
     "name": "Planet 15",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1355,6 +1387,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -1379,6 +1412,7 @@
     "name": "Planet 16",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1402,6 +1436,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -1426,6 +1461,7 @@
     "name": "Planet 17",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1449,6 +1485,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      94,
@@ -1473,6 +1510,7 @@
     "name": "Planet 18",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1496,6 +1534,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      75,
@@ -1520,6 +1559,7 @@
     "name": "Planet 19",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1543,6 +1583,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -1567,6 +1608,7 @@
     "name": "Planet 20",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1590,6 +1632,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      6,
@@ -1614,6 +1657,7 @@
     "name": "Planet 21",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1637,6 +1681,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -1661,6 +1706,7 @@
     "name": "Planet 22",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1684,6 +1730,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      6,
@@ -1708,6 +1755,7 @@
     "name": "Planet 23",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1731,6 +1779,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -1755,6 +1804,7 @@
     "name": "Planet 24",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1778,6 +1828,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      30,
@@ -1802,6 +1853,7 @@
     "name": "Planet 25",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1825,6 +1877,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -1849,6 +1902,7 @@
     "name": "Planet 26",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1872,6 +1926,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -1896,6 +1951,7 @@
     "name": "Planet 27",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1919,6 +1975,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      88,
@@ -1943,6 +2000,7 @@
     "name": "Planet 28",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -1966,6 +2024,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      78,
@@ -1990,6 +2049,7 @@
     "name": "Planet 29",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2013,6 +2073,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -2037,6 +2098,7 @@
     "name": "Planet 30",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2060,6 +2122,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -2084,6 +2147,7 @@
     "name": "Planet 31",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2107,6 +2171,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      93,
@@ -2131,6 +2196,7 @@
     "name": "Planet 32",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2154,6 +2220,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      77,
@@ -2178,6 +2245,7 @@
     "name": "Planet 33",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2201,6 +2269,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -2225,6 +2294,7 @@
     "name": "Planet 34",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2248,6 +2318,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      37,
@@ -2272,6 +2343,7 @@
     "name": "Planet 35",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2295,6 +2367,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      64,
@@ -2319,6 +2392,7 @@
     "name": "Planet 36",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2342,6 +2416,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      21,
@@ -2366,6 +2441,7 @@
     "name": "Planet 37",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2389,6 +2465,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -2413,6 +2490,7 @@
     "name": "Planet 38",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2436,6 +2514,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      60,
@@ -2460,6 +2539,7 @@
     "name": "Planet 39",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2483,6 +2563,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      25,
@@ -2507,6 +2588,7 @@
     "name": "Planet 40",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2530,6 +2612,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      21,
@@ -2554,6 +2637,7 @@
     "name": "Planet 41",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2577,6 +2661,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      91,
@@ -2601,6 +2686,7 @@
     "name": "Planet 42",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2624,6 +2710,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      12,
@@ -2648,6 +2735,7 @@
     "name": "Planet 43",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2671,6 +2759,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      82,
@@ -2695,6 +2784,7 @@
     "name": "Planet 44",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2718,6 +2808,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      64,
@@ -2742,6 +2833,7 @@
     "name": "Planet 45",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2765,6 +2857,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -2789,6 +2882,7 @@
     "name": "Planet 46",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2812,6 +2906,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      12,
@@ -2836,6 +2931,7 @@
     "name": "Planet 47",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2859,6 +2955,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      40,
@@ -2883,6 +2980,7 @@
     "name": "Planet 48",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2906,6 +3004,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      46,
@@ -2930,6 +3029,7 @@
     "name": "Planet 49",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -2953,6 +3053,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      45,
@@ -2977,6 +3078,7 @@
     "name": "Planet 50",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3000,6 +3102,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      83,
@@ -3024,6 +3127,7 @@
     "name": "Planet 51",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3047,6 +3151,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      37,
@@ -3071,6 +3176,7 @@
     "name": "Planet 52",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3094,6 +3200,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      76,
@@ -3118,6 +3225,7 @@
     "name": "Planet 53",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3141,6 +3249,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      56,
@@ -3165,6 +3274,7 @@
     "name": "Planet 54",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3188,6 +3298,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -3212,6 +3323,7 @@
     "name": "Planet 55",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3235,6 +3347,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -3259,6 +3372,7 @@
     "name": "Planet 56",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3282,6 +3396,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      79,
@@ -3306,6 +3421,7 @@
     "name": "Planet 57",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3329,6 +3445,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      51,
@@ -3353,6 +3470,7 @@
     "name": "Planet 58",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3376,6 +3494,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      41,
@@ -3400,6 +3519,7 @@
     "name": "Planet 59",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3423,6 +3543,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      64,
@@ -3447,6 +3568,7 @@
     "name": "Planet 60",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3470,6 +3592,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      31,
@@ -3494,6 +3617,7 @@
     "name": "Planet 61",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3517,6 +3641,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      45,
@@ -3541,6 +3666,7 @@
     "name": "Planet 62",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3564,6 +3690,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      36,
@@ -3588,6 +3715,7 @@
     "name": "Planet 63",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3611,6 +3739,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -3635,6 +3764,7 @@
     "name": "Planet 64",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3658,6 +3788,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      20,
@@ -3682,6 +3813,7 @@
     "name": "Planet 65",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3705,6 +3837,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      66,
@@ -3729,6 +3862,7 @@
     "name": "Planet 66",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3752,6 +3886,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -3776,6 +3911,7 @@
     "name": "Planet 67",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3799,6 +3935,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -3823,6 +3960,7 @@
     "name": "Planet 68",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3846,6 +3984,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      9,
@@ -3870,6 +4009,7 @@
     "name": "Planet 69",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3893,6 +4033,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      53,
@@ -3917,6 +4058,7 @@
     "name": "Planet 70",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3940,6 +4082,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      52,
@@ -3964,6 +4107,7 @@
     "name": "Planet 71",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -3987,6 +4131,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -4011,6 +4156,7 @@
     "name": "Planet 72",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4034,6 +4180,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      10,
@@ -4058,6 +4205,7 @@
     "name": "Planet 73",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4081,6 +4229,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      56,
@@ -4105,6 +4254,7 @@
     "name": "Planet 74",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4128,6 +4278,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -4152,6 +4303,7 @@
     "name": "Planet 75",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4175,6 +4327,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      87,
@@ -4199,6 +4352,7 @@
     "name": "Planet 76",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4222,6 +4376,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      72,
@@ -4246,6 +4401,7 @@
     "name": "Planet 77",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4269,6 +4425,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      98,
@@ -4293,6 +4450,7 @@
     "name": "Planet 78",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4316,6 +4474,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      54,
@@ -4340,6 +4499,7 @@
     "name": "Planet 79",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4363,6 +4523,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -4387,6 +4548,7 @@
     "name": "Planet 80",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4410,6 +4572,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -4434,6 +4597,7 @@
     "name": "Planet 81",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4457,6 +4621,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      74,
@@ -4481,6 +4646,7 @@
     "name": "Planet 82",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4504,6 +4670,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -4528,6 +4695,7 @@
     "name": "Planet 83",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4551,6 +4719,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      43,
@@ -4575,6 +4744,7 @@
     "name": "Planet 84",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4598,6 +4768,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      30,
@@ -4622,6 +4793,7 @@
     "name": "Planet 85",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4645,6 +4817,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      14,
@@ -4669,6 +4842,7 @@
     "name": "Planet 86",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4692,6 +4866,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      50,
@@ -4716,6 +4891,7 @@
     "name": "Planet 87",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4739,6 +4915,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -4763,6 +4940,7 @@
     "name": "Planet 88",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4786,6 +4964,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -4810,6 +4989,7 @@
     "name": "Planet 89",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4833,6 +5013,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -4857,6 +5038,7 @@
     "name": "Planet 90",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4880,6 +5062,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      76,
@@ -4904,6 +5087,7 @@
     "name": "Planet 91",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4927,6 +5111,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      87,
@@ -4951,6 +5136,7 @@
     "name": "Planet 92",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -4974,6 +5160,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      14,
@@ -4998,6 +5185,7 @@
     "name": "Planet 93",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5021,6 +5209,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -5045,6 +5234,7 @@
     "name": "Planet 94",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5068,6 +5258,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      64,
@@ -5092,6 +5283,7 @@
     "name": "Planet 95",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5115,6 +5307,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      79,
@@ -5139,6 +5332,7 @@
     "name": "Planet 96",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5162,6 +5356,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -5186,6 +5381,7 @@
     "name": "Planet 97",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5209,6 +5405,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -5233,6 +5430,7 @@
     "name": "Planet 98",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5256,6 +5454,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      22,
@@ -5280,6 +5479,7 @@
     "name": "Planet 99",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5303,6 +5503,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      58,
@@ -5327,6 +5528,7 @@
     "name": "Planet 100",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5350,6 +5552,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      22,
@@ -5374,6 +5577,7 @@
     "name": "Planet 101",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5397,6 +5601,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      14,
@@ -5421,6 +5626,7 @@
     "name": "Planet 102",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5444,6 +5650,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      63,
@@ -5468,6 +5675,7 @@
     "name": "Planet 103",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5491,6 +5699,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      55,
@@ -5515,6 +5724,7 @@
     "name": "Planet 104",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5538,6 +5748,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      66,
@@ -5562,6 +5773,7 @@
     "name": "Planet 105",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5585,6 +5797,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -5609,6 +5822,7 @@
     "name": "Planet 106",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5632,6 +5846,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      87,
@@ -5656,6 +5871,7 @@
     "name": "Planet 107",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5679,6 +5895,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      30,
@@ -5703,6 +5920,7 @@
     "name": "Planet 108",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5726,6 +5944,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -5750,6 +5969,7 @@
     "name": "Planet 109",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5773,6 +5993,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      24,
@@ -5797,6 +6018,7 @@
     "name": "Planet 110",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5820,6 +6042,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 10,
     "environment": [
      50,
@@ -5844,6 +6067,7 @@
     "name": "Planet 111",
     "owner": 0,
     "population": 200,
+    "population_estimate": 50,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -5870,6 +6094,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      56,
@@ -5894,6 +6119,7 @@
     "name": "Planet 112",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5917,6 +6143,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -5941,6 +6168,7 @@
     "name": "Planet 113",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -5964,6 +6192,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -5988,6 +6217,7 @@
     "name": "Planet 114",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6011,6 +6241,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      10,
@@ -6035,6 +6266,7 @@
     "name": "Planet 115",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6058,6 +6290,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      59,
@@ -6082,6 +6315,7 @@
     "name": "Planet 116",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6105,6 +6339,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      17,
@@ -6129,6 +6364,7 @@
     "name": "Planet 117",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6152,6 +6388,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      5,
@@ -6176,6 +6413,7 @@
     "name": "Planet 118",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6199,6 +6437,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -6223,6 +6462,7 @@
     "name": "Planet 119",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6246,6 +6486,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -6270,6 +6511,7 @@
     "name": "Planet 120",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6293,6 +6535,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -6317,6 +6560,7 @@
     "name": "Planet 121",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6340,6 +6584,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      50,
@@ -6364,6 +6609,7 @@
     "name": "Planet 122",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6387,6 +6633,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -6411,6 +6658,7 @@
     "name": "Planet 123",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6434,6 +6682,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      21,
@@ -6458,6 +6707,7 @@
     "name": "Planet 124",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6481,6 +6731,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      80,
@@ -6505,6 +6756,7 @@
     "name": "Planet 125",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6528,6 +6780,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      30,
@@ -6552,6 +6805,7 @@
     "name": "Planet 126",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6575,6 +6829,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      55,
@@ -6599,6 +6854,7 @@
     "name": "Planet 127",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6622,6 +6878,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      65,
@@ -6646,6 +6903,7 @@
     "name": "Planet 128",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6669,6 +6927,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      40,
@@ -6693,6 +6952,7 @@
     "name": "Planet 129",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6716,6 +6976,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      61,
@@ -6740,6 +7001,7 @@
     "name": "Planet 130",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6763,6 +7025,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      60,
@@ -6787,6 +7050,7 @@
     "name": "Planet 131",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6810,6 +7074,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -6834,6 +7099,7 @@
     "name": "Planet 132",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6857,6 +7123,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      59,
@@ -6881,6 +7148,7 @@
     "name": "Planet 133",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6904,6 +7172,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      85,
@@ -6928,6 +7197,7 @@
     "name": "Planet 134",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6951,6 +7221,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      78,
@@ -6975,6 +7246,7 @@
     "name": "Planet 135",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -6998,6 +7270,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      32,
@@ -7022,6 +7295,7 @@
     "name": "Planet 136",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7045,6 +7319,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      43,
@@ -7069,6 +7344,7 @@
     "name": "Planet 137",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7092,6 +7368,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      17,
@@ -7116,6 +7393,7 @@
     "name": "Planet 138",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7139,6 +7417,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      91,
@@ -7163,6 +7442,7 @@
     "name": "Planet 139",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7186,6 +7466,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      65,
@@ -7210,6 +7491,7 @@
     "name": "Planet 140",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7233,6 +7515,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -7257,6 +7540,7 @@
     "name": "Planet 141",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7280,6 +7564,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      58,
@@ -7304,6 +7589,7 @@
     "name": "Planet 142",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7327,6 +7613,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      13,
@@ -7351,6 +7638,7 @@
     "name": "Planet 143",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7374,6 +7662,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      86,
@@ -7398,6 +7687,7 @@
     "name": "Planet 144",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7421,6 +7711,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      85,
@@ -7445,6 +7736,7 @@
     "name": "Planet 145",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7468,6 +7760,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      11,
@@ -7492,6 +7785,7 @@
     "name": "Planet 146",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7515,6 +7809,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -7539,6 +7834,7 @@
     "name": "Planet 147",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7562,6 +7858,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      72,
@@ -7586,6 +7883,7 @@
     "name": "Planet 148",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7609,6 +7907,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -7633,6 +7932,7 @@
     "name": "Planet 149",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7656,6 +7956,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      31,
@@ -7680,6 +7981,7 @@
     "name": "Planet 150",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7703,6 +8005,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      84,
@@ -7727,6 +8030,7 @@
     "name": "Planet 151",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7750,6 +8054,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -7774,6 +8079,7 @@
     "name": "Planet 152",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7797,6 +8103,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -7821,6 +8128,7 @@
     "name": "Planet 153",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7844,6 +8152,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -7868,6 +8177,7 @@
     "name": "Planet 154",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7891,6 +8201,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      22,
@@ -7915,6 +8226,7 @@
     "name": "Planet 155",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7938,6 +8250,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      72,
@@ -7962,6 +8275,7 @@
     "name": "Planet 156",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -7985,6 +8299,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      70,
@@ -8009,6 +8324,7 @@
     "name": "Planet 157",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8032,6 +8348,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      52,
@@ -8056,6 +8373,7 @@
     "name": "Planet 158",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8079,6 +8397,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      64,
@@ -8103,6 +8422,7 @@
     "name": "Planet 159",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8126,6 +8446,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      65,
@@ -8150,6 +8471,7 @@
     "name": "Planet 160",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8173,6 +8495,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      52,
@@ -8197,6 +8520,7 @@
     "name": "Planet 161",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8220,6 +8544,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -8244,6 +8569,7 @@
     "name": "Planet 162",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8267,6 +8593,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      10,
@@ -8291,6 +8618,7 @@
     "name": "Planet 163",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8314,6 +8642,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      95,
@@ -8338,6 +8667,7 @@
     "name": "Planet 164",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8361,6 +8691,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      37,
@@ -8385,6 +8716,7 @@
     "name": "Planet 165",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8408,6 +8740,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -8432,6 +8765,7 @@
     "name": "Planet 166",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8455,6 +8789,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -8479,6 +8814,7 @@
     "name": "Planet 167",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8502,6 +8838,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      3,
@@ -8526,6 +8863,7 @@
     "name": "Planet 168",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8549,6 +8887,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      24,
@@ -8573,6 +8912,7 @@
     "name": "Planet 169",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8596,6 +8936,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      81,
@@ -8620,6 +8961,7 @@
     "name": "Planet 170",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8643,6 +8985,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      41,
@@ -8667,6 +9010,7 @@
     "name": "Planet 171",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8690,6 +9034,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      49,
@@ -8714,6 +9059,7 @@
     "name": "Planet 172",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8737,6 +9083,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      81,
@@ -8761,6 +9108,7 @@
     "name": "Planet 173",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8784,6 +9132,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      15,
@@ -8808,6 +9157,7 @@
     "name": "Planet 174",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8831,6 +9181,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      73,
@@ -8855,6 +9206,7 @@
     "name": "Planet 175",
     "owner": 0,
     "population": 100,
+    "population_estimate": 25,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -8881,6 +9233,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      43,
@@ -8905,6 +9258,7 @@
     "name": "Planet 176",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8928,6 +9282,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      13,
@@ -8952,6 +9307,7 @@
     "name": "Planet 177",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -8975,6 +9331,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      96,
@@ -8999,6 +9356,7 @@
     "name": "Planet 178",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9022,6 +9380,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      83,
@@ -9046,6 +9405,7 @@
     "name": "Planet 179",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9069,6 +9429,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      84,
@@ -9093,6 +9454,7 @@
     "name": "Planet 180",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9116,6 +9478,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      16,
@@ -9140,6 +9503,7 @@
     "name": "Planet 181",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9163,6 +9527,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      50,
@@ -9187,6 +9552,7 @@
     "name": "Planet 182",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9210,6 +9576,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      79,
@@ -9234,6 +9601,7 @@
     "name": "Planet 183",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9257,6 +9625,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      91,
@@ -9281,6 +9650,7 @@
     "name": "Planet 184",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9304,6 +9674,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -9328,6 +9699,7 @@
     "name": "Planet 185",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9351,6 +9723,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -9375,6 +9748,7 @@
     "name": "Planet 186",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9398,6 +9772,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -9422,6 +9797,7 @@
     "name": "Planet 187",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9445,6 +9821,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -9469,6 +9846,7 @@
     "name": "Planet 188",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9492,6 +9870,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      18,
@@ -9516,6 +9895,7 @@
     "name": "Planet 189",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9539,6 +9919,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      89,
@@ -9563,6 +9944,7 @@
     "name": "Planet 190",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9586,6 +9968,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      77,
@@ -9610,6 +9993,7 @@
     "name": "Planet 191",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9633,6 +10017,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      26,
@@ -9657,6 +10042,7 @@
     "name": "Planet 192",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9680,6 +10066,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      24,
@@ -9704,6 +10091,7 @@
     "name": "Planet 193",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9727,6 +10115,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      87,
@@ -9751,6 +10140,7 @@
     "name": "Planet 194",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9774,6 +10164,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -9798,6 +10189,7 @@
     "name": "Planet 195",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9821,6 +10213,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      49,
@@ -9845,6 +10238,7 @@
     "name": "Planet 196",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9868,6 +10262,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      20,
@@ -9892,6 +10287,7 @@
     "name": "Planet 197",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9915,6 +10311,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      70,
@@ -9939,6 +10336,7 @@
     "name": "Planet 198",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -9962,6 +10360,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      67,
@@ -9986,6 +10385,7 @@
     "name": "Planet 199",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10009,6 +10409,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      19,
@@ -10033,6 +10434,7 @@
     "name": "Planet 200",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10056,6 +10458,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      22,
@@ -10080,6 +10483,7 @@
     "name": "Planet 201",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10103,6 +10507,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      19,
@@ -10127,6 +10532,7 @@
     "name": "Planet 202",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10150,6 +10556,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      13,
@@ -10174,6 +10581,7 @@
     "name": "Planet 203",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10197,6 +10605,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      82,
@@ -10221,6 +10630,7 @@
     "name": "Planet 204",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10244,6 +10654,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      31,
@@ -10268,6 +10679,7 @@
     "name": "Planet 205",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10291,6 +10703,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      77,
@@ -10315,6 +10728,7 @@
     "name": "Planet 206",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10338,6 +10752,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      76,
@@ -10362,6 +10777,7 @@
     "name": "Planet 207",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10385,6 +10801,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -10409,6 +10826,7 @@
     "name": "Planet 208",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10432,6 +10850,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -10456,6 +10875,7 @@
     "name": "Planet 209",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10479,6 +10899,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -10503,6 +10924,7 @@
     "name": "Planet 210",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10526,6 +10948,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      52,
@@ -10550,6 +10973,7 @@
     "name": "Planet 211",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10573,6 +10997,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      75,
@@ -10597,6 +11022,7 @@
     "name": "Planet 212",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10620,6 +11046,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -10644,6 +11071,7 @@
     "name": "Planet 213",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10667,6 +11095,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      18,
@@ -10691,6 +11120,7 @@
     "name": "Planet 214",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10714,6 +11144,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      14,
@@ -10738,6 +11169,7 @@
     "name": "Planet 215",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10761,6 +11193,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -10785,6 +11218,7 @@
     "name": "Planet 216",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10808,6 +11242,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      34,
@@ -10832,6 +11267,7 @@
     "name": "Planet 217",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10855,6 +11291,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      15,
@@ -10879,6 +11316,7 @@
     "name": "Planet 218",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10902,6 +11340,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 10,
     "environment": [
      50,
@@ -10926,6 +11365,7 @@
     "name": "Planet 219",
     "owner": 1,
     "population": 250,
+    "population_estimate": 62,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -10952,6 +11392,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      79,
@@ -10976,6 +11417,7 @@
     "name": "Planet 220",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -10999,6 +11441,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      72,
@@ -11023,6 +11466,7 @@
     "name": "Planet 221",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11046,6 +11490,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      56,
@@ -11070,6 +11515,7 @@
     "name": "Planet 222",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11093,6 +11539,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      8,
@@ -11117,6 +11564,7 @@
     "name": "Planet 223",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11140,6 +11588,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -11164,6 +11613,7 @@
     "name": "Planet 224",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11187,6 +11637,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      95,
@@ -11211,6 +11662,7 @@
     "name": "Planet 225",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11234,6 +11686,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      90,
@@ -11258,6 +11711,7 @@
     "name": "Planet 226",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11281,6 +11735,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      70,
@@ -11305,6 +11760,7 @@
     "name": "Planet 227",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11328,6 +11784,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      83,
@@ -11352,6 +11809,7 @@
     "name": "Planet 228",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11375,6 +11833,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      57,
@@ -11399,6 +11858,7 @@
     "name": "Planet 229",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11422,6 +11882,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      26,
@@ -11446,6 +11907,7 @@
     "name": "Planet 230",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11469,6 +11931,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      68,
@@ -11493,6 +11956,7 @@
     "name": "Planet 231",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11516,6 +11980,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      44,
@@ -11540,6 +12005,7 @@
     "name": "Planet 232",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11563,6 +12029,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -11587,6 +12054,7 @@
     "name": "Planet 233",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11610,6 +12078,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      84,
@@ -11634,6 +12103,7 @@
     "name": "Planet 234",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11657,6 +12127,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      17,
@@ -11681,6 +12152,7 @@
     "name": "Planet 235",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11704,6 +12176,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      51,
@@ -11728,6 +12201,7 @@
     "name": "Planet 236",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11751,6 +12225,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      66,
@@ -11775,6 +12250,7 @@
     "name": "Planet 237",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11798,6 +12274,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -11822,6 +12299,7 @@
     "name": "Planet 238",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11845,6 +12323,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -11869,6 +12348,7 @@
     "name": "Planet 239",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11892,6 +12372,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      41,
@@ -11916,6 +12397,7 @@
     "name": "Planet 240",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11939,6 +12421,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -11963,6 +12446,7 @@
     "name": "Planet 241",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -11986,6 +12470,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -12010,6 +12495,7 @@
     "name": "Planet 242",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12033,6 +12519,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -12057,6 +12544,7 @@
     "name": "Planet 243",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12080,6 +12568,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      91,
@@ -12104,6 +12593,7 @@
     "name": "Planet 244",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12127,6 +12617,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -12151,6 +12642,7 @@
     "name": "Planet 245",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12174,6 +12666,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      16,
@@ -12198,6 +12691,7 @@
     "name": "Planet 246",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12221,6 +12715,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      68,
@@ -12245,6 +12740,7 @@
     "name": "Planet 247",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12268,6 +12764,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      43,
@@ -12292,6 +12789,7 @@
     "name": "Planet 248",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12315,6 +12813,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      78,
@@ -12339,6 +12838,7 @@
     "name": "Planet 249",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12362,6 +12862,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      96,
@@ -12386,6 +12887,7 @@
     "name": "Planet 250",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12409,6 +12911,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -12433,6 +12936,7 @@
     "name": "Planet 251",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12456,6 +12960,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -12480,6 +12985,7 @@
     "name": "Planet 252",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12503,6 +13009,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      42,
@@ -12527,6 +13034,7 @@
     "name": "Planet 253",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12550,6 +13058,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      58,
@@ -12574,6 +13083,7 @@
     "name": "Planet 254",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12597,6 +13107,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      33,
@@ -12621,6 +13132,7 @@
     "name": "Planet 255",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12644,6 +13156,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      78,
@@ -12668,6 +13181,7 @@
     "name": "Planet 256",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12691,6 +13205,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      3,
@@ -12715,6 +13230,7 @@
     "name": "Planet 257",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12738,6 +13254,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -12762,6 +13279,7 @@
     "name": "Planet 258",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12785,6 +13303,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      63,
@@ -12809,6 +13328,7 @@
     "name": "Planet 259",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12832,6 +13352,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      66,
@@ -12856,6 +13377,7 @@
     "name": "Planet 260",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12879,6 +13401,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      92,
@@ -12903,6 +13426,7 @@
     "name": "Planet 261",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12926,6 +13450,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      58,
@@ -12950,6 +13475,7 @@
     "name": "Planet 262",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -12973,6 +13499,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -12997,6 +13524,7 @@
     "name": "Planet 263",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13020,6 +13548,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      85,
@@ -13044,6 +13573,7 @@
     "name": "Planet 264",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13067,6 +13597,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 10,
     "environment": [
      35,
@@ -13091,6 +13622,7 @@
     "name": "Planet 265",
     "owner": 2,
     "population": 175,
+    "population_estimate": 43,
     "queue": [],
     "route": -1,
     "starbase": {
@@ -13117,6 +13649,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      35,
@@ -13141,6 +13674,7 @@
     "name": "Planet 266",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13164,6 +13698,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -13188,6 +13723,7 @@
     "name": "Planet 267",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13211,6 +13747,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      29,
@@ -13235,6 +13772,7 @@
     "name": "Planet 268",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13258,6 +13796,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -13282,6 +13821,7 @@
     "name": "Planet 269",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13305,6 +13845,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      85,
@@ -13329,6 +13870,7 @@
     "name": "Planet 270",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13352,6 +13894,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      48,
@@ -13376,6 +13919,7 @@
     "name": "Planet 271",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13399,6 +13943,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      36,
@@ -13423,6 +13968,7 @@
     "name": "Planet 272",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13446,6 +13992,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      56,
@@ -13470,6 +14017,7 @@
     "name": "Planet 273",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13493,6 +14041,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      18,
@@ -13517,6 +14066,7 @@
     "name": "Planet 274",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13540,6 +14090,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -13564,6 +14115,7 @@
     "name": "Planet 275",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13587,6 +14139,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      12,
@@ -13611,6 +14164,7 @@
     "name": "Planet 276",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13634,6 +14188,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      85,
@@ -13658,6 +14213,7 @@
     "name": "Planet 277",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13681,6 +14237,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -13705,6 +14262,7 @@
     "name": "Planet 278",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13728,6 +14286,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -13752,6 +14311,7 @@
     "name": "Planet 279",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13775,6 +14335,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -13799,6 +14360,7 @@
     "name": "Planet 280",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13822,6 +14384,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      43,
@@ -13846,6 +14409,7 @@
     "name": "Planet 281",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13869,6 +14433,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -13893,6 +14458,7 @@
     "name": "Planet 282",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13916,6 +14482,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      75,
@@ -13940,6 +14507,7 @@
     "name": "Planet 283",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -13963,6 +14531,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      74,
@@ -13987,6 +14556,7 @@
     "name": "Planet 284",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14010,6 +14580,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      28,
@@ -14034,6 +14605,7 @@
     "name": "Planet 285",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14057,6 +14629,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -14081,6 +14654,7 @@
     "name": "Planet 286",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14104,6 +14678,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      45,
@@ -14128,6 +14703,7 @@
     "name": "Planet 287",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14151,6 +14727,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      88,
@@ -14175,6 +14752,7 @@
     "name": "Planet 288",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14198,6 +14776,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      95,
@@ -14222,6 +14801,7 @@
     "name": "Planet 289",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14245,6 +14825,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      89,
@@ -14269,6 +14850,7 @@
     "name": "Planet 290",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14292,6 +14874,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -14316,6 +14899,7 @@
     "name": "Planet 291",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14339,6 +14923,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      34,
@@ -14363,6 +14948,7 @@
     "name": "Planet 292",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14386,6 +14972,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      68,
@@ -14410,6 +14997,7 @@
     "name": "Planet 293",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14433,6 +15021,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -14457,6 +15046,7 @@
     "name": "Planet 294",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14480,6 +15070,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      53,
@@ -14504,6 +15095,7 @@
     "name": "Planet 295",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14527,6 +15119,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      65,
@@ -14551,6 +15144,7 @@
     "name": "Planet 296",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14574,6 +15168,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      97,
@@ -14598,6 +15193,7 @@
     "name": "Planet 297",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14621,6 +15217,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -14645,6 +15242,7 @@
     "name": "Planet 298",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14668,6 +15266,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      35,
@@ -14692,6 +15291,7 @@
     "name": "Planet 299",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14715,6 +15315,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      27,
@@ -14739,6 +15340,7 @@
     "name": "Planet 300",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14762,6 +15364,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      15,
@@ -14786,6 +15389,7 @@
     "name": "Planet 301",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14809,6 +15413,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      57,
@@ -14833,6 +15438,7 @@
     "name": "Planet 302",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14856,6 +15462,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      6,
@@ -14880,6 +15487,7 @@
     "name": "Planet 303",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14903,6 +15511,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      49,
@@ -14927,6 +15536,7 @@
     "name": "Planet 304",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14950,6 +15560,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      18,
@@ -14974,6 +15585,7 @@
     "name": "Planet 305",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -14997,6 +15609,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      29,
@@ -15021,6 +15634,7 @@
     "name": "Planet 306",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15044,6 +15658,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      40,
@@ -15068,6 +15683,7 @@
     "name": "Planet 307",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15091,6 +15707,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      15,
@@ -15115,6 +15732,7 @@
     "name": "Planet 308",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15138,6 +15756,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      13,
@@ -15162,6 +15781,7 @@
     "name": "Planet 309",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15185,6 +15805,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      89,
@@ -15209,6 +15830,7 @@
     "name": "Planet 310",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15232,6 +15854,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      34,
@@ -15256,6 +15879,7 @@
     "name": "Planet 311",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15279,6 +15903,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      84,
@@ -15303,6 +15928,7 @@
     "name": "Planet 312",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15326,6 +15952,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      62,
@@ -15350,6 +15977,7 @@
     "name": "Planet 313",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15373,6 +16001,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      45,
@@ -15397,6 +16026,7 @@
     "name": "Planet 314",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15420,6 +16050,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      63,
@@ -15444,6 +16075,7 @@
     "name": "Planet 315",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15467,6 +16099,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      53,
@@ -15491,6 +16124,7 @@
     "name": "Planet 316",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15514,6 +16148,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      23,
@@ -15538,6 +16173,7 @@
     "name": "Planet 317",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15561,6 +16197,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      5,
@@ -15585,6 +16222,7 @@
     "name": "Planet 318",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15608,6 +16246,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      91,
@@ -15632,6 +16271,7 @@
     "name": "Planet 319",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15655,6 +16295,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      39,
@@ -15679,6 +16320,7 @@
     "name": "Planet 320",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15702,6 +16344,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      70,
@@ -15726,6 +16369,7 @@
     "name": "Planet 321",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15749,6 +16393,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      52,
@@ -15773,6 +16418,7 @@
     "name": "Planet 322",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15796,6 +16442,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      47,
@@ -15820,6 +16467,7 @@
     "name": "Planet 323",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15843,6 +16491,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      11,
@@ -15867,6 +16516,7 @@
     "name": "Planet 324",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15890,6 +16540,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      55,
@@ -15914,6 +16565,7 @@
     "name": "Planet 325",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15937,6 +16589,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      71,
@@ -15961,6 +16614,7 @@
     "name": "Planet 326",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -15984,6 +16638,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      9,
@@ -16008,6 +16663,7 @@
     "name": "Planet 327",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16031,6 +16687,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      36,
@@ -16055,6 +16712,7 @@
     "name": "Planet 328",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16078,6 +16736,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      6,
@@ -16102,6 +16761,7 @@
     "name": "Planet 329",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16125,6 +16785,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      83,
@@ -16149,6 +16810,7 @@
     "name": "Planet 330",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16172,6 +16834,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      74,
@@ -16196,6 +16859,7 @@
     "name": "Planet 331",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16219,6 +16883,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      29,
@@ -16243,6 +16908,7 @@
     "name": "Planet 332",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16266,6 +16932,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      79,
@@ -16290,6 +16957,7 @@
     "name": "Planet 333",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16313,6 +16981,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      98,
@@ -16337,6 +17006,7 @@
     "name": "Planet 334",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16360,6 +17030,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      21,
@@ -16384,6 +17055,7 @@
     "name": "Planet 335",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16407,6 +17079,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      10,
@@ -16431,6 +17104,7 @@
     "name": "Planet 336",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16454,6 +17128,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      12,
@@ -16478,6 +17153,7 @@
     "name": "Planet 337",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16501,6 +17177,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      60,
@@ -16525,6 +17202,7 @@
     "name": "Planet 338",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16548,6 +17226,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      68,
@@ -16572,6 +17251,7 @@
     "name": "Planet 339",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16595,6 +17275,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      83,
@@ -16619,6 +17300,7 @@
     "name": "Planet 340",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16642,6 +17324,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      46,
@@ -16666,6 +17349,7 @@
     "name": "Planet 341",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16689,6 +17373,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      67,
@@ -16713,6 +17398,7 @@
     "name": "Planet 342",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16736,6 +17422,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      90,
@@ -16760,6 +17447,7 @@
     "name": "Planet 343",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16783,6 +17471,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      73,
@@ -16807,6 +17496,7 @@
     "name": "Planet 344",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16830,6 +17520,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      67,
@@ -16854,6 +17545,7 @@
     "name": "Planet 345",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16877,6 +17569,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      38,
@@ -16901,6 +17594,7 @@
     "name": "Planet 346",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16924,6 +17618,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      57,
@@ -16948,6 +17643,7 @@
     "name": "Planet 347",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -16971,6 +17667,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      17,
@@ -16995,6 +17692,7 @@
     "name": "Planet 348",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17018,6 +17716,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      57,
@@ -17042,6 +17741,7 @@
     "name": "Planet 349",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17065,6 +17765,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      40,
@@ -17089,6 +17790,7 @@
     "name": "Planet 350",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17112,6 +17814,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      59,
@@ -17136,6 +17839,7 @@
     "name": "Planet 351",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17159,6 +17863,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      75,
@@ -17183,6 +17888,7 @@
     "name": "Planet 352",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17206,6 +17912,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      41,
@@ -17230,6 +17937,7 @@
     "name": "Planet 353",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17253,6 +17961,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      65,
@@ -17277,6 +17986,7 @@
     "name": "Planet 354",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17300,6 +18010,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      37,
@@ -17324,6 +18035,7 @@
     "name": "Planet 355",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17347,6 +18059,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      75,
@@ -17371,6 +18084,7 @@
     "name": "Planet 356",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17394,6 +18108,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      82,
@@ -17418,6 +18133,7 @@
     "name": "Planet 357",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17441,6 +18157,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      78,
@@ -17465,6 +18182,7 @@
     "name": "Planet 358",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,
@@ -17488,6 +18206,7 @@
      0,
      0
     ],
+    "defense_estimate": 0,
     "defenses": 0,
     "environment": [
      7,
@@ -17512,6 +18231,7 @@
     "name": "Planet 359",
     "owner": -1,
     "population": 0,
+    "population_estimate": 0,
     "queue": [],
     "route": -1,
     "starbase": null,

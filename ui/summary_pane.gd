@@ -103,14 +103,24 @@ func _show_planet() -> void:
 		_minerals.show_planet({})
 		return
 	_value.text = "Value: %d%%" % info["habitability"]
-	_report.text = "Report is current"
+	_report.text = _report_age(info["report_age"])
+	var about := "about " if info["population_estimated"] else ""
 	_population.text = (
-		"Population: %s" % CommandPane.thousands(info["population"] * 100)
+		"Population: %s%s" % [about, CommandPane.thousands(info["population"] * 100)]
 		if info["population"] > 0
 		else ""
 	)
 	_environment.show_planet(info)
 	_minerals.show_planet(info)
+
+
+## How old the planet report is: current, or so many years old (S15 "Planet history").
+static func _report_age(years: int) -> String:
+	if years <= 0:
+		return "Report is current"
+	if years == 1:
+		return "Report is 1 year old"
+	return "Report is %d years old" % years
 
 
 func _show_fleet() -> void:

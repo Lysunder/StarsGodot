@@ -161,3 +161,32 @@ func test_objects_here() -> void:
 		assert_int(here[i + 1]["id"]).is_equal(orbiting[i].number)
 		assert_str(here[i + 1]["name"]).is_equal(view.fleet_name(orbiting[i]))
 	assert_array(view.objects_here(-500, -500, 10.0)).is_empty()
+
+
+## Other planets as the player last saw them (S15 "Planet history"): one planet scanned this turn,
+## the others never seen.
+func test_other_planets_come_from_the_players_records() -> void:
+	var s := _new_game()
+	var view := PlayerView.new(s, _content, 0)
+	var others := s.planets.filter(func(pl: Planet) -> bool: return pl.owner != 0)
+	var scanned: int = others[0].id
+	var unseen: int = others[1].id
+	s.views[0]["planets"][str(scanned)] = 3
+	PlanetHistory.note(s, 0)
+	var info := view.planet_info(scanned)
+	assert_bool(info["known"]).is_true()
+	assert_int(info["report_age"]).is_equal(0)
+	assert_bool(info["population_estimated"]).is_true()
+	assert_bool(info["surface_known"]).is_false()
+	assert_array(info["environment"]).is_equal(Array(s.planet(scanned).environment))
+	# a year later, without a new sighting, the report is a year old and keeps the old values
+	s.turn += 1
+	s.planet(scanned).environment[0] += 1
+	info = view.planet_info(scanned)
+	assert_int(info["report_age"]).is_equal(1)
+	assert_int(info["environment"][0]).is_equal(s.planet(scanned).environment[0] - 1)
+	var never := view.planet_info(unseen)
+	assert_bool(never["known"]).is_false()
+	assert_int(never["report_age"]).is_equal(-1)
+	view.reveal_all = true
+	assert_bool(view.planet_info(unseen)["known"]).is_true()

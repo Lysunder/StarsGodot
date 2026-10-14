@@ -24,10 +24,12 @@ const GAMES := {
 ## The race file of the race wizard's "Random" preset uses this logo.
 const RANDOM_PRESET_LOGO := 31
 
-## Everything except names (the fixtures have neutral ones) and the random streams (a fixture
-## holds the state at the start of the next turn's generation, S01).
+## Everything except names (the fixtures have neutral ones), the random streams (a fixture
+## holds the state at the start of the next turn's generation, S01) and the players' planet
+## history (kept in the players' history files, which the fixtures don't have; S15).
 const IGNORE := [
 	"/rng",
+	"/players/*/knowledge*",
 	"/planets/*/name",
 	"/players/*/race/name",
 	"/players/*/race/plural_name",

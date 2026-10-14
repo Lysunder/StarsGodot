@@ -67,7 +67,8 @@ func _draw() -> void:
 			font_size,
 			Palette.cargo(m)
 		)
-		var surface: int = info["surface"][m]
+		# another player's planet seen without its surface this turn: concentrations only
+		var surface: int = info["surface"][m] if info.get("surface_known", true) else 0
 		var w_surface := width * float(surface) / scale
 		var colour := Palette.cargo(m)
 		draw_rect(Rect2(left, top + 2, w_surface, ROW - 6), colour)

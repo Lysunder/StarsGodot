@@ -249,6 +249,9 @@ func _draw_view(at: Vector2, pl: Dictionary) -> float:
 			return minf(r, 14.0)
 		View.SURFACE_MINERALS, View.CONCENTRATION:
 			var key := "surface" if view_mode == View.SURFACE_MINERALS else "concentration"
+			if key == "surface" and not info.get("surface_known", true):
+				draw_circle(at, 1.5, COLOR_UNOWNED)
+				return 1.5
 			var full := 5000.0 if view_mode == View.SURFACE_MINERALS else 100.0
 			for m in 3:
 				var h := clampf(info[key][m] / full, 0.0, 1.0) * MINERAL_BAR

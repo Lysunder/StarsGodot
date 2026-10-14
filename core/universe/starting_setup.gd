@@ -99,6 +99,9 @@ func _homeworld(p: Player) -> void:
 	hw.factories = HOMEWORLD_INSTALLATIONS
 	hw.defenses = HOMEWORLD_INSTALLATIONS
 	hw.population = _param(p, "start.population", _content.constant("constant.start.population"))
+	# what the others see (S15 "Estimates"): the starting population, before an expert computer
+	# player's bonus; an accelerated start takes it four times, whatever the growth rate
+	hw.population_estimate = PlanetEstimates.of_population(hw.population)
 	hw.surface.assign(_gen.template)
 	for k in 3:
 		hw.concentration[k] = maxi(_state.planets[0].concentration[k], MIN_HOMEWORLD_CONCENTRATION)
@@ -113,6 +116,7 @@ func _homeworld(p: Player) -> void:
 	if _gen.settings.accelerated_start:
 		var growth := p.race.growth_rate * _param(p, "race.growth_rate_pct", 100) / 100
 		hw.population = hw.population * ((growth + 5) * 2) / 10
+		hw.population_estimate = (hw.population_estimate & PlanetEstimates.ACCELERATED_MASK) << 2
 	_spend_leftover(p, hw, leftover)
 	if not setup.get("homeworld_installations", true):
 		hw.mines = 0
@@ -287,6 +291,8 @@ func _extra_planet(p: Player) -> Planet:
 		chosen.surface[k] = 100 + _rng.random(200)
 	chosen.has_scanner = true
 	hw.population = hw.population * 4 / 5
+	chosen.population_estimate = PlanetEstimates.of_population(chosen.population)
+	hw.population_estimate = PlanetEstimates.of_population(hw.population)
 	return chosen
 
 

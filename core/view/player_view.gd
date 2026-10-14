@@ -3,8 +3,11 @@ extends RefCounted
 ## What one player sees of a game (M11 UI): read-only summaries built from a state (normally the
 ## order preview) for the map and the panes. The UI reads only this and never the state.
 ##
-## Visibility (M8, S15) is not built yet: with `reveal_all` on, every planet's details are shown;
-## other players' fleets are never shown.
+## Other players' and unowned planets are shown as the player last saw them (its planet history,
+## S15): never seen, only their position; seen, their last known owner; scanned, their environment,
+## concentrations and the estimates of their population and defenses; surface minerals only when
+## seen at that detail this turn. `reveal_all` (debugging) shows every planet as it is. Other
+## players' fleets are not shown yet.
 
 const YEAR_ZERO := 2400
 const PICK_RADIUS := 6
@@ -12,7 +15,7 @@ const PICK_RADIUS := 6
 var state: GameState
 var content: ContentRegistry
 var player: int = 0
-var reveal_all: bool = true
+var reveal_all: bool = false
 ## The ship designer's queries (M11 step 5).
 var designer: DesignView
 
@@ -36,33 +39,60 @@ func universe_width() -> int:
 	return state.settings.universe_width
 
 
-## Every planet: id, name, position, owner (-1 none) and whether it is the player's.
+## Every planet: id, name, position, owner as the player knows it (-1 none or unknown), whether
+## it is the player's, its population (an estimate for others') and whether it has a starbase.
 func planets() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	for pl in state.planets:
-		(
-			out
-			. append(
-				{
-					"id": pl.id,
-					"name": pl.name,
-					"x": pl.x,
-					"y": pl.y,
-					"owner": pl.owner,
-					"mine": pl.owner == player,
-					"population": pl.population if (pl.owner == player or reveal_all) else 0,
-					"starbase": pl.starbase != null,
-				}
-			)
-		)
+		var row := {
+			"id": pl.id,
+			"name": pl.name,
+			"x": pl.x,
+			"y": pl.y,
+			"owner": pl.owner,
+			"mine": pl.owner == player,
+			"population": pl.population,
+			"starbase": pl.starbase != null,
+		}
+		if pl.owner != player and not reveal_all:
+			var r := record(pl.id)
+			row["owner"] = int(r.get("owner", -1))
+			row["population"] = _estimated_population(r)
+			row["starbase"] = int(r.get("starbase_design", -1)) >= 0
+		out.append(row)
 	return out
 
 
-## The details the planet pane shows; known=false when the player may not see them.
+## The player's record of a planet it doesn't own (S15 "Planet history"), {} when never seen.
+func record(id: int) -> Dictionary:
+	return me().knowledge.get(PlanetHistory.KEY, {}).get(str(id), {})
+
+
+## A record's population estimate in units of 100 colonists (0 when unknown or unowned).
+static func _estimated_population(r: Dictionary) -> int:
+	if int(r.get("owner", -1)) < 0:
+		return 0
+	return int(r.get("population_estimate", 0)) * 4
+
+
+## How much the player sees of a planet this turn (S15 detail level, 0 for not at all).
+func _seen_now(id: int) -> int:
+	var views: Array = state.views
+	if player >= views.size() or not views[player] is Dictionary:
+		return 0
+	return int(views[player].get("planets", {}).get(str(id), 0))
+
+
+## The details the planet pane shows; known=false when the player has never scanned it. For a
+## planet the player doesn't own they come from its record: `report_age` (years since it was seen,
+## -1 never), the population an estimate (`population_estimated`), and the surface minerals only
+## when seen at that detail this turn (`surface_known`).
 func planet_info(id: int) -> Dictionary:
 	var pl := state.planet(id)
+	if pl.owner != player and not reveal_all:
+		return _known_planet_info(pl)
 	var race := me().race
-	var known := pl.owner == player or reveal_all
+	var known := true
 	var info := {
 		"id": pl.id,
 		"name": pl.name,
@@ -72,9 +102,10 @@ func planet_info(id: int) -> Dictionary:
 		"mine": pl.owner == player,
 		"known": known,
 		"homeworld": pl.homeworld,
+		"report_age": 0,
+		"population_estimated": false,
+		"surface_known": true,
 	}
-	if not known:
-		return info
 	var owner_race := state.player(pl.owner).race if pl.owner >= 0 else race
 	(
 		info
@@ -89,7 +120,7 @@ func planet_info(id: int) -> Dictionary:
 				"concentration": pl.concentration.duplicate(),
 				"hab_low": race.hab_low.duplicate(),
 				"hab_high": race.hab_high.duplicate(),
-				"terraform_best": _terraform_best(pl),
+				"terraform_best": _terraform_best(pl.environment, pl.environment_original),
 			}
 		)
 	)
@@ -134,17 +165,69 @@ func planet_info(id: int) -> Dictionary:
 	return info
 
 
-## Per axis, how close to the viewer's ideal terraforming could bring the planet with the
-## viewer's tech (S10): its original value moved toward the centre by up to the reach.
-func _terraform_best(pl: Planet) -> Array[int]:
+## A planet the player doesn't own, from its record (and this turn's view for surface minerals).
+func _known_planet_info(pl: Planet) -> Dictionary:
+	var r := record(pl.id)
+	var info := {
+		"id": pl.id,
+		"name": pl.name,
+		"x": pl.x,
+		"y": pl.y,
+		"owner": int(r.get("owner", -1)),
+		"mine": false,
+		"known": int(r.get("detail", 0)) >= PlanetHistory.SCANNED,
+		"homeworld": bool(r.get("homeworld", false)),
+		"report_age": state.turn - int(r["turn"]) if r.has("turn") else -1,
+		"population_estimated": true,
+		"surface_known": false,
+	}
+	if not info["known"]:
+		return info
+	var race := me().race
+	var environment: Array[int] = []
+	environment.assign(r["environment"])
+	var original: Array[int] = []
+	original.assign(r["environment_original"])
+	var probe := Planet.new()
+	probe.environment.assign(environment)
+	var surface: Array[int] = [0, 0, 0]
+	var seen_surface := _seen_now(pl.id) >= Scanning.MINERALS
+	if seen_surface:
+		surface.assign(pl.surface)
+	(
+		info
+		. merge(
+			{
+				"environment": environment,
+				"environment_original": original,
+				"habitability": PlanetEconomy.hab_value(probe, race),
+				"max_population": PlanetEconomy.max_pop(probe, race, content),
+				"population": _estimated_population(r),
+				"surface": surface,
+				"surface_known": seen_surface,
+				"concentration": Array(r["concentration"]).duplicate(),
+				"hab_low": race.hab_low.duplicate(),
+				"hab_high": race.hab_high.duplicate(),
+				"terraform_best": _terraform_best(environment, original),
+				"defense_estimate": int(r.get("defense_estimate", 0)),
+				"starbase_design": int(r.get("starbase_design", -1)),
+			}
+		)
+	)
+	return info
+
+
+## Per axis, how close to the viewer's ideal terraforming could bring a planet with the viewer's
+## tech (S10): its original value moved toward the centre by up to the reach.
+func _terraform_best(environment: Array[int], original: Array[int]) -> Array[int]:
 	var race := me().race
 	var reach := Terraforming.reach(me(), content)
 	var out: Array[int] = []
 	for axis in 3:
-		var from := pl.environment_original[axis]
+		var from := original[axis]
 		var centre := race.hab_center[axis]
 		if centre < 0:
-			out.append(pl.environment[axis])
+			out.append(environment[axis])
 		elif from < centre:
 			out.append(mini(from + reach[axis], centre))
 		else:

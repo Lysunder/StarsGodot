@@ -1,6 +1,17 @@
 class_name TurnEndPhases
 extends RefCounted
-## Phases at the end of a turn (spec S02 23, 24, 26, 27).
+## Phases at the end of a turn (spec S02 22, 23, 24, 26, 27).
+
+
+## 22: the population and defense estimates other players see (S15 "Estimates").
+class Estimates:
+	extends Phase
+
+	func _init() -> void:
+		super("planets.estimates")
+
+	func run(ctx: TurnContext) -> void:
+		PlanetEstimates.update(ctx.state, ctx.content, ctx.rng())
 
 
 ## 23: the year advances.
@@ -43,7 +54,8 @@ class RandomSettings:
 
 ## 27: the original draws one value per file it writes, player files first, then the host
 ## file (S01). We make the same draws without writing those files. Writing each player's file
-## also runs that player's scanning, which records minefields and wormholes seen (S15).
+## also runs that player's scanning, which records minefields and wormholes seen (S15); what
+## each player saw then goes into its planet history (S15 "Planet history").
 class FileDraws:
 	extends Phase
 
@@ -62,3 +74,4 @@ class FileDraws:
 			ctx.rng().random(DRAW)
 		ctx.rng().random(DRAW)
 		Scanning.finish(ctx.state)
+		PlanetHistory.note_all(ctx.state)

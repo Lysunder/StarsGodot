@@ -188,7 +188,8 @@ Squared distances throughout; P = number of players.
 For each player in index order, on its homeworld:
 
 1. Owner = the player; a starbase of design slot 0; no artifact; homeworld; a planetary scanner.
-2. 10 mines, 10 factories, 10 defenses. Population 250 (25,000 colonists), or 175 with Low Starting Population.
+2. 10 mines, 10 factories, 10 defenses. Population 250 (25,000 colonists), or 175 with Low Starting Population. The population
+   estimate other players see is set from this population (S15 "Estimates").
 3. Surface minerals = the template (step 8). Concentrations = planet 0's, each at least 30.
 4. **Leftover points** L = min(advantage points, 50) (S06). A computer player always gets L = 50, and at level 3 or
    above also 10% more population (population + population div 10).
@@ -259,7 +260,8 @@ same design, without a new design. For each player in index order, by primary tr
    the last reroll reached 10.
 4. The player owns it, with a starbase of design 1, no artifact, 10 mines, 4 factories, a planetary scanner,
    population = homeworld population × 2 div 5, and surface minerals 100 + random(200) each. Then the homeworld's
-   population = homeworld population × 4 div 5.
+   population = homeworld population × 4 div 5. Both planets' population estimates are set from their new
+   populations (S15).
 5. Fleet of design 0 (no new design) at the extra planet.
 
 **Templates** (slot lists in hull slot order; "–" an empty slot):

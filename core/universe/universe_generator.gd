@@ -80,6 +80,7 @@ func generate() -> GameState:
 	StartingSetup.new(self, state).run()
 	_welcome(state)
 	Scanning.record_all(state, content, _rng)
+	PlanetHistory.note_all(state)
 	return state
 
 

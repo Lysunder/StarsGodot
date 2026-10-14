@@ -4,16 +4,21 @@ extends GdUnitTestSuite
 ## random streams are ignored (a fixture holds the state at the start of the next turn's
 ## generation, S01), ship design names (fixtures hold neutral names by slot, while a transferred
 ## design keeps the giver's name, S11), battle plan names (neutral names by number, while a
-## deleted plan's successors keep theirs, S11) and the score history (the original keeps it in
-## the players' history files, S20), plus what a game's phases not built yet would change
-## (GAME_IGNORE), or, for single turns, what a fixed bug changes (TURN_IGNORE, the S25 allowlist).
+## deleted plan's successors keep theirs, S11), the score history and the players' planet
+## history (the original keeps both in the players' history files, S20, S15), plus what a game's
+## phases not built yet would change (GAME_IGNORE), or, for single turns, what a fixed bug changes
+## (TURN_IGNORE, the S25 allowlist).
 ##
 ## The turns run in compat mode (D12): the test-only harness_compat mod puts back the original's
 ## behaviour for the few known bugs fixtures cannot avoid (B09), so everything around them is
 ## checked exactly.
 
 const IGNORE := [
-	"/rng", "/players/*/ship_designs*/name", "/players/*/battle_plans*/name", "/history*"
+	"/rng",
+	"/players/*/ship_designs*/name",
+	"/players/*/battle_plans*/name",
+	"/history*",
+	"/players/*/knowledge*",
 ]
 const GAME_IGNORE := {}
 ## Allowed divergences of single turns (the S25 allowlist): what a fixed bug changes.

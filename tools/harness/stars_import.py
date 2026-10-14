@@ -452,6 +452,8 @@ class Importer:
             "mines": 0,
             "factories": 0,
             "defenses": 0,
+            "population_estimate": 0,
+            "defense_estimate": 0,
             "homeworld": bool(flags & 0x80),
             "has_scanner": False,
             "starbase": None,
@@ -483,7 +485,11 @@ class Importer:
             else:
                 p["environment_original"] = list(p["environment"])
             if owner >= 0:
-                pos += 2  # estimates for other players' views
+                # what other players see of the population and defenses (S15)
+                estimates = struct.unpack_from("<H", d, pos)[0]
+                pos += 2
+                p["population_estimate"] = estimates & 0xFFF
+                p["defense_estimate"] = estimates >> 12
         if flags & 0x2000:
             codes = d[pos]
             pos += 1

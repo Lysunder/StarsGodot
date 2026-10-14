@@ -6,7 +6,8 @@ fleets and designs seen and at what detail, the players met, and the packets, wo
 including Inter-stellar Traveler stargate scanning and Space Demolition minefield scanning. Not yet: what battles show
 (M9), planets lost to invasion or bombing (S17, M9), and planet reports kept from earlier years. Writing each
 player's file also changes that player's orders: patrolling fleets pick targets, and waypoints aimed at what the player
-no longer sees lose their target ("Orders changed by sight").
+no longer sees lose their target ("Orders changed by sight"). 2026-10-14: the population and defense estimates
+other players see ("Estimates") and each player's planet history ("Planet history").
 References: `ComputeVisibility@1068:5872`, `Visibility_Reset@1068:58e4`, `Visibility_FleetScanners@1068:5d44`,
 `Visibility_PlanetScanners@1068:6340`, `Visibility_PacketScanners@1068:6bc0`, `Visibility_Designs@1068:71a4`,
 `Design_ScannerRange@1030:336a`, `Fleet_ScannerRanges@1030:31a2`, `Planet_ScannerRange@1030:302e`,
@@ -14,7 +15,8 @@ References: `ComputeVisibility@1068:5872`, `Visibility_Reset@1068:58e4`, `Visibi
 `Planet_MarkSeen@1068:51cc`, `Fleet_MarkSeen@1068:5028`, `WriteGameFile@1068:35b0`, `WritePlanetDataBlock@1068:4926`,
 `WriteFleetBlocks@1068:4c86`, `WriteBattleBlocks`, `Messages_MarkPlanetsSeen@1028:81b4`, `DoBombing@10e8:6e2a`,
 `Bombing_SumFleetBombs@1030:0d6a`, `Fleet_CheckMinefields@10a8:30b6`, `MoveSpaceObjects@10a8:0f6e`,
-`GenerateTurn@10a8:0000` (the per-design cache filled before the files are written).
+`GenerateTurn@10a8:0000` (the per-design cache filled before the files are written), `UpdatePlanetEstimates@10b0:31da`,
+`DecodePlanetBlock@1068:1f0c` (merging a turn file into the history), `WriteHistoryFile@1040:80da`.
 
 ## Summary
 
@@ -201,10 +203,49 @@ factor) is below 121; if that use is above 0 and the engine is not a Trans-Galac
 the warp two below uses none, else warp 7 or more by 3 when the warp three below uses none; then warp 10 becomes 9
 unless the engine is one of the warp-10-safe ones (tag `warp10_safe`). The fleet's default warp is the last value.
 
+### Estimates (S02 phase 22, `UpdatePlanetEstimates`)
+
+Other players never see an owned planet's population or defenses directly, only two estimates the host keeps on the
+planet: a **population estimate** in units of 400 colonists (0-4090) and a **defense class** (0-15). Each turn, before
+the year advances, every planet in planet order:
+
+1. No population (P = 0, units of 100 colonists): both estimates are 0.
+2. Otherwise the population estimate is 0 for a race with `estimate.hides_population` (Alternate Reality); for any
+   other race, with b = P div 4 taken as a 16-bit signed value (`random` of a negative bound draws and gives 0):
+   E = (P + random(b) − P div 8) div 4, then at least 1 and at most 4090.
+3. The defense class is 0 without defenses; otherwise, with U the share of a bombing the defenses let through (S17,
+   `Planet_DefenseCoverage`) and u = trunc(U × 100 + 0.5) (exact, as for bombing): (104 − u) div 6, at least 1 and
+   at most 15.
+
+At game creation (S07) the homeworld's population estimate is P div 4 of its starting population, taken before an
+expert computer player's extra tenth; with an accelerated start it is then multiplied by 4 (only the low 10 bits are
+kept first), whatever the growth rate. A player with an extra starting planet: each of the two planets gets P div 4 of
+its population after the split. Defense classes start at 0.
+
+### Planet history (the players' history files)
+
+Each player remembers every planet it has owned or seen, as the original's history file does (the client merges each
+turn file into it; the host does the same for computer players before they play, S22). After each turn's scanning
+(and at game creation, after the first scanning), for each planet the player owns (level 7) or has in its view this
+turn (level 1-4), in planet order, the planet's record is updated:
+
+- **Always:** the year index it was seen (the new turn), its owner, whether it is a homeworld, and its starbase design
+  (none when the planet has no starbase or the sighting is level 2, the starbase hidden).
+- **Detail:** the best ever seen, where levels 2-7 count as 3 (scanned): a record never drops back to 1.
+- **Scanned this turn (level 2 or more):** environment, original environment, mineral concentrations (with their
+  fractions), and, when the planet is owned, its population estimate and defense class. An unowned planet's sighting
+  leaves the estimates of the last owned sighting as they were (0 when there was none).
+- A level-1 sighting (a fleet without scanners in orbit) changes no values, only the "always" fields.
+
+Surface minerals are not kept: a level-4 sighting shows them in that turn's view only. Planets never seen have no
+record (their position is known from the universe file).
+
 ## Randomness
 
 `random(100)` once per cloaked fleet not yet seen inside a Space Demolition player's minefield, in player order, then
 minefield order, then fleet order, after the turn's other draws (the files are written last).
+
+Estimates: one `random(b)` per populated planet of a race that shows its population, in planet order (S02 phase 22).
 
 ## Edge cases
 
@@ -222,6 +263,10 @@ minefield order, then fleet order, after the turn's other draws (the files are w
   original's turn files.
 - big1 (80 turns, 6 computer players, 227 battles; views only: our scanning run on each converted host state): matches
   except planets lost to invasion or bombed out (S17).
+- Estimates: every golden turn (all fixture games) and every turn-0 fixture match the original's host files.
+- Planet history: building each player's records from big1's turn files (turns 0-79) gives exactly the original's
+  history files of players 1-5 (128 planets each: owner, detail, year, environment, concentrations, estimates,
+  starbase).
 
 ## Open questions
 
