@@ -142,3 +142,22 @@ func test_completion_text() -> void:
 	assert_str(ProductionDialog.completion_text(e, 3, false)).is_equal("Never")
 	e["items"][0] = ProductionEstimate.When.SKIPPED
 	assert_str(ProductionDialog.completion_text(e, 0, true)).is_equal("Skipped")
+
+
+## The map's right-click menu: the homeworld, then the fleets the game starts with there.
+func test_objects_here() -> void:
+	var s := _new_game()
+	var view := PlayerView.new(s, _content, 0)
+	var home := s.planet(s.player(0).homeworld)
+	var here := view.objects_here(home.x + 2, home.y + 1, 10.0)
+	assert_str(here[0]["kind"]).is_equal("planet")
+	assert_int(here[0]["id"]).is_equal(home.id)
+	var orbiting := s.fleets_of(0).filter(
+		func(f: Fleet) -> bool: return f.x == home.x and f.y == home.y
+	)
+	assert_int(here.size()).is_equal(1 + orbiting.size())
+	for i in orbiting.size():
+		assert_str(here[i + 1]["kind"]).is_equal("fleet")
+		assert_int(here[i + 1]["id"]).is_equal(orbiting[i].number)
+		assert_str(here[i + 1]["name"]).is_equal(view.fleet_name(orbiting[i]))
+	assert_array(view.objects_here(-500, -500, 10.0)).is_empty()

@@ -2,7 +2,9 @@ class_name GalaxyMap
 extends Control
 ## The galaxy map (M11 step 1): planets coloured by owner and sized by population, the player's
 ## fleets and the selected fleet's path. Wheel zooms, right or middle drag pans, a click selects
-## (clicking again cycles through objects at that spot). For the selected fleet: Shift+click adds a
+## (clicking again cycles through objects at that spot), and a right click (without dragging)
+## opens a menu of what is there: the planet, then the player's fleets at it, the selected one
+## checked; picking one selects it. For the selected fleet: Shift+click adds a
 ## waypoint after the selected one (at a planet, one of the player's other fleets, or in deep
 ## space); clicking a waypoint selects it and dragging moves it. While Shift is held over the map
 ## the cursor is a small crosshair.
@@ -45,6 +47,12 @@ var view_mode: View = View.NORMAL
 var show_names: bool = false
 
 var _dragging := false
+## Where the right button went down, and whether the mouse has since moved far enough to pan.
+var _right_from := Vector2.ZERO
+var _right_dragged := false
+var _object_menu: PopupMenu
+## The objects the right-click menu lists, by item id.
+var _menu_objects: Array[Dictionary] = []
 var _last_pick: Array[Dictionary] = []
 var _pick_index := 0
 ## The waypoint being dragged (-1: none), where the press started and where the mouse is.
@@ -61,6 +69,11 @@ func _ready() -> void:
 	GameSession.changed.connect(queue_redraw)
 	resized.connect(_fit)
 	Input.set_custom_mouse_cursor(_crosshair(), Input.CURSOR_CROSS, Vector2(CROSS_ARM, CROSS_ARM))
+	_object_menu = PopupMenu.new()
+	_object_menu.id_pressed.connect(
+		func(i: int) -> void: select(_menu_objects[i]["kind"], _menu_objects[i]["id"])
+	)
+	add_child(_object_menu)
 	_fit.call_deferred()
 
 
@@ -293,11 +306,17 @@ func _gui_input(event: InputEvent) -> void:
 					_add_waypoint(event.position)
 				else:
 					_press(event.position)
-			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE:
+			MOUSE_BUTTON_RIGHT:
+				_dragging = true
+				_right_from = event.position
+				_right_dragged = false
+			MOUSE_BUTTON_MIDDLE:
 				_dragging = true
 	elif event is InputEventMouseButton and not event.pressed:
 		if event.button_index in [MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
 			_dragging = false
+		if event.button_index == MOUSE_BUTTON_RIGHT and not _right_dragged:
+			_show_object_menu(event.position)
 		elif event.button_index == MOUSE_BUTTON_LEFT and _drag_waypoint > 0:
 			_release(event.position)
 	if event is InputEventMouseMotion:
@@ -305,6 +324,8 @@ func _gui_input(event: InputEvent) -> void:
 		var hits := GameSession.view.objects_at(u.x, u.y, PICK_PIXELS / zoom)
 		hovered.emit(int(round(u.x)), int(round(u.y)), hits[0] if not hits.is_empty() else {})
 	if event is InputEventMouseMotion and _dragging:
+		if event.position.distance_to(_right_from) > DRAG_PIXELS:
+			_right_dragged = true
 		offset += event.relative
 		queue_redraw()
 	elif event is InputEventMouseMotion and _drag_waypoint > 0:
@@ -332,6 +353,26 @@ func _pick(at: Vector2) -> void:
 		_pick_index = 0
 	var hit: Dictionary = hits[_pick_index]
 	select(hit["kind"], hit["id"])
+
+
+## The right-click menu: the planet and the player's fleets where the nearest object is (a
+## separator between the planet and the fleets), the current selection checked.
+func _show_object_menu(at: Vector2) -> void:
+	var u := to_universe(at)
+	_menu_objects = GameSession.view.objects_here(u.x, u.y, PICK_PIXELS / zoom)
+	if _menu_objects.is_empty():
+		return
+	_object_menu.clear()
+	for i in _menu_objects.size():
+		var o := _menu_objects[i]
+		if i > 0 and _menu_objects[i - 1]["kind"] != o["kind"]:
+			_object_menu.add_separator()
+		_object_menu.add_check_item(o["name"], i)
+		var here: bool = o["kind"] == selection_kind and o["id"] == selection_id
+		_object_menu.set_item_checked(_object_menu.get_item_index(i), here)
+	_object_menu.position = Vector2i(get_screen_transform() * at)
+	_object_menu.reset_size()
+	_object_menu.popup()
 
 
 ## A left press on one of the selected fleet's waypoints picks it (and may start a drag);

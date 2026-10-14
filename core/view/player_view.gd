@@ -412,6 +412,30 @@ func objects_at(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictio
 	return out
 
 
+## The map's right-click menu (as the original's scanner): what sits exactly where the object
+## nearest the point is, the planet first and then the player's fleets there in fleet order:
+## [{kind, id, name}]; empty when nothing is within `radius`.
+func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var hits := objects_at(x, y, radius)
+	if hits.is_empty():
+		return out
+	var spot := Vector2i.ZERO
+	if hits[0]["kind"] == "planet":
+		var pl := state.planet(hits[0]["id"])
+		spot = Vector2i(pl.x, pl.y)
+	else:
+		var f := state.fleet(player, hits[0]["id"])
+		spot = Vector2i(f.x, f.y)
+	for pl in state.planets:
+		if pl.x == spot.x and pl.y == spot.y:
+			out.append({"kind": "planet", "id": pl.id, "name": pl.name})
+	for f in fleets():
+		if f.x == spot.x and f.y == spot.y:
+			out.append({"kind": "fleet", "id": f.number, "name": fleet_name(f)})
+	return out
+
+
 ## Research settings and levels for the top bar and research dialog.
 func research_info() -> Dictionary:
 	var p := me()

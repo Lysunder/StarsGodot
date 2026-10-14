@@ -3,7 +3,8 @@ extends Control
 ## The Selection Summary's mineral graph (D15): per mineral, a black bar with the surface amount
 ## as a bar in the mineral's colour (and next year's mining as a lighter piece after it) on a kT
 ## scale, and the mineral concentration as a diamond (the bar's width is concentration 100; a +
-## past the end means more). The scale is marked in 500 kT steps below.
+## past the end means more). The scale is marked in 500 kT steps below, labelled every step or,
+## when the numbers would crowd, every 2, 4, 10, 20... steps.
 
 const LABELS := ["Ironium", "Boranium", "Germanium"]
 ## How much lighter next year's mining is than the surface bar (a darker blue would vanish on the
@@ -17,6 +18,10 @@ const RIGHT_PAD := 60
 const ROW := 16
 const STEP := 500
 const MIN_SCALE := 2500
+## Label every this many steps, the first that leaves room for the numbers.
+const LABEL_STEPS := [1, 2, 4, 10, 20, 40, 100, 200, 400]
+## Room between two scale numbers, in pixels.
+const LABEL_GAP := 8.0
 
 var info: Dictionary = {}
 
@@ -98,7 +103,8 @@ func _draw() -> void:
 		font_size,
 		ClassicTheme.TEXT
 	)
-	for kt in range(0, scale + 1, STEP):
+	var widest := plain.get_string_size(str(scale), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	for kt in range(0, scale + 1, STEP * label_steps(width * STEP / scale, widest + LABEL_GAP)):
 		var text := str(kt)
 		var tw := plain.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		var gx := left + width * kt / scale - tw / 2.0
@@ -111,3 +117,12 @@ func _draw() -> void:
 			font_size,
 			ClassicTheme.TEXT
 		)
+
+
+## How many steps apart the scale numbers go: the first of LABEL_STEPS whose spacing (`step_px`
+## pixels per step) is at least `room`.
+static func label_steps(step_px: float, room: float) -> int:
+	for n: int in LABEL_STEPS:
+		if step_px * n >= room:
+			return n
+	return LABEL_STEPS[-1]

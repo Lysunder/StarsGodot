@@ -135,6 +135,11 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	t.set_color("font_color", "PopupMenu", TEXT)
 	t.set_color("font_hover_color", "PopupMenu", TEXT_SELECTED)
 	t.set_color("font_disabled_color", "PopupMenu", TEXT_DISABLED)
+	# a menu's unchecked check items show nothing, as Windows menus do (only a check mark when on)
+	var blank := Image.create(CHECK_SIZE, CHECK_SIZE, false, Image.FORMAT_RGBA8)
+	blank.fill(Color(0, 0, 0, 0))
+	for icon in ["unchecked", "radio_unchecked"]:
+		t.set_icon(icon, "PopupMenu", ImageTexture.create_from_image(blank))
 	t.set_stylebox("normal", "MenuBar", none)
 	t.set_stylebox("hover", "MenuBar", navy)
 	t.set_stylebox("pressed", "MenuBar", navy)

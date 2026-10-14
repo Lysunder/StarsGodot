@@ -56,3 +56,12 @@ func test_key_bindings_default_change_and_steal() -> void:
 	assert_int(KeyBindings.key("reports")).is_equal(KEY_F3)
 	DirAccess.remove_absolute(KeyBindings.path)
 	KeyBindings.path = UiSettings.PATH
+
+
+## The mineral graph's scale numbers skip steps rather than overlap.
+func test_mineral_scale_labels_leave_room() -> void:
+	assert_int(MineralGraph.label_steps(40.0, 30.0)).is_equal(1)
+	assert_int(MineralGraph.label_steps(20.0, 30.0)).is_equal(2)
+	assert_int(MineralGraph.label_steps(10.0, 38.0)).is_equal(4)
+	assert_int(MineralGraph.label_steps(5.0, 38.0)).is_equal(10)
+	assert_int(MineralGraph.label_steps(0.01, 38.0)).is_equal(400)
