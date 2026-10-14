@@ -109,9 +109,14 @@ func set_order(order: Dictionary) -> String:
 	return add_order(order)
 
 
-## Generates the turn with the pending orders; returns the rejected orders' reasons.
+## Generates the turn with the pending orders and the computer players' (S22); returns the
+## rejected orders' reasons.
 func end_turn() -> PackedStringArray:
-	var sets: Array[OrderSet] = [orders]
+	var given: Array[OrderSet] = [orders]
+	var problems := PackedStringArray()
+	var sets := ComputerPlayers.add_orders(state, content, given, problems)
+	for problem in problems:
+		push_warning(problem)
 	var rejected := StandardTurn.generate(state, content, sets)
 	orders = OrderSet.new(PLAYER, state.turn)
 	dirty = true

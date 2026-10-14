@@ -353,6 +353,19 @@ const TYPES := {
 		},
 		"required": ["order", "primary_trait"],
 	},
+	# a computer player's personality (S22): the brain it runs, its parameters, and per difficulty
+	# level (ComputerPlayers.LEVELS) the parameters that level changes
+	"ai_personality":
+	{
+		"fields":
+		{
+			"order": _INT0,
+			"brain": {"t": "enum", "values": AiBrains.IDS},
+			"params": _INT_MAP,
+			"levels": {"t": "list", "of": _INT_MAP, "max": 4},
+		},
+		"required": ["order", "brain"],
+	},
 }
 
 

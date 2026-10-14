@@ -1,0 +1,44 @@
+[
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.robotoids",
+    "order": 0,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.turindrones",
+    "order": 1,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.automitrons",
+    "order": 2,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.rototills",
+    "order": 3,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.cybertrons",
+    "order": 4,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.macinti",
+    "order": 5,
+    "brain": "idle"
+  },
+  {
+    "type": "ai_personality",
+    "id": "ai_personality.inactive",
+    "order": 6,
+    "brain": "idle"
+  }
+]
