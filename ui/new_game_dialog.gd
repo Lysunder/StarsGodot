@@ -3,8 +3,10 @@ extends AcceptDialog
 ## New Game (D15, the original's arrangement): Difficulty Level and Universe Size as radio groups on
 ## the left, the race on the right with Customize Race and Advanced Game under it, and Begin
 ## Tutorial, OK and Cancel along the bottom. Advanced Game sets the density, the player positions,
-## the game options and the seed. Difficulty, race customizing and the tutorial wait for the AI,
-## the race wizard and the tutorial (M12, M11 steps 9 and 11).
+## the game options and the seed. The race list holds the presets and the player's own races
+## (RaceStore); Customize Race opens the race wizard on the chosen one, and the finished race is
+## saved and chosen. Difficulty and the tutorial wait for the AI and the tutorial (M12, M11 step
+## 11).
 
 signal game_chosen(options: NewGame.Options)
 
@@ -25,7 +27,9 @@ const FLAGS := [
 
 var _size_group := ButtonGroup.new()
 var _race: OptionButton
-var _race_ids: Array[String] = []
+## The races the list offers, in its order: the presets, then the player's own.
+var _races: Array[Race] = []
+var _wizard: RaceWizard
 var _advanced: AcceptDialog
 var _density_group := ButtonGroup.new()
 var _positions_group := ButtonGroup.new()
@@ -55,13 +59,12 @@ func _ready() -> void:
 	var right := VBoxContainer.new()
 	row.add_child(right)
 	_race = OptionButton.new()
-	_race_ids = RacePresets.ids(GameSession.content)
-	for id in _race_ids:
-		_race.add_item(GameSession.content.display_name(id))
 	right.add_child(_race)
-	var customize := _button(right, "Customize Race...", func() -> void: pass)
-	customize.disabled = true
-	customize.tooltip_text = "The race wizard comes later."
+	_fill_races("")
+	_button(right, "Customize Race...", func() -> void: _wizard.open(_races[_race.selected]))
+	_wizard = RaceWizard.new()
+	_wizard.race_finished.connect(_on_race_finished)
+	add_child(_wizard)
 	_button(right, "Advanced Game...", func() -> void: _advanced.popup_centered())
 	var bottom := HBoxContainer.new()
 	box.add_child(bottom)
@@ -74,6 +77,34 @@ func _ready() -> void:
 	_button(bottom, "OK", _on_ok)
 	_button(bottom, "Cancel", hide)
 	_build_advanced()
+
+
+## Fills the race list (presets, then the player's own races) and picks the player's race named
+## `pick`, else the first.
+func _fill_races(pick: String) -> void:
+	var content := GameSession.content
+	_race.clear()
+	_races.clear()
+	for id in RacePresets.ids(content):
+		_races.append(RacePresets.make(content, id))
+		_race.add_item(content.display_name(id))
+	var selected := 0
+	for r in RaceStore.races(content):
+		if r.name == pick:
+			selected = _races.size()
+		_races.append(r)
+		_race.add_item(r.name)
+	_race.select(selected)
+
+
+## The wizard's race: saved and chosen (a Random race is rolled when the game starts, so it is
+## only chosen).
+func _on_race_finished(race: Race) -> void:
+	if race.random:
+		_races[_race.selected] = race
+		return
+	RaceStore.save(race, GameSession.game_version)
+	_fill_races(race.name)
 
 
 func _build_advanced() -> void:
@@ -153,7 +184,7 @@ func _on_ok() -> void:
 	options.size = _picked(_size_group)
 	options.density = DENSITIES[_picked(_density_group)]
 	options.positions = POSITIONS[_picked(_positions_group)]
-	options.race = RacePresets.make(GameSession.content, _race_ids[_race.selected])
+	options.race = _races[_race.selected].copy() as Race
 	options.seed = int(_seed.value)
 	for i in FLAGS.size():
 		if _flags[i].button_pressed:

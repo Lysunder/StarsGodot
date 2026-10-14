@@ -245,6 +245,24 @@ mod's trait loads only with that mod enabled.
 left: default (the Humanoid values) 25, traveler (IT) 32, warrior (WM) 43, shadow (SS) 11, expander (HE) 9,
 demolisher (SD) 7, random 12 (see "Worked examples" for their values).
 
+## The race wizard
+
+Six steps (`RunRaceWizard@10d8:0000`): the names, a preset (or Random, or Custom) and the leftover-points choice;
+the primary trait; the lesser traits; habitability and growth; the economy; research costs. Every step shows the
+advantage points left. A race finishes only when it is a valid wizard race (above); a Random race skips the other
+steps. Display only, from `Environment_OnMouse@10d8:1806` and `Environment_Paint@10d8:11a8`:
+
+- **Moving a range** by s and widening each end by w (w < 0 narrows): low − w + s, high + w + s; above 100 the range
+  is pushed back down (low += 100 − high, high = 100); below 0 pushed back up (high = min(high − low, 100), low = 0);
+  narrower than 20 it grows evenly by (20 − width) >> 1 at each end. Shift makes a step 10. **Dragging** puts the
+  middle at the mouse, keeping half the width (width div 2), the range inside 0..100. The center is always
+  low + (high − low) div 2. Switching immunity off gives 20..80.
+- **"1 in N planets"**: c = 1; per axis, c ×= 100 when immune or the range is 0..100; radiation: c ×= high − low;
+  gravity and temperature: c = c × W div 9 with W the sum over the range's values v of v (v < 10), 100 − v (v > 89),
+  else 10. At least 1. N = (1,000,000 + c div 2) div c; c = 1,000,000 means every planet, N = 1 nearly every one.
+- **Economy step:** a race without factories (Alternate Reality) has the cheaper-factories box off; its first figure
+  is the divisor of its orbital resource formula.
+
 ## Part availability by trait
 
 Some parts and hulls are only available to (or never available to) certain traits. The content records this as
