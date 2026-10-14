@@ -95,6 +95,7 @@ files are read only by the dev harness (S23).
 | `starbase_designs` | 10 slots (limit `limits.starbase_designs`), each empty or a design |
 | `default_queue` | the production queue a newly colonized planet starts with: standard items only, at most 12, progress 0 (S09, S11) |
 | `default_leftover_to_research` | a new colony's "contribute only leftover resources to research" setting |
+| `production_templates` | the player's own production templates besides the default: up to 3 of {name, leftover_to_research, queue}; no effect on the game (S09 "Production templates") |
 | `trader_parts` | Mystery Trader parts and hulls obtained, sorted (S18; "ships" only from a computer player's planet trade) |
 | `knowledge` | what this player knows of other objects (S15), below |
 | `mod_data` | per mod |

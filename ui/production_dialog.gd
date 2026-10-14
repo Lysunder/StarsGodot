@@ -7,6 +7,9 @@ extends AcceptDialog
 ## resources to research", Prev, Next, OK and Cancel. Edits are kept here until OK (or Prev /
 ## Next, which keep them and move to another planet); then one `production_queue` and, if the
 ## box changed, one `planet_settings` order are sent. Shift adds or removes 10, Ctrl 100.
+## The diamond under the buttons lists the production templates: picking one replaces the queue's
+## auto-build items with the template's (after the other items) and sets the box from it;
+## "Customize..." opens the templates window (S09 "Production templates").
 
 const STEP_SHIFT := 10
 const STEP_CTRL := 100
@@ -28,6 +31,10 @@ var _cost_title: Label
 var _cost: Array[Label] = []
 var _leftover: CheckBox
 var _status: Label
+var _templates_menu: PopupMenu
+var _templates: ProductionTemplatesDialog
+## What each template menu item applies (index in the menu -> template), "Customize..." last.
+var _menu_templates: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -75,6 +82,13 @@ func _ready() -> void:
 		b.custom_minimum_size = Vector2(84, 0)
 		b.pressed.connect(spec[1])
 		middle.add_child(b)
+	var diamond := Button.new()
+	diamond.text = "◆"
+	diamond.tooltip_text = "Production templates"
+	diamond.add_theme_color_override("font_color", Color("0000c0"))
+	diamond.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
+	diamond.pressed.connect(func() -> void: _show_templates(diamond))
+	middle.add_child(diamond)
 	var right := VBoxContainer.new()
 	lists.add_child(right)
 	right.add_child(_label("Production Queue", true))
@@ -102,6 +116,11 @@ func _ready() -> void:
 		b.custom_minimum_size = Vector2(64, 0)
 		b.pressed.connect(spec[1])
 		bottom.add_child(b)
+	_templates_menu = PopupMenu.new()
+	_templates_menu.id_pressed.connect(_on_template)
+	add_child(_templates_menu)
+	_templates = ProductionTemplatesDialog.new()
+	add_child(_templates)
 	_status = Label.new()
 	_status.add_theme_color_override("font_color", Color("800000"))
 	box.add_child(_status)
@@ -313,6 +332,32 @@ func _commit() -> bool:
 		_status.text = reason
 		return false
 	return true
+
+
+## The template menu under the diamond: each template in use, then "Customize...".
+func _show_templates(at: Control) -> void:
+	_templates_menu.clear()
+	_menu_templates = ProductionTemplatesDialog.in_use()
+	for i in _menu_templates.size():
+		_templates_menu.add_item(_menu_templates[i]["name"], i)
+	_templates_menu.add_separator()
+	_templates_menu.add_item("Customize...", _menu_templates.size())
+	_templates_menu.position = Vector2i(at.get_screen_position() + Vector2(0, at.size.y))
+	_templates_menu.reset_size()
+	_templates_menu.popup()
+
+
+func _on_template(id: int) -> void:
+	if id >= _menu_templates.size():
+		_templates.open(_items.duplicate(true), _leftover_on)
+		return
+	var t := _menu_templates[id]
+	var race := GameSession.view.me().race
+	_items = ProductionTemplates.apply(_items, t["queue"], race, GameSession.content)
+	_leftover_on = t["leftover_to_research"]
+	_leftover.set_pressed_no_signal(_leftover_on)
+	_queue.selected = 0
+	_show_queue()
 
 
 ## Prev / Next: keep the edits, then show the player's previous or next planet (in the Planet

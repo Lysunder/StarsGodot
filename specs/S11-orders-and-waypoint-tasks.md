@@ -181,6 +181,9 @@ the fleets of a ship move have the same owner, and trusts the client for the res
   of the player with that starbase loses it, and those planets' queues lose their ship and packet items. Then the
   design leaves all of the player's queues. Block 27 (operation 0). `Fleets_SplitOutDesign@1048:748c`,
   `Planets_RemoveStarbaseDesign@1048:7426`, `RemoveDesignFromQueues@1048:7680`.
+- **`production_templates`** `{templates}`: replaces the player's own production templates (S09 "Production
+  templates"): at most 3 of `{name, leftover_to_research, queue}`, the name 1 to 12 characters, the queue as for
+  `player_defaults`. No effect on the game, and no block in the original (its client kept them).
 - **`player_defaults`** `{leftover_to_research, queue}`: the default queue for new colonies (at most 12 standard
   items, any progress dropped) and their "contribute only leftover resources to research" setting. Block 46, which
   copies up to 26 bytes into the player record.

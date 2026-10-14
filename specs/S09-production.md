@@ -252,6 +252,22 @@ Each player has a default queue of up to 12 standard items (no designs) and a de
 resources to research" setting, set by the `player_defaults` order. A newly colonized planet starts with a copy
 (S11 "Colonizing an empty planet"). Computer players' defaults were empty in every harness game so far.
 
+### 8. Production templates
+
+The default queue is the first of four production templates; the player can keep three more of their own (a name of
+up to 12 characters, a queue of up to 12 standard items and a leftover setting, `production_templates` order, S11).
+Only the default affects the game; the others are for the player's production window (the original kept them in the
+client, `ZIPPRODDLG@10c8:2d26`: 4 × 40 bytes, a 13-byte name, a used flag, the leftover bit, the item count and 12
+words of item number and count).
+
+- **Import** (into a template): the queue's auto-build items in order, at most 12, with the planet's leftover
+  setting. The default template can't be renamed or deleted; importing an empty queue clears it.
+- **Apply** (to a planet's queue, from the production window's template menu; the command handler after
+  `ProductionDlgProc@10c8:08e2`): the queue keeps its items that are not auto-build, in order, and the template's
+  items follow them, except those the owner's race skips (`colony.skips_auto_<effect>`: AR mines, factories and
+  defenses, CA terraforming — the same rule as a new colony's default queue); the planet's leftover setting becomes
+  the template's.
+
 ## Randomness
 
 Only the Genesis Device draws: 12 draws per device, 4 per index (two for the environment axis, then two for the

@@ -6746,6 +6746,7 @@
     "message_filters": [],
     "mod_data": {},
     "next_research_field": 7,
+    "production_templates": [],
     "race": {
      "cheap_factories": false,
      "factories_operated": 10,
@@ -7107,6 +7108,7 @@
     "message_filters": [],
     "mod_data": {},
     "next_research_field": 7,
+    "production_templates": [],
     "race": {
      "cheap_factories": false,
      "factories_operated": 10,

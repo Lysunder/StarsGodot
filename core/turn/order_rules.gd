@@ -18,6 +18,7 @@ const TYPES := [
 	"fleet_rename",
 	"fleet_battle_plan",
 	"player_defaults",
+	"production_templates",
 	"design_change",
 	"design_delete",
 	"cargo_transfer",
@@ -71,6 +72,8 @@ static func apply(
 			return _fleet_settings(state, player, order)
 		"player_defaults":
 			return _player_defaults(state, content, player, order)
+		"production_templates":
+			return _production_templates(state, content, player, order)
 		"design_change", "design_delete":
 			return _design(state, content, player, order)
 		"cargo_transfer":
@@ -231,6 +234,19 @@ static func _player_defaults(
 	if not items is Array or items.size() > content.constant("constant.limits.default_queue_items"):
 		return "bad default queue"
 	var fresh: Array[QueueItem] = []
+	var reason := _standard_queue(content, items, fresh)
+	if not reason.is_empty():
+		return reason
+	var p := state.player(player)
+	p.default_queue = fresh
+	p.default_leftover_to_research = leftover
+	return ""
+
+
+## Standard queue items (no designs), progress 0, into `out`; returns why not, or "".
+static func _standard_queue(
+	content: ContentRegistry, items: Array, out: Array[QueueItem]
+) -> String:
 	for d: Variant in items:
 		var errors := PackedStringArray()
 		var q := ModelObject.object_from(QueueItem, d, "", errors) as QueueItem
@@ -241,10 +257,43 @@ static func _player_defaults(
 		if q.count < 0 or q.count > content.constant("constant.limits.queue_count"):
 			return "bad queue item count"
 		q.progress = 0
-		fresh.append(q)
-	var p := state.player(player)
-	p.default_queue = fresh
-	p.default_leftover_to_research = leftover
+		out.append(q)
+	return ""
+
+
+## The player's production templates besides the default (S11 `production_templates`): replaces
+## them; at most ProductionTemplates.CUSTOM, each with a name of 1 to
+## ProductionTemplates.NAME_MAX characters and a queue like the default one.
+static func _production_templates(
+	state: GameState, content: ContentRegistry, player: int, order: Dictionary
+) -> String:
+	var templates: Variant = order.get("templates")
+	if not templates is Array or templates.size() > ProductionTemplates.CUSTOM:
+		return "bad production templates"
+	var stored: Array = []
+	for t: Variant in templates:
+		if not t is Dictionary:
+			return "bad production template"
+		var name: Variant = t.get("name")
+		if not name is String or name.is_empty() or name.length() > ProductionTemplates.NAME_MAX:
+			return "bad production template name"
+		if not t.get("leftover_to_research") is bool:
+			return "leftover_to_research must be true or false"
+		var items: Variant = t.get("queue")
+		var limit: int = content.constant("constant.limits.default_queue_items")
+		if not items is Array or items.size() > limit:
+			return "bad production template queue"
+		var fresh: Array[QueueItem] = []
+		var reason := _standard_queue(content, items, fresh)
+		if not reason.is_empty():
+			return reason
+		var queue: Array = []
+		for q in fresh:
+			queue.append(q.to_dict())
+		stored.append(
+			{"name": name, "leftover_to_research": t["leftover_to_research"], "queue": queue}
+		)
+	state.player(player).production_templates = stored
 	return ""
 
 
