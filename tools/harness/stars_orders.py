@@ -6,7 +6,8 @@ Order blocks converted so far: cargo transfers (1, 2, 25), waypoint delete, add 
 repeat orders (10), ship
 moves, split and merge (23, 24, 37), design change (27; design names neutral unless --keep-names),
 production queue change (29), research change (34), planet
-change (35), fleet battle plan (42), rename fleet (44; the name is left out unless --keep-names,
+change (35), battle plan change and delete (30; plan names neutral unless --keep-names), fleet
+battle plan (42), rename fleet (44; the name is left out unless --keep-names,
 as the importer leaves fleet names out) and player defaults (46: the default queue for new
 colonies and their leftover-to-research setting). Any other order block stops the conversion with its type, so a fixture never silently
 loses orders. Registration data (block type 9) is dropped unread by the file reader.
@@ -35,6 +36,7 @@ SPLIT_FLEET = 24
 DESIGN_CHANGE = 27
 STARBASE_SLOT_BASE = 16
 QUEUE_CHANGE = 29
+BATTLE_PLAN = 30
 RESEARCH_CHANGE = 34
 PLANET_CHANGE = 35
 MERGE_FLEETS = 37
@@ -169,6 +171,21 @@ def convert_block(importer, b, keep_names=False):
             "mass_driver_warp": ((v >> 11) & 15) + 4,
             "route": ((v >> 15) & 0x3FF) - 1,
         }
+    if b.type == BATTLE_PLAN:
+        number = d[0] >> 4
+        if d[1] & 0x40:
+            return {"type": "battle_plan_delete", "number": number}
+        plan = {
+            "number": number,
+            "name": starsfile.read_string(d, 4)[0] if keep_names else "Plan %d" % number,
+            "tactic": d[1] & 15,
+            "primary_target": d[2] & 15,
+            "secondary_target": d[2] >> 4,
+            "attack": d[3],
+        }
+        if d[1] & 0x80:
+            plan["dump_cargo"] = True
+        return {"type": "battle_plan_change", "plan": plan}
     if b.type == PLAYER_RELATIONS:
         # one byte per player: 0 neutral, 1 friend, 2 enemy (the player's own entry included)
         return {"type": "player_relations", "relations": [RELATIONS[v] for v in d]}

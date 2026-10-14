@@ -1,0 +1,106 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "plan": {
+    "attack": 5,
+    "name": "Plan 0",
+    "number": 0,
+    "primary_target": 4,
+    "secondary_target": 1,
+    "tactic": 2
+   },
+   "type": "battle_plan_change"
+  },
+  {
+   "plan": {
+    "attack": 2,
+    "name": "Plan 2",
+    "number": 2,
+    "primary_target": 3,
+    "secondary_target": 2,
+    "tactic": 3
+   },
+   "type": "battle_plan_change"
+  },
+  {
+   "plan": {
+    "attack": 2,
+    "dump_cargo": true,
+    "name": "Plan 2",
+    "number": 2,
+    "primary_target": 3,
+    "secondary_target": 2,
+    "tactic": 3
+   },
+   "type": "battle_plan_change"
+  },
+  {
+   "plan": {
+    "attack": 5,
+    "name": "Plan 5",
+    "number": 5,
+    "primary_target": 6,
+    "secondary_target": 7,
+    "tactic": 1
+   },
+   "type": "battle_plan_change"
+  },
+  {
+   "fleet": 3,
+   "owner": 0,
+   "plan": 1,
+   "type": "fleet_battle_plan"
+  },
+  {
+   "fleet": 0,
+   "owner": 0,
+   "plan": 2,
+   "type": "fleet_battle_plan"
+  },
+  {
+   "fleet": 1,
+   "owner": 0,
+   "plan": 5,
+   "type": "fleet_battle_plan"
+  },
+  {
+   "leftover_to_research": true,
+   "queue": [
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_factories",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_mines",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_defenses",
+     "progress": 0,
+     "starbase": false
+    },
+    {
+     "count": 5,
+     "design": -1,
+     "item": "production_item.auto_max_terraform",
+     "progress": 0,
+     "starbase": false
+    }
+   ],
+   "type": "player_defaults"
+  }
+ ],
+ "player": 0,
+ "turn": 0
+}

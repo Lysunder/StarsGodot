@@ -270,3 +270,60 @@ func test_hand_transfers_with_other_players() -> void:
 	m = s.messages[0][0]
 	assert_array([m.type, m.params]).is_equal(["message.planet.dropped_colonists_starbase", [1]])
 	assert_int(s.planets[1].population).is_equal(500)
+
+
+func test_battle_plan_change_and_delete() -> void:
+	var s := _state()
+	var p := s.player(0)
+	for i in 3:
+		(
+			p
+			. battle_plans
+			. append(
+				{
+					"number": i,
+					"name": "Plan %d" % i,
+					"tactic": 0,
+					"primary_target": 1,
+					"secondary_target": 0,
+					"attack": 1,
+				}
+			)
+		)
+	var plan := {
+		"number": 3,
+		"name": "Raiders",
+		"tactic": 2,
+		"primary_target": 3,
+		"secondary_target": 8,
+		"attack": 4,
+		"dump_cargo": true,
+	}
+	var order := {"type": "battle_plan_change", "plan": plan}
+	assert_str(_apply(s, 0, order)).is_empty()
+	assert_int(p.battle_plans.size()).is_equal(4)
+	assert_dict(p.battle_plans[3]).is_equal(plan)
+	# replacing; out-of-range values and gaps are refused
+	plan = plan.duplicate()
+	plan["number"] = 1
+	plan.erase("dump_cargo")
+	assert_str(_apply(s, 0, {"type": "battle_plan_change", "plan": plan})).is_empty()
+	assert_str(p.battle_plans[1].name).is_equal("Raiders")
+	assert_bool(p.battle_plans[1].has("dump_cargo")).is_false()
+	for bad: Array in [["number", 5], ["tactic", 7], ["primary_target", 9], ["attack", 6]]:
+		var wrong := plan.duplicate()
+		wrong[bad[0]] = bad[1]
+		assert_str(_apply(s, 0, {"type": "battle_plan_change", "plan": wrong})).is_not_empty()
+	# deleting plan 1: plans 2 and 3 move down; its fleets take plan 0, later ones follow
+	var fleets: Array[Fleet] = []
+	for n in 4:
+		var f := s.add_fleet(0, 512)
+		f.battle_plan = n
+		fleets.append(f)
+	assert_str(_apply(s, 0, {"type": "battle_plan_delete", "number": 1})).is_empty()
+	(
+		assert_array(p.battle_plans.map(func(x: Dictionary) -> Array: return [x.number, x.name]))
+		. is_equal([[0, "Plan 0"], [1, "Plan 2"], [2, "Raiders"]])
+	)
+	assert_array(fleets.map(func(f: Fleet) -> int: return f.battle_plan)).is_equal([0, 0, 1, 2])
+	assert_str(_apply(s, 0, {"type": "battle_plan_delete", "number": 0})).is_not_empty()

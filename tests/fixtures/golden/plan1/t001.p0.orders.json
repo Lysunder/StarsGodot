@@ -1,0 +1,13 @@
+{
+ "format": "starsgodot-orders",
+ "format_version": 1,
+ "game_version": "0.1.0",
+ "orders": [
+  {
+   "number": 2,
+   "type": "battle_plan_delete"
+  }
+ ],
+ "player": 0,
+ "turn": 1
+}

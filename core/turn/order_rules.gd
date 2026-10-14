@@ -23,10 +23,16 @@ const TYPES := [
 	"cargo_transfer",
 	"message_filters",
 	"player_relations",
+	"battle_plan_change",
+	"battle_plan_delete",
 	"minefield_detonate",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
+## Battle plans (S11 `battle_plan_change`): at most this many, with these field ranges.
+const BATTLE_PLANS_MAX := 16
+const TACTIC_MAX := 6
+const TARGET_MAX := 8
 
 
 ## Applies every order set; returns one "player P order I: reason" line per rejected order.
@@ -73,6 +79,10 @@ static func apply(
 			return _message_filters(state, content, player, order)
 		"player_relations":
 			return _player_relations(state, player, order)
+		"battle_plan_change":
+			return _battle_plan_change(state, player, order)
+		"battle_plan_delete":
+			return _battle_plan_delete(state, player, order)
 		"minefield_detonate":
 			return _minefield_detonate(state, content, player, order)
 	return "unknown order type %s" % str(order.get("type"))
@@ -284,6 +294,64 @@ static func _player_relations(state: GameState, player: int, order: Dictionary) 
 		if not r is String or not Player.RELATIONS.has(r):
 			return "bad relation"
 	state.player(player).relations.assign(relations)
+	return ""
+
+
+## Adds or replaces a battle plan (S11 `battle_plan_change`).
+static func _battle_plan_change(state: GameState, player: int, order: Dictionary) -> String:
+	var plan: Variant = order.get("plan")
+	if not plan is Dictionary:
+		return "bad battle plan"
+	var plans := state.player(player).battle_plans
+	var number: Variant = plan.get("number")
+	if not number is int or number < 0 or number > plans.size() or number >= BATTLE_PLANS_MAX:
+		return "bad battle plan number"
+	var fields := {
+		"tactic": TACTIC_MAX,
+		"primary_target": TARGET_MAX,
+		"secondary_target": TARGET_MAX,
+		"attack": BattlePlans.ATTACK_PLAYER + state.players.size() - 1,
+	}
+	for key: String in fields:
+		var v: Variant = plan.get(key)
+		if not v is int or v < 0 or v > fields[key]:
+			return "bad battle plan " + key
+	var name: Variant = plan.get("name", "")
+	if not name is String or name.length() > NAME_MAX:
+		return "bad battle plan name"
+	var dump: Variant = plan.get("dump_cargo", false)
+	if not dump is bool:
+		return "bad battle plan dump_cargo"
+	var stored := {
+		"number": number,
+		"name": name,
+		"tactic": plan.tactic,
+		"primary_target": plan.primary_target,
+		"secondary_target": plan.secondary_target,
+		"attack": plan.attack,
+	}
+	if dump:
+		stored["dump_cargo"] = true
+	if number == plans.size():
+		plans.append(stored)
+	else:
+		plans[number] = stored
+	return ""
+
+
+## Deletes a battle plan (S11 `battle_plan_delete`): later plans and the fleets using them move down
+## one; fleets using the deleted plan take the one before it.
+static func _battle_plan_delete(state: GameState, player: int, order: Dictionary) -> String:
+	var number: Variant = order.get("number")
+	var plans := state.player(player).battle_plans
+	if not number is int or number < 1 or number >= plans.size():
+		return "bad battle plan number"
+	plans.remove_at(number)
+	for i in range(number, plans.size()):
+		plans[i]["number"] = i
+	for fleet in state.fleets_of(player):
+		if fleet.battle_plan >= number:
+			fleet.battle_plan -= 1
 	return ""
 
 

@@ -98,9 +98,20 @@ class TestOrders(unittest.TestCase):
         self.assertEqual(d["parts"], [{"part": "part.engine.long_hump_6", "count": 1}])
         self.assertEqual(out[1], {"type": "design_delete", "starbase": True, "slot": 2})
 
+    def test_converts_battle_plans(self):
+        # plan 2 of player 0: tactic 4 with dump cargo, primary 3 / secondary 1, attack player 1
+        change = bytes([0 | 2 << 4, 4 | 0x80, 3 | 1 << 4, 5]) + b"\0"
+        out = stars_orders.convert(self.x_file([(30, change), (30, bytes([1 << 4, 0x40]))]))["orders"]
+        self.assertEqual(out[0], {
+            "type": "battle_plan_change",
+            "plan": {"number": 2, "name": "Plan 2", "tactic": 4, "primary_target": 3,
+                     "secondary_target": 1, "attack": 5, "dump_cargo": True},
+        })
+        self.assertEqual(out[1], {"type": "battle_plan_delete", "number": 1})
+
     def test_unknown_blocks_and_wrong_files_stop(self):
         with self.assertRaises(stars_orders.StarsOrdersError):
-            stars_orders.convert(self.x_file([(30, b"\0" * 8)]))
+            stars_orders.convert(self.x_file([(6, b"\0" * 8)]))
         with self.assertRaises(stars_orders.StarsOrdersError):
             stars_orders.convert(self.x_file([], kind=2))
 

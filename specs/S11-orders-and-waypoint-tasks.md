@@ -126,6 +126,15 @@ the fleets of a ship move have the same owner, and trusts the client for the res
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
+- **`battle_plan_change`** `{plan}`: `plan` is `{number, name, tactic, primary_target, secondary_target, attack,
+  dump_cargo}` (S16). It replaces the player's plan `number`, or, when `number` equals the number of plans, adds a
+  plan at the end; a player has at most 16 plans (0 to 15). Tactic 0 to 6, targets 0 to 8, `attack` 0 to 3 or 4 +
+  a player's index (`BattlePlans`), the name up to 31 characters. Block 30 (`DecodeBattlePlanBlock@1068:271a`: the
+  owner and plan number, the tactic with the dump-cargo flag, the targets, the attack byte, then the name).
+- **`battle_plan_delete`** `{number}`: deletes the plan; the later plans move down one and are renumbered, and so do
+  the fleets using them; fleets using the deleted plan take the plan just before it (`DeleteBattlePlan@10e8:0fe8`).
+  Plan 0 (the default plan) can't be deleted: the original's client doesn't offer it, and its host would give those
+  fleets plan −1. Block 30 with the delete flag (0x40 in the second byte).
 - **`minefield_detonate`** `{minefield, detonate}`: the player's minefield (by number) detonates every year from
   now on (S13 "Detonation"), or stops. Block 43 (the field's id word, then the setting). The original accepts it for
   any field; we accept it only for a standard field of a race with the `minefield.detonate` trait parameter (Space

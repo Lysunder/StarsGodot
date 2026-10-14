@@ -16,6 +16,8 @@ const MENU_MAIN := 1
 const MENU_QUIT := 2
 const MENU_RESEARCH := 10
 const MENU_DESIGN := 11
+const MENU_PLANS := 12
+const MENU_RELATIONS := 13
 const MENU_END_TURN := 20
 const MENU_ABOUT := 40
 ## Report menu items are this plus the index in ReportView.REPORTS.
@@ -30,6 +32,8 @@ var _messages: MessagesPane
 var _status: ScannerStatus
 var _research: ResearchDialog
 var _designer: ShipDesigner
+var _plans: BattlePlansDialog
+var _relations: RelationsDialog
 var _reports: ReportsWindow
 var _about: AcceptDialog
 
@@ -85,6 +89,10 @@ func _ready() -> void:
 	add_child(_research)
 	_designer = ShipDesigner.new()
 	add_child(_designer)
+	_plans = BattlePlansDialog.new()
+	add_child(_plans)
+	_relations = RelationsDialog.new()
+	add_child(_relations)
 	_reports = ReportsWindow.new()
 	_reports.goto.connect(_on_goto)
 	_reports.production_requested.connect(_command.open_production)
@@ -132,6 +140,8 @@ func _build_menu() -> void:
 	commands.name = "Commands"
 	commands.add_item("Ship Design...", MENU_DESIGN, KEY_F4)
 	commands.add_item("Research...", MENU_RESEARCH, KEY_F5)
+	commands.add_item("Battle Plans...", MENU_PLANS, KEY_F6)
+	commands.add_item("Player Relations...", MENU_RELATIONS, KEY_F7)
 	commands.id_pressed.connect(_on_menu)
 	menu.add_child(commands)
 	var report := PopupMenu.new()
@@ -201,6 +211,10 @@ func _on_menu(menu_id: int) -> void:
 			_research.open()
 		MENU_DESIGN:
 			_designer.open()
+		MENU_PLANS:
+			_plans.open()
+		MENU_RELATIONS:
+			_relations.open()
 		MENU_END_TURN:
 			_on_end_turn()
 		MENU_ABOUT:
