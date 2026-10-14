@@ -1,35 +1,19 @@
 extends Control
-## The main scene: applies the Classic 95 theme (D15), scales the UI with the window, then shows
-## the main menu and the game screen.
-
-## The UI is laid out for this window size; larger or smaller windows scale it.
-const BASE_SIZE := Vector2(1280, 720)
-## Scale factors snap to this step, so the pixel font stays as even as possible.
-const SCALE_STEP := 0.25
-const SCALE_MIN := 0.5
-const SCALE_MAX := 4.0
+## The main scene: applies the Classic 95 theme (D15) and the interface settings (UiSettings: the
+## font and the scale, which by default follows the window), then shows the main menu and the game
+## screen.
 
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	get_tree().root.theme = ClassicTheme.build(ClassicTheme.saved_font())
-	get_tree().root.size_changed.connect(_rescale)
+	UiSettings.apply(get_tree())
+	get_tree().root.size_changed.connect(func() -> void: UiSettings.rescale(get_tree()))
 	get_tree().node_added.connect(_on_node_added)
-	_rescale()
 	var background := Panel.new()
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background.name = "Background"
 	add_child(background)
 	_show_menu()
-
-
-## The whole UI scales by the window's size relative to BASE_SIZE (the smaller ratio), in steps.
-func _rescale() -> void:
-	var root := get_tree().root
-	var ratio := minf(root.size.x / BASE_SIZE.x, root.size.y / BASE_SIZE.y)
-	var factor := clampf(snappedf(ratio, SCALE_STEP), SCALE_MIN, SCALE_MAX)
-	if not is_equal_approx(root.content_scale_factor, factor):
-		root.content_scale_factor = factor
 
 
 ## Dialogs are viewports of their own: draw their bevels unfiltered too, so the pixel edges stay

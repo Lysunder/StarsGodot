@@ -534,7 +534,7 @@ func test_reports_window_cycles_sorts_and_goes_to_rows() -> void:
 	reports.cycle()
 	assert_bool(reports.visible).is_false()
 	DirAccess.remove_absolute(ReportSettings.path)
-	ReportSettings.path = ClassicTheme.SETTINGS_PATH
+	ReportSettings.path = UiSettings.PATH
 	screen.queue_free()
 	await get_tree().process_frame
 

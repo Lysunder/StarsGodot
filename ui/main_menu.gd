@@ -1,7 +1,7 @@
 class_name MainMenu
 extends CenterContainer
-## The start screen (D15): the game's name over New Game, Open Game and Exit. New Game opens the
-## New Game window; Open Game loads the saved game.
+## The start screen (D15): the game's name over New Game, Open Game, Settings and Exit. New Game
+## opens the New Game window; Open Game loads the saved game; Settings opens the interface settings.
 
 signal start_game
 
@@ -9,6 +9,7 @@ const BUTTON_WIDTH := 200
 
 var _status: Label
 var _new_game: NewGameDialog
+var _settings: SettingsDialog
 
 
 func _ready() -> void:
@@ -25,7 +26,12 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 32)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
-	for spec: Array in [["New Game...", _on_new], ["Open Game", _on_load], ["Exit", _on_quit]]:
+	for spec: Array in [
+		["New Game...", _on_new],
+		["Open Game", _on_load],
+		["Settings...", func() -> void: _settings.open()],
+		["Exit", _on_quit],
+	]:
 		var b := Button.new()
 		b.text = spec[0]
 		b.custom_minimum_size = Vector2(BUTTON_WIDTH, 0)
@@ -37,6 +43,8 @@ func _ready() -> void:
 	box.add_child(_status)
 	if not GameSession.load_errors.is_empty():
 		_status.text = GameSession.load_errors
+	_settings = SettingsDialog.new()
+	add_child(_settings)
 	_new_game = NewGameDialog.new()
 	_new_game.game_chosen.connect(_on_game_chosen)
 	add_child(_new_game)

@@ -23,8 +23,7 @@ const MENU_ABOUT := 40
 ## Report menu items are this plus the index in ReportView.REPORTS.
 const MENU_REPORT := 50
 const MENU_SCORE := 60
-## View > Font items are this plus the index in ClassicTheme.FONTS.
-const MENU_FONT := 30
+const MENU_SETTINGS := 30
 
 var _map: GalaxyMap
 var _command: CommandPane
@@ -39,6 +38,7 @@ var _reports: ReportsWindow
 var _battle_viewer: BattleViewer
 var _score: ScoreWindow
 var _about: AcceptDialog
+var _settings: SettingsDialog
 
 
 func _ready() -> void:
@@ -115,6 +115,8 @@ func _ready() -> void:
 		+ "Version %s" % GameSession.game_version
 	)
 	add_child(_about)
+	_settings = SettingsDialog.new()
+	add_child(_settings)
 	var home := GameSession.view.me().homeworld
 	if home >= 0:
 		_map.select("planet", home)
@@ -133,11 +135,8 @@ func _build_menu() -> void:
 	menu.add_child(file)
 	var view := PopupMenu.new()
 	view.name = "View"
-	var current := ClassicTheme.saved_font()
-	for i in ClassicTheme.FONTS.size():
-		view.add_radio_check_item("Font: " + ClassicTheme.FONTS[i]["name"], MENU_FONT + i)
-		view.set_item_checked(i, i == current)
-	view.id_pressed.connect(_on_font.bind(view))
+	view.add_item("Settings...", MENU_SETTINGS)
+	view.id_pressed.connect(_on_menu)
 	menu.add_child(view)
 	var turn := PopupMenu.new()
 	turn.name = "Turn"
@@ -237,6 +236,8 @@ func _on_menu(menu_id: int) -> void:
 			_on_end_turn()
 		MENU_ABOUT:
 			_about.popup_centered()
+		MENU_SETTINGS:
+			_settings.open()
 		MENU_REPORT:
 			# F3: the Planet report, then each report in turn, then closed; the menu item itself
 			# opens the Planet report
@@ -248,14 +249,6 @@ func _on_menu(menu_id: int) -> void:
 			_score.open()
 		MENU_REPORT + 1, MENU_REPORT + 2, MENU_REPORT + 3:
 			_reports.open(ReportView.REPORTS[menu_id - MENU_REPORT])
-
-
-func _on_font(menu_id: int, view: PopupMenu) -> void:
-	var index := menu_id - MENU_FONT
-	for i in view.item_count:
-		view.set_item_checked(i, i == index)
-	ClassicTheme.save_font(index)
-	get_tree().root.theme = ClassicTheme.build(index)
 
 
 func _on_end_turn() -> void:

@@ -25,28 +25,36 @@ const CARGO_COLORS := [
 ]
 ## How much a bold label thickens the font (FontVariation embolden).
 const EMBOLDEN := 0.8
-## The bundled UI fonts. Pixel fonts are drawn without smoothing at a size that keeps their pixels
-## whole: one W95FA pixel is 80 of its 1000 units (12.5 px is exact, 13 the nearest size); Terminus
-## carries hand-drawn bitmaps at even sizes.
+## The bundled UI fonts, each with its usual size and the sizes the player may pick. Pixel fonts
+## are drawn without smoothing at a size that keeps their pixels whole: one W95FA pixel is 80 of
+## its 1000 units (12.5 px is exact, 13 the nearest size; 25 and 38 for two and three pixels);
+## Terminus carries hand-drawn bitmaps at even sizes.
 const FONTS := [
-	{"name": "W95FA", "path": "res://art/fonts/w95fa/W95FA.otf", "size": 13, "pixel": true},
+	{
+		"name": "W95FA",
+		"path": "res://art/fonts/w95fa/W95FA.otf",
+		"size": 13,
+		"sizes": [13, 25, 38],
+		"pixel": true,
+	},
 	{
 		"name": "Terminus",
 		"path": "res://art/fonts/terminus/TerminusTTF-4.49.3.ttf",
 		"size": 14,
+		"sizes": [12, 14, 16, 18, 20, 22, 24, 28, 32],
 		"pixel": true,
 	},
 	{
 		"name": "Cascadia Mono",
 		"path": "res://art/fonts/cascadia_mono/CascadiaMono-Regular.ttf",
 		"size": 13,
+		"sizes": [11, 12, 13, 14, 15, 16, 18, 20, 22, 24],
 		"pixel": false,
 	},
 ]
 ## The font used until the player picks another: Cascadia Mono.
 const DEFAULT_FONT := 2
 const FALLBACK_NAMES := ["Tahoma", "MS Sans Serif", "Microsoft Sans Serif", "Segoe UI", "Arial"]
-const SETTINGS_PATH := "user://settings.cfg"
 const BEVEL := 2
 const IMAGE_SIZE := 8
 ## The slider's grabber (a small raised block) and its track's height, in pixels.
@@ -58,23 +66,8 @@ const DROPDOWN_BUTTON := 16
 const CHECK_SIZE := 13
 
 
-## The font the player picked last (an index into FONTS), from the settings file.
-static func saved_font() -> int:
-	var cfg := ConfigFile.new()
-	if cfg.load(SETTINGS_PATH) != OK:
-		return DEFAULT_FONT
-	return clampi(int(cfg.get_value("ui", "font", DEFAULT_FONT)), 0, FONTS.size() - 1)
-
-
-static func save_font(index: int) -> void:
-	var cfg := ConfigFile.new()
-	cfg.load(SETTINGS_PATH)
-	cfg.set_value("ui", "font", index)
-	cfg.save(SETTINGS_PATH)
-
-
-## Builds the whole theme with font FONTS[font_index].
-static func build(font_index: int = DEFAULT_FONT) -> Theme:
+## Builds the whole theme with font FONTS[font_index] at `font_size` (0: the font's usual size).
+static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	var t := Theme.new()
 	var spec: Dictionary = FONTS[clampi(font_index, 0, FONTS.size() - 1)]
 	var smoothing := TextServer.FONT_ANTIALIASING_GRAY
@@ -94,7 +87,7 @@ static func build(font_index: int = DEFAULT_FONT) -> Theme:
 		file.fallbacks = [fallback]
 		font = file
 	t.default_font = font
-	t.default_font_size = spec["size"]
+	t.default_font_size = font_size if font_size > 0 else spec["size"]
 	var bold := FontVariation.new()
 	bold.base_font = font
 	bold.variation_embolden = EMBOLDEN

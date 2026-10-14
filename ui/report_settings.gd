@@ -7,7 +7,7 @@ extends RefCounted
 const SECTION := "reports"
 
 ## The settings file (tests use their own).
-static var path := ClassicTheme.SETTINGS_PATH
+static var path := UiSettings.PATH
 
 
 ## The settings of `report`: {primary, secondary (sorts, {} for none), hidden (column ids)}.
