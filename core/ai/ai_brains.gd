@@ -4,7 +4,8 @@ extends RefCounted
 ## Script mods will add their own (M14).
 
 const IDLE := "idle"
-const IDS := [IDLE]
+const BASELINE := "baseline"
+const IDS := [IDLE, BASELINE]
 
 
 static func has(id: String) -> bool:
@@ -16,4 +17,6 @@ static func create(id: String) -> AiPlayer:
 	match id:
 		IDLE:
 			return AiPlayer.new()
+		BASELINE:
+			return BaselineAi.new()
 	return null

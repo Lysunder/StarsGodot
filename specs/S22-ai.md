@@ -1,7 +1,7 @@
 # S22 Computer players (AI)
 
-Status: draft (2026-10-14), first part: the AI step and personalities as data. The personalities' own play comes in
-later parts.
+Status: draft (2026-10-14), first part: the AI step and personalities as data; second part: our own baseline
+brain, first step (expansion). The original personalities' own play comes in later parts.
 References: `RunComputerPlayers@1018:39f8`, `AI_PlayTurn@1080:0000`, `AI_InactiveHuman@1090:0000`,
 `CheckTurnFile` (turn file check before a computer player plays), personalities `AI_Robotoids`, `AI_Turindrones`,
 `AI_Automitrons`, `AI_Rototills`, `AI_Cybertrons`, `AI_Macinti` (segments 1080-10a0), toolkit in segment 1088.
@@ -63,15 +63,52 @@ for an existing brain, or change one's parameters, without code.
 The original has six personalities, chosen by the computer player's race (keys `robotoids`, `turindrones`,
 `automitrons`, `rototills`, `cybertrons`, `macinti`, in the original's numbering 0-5), and the housekeeping one
 for inactive humans (`inactive`, the original's number 7). Their play is specified in later parts of this spec.
-Until a personality's brain exists it uses the **idle** brain, which gives no orders.
+Until a personality's own brain exists it uses our **baseline** brain (below); the inactive personality uses the
+**idle** brain, which gives no orders.
 
 Difficulty levels, easiest first: easy, standard, harder, expert (`ai_level` 0-3). Besides the AI's own play, the
 level matters in the starting setup (S07) and in Mystery Trader dealings (S18).
 
+### The baseline brain (our own)
+
+Not a port of the original: a computer player of our own, so games have opponents before the ports exist and as
+a fallback for personalities from mods. It reads only its view (S15: other planets as it knows them) and draws
+nothing. Each turn, in this order:
+
+1. **Research:** budget `research_pct` (15); field: the lowest tech level, ties in the order propulsion,
+   construction, biotech, energy, electronics, weapons; next field: the lowest. No order when nothing changes.
+2. **Turn 0:** the default queue for new colonies: auto factories and auto mines (200 each).
+3. **Designs:** a scout (scout hull; the engine with the best merit; the longest-range scanner in the scanner-only
+   slot; a fuel tank) and a colony ship (colony ship hull; that engine; a colonizer module). Merit: the fastest warp
+   at which the design still goes 300 light-years (warp 10 only with warp-10-safe engines), then its range there.
+   A design is saved in the first free slot when the player has none of that kind, or when it is faster than the
+   best it has, or as fast with at least 120% of the range.
+4. **Colony ships**, in fleet order, those without orders beyond where they are:
+   - at an unowned planet with colonists: colonize it (waypoint 0's task);
+   - empty at one of the player's planets: load colonists by hand, `colonists_share_pct` (25%) of the planet's
+     people at most, up to the ship's room; then go to the best target;
+   - empty elsewhere (its target was taken): go back to the nearest planet with `colony_min_population`;
+   - the best target: the unowned planet (as known) with the highest habitability for the player, at least
+     `min_value` (5), nearest on ties, that no other colony ship is heading for and that the ship can reach on its
+     fuel; the task is colonize; the warp is the fastest, from the fleet's default down, whose fuel range covers the
+     way.
+5. **Scouts** (scout hulls without weapons), in fleet order, without orders: the nearest planet the player has
+   never scanned that no other scout is heading for and that it can reach and come back from to one of the
+   player's planets with a dock (a starbase that refuels, S19), at the fastest warp covering the round trip;
+   otherwise the nearest such dock.
+6. **Queues**, the player's planets in planet order, each with at least `colony_min_population` (150, units of 100
+   colonists) and the minerals for one ship on its surface: one colony ship while the player's colony ships (in
+   flight, queued elsewhere and planned this turn) are fewer than `colony_ships` (2) plus one per 3 planets owned
+   and some known planet is worth settling; one scout while its scouts are fewer than `scouts` (3) plus one per 5
+   planets and some planet is still unscanned; then auto factories and auto mines (200 each). The order is sent
+   only when the queue differs (items, designs and counts).
+
+Not yet: starbases on colonies (more docks), defenses, terraforming, mineral transport, warships and fighting.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
-draws of each personality are listed with its part of this spec. Idle brains draw nothing.
+draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 
 ## Edge cases
 
@@ -87,7 +124,9 @@ None yet.
 ## Worked examples
 
 `tiny3ai` (harness): player 0 human, players 1 and 2 computer players. With player 0's orders given, the step adds
-order sets for players 1 and 2, in that order.
+order sets for players 1 and 2, in that order. With the baseline brain and no human orders, both computer players
+have at least 4 planets after 25 turns, with no order rejected. In `medium_clump` (288 planets, 3 computer players)
+they hold 17-31 planets after 100 turns.
 
 ## Mod hooks
 

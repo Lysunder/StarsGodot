@@ -3,37 +3,37 @@
     "type": "ai_personality",
     "id": "ai_personality.robotoids",
     "order": 0,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",
     "id": "ai_personality.turindrones",
     "order": 1,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",
     "id": "ai_personality.automitrons",
     "order": 2,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",
     "id": "ai_personality.rototills",
     "order": 3,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",
     "id": "ai_personality.cybertrons",
     "order": 4,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",
     "id": "ai_personality.macinti",
     "order": 5,
-    "brain": "idle"
+    "brain": "baseline"
   },
   {
     "type": "ai_personality",

@@ -1,0 +1,81 @@
+extends GdUnitTestSuite
+## M12 step 2: the baseline brain (S22 "The baseline brain") plays tiny3ai's two computer players:
+## it expands, its orders are all accepted, and the same game plays out the same way twice.
+
+const TURNS := 25
+
+var _content: ContentRegistry
+
+
+func before() -> void:
+	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
+	assert_bool(r.ok()).override_failure_message(r.error_text()).is_true()
+	_content = r.registry
+
+
+func _state() -> GameState:
+	var text := FileAccess.get_file_as_string("res://tests/fixtures/golden/tiny3ai/t000.json")
+	var result := SaveFile.decode(text, _content)
+	assert_bool(result.ok()).override_failure_message("\n".join(result.errors)).is_true()
+	return result.state
+
+
+## Plays `turns` turns with only the computer players giving orders; returns the rejected orders.
+func _play(s: GameState, turns: int) -> PackedStringArray:
+	var rejected := PackedStringArray()
+	for t in turns:
+		var given: Array[OrderSet] = []
+		var problems := PackedStringArray()
+		var sets := ComputerPlayers.add_orders(s, _content, given, problems)
+		rejected.append_array(problems)
+		rejected.append_array(StandardTurn.generate(s, _content, sets))
+	return rejected
+
+
+func _planets(s: GameState, p: int) -> int:
+	return s.planets.filter(func(pl: Planet) -> bool: return pl.owner == p).size()
+
+
+func test_computer_players_expand_without_rejected_orders() -> void:
+	var s := _state()
+	(
+		assert_str(
+			_content.get_def("ai_personality", "ai_personality.%s" % s.players[1].ai)["brain"]
+		)
+		. is_equal(AiBrains.BASELINE)
+	)
+	var rejected := _play(s, TURNS)
+	assert_array(Array(rejected)).is_empty()
+	for p in [1, 2]:
+		assert_int(_planets(s, p)).is_greater_equal(4)
+		# research is on and the designs were brought up to date
+		assert_int(s.player(p).research_percent).is_equal(15)
+	# the idle human player stays at home
+	assert_int(_planets(s, 0)).is_equal(1)
+
+
+func test_same_game_same_play() -> void:
+	var a := _state()
+	var b := _state()
+	_play(a, 10)
+	_play(b, 10)
+	assert_bool(a.equals(b)).is_true()
+
+
+func test_designs_use_the_best_parts() -> void:
+	var s := _state()
+	s.player(1).tech_levels.assign([0, 0, 0, 0, 0, 0])
+	var view := PlayerView.new(s, _content, 1)
+	var designs := BaselineDesigns.new(view, _content)
+	var scout := designs.build(BaselineDesigns.SCOUT)
+	assert_object(scout).is_not_null()
+	assert_str(PartRules.design_problem(scout, false, s.player(1), _content)).is_empty()
+	assert_int(designs.merit(scout)[0]).is_greater(0)
+	var colony := designs.build(BaselineDesigns.COLONY)
+	assert_object(colony).is_not_null()
+	var parts: Array = colony.parts.map(func(slot: DesignSlot) -> String: return slot.part)
+	assert_array(parts).contains(["part.mechanical.colonization_module"])
+	# a warp-10-safe engine (propulsion 11): a faster scout
+	assert_int(designs.merit(scout)[0]).is_equal(9)
+	s.player(1).tech_levels[PartRules.tech_order(_content)["tech_field.propulsion"]] = 11
+	assert_bool(designs.better(designs.build(BaselineDesigns.SCOUT), scout)).is_true()
