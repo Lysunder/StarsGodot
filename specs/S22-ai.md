@@ -1,7 +1,8 @@
 # S22 Computer players (AI)
 
 Status: draft (2026-10-14), first part: the AI step and personalities as data; second part: our own baseline
-brain (2026-10-15: expansion, docks, terraforming, defenses, warships, bombers). The original personalities' own
+brain (2026-10-15: expansion, docks, terraforming, defenses, warships, bombers, defending, invasion, mineral
+hauling). The original personalities' own
 play comes in later parts.
 References: `RunComputerPlayers@1018:39f8`, `AI_PlayTurn@1080:0000`, `AI_InactiveHuman@1090:0000`,
 `CheckTurnFile` (turn file check before a computer player plays), personalities `AI_Robotoids`, `AI_Turindrones`,
@@ -92,6 +93,10 @@ nothing. Each turn, in this order:
      scouts), or this one is at least 130% as strong as its strongest;
    - a bomber: the last of mini bomber, B-17, B-52 the player has; every bomb slot with the people-killing bomb
      (normal or smart) of the highest kill rate; power = kill rates × counts; saved like the warship;
+   - a troop transport and a mineral hauler: the last of small, medium, large and super freighter the player has,
+     every slot taking mechanical parts with the cargo pod of the most room, armor slots with the best armor, the
+     engine with the best merit; the two are the same ship under different names (the name tells the brain's roles
+     apart). Saved when the player has none of the kind or the new one has at least 130% of the room;
    - a dock: a starbase design on the available starbase hull that docks ships (refuels them, S19) with the fewest
      resources, no parts. Saved when the player has no such bare design on that hull.
 4. **Colony ships**, in fleet order, those without orders beyond where they are:
@@ -106,26 +111,46 @@ nothing. Each turn, in this order:
 5. **Scouts** (scout hulls without weapons), in fleet order, without orders: the nearest planet the player has
    never scanned that no other scout is heading for and that it can reach and come back from to one of the
    player's planets with a dock, at the fastest warp covering the round trip; otherwise the nearest such dock.
-6. **War fleets** (only warships and bombers), in fleet order, without orders: away from home, when the planet
-   where they are is not (as known) another player's, back to the homeworld (or the nearest planet with people);
-   at home, every other idle war fleet there merges into it, and once it has `attack_ships` (5) ships it goes to
-   the planet known to be another player's that is nearest home and within its reach. Battles there follow the
+6. **Threats:** the player's planets with, within `defense_range` (60) light-years, another player's fleet seen
+   this turn that has ships on a combat or bomber hull (what a sighting shows) and is not at a planet of its own
+   owner (as known); nearest the homeworld first.
+7. **War fleets** (only warships and bombers), in fleet order, without orders: away from home, at a threatened
+   planet of the player, they stay; otherwise, when the planet where they are is not (as known) another player's,
+   back to the homeworld (or the nearest planet with people). At home, every other idle war fleet there merges into
+   it; then it goes to the first threatened planet it can reach (it stays when that is the homeworld); otherwise,
+   once it has `attack_ships` (5) ships, to the planet known to be another player's that is nearest home and within
+   its reach. Battles there follow the
    default battle plan, and its bombers bomb a planet left without a starbase (S17); a planet bombed out becomes
    unowned, a target for colony ships.
-7. **Queues**, the player's planets in planet order. With at least `colony_min_population` (150, units of 100
+8. **Troop transports**, without orders: away from the player's planets and empty, back to the nearest planet with
+   people; at one of its planets, the nearest planet known to be another player's, without a starbase (as known),
+   that it can reach and take: the troops needed are the top of the population estimate (+1/8) over the share
+   of troops its defenses let through (a defense class c lets about 101 − 6c percent of bombs through; troops
+   get U + (1 − U)/4 through, S17) and the race's troop strength (`invasion.troops_pct`), times 130%, plus one;
+   at most the transport's room and half the planet's people. It loads (or lands) the difference by hand and goes
+   there with a transport task unloading all colonists (an invasion, S17). With no target it lands what it
+   carries.
+9. **Mineral haulers**, without orders: from the player's planet with the most surface minerals to the planet
+   with `warship_min_population` people that is shortest of its scarcest mineral, when the source has at least
+   half the hauler's room: a transport task loading all minerals at the source, then one unloading them all at
+   the destination.
+10. **Queues**, the player's planets in planet order. With at least `colony_min_population` (150, units of 100
    colonists) people and the minerals for one ship on its surface: one colony ship while the player's colony ships
    (in flight, queued elsewhere and planned this turn) are fewer than `colony_ships` (2) plus one per 3 planets
    owned and some known planet is worth settling; one scout while its scouts are fewer than `scouts` (3) plus one per
    5 planets and some planet is still unscanned. From year index `war_turn` (40), with `warship_min_population`
    (300) people and the minerals: one warship while its warships are fewer than `warships` (3) plus one per 2
-   planets, one bomber while its bombers are fewer than `bombers` (2) plus one per 3 planets. A dock on a planet
+   planets, one bomber while its bombers are fewer than `bombers` (2) plus one per 3 planets, one troop transport
+   while its transports are fewer than `transports` (1) plus one per 8 planets; from year index `haul_turn` (30),
+   likewise one mineral hauler while it has fewer than `haulers` (1) plus one per 6 planets. A dock on a planet
    without a starbase, with `dock_min_population` (300) people and the minerals, at least `dock_spacing` (200)
    light-years from the player's docks and the docks queued before it this turn. Then auto factories and auto
    mines (200 each), auto maximum terraforming (200) when the planet's habitability is below 100%, and auto
    defenses (200) with `defense_min_population` (50) people. The order is sent only when the queue differs (items,
    designs, starbase flags and counts).
 
-Not yet: mineral transport, invasion with troops, defending against attacks, alliances.
+Not yet: alliances and relations, minefields, packets, starbase weapons, judging an enemy's strength before
+attacking.
 
 ## Randomness
 

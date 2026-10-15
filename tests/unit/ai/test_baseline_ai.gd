@@ -114,3 +114,36 @@ func test_computer_players_arm() -> void:
 				if designs.is_armed(s.player(p).ship_design(stack.design)):
 					armed += stack.count
 		assert_int(armed).is_greater(0)
+
+
+## Troops for an invasion (S17 "Ground combat"): enough for the top of the population estimate
+## after the defenses, with a margin; none for a race that can't invade.
+func test_troops_needed() -> void:
+	var s := _state()
+	var brain := BaselineAi.new()
+	brain._ctx = AiContext.new(PlayerView.new(s, _content, 1), _content, StarsRandom.new(), {}, 1)
+	brain._me = s.player(1)
+	var strength := RaceMath.trait_param(s.player(1).race, _content, "invasion.troops_pct", 100)
+	var bare: int = brain._troops_needed({"population": 400, "defense_estimate": 0})
+	# 400 units, 450 at the top of the estimate, beaten by 450 x 1.3 x 100 / strength
+	assert_int(bare).is_equal(
+		450 * 100 * 100 * BaselineAi.TROOP_MARGIN_PCT / 100 / (strength * 100) + 1
+	)
+	assert_int(bare * strength / 100).is_greater(450)
+	# defenses let fewer troops through: more are needed
+	var defended: int = brain._troops_needed({"population": 400, "defense_estimate": 10})
+	assert_int(defended).is_greater(bare)
+
+
+func test_freighter_designs() -> void:
+	var s := _state()
+	s.player(1).tech_levels.assign([3, 3, 3, 9, 3, 3])
+	var designs := BaselineDesigns.new(PlayerView.new(s, _content, 1), _content)
+	var transport := designs.build(BaselineDesigns.TRANSPORT)
+	var hauler := designs.build(BaselineDesigns.HAULER)
+	assert_str(transport.hull).is_equal("hull.large_freighter")
+	assert_str(transport.name).is_equal(BaselineDesigns.NAMES[BaselineDesigns.TRANSPORT])
+	assert_str(hauler.name).is_equal(BaselineDesigns.NAMES[BaselineDesigns.HAULER])
+	assert_int(designs.cargo(transport)).is_greater(
+		int(_content.hull("hull.large_freighter")["cargo"])
+	)

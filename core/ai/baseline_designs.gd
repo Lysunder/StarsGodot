@@ -6,7 +6,9 @@ extends RefCounted
 ## and refuels ships, bare); a warship (the most advanced combat hull, every weapon slot with the
 ## strongest weapon, armor slots with the best armor, shield-only slots with the best shield,
 ## compared by `strength`); a bomber (the most advanced bomber hull, every bomb slot with the bomb
-## that kills the most people, compared by `bomb_power`). Other ships are compared by `merit`:
+## that kills the most people, compared by `bomb_power`); a troop transport (the largest freighter
+## hull, the best cargo pods, compared by cargo room) and a mineral hauler (the same ship under
+## another name). Other ships are compared by `merit`:
 ## the fastest warp at which they still go USEFUL_RANGE light-years, then their range there.
 
 const SCOUT := "scout"
@@ -14,6 +16,11 @@ const COLONY := "colony"
 const DOCK := "dock"
 const WARSHIP := "warship"
 const BOMBER := "bomber"
+const TRANSPORT := "transport"
+const HAULER := "hauler"
+const FREIGHTER_HULLS := [
+	"hull.small_freighter", "hull.medium_freighter", "hull.large_freighter", "hull.super_freighter"
+]
 const BOMBER_HULLS := ["hull.mini_bomber", "hull.b_17_bomber", "hull.b_52_bomber"]
 ## Bombs by tag that kill people (installation-only and retro bombs left out).
 const KILLING_BOMBS := ["normal", "smart"]
@@ -31,6 +38,8 @@ const NAMES := {
 	DOCK: "Waystation",
 	WARSHIP: "Lancer",
 	BOMBER: "Hammerfall",
+	TRANSPORT: "Tidewater",
+	HAULER: "Packhorse",
 }
 const USEFUL_RANGE := 300
 ## Ranges are capped here when compared (an engine burning no fuel has unlimited range).
@@ -89,6 +98,11 @@ func build(kind: String) -> Design:
 		return _build_warship()
 	if kind == BOMBER:
 		return _build_bomber()
+	if kind == TRANSPORT or kind == HAULER:
+		var freighter := _build_transport()
+		if freighter != null:
+			freighter.name = NAMES[kind]
+		return freighter
 	if kind == DOCK:
 		var dock := cheapest_dock_hull()
 		if dock.is_empty():
@@ -190,6 +204,50 @@ func _build_bomber() -> Design:
 	if not PartRules.design_problem(d, false, _view.me(), _content).is_empty():
 		return null
 	return d
+
+
+func _build_transport() -> Design:
+	var hulls := _view.designer.available_hulls(false)
+	var hull := ""
+	for h: String in FREIGHTER_HULLS:
+		if hulls.has(h):
+			hull = h
+	if hull.is_empty():
+		return null
+	var d := _view.designer.blank_design(hull)
+	d.name = NAMES[TRANSPORT]
+	var pod := _best_by("mechanical", "cargo_capacity")
+	if (
+		not pod.is_empty()
+		and int(_content.part(pod).get("stats", {}).get("cargo_capacity", 0)) <= 0
+	):
+		pod = ""
+	var armor := _best_by("armor", "armor")
+	var slots: Array = _content.hull(hull)["slots"]
+	var engine_at := -1
+	for i in slots.size():
+		var accepts: Array = slots[i]["accepts"]
+		var part := ""
+		if accepts.has("engine"):
+			engine_at = i
+		elif accepts.has("mechanical"):
+			part = pod
+		elif accepts.has("armor"):
+			part = armor
+		if not part.is_empty():
+			d.parts[i].part = part
+			d.parts[i].count = int(slots[i]["max"])
+	if engine_at < 0:
+		return null
+	_fit_engine(d, engine_at, int(slots[engine_at]["max"]))
+	if not PartRules.design_problem(d, false, _view.me(), _content).is_empty():
+		return null
+	return d
+
+
+## A design's cargo room in kT.
+func cargo(d: Design) -> int:
+	return PartRules.cargo_capacity(d, _content)
 
 
 func _best_bomb() -> String:
