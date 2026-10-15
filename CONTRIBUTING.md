@@ -92,5 +92,5 @@ them back to LF if you want a clean working copy.
 
 ## License
 
-The project is licensed under the [GNU General Public License v3.0](LICENSE). By contributing, you agree that your
-contribution is licensed under the same terms.
+The project is licensed under the [GNU General Public License](LICENSE), version 3 or (at your option) any later
+version (`GPL-3.0-or-later`). By contributing, you agree that your contribution is licensed under the same terms.

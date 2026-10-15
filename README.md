@@ -45,6 +45,7 @@ Stars! is a trademark of its respective owners. This project is not affiliated w
 
 ## License
 
-[GNU General Public License v3.0](LICENSE). Bundled third-party code and assets keep their own licenses:
+[GNU General Public License](LICENSE), version 3 or (at your option) any later version
+(`GPL-3.0-or-later`). Bundled third-party code and assets keep their own licenses:
 gdUnit4 (`addons/gdUnit4/`, MIT) and three fonts under the SIL Open Font License 1.1 (`art/fonts/`): Cascadia Mono
 by Microsoft, Terminus (TTF) by Dimitar Zhekov and Tilman Blumenbach, and W95FA by Alina Sava.
