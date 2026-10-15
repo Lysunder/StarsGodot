@@ -345,6 +345,7 @@ class Importer:
             },
             "ai": AI_PERSONALITIES[personality] if computer else "",
             "ai_level": (ai_flags >> 2) & 7 if computer else 0,
+            "ai_personality": {},
             "active": personality != AI_INACTIVE or not ai_flags & 2,
             "eliminated": bool(d[0x54] & 1),
             "rank": struct.unpack_from("<H", d, 0x0A)[0],

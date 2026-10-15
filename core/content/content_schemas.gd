@@ -398,6 +398,9 @@ static func validate_def(def: Dictionary) -> Report:
 		report.errors.append(["/type", "unknown definition type %s" % JSON.stringify(type_name)])
 		return report
 	_check(def, def_spec(type_name), "", report)
+	# a personality's settings must be ones its brain declares, in range (S22)
+	if type_name == "ai_personality" and report.errors.is_empty():
+		report.errors.append_array(AiBrains.problems(def))
 	return report
 
 

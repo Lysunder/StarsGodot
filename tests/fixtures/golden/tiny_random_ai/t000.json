@@ -1559,6 +1559,7 @@
     "active": true,
     "ai": "",
     "ai_level": 0,
+    "ai_personality": {},
     "battle_plans": [
      {
       "attack": 2,
@@ -1915,6 +1916,7 @@
     "active": true,
     "ai": "cybertrons",
     "ai_level": 2,
+    "ai_personality": {},
     "battle_plans": [
      {
       "attack": 2,

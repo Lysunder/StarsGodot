@@ -35,5 +35,6 @@ static func create(content: ContentRegistry, options: Options) -> GameState:
 		player.race.plural_name = "Humanoids"
 	var players: Array[Player] = [player]
 	var state := UniverseGenerator.new(content, settings, players, options.seed).generate()
+	ComputerPlayers.adopt_personalities(state, content)
 	SaveFile.stamp(state, content)
 	return state

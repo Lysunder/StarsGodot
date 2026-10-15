@@ -97,3 +97,58 @@ func test_param_prefers_the_level_value() -> void:
 	ctx.order({"type": "research", "percent": 10})
 	assert_int(ctx.orders.orders.size()).is_equal(1)
 	assert_int(ctx.orders.player).is_equal(1)
+
+
+## Every setting a brain declares has a default in range and a name and description to show.
+func test_brain_settings_are_declared() -> void:
+	for brain: String in AiBrains.IDS:
+		for s: Dictionary in AiBrains.settings(brain):
+			assert_int(s["default"]).is_between(s["min"], s["max"])
+			for suffix in [".name", ".description"]:
+				var key: String = "ai_setting.%s%s" % [s["key"], suffix]
+				assert_str(_content.string_for(key)).override_failure_message(key).is_not_equal(key)
+	assert_int(AiBrains.settings(AiBrains.BASELINE).size()).is_greater(10)
+
+
+## A personality may only set what its brain declares, within range (checked when content loads).
+func test_personality_settings_are_checked() -> void:
+	var good := {
+		"brain": AiBrains.BASELINE, "params": {"research_pct": 20}, "levels": [{"scouts": 5}]
+	}
+	assert_array(AiBrains.problems(good)).is_empty()
+	var bad := {
+		"brain": AiBrains.BASELINE,
+		"params": {"research_pct": 120, "luck": 3},
+		"levels": [{"scouts": -1}]
+	}
+	var problems := AiBrains.problems(bad)
+	assert_int(problems.size()).is_equal(3)
+	var pointers: Array = problems.map(func(p: Array) -> String: return p[0])
+	assert_array(pointers).contains(["/params/research_pct", "/params/luck", "/levels/0/scouts"])
+	# a setting the personality leaves out comes from the brain's default
+	var s := _state()
+	var ctx := AiContext.new(PlayerView.new(s, _content, 1), _content, StarsRandom.new(), good, 0)
+	assert_int(ctx.param("research_pct")).is_equal(20)
+	assert_int(ctx.param("scouts")).is_equal(5)
+	assert_int(ctx.param("war_turn")).is_equal(40)
+
+
+## A new game keeps a copy of each computer player's personality, which the AI step then uses.
+func test_games_keep_their_personalities() -> void:
+	var s := _state()
+	assert_dict(s.players[1].ai_personality).is_empty()
+	ComputerPlayers.adopt_personalities(s, _content)
+	assert_dict(s.players[0].ai_personality).is_empty()
+	var copy: Dictionary = s.players[1].ai_personality
+	assert_str(copy["brain"]).is_equal(AiBrains.BASELINE)
+	assert_str(copy["name"]).is_equal(
+		_content.display_name(ComputerPlayers.personality_id(s.players[1].ai))
+	)
+	# the copy wins over the content, even when the content no longer has it
+	s.players[1].ai = "gone"
+	copy["params"] = {"research_pct": 33}
+	assert_dict(ComputerPlayers.personality_for(s.players[1], _content)).is_equal(copy)
+	var given: Array[OrderSet] = []
+	var errors := PackedStringArray()
+	ComputerPlayers.add_orders(s, _content, given, errors)
+	assert_array(errors).is_empty()

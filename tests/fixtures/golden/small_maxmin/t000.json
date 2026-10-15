@@ -8311,6 +8311,7 @@
     "active": true,
     "ai": "",
     "ai_level": 0,
+    "ai_personality": {},
     "battle_plans": [
      {
       "attack": 2,
@@ -8667,6 +8668,7 @@
     "active": true,
     "ai": "turindrones",
     "ai_level": 1,
+    "ai_personality": {},
     "battle_plans": [
      {
       "attack": 2,

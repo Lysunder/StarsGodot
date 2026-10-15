@@ -29,6 +29,35 @@ static func personality_of(p: Player) -> String:
 	return p.ai if not p.is_human() else INACTIVE
 
 
+## The personality player `p` plays with: the copy the game keeps, else the content definition
+## of its key; {} when there is neither.
+static func personality_for(p: Player, content: ContentRegistry) -> Dictionary:
+	if not p.is_human() and not p.ai_personality.is_empty():
+		return p.ai_personality
+	var id := personality_id(personality_of(p))
+	if not content.ids(PERSONALITY).has(id):
+		return {}
+	return content.get_def(PERSONALITY, id)
+
+
+## Gives every computer player of a new game a copy of its personality's definition (S22), so
+## the game keeps playing the same wherever it is loaded.
+static func adopt_personalities(state: GameState, content: ContentRegistry) -> void:
+	for p in state.players:
+		if p.is_human() or not p.ai_personality.is_empty():
+			continue
+		var id := personality_id(p.ai)
+		if not content.ids(PERSONALITY).has(id):
+			continue
+		var def := content.get_def(PERSONALITY, id)
+		p.ai_personality = {
+			"name": content.display_name(id),
+			"brain": def["brain"],
+			"params": def.get("params", {}).duplicate(true),
+			"levels": def.get("levels", []).duplicate(true),
+		}
+
+
 ## `given` followed by the orders of each computer player that has none in it. A player whose
 ## personality or brain is unknown gives no orders, and `errors` gets a line for it.
 static func add_orders(
@@ -45,11 +74,10 @@ static func add_orders(
 	for p in state.players:
 		if not plays(p) or has_orders.has(p.index):
 			continue
-		var id := personality_id(personality_of(p))
-		if not content.ids(PERSONALITY).has(id):
+		var personality := personality_for(p, content)
+		if personality.is_empty():
 			errors.append("player %d: no AI personality %s" % [p.index, personality_of(p)])
 			continue
-		var personality := content.get_def(PERSONALITY, id)
 		var brain := AiBrains.create(personality["brain"])
 		if brain == null:
 			errors.append("player %d: no AI brain %s" % [p.index, personality["brain"]])

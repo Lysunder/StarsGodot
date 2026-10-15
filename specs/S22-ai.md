@@ -58,9 +58,22 @@ A personality is content (`ai_personality`, id `ai_personality.<key>`, the key b
 | `params` | named integer parameters the brain reads |
 | `levels` | optional, one map per difficulty level (easiest first), the parameters that level changes |
 
-A brain asking for parameter *k* gets the level's value if the level map has *k*, else the personality's `params`
-value, else the brain's own default. Personality and difficulty are therefore data; a mod can add a personality
-for an existing brain, or change one's parameters, without code.
+A brain asking for setting *k* gets the level's value if the level map has *k*, else the personality's `params`
+value, else the brain's declared default. Personality and difficulty are therefore data; a mod can add a personality
+for an existing brain, or change one's settings, without code.
+
+### Personality settings
+
+Each brain declares the settings it reads: a key, a group (research, expansion, economy, military), the lowest
+and highest value, and the default; their names and descriptions are in the language files (`ai_setting.<key>`,
+groups `ai_setting_group.<group>`), so a personality editor can show any brain's settings. When content loads, a
+personality that sets a key its brain doesn't declare, or a value out of the declared range, is an error. The idle
+brain declares none; the baseline brain's are listed with it below.
+
+**The game keeps its personalities.** When a game is created, each computer player gets a copy of its
+personality's definition (`Player.ai_personality`: name, brain, params, levels), and the AI step uses that copy, so
+the game plays the same wherever it is loaded, without the mod or user file the personality came from. Games made
+by the original (and inactive human players) have no copy: the content definition of the key is used.
 
 The original has six personalities, chosen by the computer player's race (keys `robotoids`, `turindrones`,
 `automitrons`, `rototills`, `cybertrons`, `macinti`, in the original's numbering 0-5), and the housekeeping one

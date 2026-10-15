@@ -3,22 +3,11 @@ extends BaselineBase
 ## Our own computer player (spec S22 "The baseline brain"): it grows an economy and spreads out.
 ## Each turn, in this order: research settings, the default queue for new colonies, designs, the
 ## threats to its planets, orders to its fleets (colony ships, scouts, war fleets, troop
-## transports, mineral haulers), then each planet's queue. It
-## reads only its view (its own things, and other planets as it knows them) and draws nothing.
+## transports, mineral haulers), then each planet's queue. It reads only its view (its own
+## things, and other planets as it knows them) and draws nothing.
 ##
-## Parameters (personality `params`, per level in `levels`), with their defaults:
-## research_pct 15, scouts 3, colony_ships 2, colony_min_population 150 (units of 100 colonists a
-## planet needs before it builds ships), colonists_share_pct 25 (of the planet's people a colony
-## ship takes, up to its room), min_value 5 (lowest habitability worth settling),
-## dock_min_population 300 (a planet needs before it builds a dock), dock_spacing 200 (light-years
-## from the nearest dock), defense_min_population 50 (before it builds defenses), war_turn 40
-## (the year index warships are built from), warships 3 (plus one per WARSHIPS_PER_PLANETS
-## planets), warship_min_population 300, attack_ships 5 (warships gathered before an attack),
-## bombers 2 (plus one per BOMBERS_PER_PLANETS planets, built with the warships), transports 1
-## (troop transports, plus one per TRANSPORTS_PER_PLANETS planets), defense_range 60
-## (light-years from its planets within which another player's war fleet away from its own
-## planets is a threat), haul_turn 30 (the year index mineral haulers are built from), haulers 1
-## (plus one per HAULERS_PER_PLANETS planets).
+## Its settings (personality `params`, per level in `levels`) and their defaults are declared
+## in BaselineBase.SETTINGS.
 
 
 func play(ctx: AiContext) -> void:
@@ -70,7 +59,7 @@ func _research() -> void:
 		var i: int = order[field]
 		if best < 0 or _me.tech_levels[i] < _me.tech_levels[best]:
 			best = i
-	var percent := _ctx.param("research_pct", 15)
+	var percent := _ctx.param("research_pct")
 	if (
 		_me.research_percent == percent
 		and _me.research_field == best
@@ -126,7 +115,7 @@ func _send_colony_ship(fleet: Fleet) -> void:
 			if home >= 0:
 				_go(fleet, home, "none")
 			return
-		var share := here.population * _ctx.param("colonists_share_pct", 25) / 100
+		var share := here.population * _ctx.param("colonists_share_pct") / 100
 		var load := mini(_cargo_room(fleet), share)
 		if load <= 0:
 			return
@@ -158,7 +147,7 @@ func _order_waypoint0_colonize(fleet: Fleet, planet: Planet) -> void:
 ## -1 when none is worth it.
 func _best_colony_target(fleet: Fleet) -> int:
 	var best := -1
-	var best_value := _ctx.param("min_value", 5) - 1
+	var best_value := _ctx.param("min_value") - 1
 	var best_d2 := 0
 	for planet in _state.planets:
 		if _colony_targets.has(planet.id) or planet.owner == _me.index:
@@ -251,7 +240,7 @@ func _send_war_fleet(fleet: Fleet) -> void:
 		if _warp_for(fleet, planet) > 0:
 			_go(fleet, planet.id, "none")
 			return
-	if ships < _ctx.param("attack_ships", 5):
+	if ships < _ctx.param("attack_ships"):
 		return
 	var target := _attack_target(home, fleet)
 	if target >= 0:
@@ -277,7 +266,7 @@ func _find_threats() -> void:
 		threats.append(enemy)
 	if threats.is_empty():
 		return
-	var reach := _ctx.param("defense_range", 60)
+	var reach := _ctx.param("defense_range")
 	for planet in _state.planets:
 		if planet.owner != _me.index:
 			continue
@@ -363,7 +352,7 @@ func _send_hauler(fleet: Fleet) -> void:
 	for planet in _state.planets:
 		if planet.owner != _me.index:
 			continue
-		if planet.population < _ctx.param("warship_min_population", 300):
+		if planet.population < _ctx.param("warship_min_population"):
 			continue
 		var low := mini(planet.surface[0], mini(planet.surface[1], planet.surface[2]))
 		if shipyard == null or low < scarcest:
@@ -583,7 +572,7 @@ func _update_dock_design() -> void:
 ## differs from the planet's queue.
 func _plan_queue(planet: Planet) -> void:
 	var items: Array = []
-	var spare := planet.population >= _ctx.param("colony_min_population", 150)
+	var spare := planet.population >= _ctx.param("colony_min_population")
 	var colony_slot := _design_slot(BaselineDesigns.COLONY)
 	if (
 		spare
@@ -606,9 +595,9 @@ func _plan_queue(planet: Planet) -> void:
 		_planned[BaselineDesigns.SCOUT] = _planned.get(BaselineDesigns.SCOUT, 0) + 1
 	var warship_slot := _design_slot(BaselineDesigns.WARSHIP)
 	if (
-		_state.turn >= _ctx.param("war_turn", 40)
+		_state.turn >= _ctx.param("war_turn")
 		and warship_slot >= 0
-		and planet.population >= _ctx.param("warship_min_population", 300)
+		and planet.population >= _ctx.param("warship_min_population")
 		and _affords(planet, warship_slot)
 		and _ships(BaselineDesigns.WARSHIP, planet) < _warship_quota()
 	):
@@ -616,9 +605,9 @@ func _plan_queue(planet: Planet) -> void:
 		_planned[BaselineDesigns.WARSHIP] = _planned.get(BaselineDesigns.WARSHIP, 0) + 1
 	var bomber_slot := _design_slot(BaselineDesigns.BOMBER)
 	if (
-		_state.turn >= _ctx.param("war_turn", 40)
+		_state.turn >= _ctx.param("war_turn")
 		and bomber_slot >= 0
-		and planet.population >= _ctx.param("warship_min_population", 300)
+		and planet.population >= _ctx.param("warship_min_population")
 		and _affords(planet, bomber_slot)
 		and _ships(BaselineDesigns.BOMBER, planet) < _bomber_quota()
 	):
@@ -626,9 +615,9 @@ func _plan_queue(planet: Planet) -> void:
 		_planned[BaselineDesigns.BOMBER] = _planned.get(BaselineDesigns.BOMBER, 0) + 1
 	var hauler_slot := _design_slot(BaselineDesigns.HAULER)
 	if (
-		_state.turn >= _ctx.param("haul_turn", 30)
+		_state.turn >= _ctx.param("haul_turn")
 		and hauler_slot >= 0
-		and planet.population >= _ctx.param("warship_min_population", 300)
+		and planet.population >= _ctx.param("warship_min_population")
 		and _affords(planet, hauler_slot)
 		and _ships(BaselineDesigns.HAULER, planet) < _hauler_quota()
 	):
@@ -636,9 +625,9 @@ func _plan_queue(planet: Planet) -> void:
 		_planned[BaselineDesigns.HAULER] = _planned.get(BaselineDesigns.HAULER, 0) + 1
 	var transport_slot := _design_slot(BaselineDesigns.TRANSPORT)
 	if (
-		_state.turn >= _ctx.param("war_turn", 40)
+		_state.turn >= _ctx.param("war_turn")
 		and transport_slot >= 0
-		and planet.population >= _ctx.param("warship_min_population", 300)
+		and planet.population >= _ctx.param("warship_min_population")
 		and _affords(planet, transport_slot)
 		and _ships(BaselineDesigns.TRANSPORT, planet) < _transport_quota()
 	):
@@ -653,7 +642,7 @@ func _plan_queue(planet: Planet) -> void:
 	items.append(_item(AUTO_MINES, AUTO_COUNT))
 	if _info(planet.id)["habitability"] < FULL_VALUE:
 		items.append(_item(AUTO_TERRAFORM, AUTO_COUNT))
-	if planet.population >= _ctx.param("defense_min_population", 50):
+	if planet.population >= _ctx.param("defense_min_population"):
 		items.append(_item(AUTO_DEFENSES, AUTO_COUNT))
 	if _same_queue(planet, items):
 		return
@@ -666,12 +655,11 @@ func _wants_dock(planet: Planet) -> bool:
 	var d := _dock_design()
 	if d == null or planet.starbase != null:
 		return false
-	if planet.population < _ctx.param("dock_min_population", 300) or not _affords_design(planet, d):
+	if planet.population < _ctx.param("dock_min_population") or not _affords_design(planet, d):
 		return false
 	var near := _nearest_dock(planet.x, planet.y, true)
 	return (
-		near == null
-		or _distance(planet.x, planet.y, near.x, near.y) >= _ctx.param("dock_spacing", 200)
+		near == null or _distance(planet.x, planet.y, near.x, near.y) >= _ctx.param("dock_spacing")
 	)
 
 
@@ -681,10 +669,6 @@ func _has_colony_targets() -> bool:
 		if planet.owner == _me.index or _colony_targets.has(planet.id):
 			continue
 		var info := _info(planet.id)
-		if (
-			info["known"]
-			and info["owner"] < 0
-			and info["habitability"] >= _ctx.param("min_value", 5)
-		):
+		if info["known"] and info["owner"] < 0 and info["habitability"] >= _ctx.param("min_value"):
 			return true
 	return false

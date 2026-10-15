@@ -13,6 +13,10 @@ var race: Race = Race.new()
 ## AI personality id, or "" for a human player (S22).
 var ai: String = AI_NONE
 var ai_level: int = 0
+## The personality's definition as the game was created with it (S22): {name, brain, params,
+## levels}, so the game plays the same without the content or user file it came from. Empty in
+## games made by the original, and for human players: the content definition of `ai` is used.
+var ai_personality: Dictionary = {}
 var active: bool = true
 ## Out of the game: no planets and no ships left (S20).
 var eliminated: bool = false
@@ -69,6 +73,7 @@ func _schema() -> Array:
 		["race", Kind.OBJECT, Race],
 		["ai", Kind.STRING],
 		["ai_level", Kind.INT],
+		["ai_personality", Kind.JSON],
 		["active", Kind.BOOL],
 		["eliminated", Kind.BOOL],
 		["rank", Kind.INT],

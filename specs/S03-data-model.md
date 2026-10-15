@@ -80,6 +80,7 @@ files are read only by the dev harness (S23).
 | `index` | 0 … 15 by default (limit `limits.players`) |
 | `race` | the race definition (S06): names, logo, primary and lesser traits, habitability, growth rate, economy settings, research costs, leftover-points choice, options |
 | `ai` | none (human) or a personality and level (S22) |
+| `ai_personality` | the computer player's personality as the game was created with it, or empty (S22) |
 | `active` | still in the game |
 | `eliminated` | out of the game: no planets and no ships left (S20) |
 | `rank` | rank by score, 1 for the highest; 0 before the first scoring and in a one-player game (S20) |

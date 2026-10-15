@@ -6597,6 +6597,7 @@
     "active": true,
     "ai": "",
     "ai_level": 0,
+    "ai_personality": {},
     "battle_plans": [
      {
       "attack": 2,

@@ -4,6 +4,28 @@ extends AiPlayer
 ## constants, the turn's working state, and the helpers its decisions share (recognising its
 ## ships, distances and warps, planets with docks and people, design choices and quotas).
 
+## The settings personalities give this brain (spec S22 "Personality settings"): key, group,
+## range and default; names and descriptions are in the language files (`ai_setting.<key>`).
+const SETTINGS := [
+	{"key": "research_pct", "group": "research", "min": 0, "max": 100, "default": 15},
+	{"key": "scouts", "group": "expansion", "min": 0, "max": 20, "default": 3},
+	{"key": "colony_ships", "group": "expansion", "min": 0, "max": 20, "default": 2},
+	{"key": "colony_min_population", "group": "expansion", "min": 0, "max": 10000, "default": 150},
+	{"key": "colonists_share_pct", "group": "expansion", "min": 1, "max": 100, "default": 25},
+	{"key": "min_value", "group": "expansion", "min": 1, "max": 100, "default": 5},
+	{"key": "dock_min_population", "group": "economy", "min": 0, "max": 10000, "default": 300},
+	{"key": "dock_spacing", "group": "economy", "min": 0, "max": 2000, "default": 200},
+	{"key": "defense_min_population", "group": "economy", "min": 0, "max": 10000, "default": 50},
+	{"key": "haul_turn", "group": "economy", "min": 0, "max": 1000, "default": 30},
+	{"key": "haulers", "group": "economy", "min": 0, "max": 20, "default": 1},
+	{"key": "war_turn", "group": "military", "min": 0, "max": 1000, "default": 40},
+	{"key": "warships", "group": "military", "min": 0, "max": 50, "default": 3},
+	{"key": "bombers", "group": "military", "min": 0, "max": 50, "default": 2},
+	{"key": "transports", "group": "military", "min": 0, "max": 20, "default": 1},
+	{"key": "warship_min_population", "group": "military", "min": 0, "max": 10000, "default": 300},
+	{"key": "attack_ships", "group": "military", "min": 1, "max": 100, "default": 5},
+	{"key": "defense_range", "group": "military", "min": 0, "max": 1000, "default": 60},
+]
 const AUTO_FACTORIES := "production_item.auto_factories"
 const AUTO_MINES := "production_item.auto_mines"
 const AUTO_DEFENSES := "production_item.auto_defenses"
@@ -201,10 +223,7 @@ func _nearest_populated(fleet: Fleet) -> int:
 	var best := -1
 	var best_d2 := 0
 	for planet in _state.planets:
-		if (
-			planet.owner != _me.index
-			or planet.population < _ctx.param("colony_min_population", 150)
-		):
+		if planet.owner != _me.index or planet.population < _ctx.param("colony_min_population"):
 			continue
 		var d2 := _d2(fleet.x, fleet.y, planet.x, planet.y)
 		if best < 0 or d2 < best_d2:
@@ -436,27 +455,27 @@ func _affords_design(planet: Planet, d: Design) -> bool:
 
 
 func _hauler_quota() -> int:
-	return _ctx.param("haulers", 1) + _owned_planets / HAULERS_PER_PLANETS
+	return _ctx.param("haulers") + _owned_planets / HAULERS_PER_PLANETS
 
 
 func _transport_quota() -> int:
-	return _ctx.param("transports", 1) + _owned_planets / TRANSPORTS_PER_PLANETS
+	return _ctx.param("transports") + _owned_planets / TRANSPORTS_PER_PLANETS
 
 
 func _bomber_quota() -> int:
-	return _ctx.param("bombers", 2) + _owned_planets / BOMBERS_PER_PLANETS
+	return _ctx.param("bombers") + _owned_planets / BOMBERS_PER_PLANETS
 
 
 func _warship_quota() -> int:
-	return _ctx.param("warships", 3) + _owned_planets / WARSHIPS_PER_PLANETS
+	return _ctx.param("warships") + _owned_planets / WARSHIPS_PER_PLANETS
 
 
 func _colony_quota() -> int:
-	return _ctx.param("colony_ships", 2) + _owned_planets / COLONIES_PER_SHIP
+	return _ctx.param("colony_ships") + _owned_planets / COLONIES_PER_SHIP
 
 
 func _scout_quota() -> int:
-	return _ctx.param("scouts", 3) + _owned_planets / PLANETS_PER_SCOUT
+	return _ctx.param("scouts") + _owned_planets / PLANETS_PER_SCOUT
 
 
 ## Same items and counts in the same order (progress aside).
