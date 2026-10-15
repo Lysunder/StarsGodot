@@ -1,22 +1,35 @@
 class_name BaselineAi
 extends AiPlayer
-## Our own computer player (spec S22 "The baseline brain"), first part: it grows an economy and
-## spreads out. Each turn, in this order: research settings, the default queue for new colonies,
+## Our own computer player (spec S22 "The baseline brain"): it grows an economy and spreads out.
+## Each turn, in this order: research settings, the default queue for new colonies, designs,
 ## colony ships and scouts already built (orders to the fleets), then each planet's queue. It
 ## reads only its view (its own things, and other planets as it knows them) and draws nothing.
 ##
 ## Parameters (personality `params`, per level in `levels`), with their defaults:
 ## research_pct 15, scouts 3, colony_ships 2, colony_min_population 150 (units of 100 colonists a
 ## planet needs before it builds ships), colonists_share_pct 25 (of the planet's people a colony
-## ship takes, up to its room), min_value 5 (lowest habitability worth settling).
+## ship takes, up to its room), min_value 5 (lowest habitability worth settling),
+## dock_min_population 300 (a planet needs before it builds a dock), dock_spacing 200 (light-years
+## from the nearest dock), defense_min_population 50 (before it builds defenses), war_turn 40
+## (the year index warships are built from), warships 3 (plus one per WARSHIPS_PER_PLANETS
+## planets), warship_min_population 300, attack_ships 5 (warships gathered before an attack),
+## bombers 2 (plus one per BOMBERS_PER_PLANETS planets, built with the warships).
 
 const AUTO_FACTORIES := "production_item.auto_factories"
 const AUTO_MINES := "production_item.auto_mines"
+const AUTO_DEFENSES := "production_item.auto_defenses"
+const AUTO_TERRAFORM := "production_item.auto_max_terraform"
+## Habitability (percent) at which a planet needs no terraforming.
+const FULL_VALUE := 100
 const AUTO_COUNT := 200
 const COLONIZER_TAG := "colonizer"
 ## One more colony ship allowed per this many planets owned, one more scout per PLANETS_PER_SCOUT.
 const COLONIES_PER_SHIP := 3
 const PLANETS_PER_SCOUT := 5
+const WARSHIPS_PER_PLANETS := 2
+const BOMBERS_PER_PLANETS := 3
+## A new warship design is saved when it is this many percent as strong as the best one.
+const WARSHIP_BETTER_PCT := 130
 ## Research fields in the order the brain raises them when levels are equal.
 const FIELD_PRIORITY := [
 	"tech_field.propulsion",
@@ -39,6 +52,12 @@ var _new_designs := {}
 ## This turn's new designs by slot (not in the state until the orders apply).
 var _made := {}
 var _planned := {}
+## Planets given a dock this turn.
+var _planned_docks: Array[Planet] = []
+## Fleets merged into another this turn.
+var _merged := {}
+## This turn's new dock design, or null.
+var _new_dock: Design = null
 var _owned_planets := 0
 ## Planets the player has never scanned.
 var _unknown_planets := 0
@@ -56,12 +75,17 @@ func play(ctx: AiContext) -> void:
 	if _state.turn == 0:
 		_defaults()
 	_update_designs()
+	_update_dock_design()
+	_update_warship_design()
+	_update_bomber_design()
 	_note_destinations()
 	for fleet in _state.fleets_of(_me.index):
 		if _is_colony_fleet(fleet):
 			_send_colony_ship(fleet)
 		elif _is_scout(fleet):
 			_send_scout(fleet)
+		elif _is_war_fleet(fleet):
+			_send_war_fleet(fleet)
 	for planet in _state.planets:
 		if planet.owner == _me.index:
 			_plan_queue(planet)
@@ -307,6 +331,68 @@ func _send_scout(fleet: Fleet) -> void:
 	_go(fleet, best, "none", best_warp)
 
 
+## A fleet of warships and bombers only.
+func _is_war_fleet(fleet: Fleet) -> bool:
+	for stack in fleet.stacks:
+		var d := _design_of(fleet, stack)
+		if not _is_warship_design(d) and not _is_bomber_design(d):
+			return false
+	return not fleet.stacks.is_empty()
+
+
+## Warships: away from home with nothing left to fight where they are, back to the homeworld; at
+## the homeworld, all the warships there join one fleet, which attacks the nearest planet known
+## to belong to another player once it has `attack_ships` ships.
+func _send_war_fleet(fleet: Fleet) -> void:
+	if _busy(fleet) or _merged.has(fleet.number):
+		return
+	var home := _state.planet(_me.homeworld)
+	if home == null or home.owner != _me.index:
+		home = _state.planet(_nearest_populated(fleet)) if _nearest_populated(fleet) >= 0 else null
+	if home == null:
+		return
+	if fleet.planet != home.id:
+		var here := _info(fleet.planet) if fleet.planet >= 0 else {}
+		if here.is_empty() or here["owner"] < 0 or here["owner"] == _me.index:
+			_go(fleet, home.id, "none")
+		return
+	var others: Array[int] = []
+	var ships := fleet.ship_count()
+	for other in _state.fleets_of(_me.index):
+		if other != fleet and other.planet == home.id and _is_war_fleet(other) and not _busy(other):
+			others.append(other.number)
+			_merged[other.number] = true
+			ships += other.ship_count()
+	if not others.is_empty():
+		_ctx.order({"type": "fleet_merge", "fleet": fleet.number, "fleets": others})
+	if ships < _ctx.param("attack_ships", 5):
+		return
+	var target := _attack_target(home, fleet)
+	if target >= 0:
+		_go(fleet, target, "none")
+
+
+## The planet nearest `from` the player knows to belong to another player and the fleet can
+## reach, -1 for none.
+func _attack_target(from: Planet, fleet: Fleet) -> int:
+	var best := -1
+	var best_d2 := 0
+	for planet in _state.planets:
+		if planet.owner == _me.index:
+			continue
+		var info := _info(planet.id)
+		if info["owner"] < 0 or info["owner"] == _me.index:
+			continue
+		var d2 := _d2(from.x, from.y, planet.x, planet.y)
+		if best >= 0 and d2 >= best_d2:
+			continue
+		if _warp_for(fleet, planet) == 0:
+			continue
+		best = planet.id
+		best_d2 = d2
+	return best
+
+
 ## The player's planet nearest the fleet with people to spare, -1 for none.
 func _nearest_populated(fleet: Fleet) -> int:
 	var best := -1
@@ -324,21 +410,26 @@ func _nearest_populated(fleet: Fleet) -> int:
 	return best
 
 
-## The player's planet nearest a point with a starbase that refuels (a dock), or null.
-func _nearest_dock(x: int, y: int) -> Planet:
+## The player's planet nearest a point with a starbase that refuels (a dock), or null; with
+## `planned`, the docks queued this turn count too.
+func _nearest_dock(x: int, y: int, planned: bool = false) -> Planet:
 	var best: Planet = null
 	var best_d2 := 0
 	for planet in _state.planets:
-		if planet.owner != _me.index or planet.starbase == null:
-			continue
-		var base := _me.starbase_design(planet.starbase.design)
-		if base == null or int(_ctx.content.hull(base.hull).get("dock", 0)) == 0:
+		if not _has_dock(planet) and not (planned and _planned_docks.has(planet)):
 			continue
 		var d2 := _d2(x, y, planet.x, planet.y)
 		if best == null or d2 < best_d2:
 			best = planet
 			best_d2 = d2
 	return best
+
+
+func _has_dock(planet: Planet) -> bool:
+	if planet.owner != _me.index or planet.starbase == null:
+		return false
+	var base := _me.starbase_design(planet.starbase.design)
+	return base != null and int(_ctx.content.hull(base.hull).get("dock", 0)) != 0
 
 
 ## Sends the fleet to a planet (its only waypoint after where it is) with a task, at `warp`, or
@@ -415,6 +506,122 @@ func _update_designs() -> void:
 		)
 
 
+## A warship design when the player has none, or the best it can make is WARSHIP_BETTER_PCT as
+## strong as its best.
+func _update_warship_design() -> void:
+	var made := _designs.build(BaselineDesigns.WARSHIP)
+	if made == null:
+		return
+	var have := _best_warship()
+	if (
+		have != null
+		and _designs.strength(made) * 100 < _designs.strength(have) * WARSHIP_BETTER_PCT
+	):
+		return
+	var taken := {}
+	for slot in _made:
+		taken[slot] = true
+	var slot := _free_slot(taken)
+	if slot < 0:
+		return
+	made.slot = slot
+	made.turn_designed = _state.turn
+	_new_designs[BaselineDesigns.WARSHIP] = slot
+	_made[slot] = made
+	_ctx.order({"type": "design_change", "starbase": false, "slot": slot, "design": made.to_dict()})
+
+
+## A bomber design when the player has none, or the best it can make is WARSHIP_BETTER_PCT as
+## strong as its best.
+func _update_bomber_design() -> void:
+	var made := _designs.build(BaselineDesigns.BOMBER)
+	if made == null:
+		return
+	var have := _best_bomber()
+	if (
+		have != null
+		and _designs.bomb_power(made) * 100 < _designs.bomb_power(have) * WARSHIP_BETTER_PCT
+	):
+		return
+	var taken := {}
+	for slot in _made:
+		taken[slot] = true
+	var slot := _free_slot(taken)
+	if slot < 0:
+		return
+	made.slot = slot
+	made.turn_designed = _state.turn
+	_new_designs[BaselineDesigns.BOMBER] = slot
+	_made[slot] = made
+	_ctx.order({"type": "design_change", "starbase": false, "slot": slot, "design": made.to_dict()})
+
+
+func _best_bomber() -> Design:
+	var best: Design = null
+	for d in _me.ship_designs:
+		if not _is_bomber_design(d):
+			continue
+		if best == null or _designs.bomb_power(d) >= _designs.bomb_power(best):
+			best = d
+	return best
+
+
+func _is_bomber_design(d: Design) -> bool:
+	return d != null and _designs.bomb_power(d) > 0 and not _designs.is_armed(d)
+
+
+## The player's strongest armed ship design that is not a scout (the newest on ties), or null.
+func _best_warship() -> Design:
+	var best: Design = null
+	for d in _me.ship_designs:
+		if not _is_warship_design(d):
+			continue
+		if best == null or _designs.strength(d) >= _designs.strength(best):
+			best = d
+	return best
+
+
+func _is_warship_design(d: Design) -> bool:
+	return _designs.is_armed(d) and not _is_scout_design(d) and not _is_colony_design(d)
+
+
+## A dock design on the cheapest hull that docks, unless the player has one on that hull.
+func _update_dock_design() -> void:
+	var have := _dock_design()
+	if have != null and have.hull == _designs.cheapest_dock_hull():
+		return
+	var made := _designs.build(BaselineDesigns.DOCK)
+	if made == null:
+		return
+	var limit := _ctx.content.constant("constant.limits.starbase_designs")
+	for slot in limit:
+		if _me.starbase_design(slot) == null:
+			made.slot = slot
+			made.turn_designed = _state.turn
+			_new_dock = made
+			_ctx.order(
+				{"type": "design_change", "starbase": true, "slot": slot, "design": made.to_dict()}
+			)
+			return
+
+
+## The player's dock design (this turn's new one first), the cheapest if several, or null.
+func _dock_design() -> Design:
+	if _new_dock != null:
+		return _new_dock
+	var best: Design = null
+	for d in _me.starbase_designs:
+		if not _designs.is_dock(d):
+			continue
+		var cost := int(_ctx.content.hull(d.hull).get("cost", {}).get("resources", 0))
+		if (
+			best == null
+			or cost < int(_ctx.content.hull(best.hull).get("cost", {}).get("resources", 0))
+		):
+			best = d
+	return best
+
+
 func _free_slot(taken: Dictionary) -> int:
 	var limit := _ctx.content.constant("constant.limits.ship_designs")
 	for slot in limit:
@@ -424,7 +631,14 @@ func _free_slot(taken: Dictionary) -> int:
 
 
 func _test(kind: String) -> Callable:
-	return _is_scout_design if kind == BaselineDesigns.SCOUT else _is_colony_design
+	match kind:
+		BaselineDesigns.SCOUT:
+			return _is_scout_design
+		BaselineDesigns.WARSHIP:
+			return _is_warship_design
+		BaselineDesigns.BOMBER:
+			return _is_bomber_design
+	return _is_colony_design
 
 
 ## The player's best design of `kind` (the newest on ties), or null.
@@ -440,7 +654,14 @@ func _best_design(kind: String) -> Design:
 func _design_slot(kind: String) -> int:
 	if _new_designs.has(kind):
 		return _new_designs[kind]
-	var d := _best_design(kind)
+	var d: Design = null
+	match kind:
+		BaselineDesigns.WARSHIP:
+			d = _best_warship()
+		BaselineDesigns.BOMBER:
+			d = _best_bomber()
+		_:
+			d = _best_design(kind)
 	return d.slot if d != null else -1
 
 
@@ -475,22 +696,77 @@ func _plan_queue(planet: Planet) -> void:
 	):
 		items.append(_design_item(scout_slot, 1))
 		_planned[BaselineDesigns.SCOUT] = _planned.get(BaselineDesigns.SCOUT, 0) + 1
+	var warship_slot := _design_slot(BaselineDesigns.WARSHIP)
+	if (
+		_state.turn >= _ctx.param("war_turn", 40)
+		and warship_slot >= 0
+		and planet.population >= _ctx.param("warship_min_population", 300)
+		and _affords(planet, warship_slot)
+		and _ships(BaselineDesigns.WARSHIP, planet) < _warship_quota()
+	):
+		items.append(_design_item(warship_slot, 1))
+		_planned[BaselineDesigns.WARSHIP] = _planned.get(BaselineDesigns.WARSHIP, 0) + 1
+	var bomber_slot := _design_slot(BaselineDesigns.BOMBER)
+	if (
+		_state.turn >= _ctx.param("war_turn", 40)
+		and bomber_slot >= 0
+		and planet.population >= _ctx.param("warship_min_population", 300)
+		and _affords(planet, bomber_slot)
+		and _ships(BaselineDesigns.BOMBER, planet) < _bomber_quota()
+	):
+		items.append(_design_item(bomber_slot, 1))
+		_planned[BaselineDesigns.BOMBER] = _planned.get(BaselineDesigns.BOMBER, 0) + 1
+	if _wants_dock(planet):
+		items.append(
+			{"item": "", "design": _dock_design().slot, "starbase": true, "count": 1, "progress": 0}
+		)
+		_planned_docks.append(planet)
 	items.append(_item(AUTO_FACTORIES, AUTO_COUNT))
 	items.append(_item(AUTO_MINES, AUTO_COUNT))
+	if _info(planet.id)["habitability"] < FULL_VALUE:
+		items.append(_item(AUTO_TERRAFORM, AUTO_COUNT))
+	if planet.population >= _ctx.param("defense_min_population", 50):
+		items.append(_item(AUTO_DEFENSES, AUTO_COUNT))
 	if _same_queue(planet, items):
 		return
 	_ctx.order({"type": "production_queue", "planet": planet.id, "items": items})
 
 
+## A dock: on a planet without a starbase, with `dock_min_population` people and the minerals for
+## it, at least `dock_spacing` light-years from the player's docks (those queued this turn too).
+func _wants_dock(planet: Planet) -> bool:
+	var d := _dock_design()
+	if d == null or planet.starbase != null:
+		return false
+	if planet.population < _ctx.param("dock_min_population", 300) or not _affords_design(planet, d):
+		return false
+	var near := _nearest_dock(planet.x, planet.y, true)
+	return (
+		near == null
+		or _distance(planet.x, planet.y, near.x, near.y) >= _ctx.param("dock_spacing", 200)
+	)
+
+
 ## Whether the planet has the minerals for one ship of the design on its surface now (a ship
 ## waiting for minerals would hold up the player's quota).
 func _affords(planet: Planet, slot: int) -> bool:
-	var d: Design = _made.get(slot, _me.ship_design(slot))
+	return _affords_design(planet, _made.get(slot, _me.ship_design(slot)))
+
+
+func _affords_design(planet: Planet, d: Design) -> bool:
 	var cost := ProductionCosts.design_cost(d, _me, _ctx.content)
 	for m in 3:
 		if planet.surface[m] < cost[m]:
 			return false
 	return true
+
+
+func _bomber_quota() -> int:
+	return _ctx.param("bombers", 2) + _owned_planets / BOMBERS_PER_PLANETS
+
+
+func _warship_quota() -> int:
+	return _ctx.param("warships", 3) + _owned_planets / WARSHIPS_PER_PLANETS
 
 
 func _colony_quota() -> int:
@@ -510,17 +786,29 @@ func _same_queue(planet: Planet, items: Array) -> bool:
 		var want: Dictionary = items[i]
 		if q.item != want["item"] or q.design != want["design"] or q.count != want["count"]:
 			return false
+		if q.starbase != want["starbase"]:
+			return false
 	return true
 
 
 ## Ships of a kind the player has or is building: its fleets of that kind, the ones queued on its
 ## other planets, and the ones planned this turn (`planet`'s own queue is being replanned).
 func _ships(kind: String, planet: Planet) -> int:
-	var fleet_test := _is_scout if kind == BaselineDesigns.SCOUT else _is_colony_fleet
+	var fleet_test := _is_colony_fleet
+	if kind == BaselineDesigns.SCOUT:
+		fleet_test = _is_scout
+	elif kind == BaselineDesigns.WARSHIP or kind == BaselineDesigns.BOMBER:
+		fleet_test = _is_war_fleet
 	var design_test := _test(kind)
 	var n := 0
 	for fleet in _state.fleets_of(_me.index):
-		if fleet_test.call(fleet):
+		if not fleet_test.call(fleet):
+			continue
+		if kind == BaselineDesigns.WARSHIP or kind == BaselineDesigns.BOMBER:
+			for stack in fleet.stacks:
+				if design_test.call(_design_of(fleet, stack)):
+					n += stack.count
+		else:
 			n += 1
 	for other in _state.planets:
 		if other.owner != _me.index or other == planet:

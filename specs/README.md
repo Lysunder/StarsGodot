@@ -51,7 +51,7 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S19](S19-repair-refuel-and-fleet-growth.md) | Repair, refueling and colonist growth in fleets | draft |
 | [S20](S20-score-and-victory.md) | Score, ranks, elimination and victory | draft |
 | [S21](S21-messages.md) | Turn messages | draft |
-| [S22](S22-ai.md) | Computer players (AI) | draft (the AI step, personalities as data, the baseline brain: expansion) |
+| [S22](S22-ai.md) | Computer players (AI) | draft (the AI step, personalities as data, the baseline brain) |
 | [S23](S23-file-formats.md) | File formats (harness import only) | draft |
 | [S24](S24-tech-trading.md) | Tech trading (tech gain) | draft (scrapping only) |
 

@@ -79,3 +79,38 @@ func test_designs_use_the_best_parts() -> void:
 	assert_int(designs.merit(scout)[0]).is_equal(9)
 	s.player(1).tech_levels[PartRules.tech_order(_content)["tech_field.propulsion"]] = 11
 	assert_bool(designs.better(designs.build(BaselineDesigns.SCOUT), scout)).is_true()
+
+
+func test_war_designs_and_docks() -> void:
+	var s := _state()
+	s.player(1).tech_levels.assign([6, 8, 6, 9, 6, 6])
+	var view := PlayerView.new(s, _content, 1)
+	var designs := BaselineDesigns.new(view, _content)
+	var warship := designs.build(BaselineDesigns.WARSHIP)
+	assert_object(warship).is_not_null()
+	assert_str(warship.hull).is_equal("hull.cruiser")
+	assert_bool(designs.is_armed(warship)).is_true()
+	assert_int(designs.strength(warship)).is_greater(0)
+	var bomber := designs.build(BaselineDesigns.BOMBER)
+	assert_object(bomber).is_not_null()
+	assert_int(designs.bomb_power(bomber)).is_greater(0)
+	assert_bool(designs.is_armed(bomber)).is_false()
+	# without Improved Starbases the only hull that docks is the Space Station
+	assert_str(designs.cheapest_dock_hull()).is_equal("hull.space_station")
+	var dock := designs.build(BaselineDesigns.DOCK)
+	assert_bool(designs.is_dock(dock)).is_true()
+
+
+## Past the year war starts: warships and bombers are built, still with no order rejected.
+func test_computer_players_arm() -> void:
+	var s := _state()
+	assert_array(Array(_play(s, 60))).is_empty()
+	for p in [1, 2]:
+		var view := PlayerView.new(s, _content, p)
+		var designs := BaselineDesigns.new(view, _content)
+		var armed := 0
+		for fleet in s.fleets_of(p):
+			for stack in fleet.stacks:
+				if designs.is_armed(s.player(p).ship_design(stack.design)):
+					armed += stack.count
+		assert_int(armed).is_greater(0)

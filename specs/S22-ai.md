@@ -1,7 +1,8 @@
 # S22 Computer players (AI)
 
 Status: draft (2026-10-14), first part: the AI step and personalities as data; second part: our own baseline
-brain, first step (expansion). The original personalities' own play comes in later parts.
+brain (2026-10-15: expansion, docks, terraforming, defenses, warships, bombers). The original personalities' own
+play comes in later parts.
 References: `RunComputerPlayers@1018:39f8`, `AI_PlayTurn@1080:0000`, `AI_InactiveHuman@1090:0000`,
 `CheckTurnFile` (turn file check before a computer player plays), personalities `AI_Robotoids`, `AI_Turindrones`,
 `AI_Automitrons`, `AI_Rototills`, `AI_Cybertrons`, `AI_Macinti` (segments 1080-10a0), toolkit in segment 1088.
@@ -78,11 +79,21 @@ nothing. Each turn, in this order:
 1. **Research:** budget `research_pct` (15); field: the lowest tech level, ties in the order propulsion,
    construction, biotech, energy, electronics, weapons; next field: the lowest. No order when nothing changes.
 2. **Turn 0:** the default queue for new colonies: auto factories and auto mines (200 each).
-3. **Designs:** a scout (scout hull; the engine with the best merit; the longest-range scanner in the scanner-only
-   slot; a fuel tank) and a colony ship (colony ship hull; that engine; a colonizer module). Merit: the fastest warp
-   at which the design still goes 300 light-years (warp 10 only with warp-10-safe engines), then its range there.
-   A design is saved in the first free slot when the player has none of that kind, or when it is faster than the
-   best it has, or as fast with at least 120% of the range.
+3. **Designs** (ship designs in the first free slots; a design's kind is recognised by its parts):
+   - a scout (scout hull; the engine with the best merit; the longest-range scanner in the scanner-only slot; a
+     fuel tank) and a colony ship (colony ship hull; that engine; a colonizer module). Merit: the fastest warp at
+     which the design still goes 300 light-years (warp 10 only with warp-10-safe engines), then its range there.
+     Saved when the player has none of that kind, or when it is faster than the best it has, or as fast with at
+     least 120% of the range;
+   - a warship: the last of destroyer, cruiser, battle cruiser, battleship, dreadnought the player has; every
+     weapon slot with the weapon of the highest power × (range + 1) × accuracy % (beams 100%; sappers left out),
+     armor slots with the best armor, shield-only slots with the best shield, the engine with the best merit;
+     strength = the weapons' total score × (armor + shields). Saved when the player has no armed design (other than
+     scouts), or this one is at least 130% as strong as its strongest;
+   - a bomber: the last of mini bomber, B-17, B-52 the player has; every bomb slot with the people-killing bomb
+     (normal or smart) of the highest kill rate; power = kill rates × counts; saved like the warship;
+   - a dock: a starbase design on the available starbase hull that docks ships (refuels them, S19) with the fewest
+     resources, no parts. Saved when the player has no such bare design on that hull.
 4. **Colony ships**, in fleet order, those without orders beyond where they are:
    - at an unowned planet with colonists: colonize it (waypoint 0's task);
    - empty at one of the player's planets: load colonists by hand, `colonists_share_pct` (25%) of the planet's
@@ -94,16 +105,27 @@ nothing. Each turn, in this order:
      way.
 5. **Scouts** (scout hulls without weapons), in fleet order, without orders: the nearest planet the player has
    never scanned that no other scout is heading for and that it can reach and come back from to one of the
-   player's planets with a dock (a starbase that refuels, S19), at the fastest warp covering the round trip;
-   otherwise the nearest such dock.
-6. **Queues**, the player's planets in planet order, each with at least `colony_min_population` (150, units of 100
-   colonists) and the minerals for one ship on its surface: one colony ship while the player's colony ships (in
-   flight, queued elsewhere and planned this turn) are fewer than `colony_ships` (2) plus one per 3 planets owned
-   and some known planet is worth settling; one scout while its scouts are fewer than `scouts` (3) plus one per 5
-   planets and some planet is still unscanned; then auto factories and auto mines (200 each). The order is sent
-   only when the queue differs (items, designs and counts).
+   player's planets with a dock, at the fastest warp covering the round trip; otherwise the nearest such dock.
+6. **War fleets** (only warships and bombers), in fleet order, without orders: away from home, when the planet
+   where they are is not (as known) another player's, back to the homeworld (or the nearest planet with people);
+   at home, every other idle war fleet there merges into it, and once it has `attack_ships` (5) ships it goes to
+   the planet known to be another player's that is nearest home and within its reach. Battles there follow the
+   default battle plan, and its bombers bomb a planet left without a starbase (S17); a planet bombed out becomes
+   unowned, a target for colony ships.
+7. **Queues**, the player's planets in planet order. With at least `colony_min_population` (150, units of 100
+   colonists) people and the minerals for one ship on its surface: one colony ship while the player's colony ships
+   (in flight, queued elsewhere and planned this turn) are fewer than `colony_ships` (2) plus one per 3 planets
+   owned and some known planet is worth settling; one scout while its scouts are fewer than `scouts` (3) plus one per
+   5 planets and some planet is still unscanned. From year index `war_turn` (40), with `warship_min_population`
+   (300) people and the minerals: one warship while its warships are fewer than `warships` (3) plus one per 2
+   planets, one bomber while its bombers are fewer than `bombers` (2) plus one per 3 planets. A dock on a planet
+   without a starbase, with `dock_min_population` (300) people and the minerals, at least `dock_spacing` (200)
+   light-years from the player's docks and the docks queued before it this turn. Then auto factories and auto
+   mines (200 each), auto maximum terraforming (200) when the planet's habitability is below 100%, and auto
+   defenses (200) with `defense_min_population` (50) people. The order is sent only when the queue differs (items,
+   designs, starbase flags and counts).
 
-Not yet: starbases on colonies (more docks), defenses, terraforming, mineral transport, warships and fighting.
+Not yet: mineral transport, invasion with troops, defending against attacks, alliances.
 
 ## Randomness
 
@@ -126,7 +148,8 @@ None yet.
 `tiny3ai` (harness): player 0 human, players 1 and 2 computer players. With player 0's orders given, the step adds
 order sets for players 1 and 2, in that order. With the baseline brain and no human orders, both computer players
 have at least 4 planets after 25 turns, with no order rejected. In `medium_clump` (288 planets, 3 computer players)
-they hold 17-31 planets after 100 turns.
+they hold 19-27 planets after 100 turns, and from about year 2480 their war fleets bomb out the idle human player's
+homeworld.
 
 ## Mod hooks
 
