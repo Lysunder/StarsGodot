@@ -1,0 +1,12 @@
+[
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.bomber",
+    "hulls": [
+      "hull.mini_bomber",
+      "hull.b_17_bomber",
+      "hull.stealth_bomber",
+      "hull.b_52_bomber"
+    ]
+  }
+]

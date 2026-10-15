@@ -353,6 +353,13 @@ const TYPES := {
 		},
 		"required": ["order", "primary_trait"],
 	},
+	# a class of hulls the classic personalities tell apart (S22 "The classic world"), where the
+	# original compares hull numbers
+	"ai_hull_class":
+	{
+		"fields": {"hulls": {"t": "list", "of": {"t": "ref", "to": "hull"}}},
+		"required": ["hulls"],
+	},
 	# a computer player's personality (S22): the brain it runs, its parameters, and per difficulty
 	# level (ComputerPlayers.LEVELS) the parameters that level changes
 	"ai_personality":

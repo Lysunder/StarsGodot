@@ -2,9 +2,11 @@
 
 Status: draft (2026-10-14), first part: the AI step and personalities as data; second part: our own baseline
 brain (2026-10-15: expansion, docks, terraforming, defenses, warships, bombers, defending, invasion, mineral
-hauling). The original personalities' own
+hauling); third part (2026-10-15, started): the original's personalities, beginning with the world they play in. The original personalities' own
 play comes in later parts.
 References: `RunComputerPlayers@1018:39f8`, `AI_PlayTurn@1080:0000`, `AI_InactiveHuman@1090:0000`,
+`Designs_ComputeRatings@1030:09ae`, `AI_ScanFleets@1088:40ba`, `AI_InitScale@1088:5e0e`,
+`AI_BuildOwnPlanetList@1088:60b2`, `DecodePlanetBlock@1068:1f0c`,
 `CheckTurnFile` (turn file check before a computer player plays), personalities `AI_Robotoids`, `AI_Turindrones`,
 `AI_Automitrons`, `AI_Rototills`, `AI_Cybertrons`, `AI_Macinti` (segments 1080-10a0), toolkit in segment 1088.
 
@@ -165,10 +167,54 @@ nothing. Each turn, in this order:
 Not yet: alliances and relations, minefields, packets, starbase weapons, judging an enemy's strength before
 attacking.
 
+### The classic world (the original's personalities)
+
+The original runs each computer player by loading the game as that player (its turn file merged into its history
+file, S15 "Planet history") and letting the personality change that loaded copy: queues, waypoints, designs,
+settings. The host then turns the changes into the player's orders. Our classic personalities work the same way on
+a **classic world**, built afresh each turn:
+
+1. A copy of the game state.
+2. The player's own planets, fleets, designs and settings as they are.
+3. Every other planet as the player's planet history records it: owner, homeworld, starbase design (a starbase of
+   that design, no damage), and, when it was ever scanned, environment, original environment, concentrations
+   (with fractions), population estimate and defense class. Everything else is zero: no population, installations,
+   queue, scanner, route or mass driver, and no surface minerals unless this turn's view saw it at level 4. A
+   planet with no record has no owner and every value zero. Each planet's detail level is kept beside it (0 never
+   seen, 1 or 3 from the history, 7 the player's own).
+4. Other players' fleets only when the player's view has them this turn, in the host's fleet order (the order the
+   turn file lists them): their position, planet and ships, with no cargo, no name and no waypoints beyond where
+   they are.
+5. Other players' ship and starbase designs only when the view has them: in full at level 7, otherwise the hull
+   with every slot empty.
+6. Minefields the player owns or knows (S13).
+
+Each order the personality gives is applied to the world at once (S11 rules; a rejected one changes nothing and is
+dropped), so its later choices see it, as the original's edits to its loaded game; the accepted orders are the
+player's orders for the turn.
+
+**Setup each turn** (`AI_PlayTurn`, before the personality), in this order:
+
+1. A working memory of 4096 16-bit words, all 0 except the first, 2; and a 16-byte record per planet, all 0.
+2. **Design ratings** (`Designs_ComputeRatings`): every loaded ship design's rating (S20 `Design_Evaluate`, the
+   formula `score.ship_rating`).
+3. **Bombers in orbit** (`AI_ScanFleets`): for each other player's fleet in orbit of one of the player's planets
+   with ships on a hull of class `ai_hull_class.bomber` (the original's hulls 16-19), byte 8 of that planet's record
+   is 1.
+4. **Minefield radii** (`AI_InitScale`): each loaded minefield's radius squared, trunc(sqrt(mines))².
+5. **The player's planets** (`AI_BuildOwnPlanetList`): in planet order, then shuffled: for each place i from the
+   first to the last but one, swap it with place i + `random(n − i)` (n planets). These are the turn's first draws.
+   (In the tutorial the shuffle is skipped; we have no tutorial game.)
+
+**Hull classes.** Where the original's personalities compare hull numbers, the hulls of each class are content
+(`ai_hull_class`, a list of hulls), so a mod's hull can join a class. So far: `ai_hull_class.bomber` (mini bomber,
+B-17, stealth bomber, B-52).
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
+A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets.
 
 ## Edge cases
 
@@ -192,6 +238,7 @@ homeworld.
 ## Mod hooks
 
 - Content type `ai_personality` (above).
+- Content type `ai_hull_class` (the classic personalities' hull classes).
 - Brains are built in for now; script mods will be able to add brains (M14).
 
 ## Open questions

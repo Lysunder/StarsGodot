@@ -425,6 +425,7 @@
   "ai_setting_group.expansion.name": "Expansion",
   "ai_setting_group.economy.name": "Economy",
   "ai_setting_group.military.name": "Military",
+  "ai_hull_class.bomber.name": "Bombers",
   "ai_personality.robotoids.name": "Robotoids",
   "ai_personality.turindrones.name": "Turindrones",
   "ai_personality.automitrons.name": "Automitrons",
