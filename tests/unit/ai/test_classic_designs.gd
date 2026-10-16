@@ -187,15 +187,26 @@ func test_memory_is_kept_between_turns() -> void:
 	w.memory[1] = 1
 	w.memory[2] = 42
 	w.memory[3] = 7
-	var host := Player.new()
-	w.save_memory(host)
-	assert_array(host.knowledge[ClassicWorld.MEMORY_KEY]).is_equal([8, 1, 42, 7])
+	var o := w.memory_order()
+	assert_array(o["words"]).is_equal([8, 1, 42, 7])
+	# the order keeps the words in the player's knowledge for the next turn
+	var host := w.state.copy() as GameState
+	host.player(1).knowledge = {}
+	assert_str(OrderRules.apply(host, _content, 1, o)).is_empty()
+	assert_array(host.player(1).knowledge[ClassicWorld.MEMORY_KEY]).is_equal([8, 1, 42, 7])
 	var w2 := _world()
-	w2.state.player(1).knowledge = host.knowledge.duplicate(true)
+	w2.state.player(1).knowledge = host.player(1).knowledge.duplicate(true)
 	w2._load_memory()
 	assert_int(w2.memory[2]).is_equal(42)
 	assert_int(w2.memory[5]).is_equal(0)
-	# an empty memory is not kept
+	# unchanged, no order; emptied, the order clears it
+	assert_dict(w2.memory_order()).is_empty()
 	w2.memory[0] = ClassicWorld.MEMORY_FIRST
-	w2.save_memory(host)
-	assert_bool(host.knowledge.has(ClassicWorld.MEMORY_KEY)).is_false()
+	o = w2.memory_order()
+	assert_array(o["words"]).is_empty()
+	assert_str(OrderRules.apply(host, _content, 1, o)).is_empty()
+	assert_bool(host.player(1).knowledge.has(ClassicWorld.MEMORY_KEY)).is_false()
+	(
+		assert_str(OrderRules.apply(host, _content, 1, {"type": "ai_memory", "words": [70000]}))
+		. is_not_empty()
+	)

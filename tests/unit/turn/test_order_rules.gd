@@ -228,7 +228,7 @@ func test_hand_transfers_with_other_players() -> void:
 	theirs.add_ships(0, 1)
 	theirs.cargo.assign([0, 30, 0, 0, 0])
 	f.cargo[4] = 200
-	var room := OrderRules._room(s, _content, theirs, 4)
+	var room := OrderRules.cargo_room(s, _content, theirs, 4)
 	var order := {
 		"type": "cargo_transfer",
 		"owner": 0,

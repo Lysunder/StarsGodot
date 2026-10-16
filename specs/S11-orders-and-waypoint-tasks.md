@@ -143,6 +143,9 @@ the fleets of a ship move have the same owner, and trusts the client for the res
   ("neutral", "friend" or "enemy"; the player's own entry is kept as given). Block 38 (one byte per player).
 - **`message_filters`** `{filtered}`: replaces the list of message types the player has filtered out (S21
   "Filters"); each must be a message type; stored once each, sorted. Block 33 (a bitmap of message numbers).
+- **`ai_memory`** `{words}`: a computer player's working memory for its next turn (S22 "The classic world"):
+  at most 4096 integers from 0 to 65535, kept in the player's knowledge; an empty list clears it. Our own order,
+  with no block in the original, which keeps the memory in the computer player's history file.
 - **`cargo_transfer`** `{owner, fleet, other, amounts}`: a transfer by hand, applied at once with the orders (before
   any waypoint task). `other` is `{"planet": id}` or `{"fleet": number, "owner": o}`; `amounts` gives five signed
   amounts (ironium, boranium, germanium, colonists, fuel), positive into the fleet. `other` can also be

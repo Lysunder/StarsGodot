@@ -29,16 +29,50 @@ const DEPOT_SHARE_BELOW := 4
 
 ## Moves up to `amount` of cargo `c` between the fleet and `other` (a planet, fleet or salvage
 ## partner as in a cargo_transfer order): positive loads the fleet, negative unloads it; held to
-## what the giver has and the taker can hold (`AI_MoveCargo`, `AI_DropColonists`). Returns the
-## amount moved.
+## what the giver has and the taker can hold before the order is given, so the order asks for what
+## moves (`AI_MoveCargo`, `AI_DropColonists`); nothing is given when nothing would move. Another
+## player's planet or fleet gives nothing. Returns the amount moved.
 static func move_cargo(
 	w: ClassicWorld, fleet: Fleet, other: Dictionary, c: int, amount: int
 ) -> int:
 	if amount == 0:
 		return 0
+	var planet: Planet = null
+	var partner: Fleet = null
+	var pile: Packet = null
+	if other.has("planet"):
+		planet = w.state.planet(other["planet"])
+	elif other.has("fleet"):
+		partner = w.state.fleet(other.get("owner", w.player), other["fleet"])
+	elif other.has("packet"):
+		for s in w.state.packets:
+			if s.owner == other.get("owner", -1) and s.number == other["packet"]:
+				pile = s
+	if planet == null and partner == null and pile == null:
+		return 0
+	var has := 0
+	var room := 1 << 53
+	if amount > 0:
+		if pile != null:
+			has = pile.minerals[c]
+		elif (
+			(planet != null and planet.owner == w.player)
+			or (partner != null and partner.owner == w.player)
+		):
+			has = OrderRules.holder_amount(partner, planet, c)
+		room = OrderRules.cargo_room(w.state, w.content, fleet, c)
+	else:
+		has = fleet.cargo[c]
+		if partner != null:
+			room = OrderRules.cargo_room(w.state, w.content, partner, c)
+		elif pile != null:
+			room = maxi(Packets.slack(pile), 0)
+	var moved := mini(absi(amount), mini(maxi(has, 0), room))
+	if moved <= 0:
+		return 0
 	var before := fleet.cargo[c]
 	var amounts := [0, 0, 0, 0, 0]
-	amounts[c] = amount
+	amounts[c] = moved if amount > 0 else -moved
 	w.order({"type": "cargo_transfer", "fleet": fleet.number, "other": other, "amounts": amounts})
 	return absi(fleet.cargo[c] - before)
 

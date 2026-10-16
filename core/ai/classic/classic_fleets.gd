@@ -127,11 +127,8 @@ static func fleet_waypoint(target: Fleet, warp: int) -> Waypoint:
 ## New orders (`AI_AddWaypoint`): a waypoint where the fleet is replaces its orders; elsewhere it
 ## follows the fleet's current place. Given as waypoint orders; false when refused.
 static func go(w: ClassicWorld, fleet: Fleet, wp: Waypoint) -> bool:
-	w.select_fleet(fleet)
+	stop(w, fleet)
 	var here := fleet.waypoints[0]
-	while fleet.waypoints.size() > 1:
-		var n := mini(fleet.waypoints.size() - 1, 2)
-		w.order({"type": "waypoint_delete", "fleet": fleet.number, "index": 1, "count": n})
 	var reason := ""
 	if here.x == wp.x and here.y == wp.y:
 		reason = w.order(
@@ -142,6 +139,14 @@ static func go(w: ClassicWorld, fleet: Fleet, wp: Waypoint) -> bool:
 			{"type": "waypoint_add", "fleet": fleet.number, "index": 1, "waypoint": wp.to_dict()}
 		)
 	return reason.is_empty()
+
+
+## Drops the fleet's waypoints beyond where it is (the original's waypoint count set to 1).
+static func stop(w: ClassicWorld, fleet: Fleet) -> void:
+	w.select_fleet(fleet)
+	while fleet.waypoints.size() > 1:
+		var n := mini(fleet.waypoints.size() - 1, 2)
+		w.order({"type": "waypoint_delete", "fleet": fleet.number, "index": 1, "count": n})
 
 
 ## Changes the fleet's waypoint `index` (given as an order).
@@ -159,11 +164,14 @@ static func clear_task(w: ClassicWorld, fleet: Fleet) -> void:
 	change(w, fleet, 0, wp)
 
 
-## Gives waypoint 0 a task (the original's in-place edit of the current waypoint).
-static func set_task(w: ClassicWorld, fleet: Fleet, task: String) -> void:
+## Gives waypoint 0 a task (the original's in-place edit of the current waypoint), and with
+## `data` its task data (else the data stays).
+static func set_task(w: ClassicWorld, fleet: Fleet, task: String, data: Dictionary = {}) -> void:
 	w.select_fleet(fleet)
 	var wp := fleet.waypoints[0].copy() as Waypoint
 	wp.task = task
+	if not data.is_empty():
+		wp.task_data = data.duplicate(true)
 	change(w, fleet, 0, wp)
 
 
@@ -472,7 +480,7 @@ static func direct_warship(
 	var best: Fleet = null
 	var best_d := WARSHIP_START
 	for e in enemies:
-		if spare_computers and not w.state.player(e.owner).is_human():
+		if spare_computers and w.is_computer(e.owner):
 			continue
 		var chasing := 0
 		for o in own:

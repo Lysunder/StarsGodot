@@ -32,6 +32,9 @@ func test_every_original_personality_is_defined() -> void:
 
 func test_computer_players_add_their_orders() -> void:
 	var s := _state()
+	# played by the idle brain, which draws nothing
+	for i in [1, 2]:
+		s.player(i).ai_personality = {"name": "Idle", "brain": AiBrains.IDLE}
 	var before := s.copy() as GameState
 	var given: Array[OrderSet] = [OrderSet.new(0, s.turn)]
 	var errors := PackedStringArray()
@@ -140,7 +143,7 @@ func test_games_keep_their_personalities() -> void:
 	ComputerPlayers.adopt_personalities(s, _content)
 	assert_dict(s.players[0].ai_personality).is_empty()
 	var copy: Dictionary = s.players[1].ai_personality
-	assert_str(copy["brain"]).is_equal(AiBrains.BASELINE)
+	assert_str(copy["brain"]).is_equal(AiBrains.ROBOTOIDS)
 	assert_str(copy["name"]).is_equal(
 		_content.display_name(ComputerPlayers.personality_id(s.players[1].ai))
 	)

@@ -17,6 +17,10 @@ func _state() -> GameState:
 	var text := FileAccess.get_file_as_string("res://tests/fixtures/golden/tiny3ai/t000.json")
 	var result := SaveFile.decode(text, _content)
 	assert_bool(result.ok()).override_failure_message("\n".join(result.errors)).is_true()
+	# tiny3ai's computer players are Robotoids; these tests play them with the baseline brain
+	for p in result.state.players:
+		if not p.is_human():
+			p.ai_personality = {"name": "Baseline", "brain": AiBrains.BASELINE}
 	return result.state
 
 
@@ -38,11 +42,8 @@ func _planets(s: GameState, p: int) -> int:
 
 func test_computer_players_expand_without_rejected_orders() -> void:
 	var s := _state()
-	(
-		assert_str(
-			_content.get_def("ai_personality", "ai_personality.%s" % s.players[1].ai)["brain"]
-		)
-		. is_equal(AiBrains.BASELINE)
+	assert_str(ComputerPlayers.personality_for(s.players[1], _content)["brain"]).is_equal(
+		AiBrains.BASELINE
 	)
 	var rejected := _play(s, TURNS)
 	assert_array(Array(rejected)).is_empty()

@@ -27,6 +27,7 @@ const TYPES := [
 	"battle_plan_change",
 	"battle_plan_delete",
 	"minefield_detonate",
+	"ai_memory",
 ]
 const NAME_MAX := 31
 const DESIGN_SLOTS := 16
@@ -34,6 +35,10 @@ const DESIGN_SLOTS := 16
 const BATTLE_PLANS_MAX := 16
 const TACTIC_MAX := 6
 const TARGET_MAX := 8
+## A computer player's working memory (S11 `ai_memory`, S22): where the player's knowledge keeps
+## it, and its size in 16-bit words.
+const AI_MEMORY_KEY := "ai_memory"
+const AI_MEMORY_WORDS := 0x1000
 
 
 ## Applies every order set; returns one "player P order I: reason" line per rejected order.
@@ -88,6 +93,8 @@ static func apply(
 			return _battle_plan_delete(state, player, order)
 		"minefield_detonate":
 			return _minefield_detonate(state, content, player, order)
+		"ai_memory":
+			return _ai_memory(state, player, order)
 	return "unknown order type %s" % str(order.get("type"))
 
 
@@ -335,6 +342,23 @@ static func _minefield_detonate(
 
 ## The player's relation toward every player (S11 `player_relations`, block 38): one entry per
 ## player, each "neutral", "friend" or "enemy".
+## A computer player's working memory for its next turn (S11 `ai_memory`): kept in the player's
+## knowledge; an empty list clears it.
+static func _ai_memory(state: GameState, player: int, order: Dictionary) -> String:
+	var words: Variant = order.get("words")
+	if not words is Array or words.size() > AI_MEMORY_WORDS:
+		return "bad memory"
+	for w: Variant in words:
+		if not w is int or w < 0 or w > 0xFFFF:
+			return "bad memory word"
+	var knowledge := state.player(player).knowledge
+	if words.is_empty():
+		knowledge.erase(AI_MEMORY_KEY)
+	else:
+		knowledge[AI_MEMORY_KEY] = words.duplicate()
+	return ""
+
+
 static func _player_relations(state: GameState, player: int, order: Dictionary) -> String:
 	var relations: Variant = order.get("relations")
 	if not relations is Array or relations.size() != state.players.size():
@@ -475,12 +499,12 @@ static func _cargo_transfer(
 			var giver_has := 0
 			var room := 1 << 53
 			if loading:
-				giver_has = pile.minerals[c] if pile != null else _holder_amount(partner, planet, c)
-				room = _room(state, content, fleet, c)
+				giver_has = pile.minerals[c] if pile != null else holder_amount(partner, planet, c)
+				room = cargo_room(state, content, fleet, c)
 			else:
 				giver_has = fleet.cargo[c]
 				if partner != null:
-					room = _room(state, content, partner, c)
+					room = cargo_room(state, content, partner, c)
 				elif pile != null:
 					room = maxi(Packets.slack(pile), 0)
 			var given := mini(want, maxi(giver_has, 0))
@@ -555,14 +579,15 @@ static func _drop_colonists(state: GameState, fleet: Fleet, planet: Planet, colo
 	)
 
 
-static func _holder_amount(partner: Fleet, planet: Planet, c: int) -> int:
+## What a planet or fleet has of cargo `c` to give.
+static func holder_amount(partner: Fleet, planet: Planet, c: int) -> int:
 	if partner != null:
 		return partner.cargo[c]
 	return planet.population if c == Fleet.CARGO_COLONISTS else planet.surface[c]
 
 
 ## Free cargo space (minerals and colonists) or free fuel space of a fleet.
-static func _room(state: GameState, content: ContentRegistry, fleet: Fleet, c: int) -> int:
+static func cargo_room(state: GameState, content: ContentRegistry, fleet: Fleet, c: int) -> int:
 	var owner := state.player(fleet.owner)
 	if c == Fleet.CARGO_FUEL:
 		return maxi(Movement.fuel_capacity(fleet, owner, content) - fleet.cargo[c], 0)

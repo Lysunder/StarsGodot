@@ -6,7 +6,9 @@ extends RefCounted
 
 const IDLE := "idle"
 const BASELINE := "baseline"
-const IDS := [IDLE, BASELINE]
+## The original's personalities ported (S22), each a brain of its own.
+const ROBOTOIDS := "robotoids"
+const IDS := [IDLE, BASELINE, ROBOTOIDS]
 
 
 static func has(id: String) -> bool:
@@ -55,4 +57,6 @@ static func create(id: String) -> AiPlayer:
 			return AiPlayer.new()
 		BASELINE:
 			return BaselineAi.new()
+		ROBOTOIDS:
+			return ClassicBrain.new(ClassicWorld.ROBOTOIDS)
 	return null

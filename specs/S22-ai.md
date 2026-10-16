@@ -2,13 +2,16 @@
 
 Status: draft (2026-10-14), first part: the AI step and personalities as data; second part: our own baseline
 brain (2026-10-15: expansion, docks, terraforming, defenses, warships, bombers, defending, invasion, mineral
-hauling); third part (2026-10-15, started): the original's personalities, beginning with the world they play in. The original personalities' own
-play comes in later parts.
+hauling); third part (2026-10-15, started): the original's personalities, beginning with the world they play in, the toolkit
+they share and (2026-10-16) Robotoids. The other personalities come in later parts.
 References: `RunComputerPlayers@1018:39f8`, `AI_PlayTurn@1080:0000`, `AI_InactiveHuman@1090:0000`,
 `Designs_ComputeRatings@1030:09ae`, `AI_ScanFleets@1088:40ba`, `AI_InitScale@1088:5e0e`,
 `AI_BuildOwnPlanetList@1088:60b2`, `DecodePlanetBlock@1068:1f0c`,
 `CheckTurnFile` (turn file check before a computer player plays), personalities `AI_Robotoids`, `AI_Turindrones`,
-`AI_Automitrons`, `AI_Rototills`, `AI_Cybertrons`, `AI_Macinti` (segments 1080-10a0), toolkit in segment 1088.
+`AI_Automitrons`, `AI_Rototills`, `AI_Cybertrons`, `AI_Macinti` (segments 1080-10a0), toolkit in segment 1088;
+Robotoids: `AI_Robotoids@1080:0462`, `AI_Robotoids_Designs@1080:1730`, `AI_Robotoids_Invade@1080:1b70`,
+`AI_Robotoids_HasEscortStrength@1080:20f4`, `AI_ScoreColonyTarget@1080:2252`, `AI_ScoreColonyTarget2@1080:216c`,
+`Pred_NotMyPlanet@1080:2154`, `Pred_MyPlanetWithStarbase@1088:3be2`.
 
 ## Summary
 
@@ -79,9 +82,10 @@ by the original (and inactive human players) have no copy: the content definitio
 
 The original has six personalities, chosen by the computer player's race (keys `robotoids`, `turindrones`,
 `automitrons`, `rototills`, `cybertrons`, `macinti`, in the original's numbering 0-5), and the housekeeping one
-for inactive humans (`inactive`, the original's number 7). Their play is specified in later parts of this spec.
-Until a personality's own brain exists it uses our **baseline** brain (below); the inactive personality uses the
-**idle** brain, which gives no orders.
+for inactive humans (`inactive`, the original's number 7). Each has a brain of its own, named after it, which a mod's personality may name too. Robotoids play with brain
+`robotoids` ("Robotoids" below); the others are specified in later parts of this spec, and until a personality's
+brain exists it uses our **baseline** brain (below). The inactive personality uses the **idle** brain, which gives
+no orders.
 
 Difficulty levels, easiest first: easy, standard, harder, expert (`ai_level` 0-3). Besides the AI's own play, the
 level matters in the starting setup (S07) and in Mystery Trader dealings (S18).
@@ -198,6 +202,8 @@ player's orders for the turn.
 1. The **working memory**: 4096 16-bit words the personality keeps from turn to turn. The first holds the bytes
    in use, itself included (2 when empty). The original keeps the words in use in the player's history file; we
    keep them in the player's knowledge (`ai_memory`), and drop them when the memory is empty; other words are 0.
+   The personality's orders end with an `ai_memory` order (S11) carrying the words in use, when they differ from
+   what the knowledge holds, so the memory reaches the host like any other order.
    And a 16-byte record per planet (`planet_info`), all 0.
 2. **Design ratings** (`Designs_ComputeRatings`): every loaded ship design's rating (S20 `Design_Evaluate`, the
    formula `score.ship_rating`).
@@ -236,6 +242,9 @@ selection, because a few of its rules read the copy:
 - the mines check's in-place tries;
 - Robotoids' troop loading.
 
+A player counts as a **computer player** here when it is one, or is a human player marked inactive (the original
+flags both the same way).
+
 Personality checks below name the personality: Robotoids, Turindrones, Automitrons, Rototills, Cybertrons, Macinti
 (the original's 0-5).
 
@@ -245,9 +254,9 @@ A **template** (`ai_design_template`) is a hull and one part class per hull slot
 (`ai_part_class`) is a list of groups of parts, each group best first. The best part of a class is the first part
 the player can use (S04 tech and traits, Mystery Trader parts only once owned), searching the groups in order.
 
-From a template, every slot holds the best part of its class, as many as the slot allows. When a slot's class has no
-part the player can use, there is no design. The hull itself is not checked. The original would store a design with
-a hull the race may not use; our design order refuses it.
+From a template, every slot holds the best part of its class, as many as the slot allows. When the player cannot use
+the hull (tech and traits, `GetPartInfo`), or a slot's class has no part it can use, there is no design. (big1: no
+Robotoids player made a Nubian, which needs construction 26; they made destroyers in its slot.)
 
 **Naming** (`AI_NameDesign`). The picture is the first of the hull's four that no design of that hull uses, or a draw
 of 4 when all are used. The name is drawn from the hull's name list (`ai_design_names`: the first list naming the
@@ -524,7 +533,9 @@ player's planets before turn 120, a wormhole may be taken instead (`AI_PickWeigh
 
 ### Classic freight
 
-**Cargo** moves as `cargo_transfer` orders, held to what the giver has and the taker can hold (`AI_MoveCargo`).
+**Cargo** moves as `cargo_transfer` orders (`AI_MoveCargo`). The amount is held to what the giver has and the taker
+can hold before the order is given, so the order asks for what moves, and no order is given when nothing would; another
+player's planet or fleet gives nothing.
 
 **Colony ships** (`AI_CountColonyShips`). Easy players count only on even turns. Before turn 30 the answer is
 "build". Later it is "build" when all of these hold:
@@ -574,12 +585,163 @@ Not Cybertrons or Macinti, from turn 20:
 4. Each freighter not yet in a record joins the nearest depot with room.
 5. Each depot with fewer than 4 freighters takes the last freighter of the first depot with 2 more than it.
 
+### Robotoids
+
+The brain `robotoids` (`AI_Robotoids`). After the setup, in this order:
+
+**1. Research.** The starbase designs are kept up to date, the newer station is chosen (slot 5 when newer than 0, else
+0), the freighter depots are planned, and plan `robotoids` is followed with a budget of 15% (0% before turn 10).
+
+**2. Merging**, after turn 50: fleets with ships in slots 2-7, 9 or 10 merge; then fleets with slot-0 ships; then
+fleets with ships in slots 14-15.
+
+**3. This turn's thresholds.** The escort strength E is 4, and after turn 130 4 + (turn − 120) div 20, at most 50.
+The bomber count B is 6, and after turn 115 6 + (turn − 100) div 22, at most 12. A fleet's **strength** is its ships
+in slots 2-5 plus twice its ships in slots 6-7; its **bombers** are its ships in slots 9-10.
+
+**4. Retiring** (Classic designs, `AI_FindDesignForHulls`), with an age A of 50 before turn 120, 70 before 200, else
+100, all marking one set of obsolete slots:
+
+1. slots 14-15: the warship design W. A design there on the hull of template `nubian` is never marked obsolete;
+2. slots 11-13: the freighter design F, and how many ships of those slots exist;
+3. slots 9-10: the bomber design;
+4. slots 2-5: the morph design M;
+5. slots 6-7, with age 3A/2: the battleship design S.
+
+**5. Splitting**, after turn 80 (Classic fleets): ships of obsolete slots split off, then ships of slot 0, then of
+slot 1, then of slots 11-13.
+
+**6. Designs** (`AI_Robotoids_Designs`), each only for an empty slot. Tech levels: En energy, Wp weapons, Pr
+propulsion, Co construction, El electronics, Bi biotech. "Drawn" means a draw of the template's number in its group
+before each try, up to 5 tries, stopping at the first design made.
+
+| Slots | When | Templates |
+|---|---|---|
+| 11, 12, 13 | Pr 2, and Co 4, 7, 10 for the three slots; 12 and 13 only when the slot before was designed more than 14 turns ago (an empty slot counts as designed in turn 0) | Co under 10: privateer A (11) or B (12, 13); else a meta morph freighter 0-5, drawn |
+| 14 | Wp 5, El 6, Co 6, Pr 6, En 2 | five tries, each the Nubian, and when that cannot be made a destroyer A0-A3 drawn, stopping once a destroyer is made |
+| 15 | El 10, Co 8, Pr 9, Wp 14, and the Nubian cannot be made | destroyer B0-B3, drawn |
+| 2, 3, 4 | Wp 10, Co 10, Pr 9, En 6; 3 and 4 only when the slot before holds a design more than 12 turns old | meta morph warship A0-A3 (2, 4) or B0-B3 (3), drawn |
+| 6, 7, 8 | Bi 4, El 10, Co 12, Pr 12, En 6, Wp 15; 7 and 8 after more than 20 turns | battleship A0-A3 (6) or B0-B3 (7, 8), drawn |
+| 9, 10 | Wp 14; 10 after more than 15 turns | the munitions battleship, else B-52 A (9) or B (10) |
+| 0 (any) | harder or expert level; slot 0 empty, or not on the hull of template `frigate_mine_layer` and with no ships left; Bi 4, El 5, Co 6, Pr 6, En 6 | slot 0's design is deleted, then the frigate mine layer |
+
+The Nubian in slot 14 is made up to five times over, each replacing the last, with its picture and name drawn
+again each time.
+
+**7. Counts.** N, the player's fleets with ships in slots 14-15 (0 without a design W); and whether to build colony
+ships, and the colony fleets (Classic freight).
+
+**8. Targets.** Each planet of another player gets `planet_info` byte 10 = the population estimate div 250, plus 1,
+at most 6; plus 1 more with a starbase. Its byte 9 is 1.
+
+**9. Ships at starbases.** Each of the player's planets in shuffled order, with a starbase and 200 hundred people:
+its production is opened, and when the queue holds no ship design:
+
+1. K is the larger of (the player's planets div 8) and (depots × 4). With design F, when F's slots have fewer than
+   8K/10 ships, or fewer than K and a draw of 1 in 3: one F at the end.
+2. When colony ships are to be built, or there are fewer than 26 colony fleets and `random(depots × 8)` is 0, and it
+   is after turn 4: one ship of slot 1 at the end, two before turn 21. Then, at standard level or above, with the
+   planet's people × the race's growth rate (in percent, doubled for HE) over 2300 and 36 resources, one more; at
+   harder or above, over 3600 and with 51 resources, one more again. (The draw is made before the turn is checked.)
+3. When slot 0 holds a design on the mine layer's hull, on a draw of 1 in 4: with n the slot-0 ships of the first of
+   the player's fleets here that has some (0 when none), four slot-0 ships at the end when n is under 10 (or under 17
+   on a draw of 1 in 10) and a draw of 1 in 2n + 1 says so.
+4. The planet is **rich** when its first surface mineral under 5000 is germanium (ironium and boranium 5000 or more,
+   germanium under).
+5. With the bomber design, the first of the player's fleets here with strength E decides: with fewer than B bombers,
+   6 (rich) or 4 ships of the bomber design at the end, and the planet is done.
+6. With design M, when its ships number fewer than (all planets div 7) + 6, or on a draw of 1 in 2: the design is M,
+   or S on a draw of 1 in 2 when there is an S. This year's output less the cost of the queue as it stood: when any
+   of the four is negative the planet is done. Less three fifths of the design's cost (each of minerals and
+   resources, rounded down): when any is negative, go on with 7; otherwise 5 (rich) or 1 of the design at the end.
+7. With design W, when its ships number fewer than (all planets div 12) + 8: output less queue cost as in 6 (negative:
+   done); then up to five times, less W's cost: negative, done; otherwise one W at the end.
+
+The production is then committed.
+
+**10. Fleets, first pass**, every fleet in fleet order:
+
+- A fleet whose next waypoint is a space object more than 200 light years away drops its waypoints beyond where it is.
+- Other players' fleets are listed as **enemies**, the latest first.
+- A fleet with slot-0 ships, after turn 40, with no waypoints beyond where it is: with more than 6 of them, on a draw
+  of 1 in 5, a random planet within 105 light years avoiding starbases (Classic fleets); when there is one and the
+  fleet is not there, its task is cleared and it goes there at warp 4, and continues with the last two points below.
+  Otherwise, without a task, it lays mines for ever (task data 5, 5); with a task it continues with the last two
+  points.
+- Any other fleet:
+  - a **warship** (Classic fleets) is listed among the player's **warships**, the latest first, and a mine-laying task
+    is cleared. When it has ships in slots 2-7 and a planet ahead (the next waypoint's planet, else the planet where
+    it is), that planet's byte 10 gets 0x80 when it is set;
+  - a **freighter**, looking at the planet where it is (when it has no waypoint beyond or a task here) or the next
+    waypoint's planet: when that planet is not the player's and the freighter has no colonists aboard, it drops its
+    waypoints beyond where it is and its task;
+  - then the last two points.
+- Before turn 21, a fleet with slot-0 ships scraps them (task scrap here).
+- Otherwise a fleet with slot-1 ships and no waypoints beyond where it is, after turn 4 (or when the players start
+  close, S07):
+  - At harder or expert level, at another player's planet whose race lacks `ai.no_colonist_drops` (AR), with
+    colonists aboard: a transport task here unloading all colonists (an invasion, S17), and on to the nearest of the
+    player's planets with a starbase at warp 4.
+  - Otherwise its colony target (Classic fleets). With none, at a planet it scraps. With one, at a planet it first
+    loads 10 hundred colonists; it goes to colonize the planet, or into the wormhole.
+
+**11. Freighters.** When one of the player's planets has a starbase (the first in shuffled order is the fallback
+depot), each freighter of the player with no waypoints beyond where it is takes battle plan 4 (the fifth default
+plan) and a run (Classic freight) from its depot, or the fallback.
+
+**12. Fleets, last pass**, each of the player's fleets in fleet order:
+
+1. When every slot it has ships in is obsolete: at a planet of the player's with a starbase, or on a draw of 1 in 5 at
+   one without, it scraps. Otherwise it keeps going when it is in deep space heading for a planet, or goes home
+   (Classic fleets). Done, unless there is no home.
+2. With ships in slots 2-10: the invasion (below).
+3. Otherwise a warship not heading for a fleet: when N is over 70 (50 from turn 121), or over 60 (40) on a draw of 1
+   in 3, with fewer than 20 ships of design W (or on a draw of 1 in 20), it joins the nearest earlier fleet with ships
+   in slots 14-15 within 36 light years, or 72 on a draw (Classic fleets). Failing that, `AI_DirectWarship` with the
+   listed warships and enemies, sparing computer players when they form alliances.
+
+**13. Production** (Classic production) and the last pass.
+
+**The invasion** (`AI_Robotoids_Invade`), for a fleet with strength S and bombers T:
+
+1. A fleet with waypoints beyond where it is keeps them when it heads for a fleet within 250 light years
+   (distance² under 62501), or for a planet that is another player's, the player's own with a starbase, or not seen
+   this turn. Other orders are planned again.
+2. In deep space it heads for the nearest planet of another player within 150 light years (Classic fleets). Done.
+3. At one of the player's planets with a starbase:
+   - With S under E or T under B: at easy or standard level it stays; it stays when S is at most 2E and under 60;
+     then on a draw of 10 above 4, when S is at most 3E or a draw of 10 is above 6, it stays when S is under 121 or a
+     draw of 10 is above 6. Otherwise it sets out.
+   - Otherwise it loads colonists from the selected planet copy: a tenth of its people from 3001 hundred, a fifteenth
+     from 2001, a twentieth from 1001, none below; and sets out.
+4. Elsewhere, with S at least E div 2 and T at least min(B div 2 − 1, 3):
+   - At another player's planet: the troops needed X = its population estimate × 400 / (100 + (−1 − defense class) ×
+     18 / 4), divisions truncating toward zero; C the colonists aboard. When C div 5 is at most X and either X is 200
+     or more or C is under 351, it waits when X is over 9 or C under 151. Otherwise it drops (an invasion by hand,
+     S17) the larger of C div 2 and 5X/4, at most C and 30000. Done.
+   - At one of its own planets with more than 1000 hundred people it loads a fifth of them; and sets out.
+   - Otherwise it sets out.
+5. Elsewhere, weaker: its task is cleared. At harder or expert level it sets out anyway when S is over 2E and a draw
+   of 10 is under 5, or S is over 4E and a draw of 10 is under 7, or S is over 120 and a draw of 10 is under 7 (each
+   draw made only when its strength holds and nothing before set it out). Otherwise its target is the nearest of the
+   player's planets with a starbase.
+6. **Setting out**: the target is the planet rated highest by the target score from here, first sparing computer
+   players' planets when they form alliances, then any.
+7. With a target planet, its byte 10 gets 0x80 and the fleet goes there at warp 4. Without one, it heads for the
+   nearest fleet of another player at warp 4; with none it stays.
+
+**The target score** (`AI_ScoreColonyTarget`, `AI_ScoreColonyTarget2`): 0 for the planet the fleet is at and for one
+whose byte 10 is 0 (and, sparing computer players, for theirs). Otherwise byte 10 plus 7 within 50 light years
+(distance² under 2500), 5 under 10000, 4 under 22500, 3 under 40000, 2 under 90000, 1 under 250000. A score with 0x80
+set counts only on a draw of 1 in 4, and is 0 otherwise.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets. The
-toolkit draws where the sections above say so, in the order the personality calls it.
+toolkit draws where the sections above say so, in the order the personality calls it. Robotoids draw in the
+order of their steps above.
 
 ## Edge cases
 
@@ -606,11 +768,12 @@ homeworld.
 - Content type `ai_hull_class` (the classic personalities' hull classes).
 - Content types `ai_part_class`, `ai_design_template`, `ai_design_names` and `ai_research_plan` (Classic designs and
   research).
-- Trait parameters `production.no_planetary_scanner` (AR) and `ai.no_packets_at_starbases` (PP).
+- Trait parameters `production.no_planetary_scanner` (AR), `ai.no_packets_at_starbases` (PP) and
+  `ai.no_colonist_drops` (AR).
 - Brains are built in for now; script mods will be able to add brains (M14).
 
 ## Open questions
 
-1. The order of the original's draws inside each personality (later parts), which golden AI games will check.
+1. The order of the original's draws inside each personality, which golden AI games will check (Robotoids: big1).
 2. What exactly the inactive personality does each turn (`AI_InactiveHuman`): research plan, colony ships and
    scouts going home or settling.

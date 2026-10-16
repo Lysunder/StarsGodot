@@ -11,7 +11,8 @@ extends RefCounted
 ## planets in shuffled order (the turn's first draws), a 16-byte record per planet
 ## (`planet_info`), the design ratings, and each known minefield's radius squared; and the
 ## working memory the personality keeps from turn to turn (the original keeps it in the player's
-## history file; we keep it in the player's knowledge, `MEMORY_KEY`).
+## history file; we keep it in the player's knowledge, `MEMORY_KEY`, and send it back as an order,
+## `memory_order`).
 
 ## Detail levels (S15).
 const SCANNED := 3
@@ -23,7 +24,7 @@ const INFO_SIZE := 16
 ## use, the word itself included (2 when empty).
 const MEMORY_WORDS := 0x1000
 const MEMORY_FIRST := 2
-const MEMORY_KEY := "ai_memory"
+const MEMORY_KEY := OrderRules.AI_MEMORY_KEY
 const BOMBER_CLASS := "ai_hull_class.bomber"
 const ROBOTOIDS := "ai_personality.robotoids"
 const TURINDRONES := "ai_personality.turindrones"
@@ -46,6 +47,8 @@ const FLEET_ID_OWNER_SHIFT := 9
 var state: GameState
 var content: ContentRegistry
 var player: int = 0
+## The content id of the original personality being played (ROBOTOIDS ...).
+var personality := ""
 var rng: StarsRandom
 ## Planet id -> detail level as loaded (0 never seen, 1 glimpsed, 3 scanned, 7 own).
 var detail := {}
@@ -77,14 +80,23 @@ var editing: RefCounted = null
 var colony_targets_rated := false
 
 
+## The world of player `p` of `host`, playing personality `p_personality` (by default the one
+## the player's key names).
 static func build(
-	host: GameState, p_content: ContentRegistry, p: int, p_rng: StarsRandom
+	host: GameState,
+	p_content: ContentRegistry,
+	p: int,
+	p_rng: StarsRandom,
+	p_personality: String = "",
 ) -> ClassicWorld:
 	var w := ClassicWorld.new()
 	w.content = p_content
 	w.player = p
 	w.rng = p_rng
 	w.state = host.copy() as GameState
+	w.personality = p_personality
+	if w.personality.is_empty():
+		w.personality = ComputerPlayers.personality_id(ComputerPlayers.personality_of(w.me()))
 	w.orders = OrderSet.new(p, host.turn)
 	w._mask_planets()
 	w._mask_fleets(host)
@@ -100,9 +112,16 @@ func me() -> Player:
 	return state.player(player)
 
 
-## The content id of the player's personality.
+## The content id of the personality being played.
 func personality_id() -> String:
-	return ComputerPlayers.personality_id(ComputerPlayers.personality_of(me()))
+	return personality
+
+
+## Whether player `index` counts as a computer player (one, or a human player marked inactive:
+## the original flags both alike).
+func is_computer(index: int) -> bool:
+	var p := state.player(index)
+	return not p.is_human() or not p.active
 
 
 func _load_memory() -> void:
@@ -114,17 +133,18 @@ func _load_memory() -> void:
 		memory[i] = int(saved[i])
 
 
-## Keeps the working memory in player `p`'s knowledge for the next turn: the words in use, or
-## nothing when it is empty.
-func save_memory(p: Player) -> void:
+## The order that keeps the working memory for the next turn (S11 `ai_memory`): the words in use
+## (none when only the count word is), or {} when the knowledge holds them already.
+func memory_order() -> Dictionary:
 	var words := clampi(memory[0] / 2, 1, MEMORY_WORDS)
-	if words <= 1:
-		p.knowledge.erase(MEMORY_KEY)
-		return
 	var out: Array = []
-	for i in words:
-		out.append(memory[i])
-	p.knowledge[MEMORY_KEY] = out
+	if words > 1:
+		for i in words:
+			out.append(memory[i] & 0xFFFF)
+	var saved: Array = me().knowledge.get(MEMORY_KEY, [])
+	if saved == out:
+		return {}
+	return {"type": "ai_memory", "words": out}
 
 
 ## Gives an order: applied to the world at once, and kept for the turn when accepted.

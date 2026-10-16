@@ -39,11 +39,15 @@ static func best_part(w: ClassicWorld, class_id: String) -> String:
 	return ""
 
 
-## A design from template `template_id`, or null when a slot's class has no part the player can
-## use (`AI_OutfitDesign`): every slot holds as many parts as the hull allows.
+## A design from template `template_id`, or null when the player cannot use the hull or a slot's
+## class has no part it can use (`AI_OutfitDesign`): every slot holds as many parts as the hull
+## allows.
 static func from_template(w: ClassicWorld, template_id: String) -> Design:
 	var template := w.content.get_def("ai_design_template", template_id)
-	var slots: Array = w.content.hull(template["hull"])["slots"]
+	var hull := w.content.hull(template["hull"])
+	if not PartRules.available(hull, w.me(), PartRules.tech_order(w.content)):
+		return null
+	var slots: Array = hull["slots"]
 	var classes: Array = template["slots"]
 	if classes.size() != slots.size():
 		return null

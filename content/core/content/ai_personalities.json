@@ -3,7 +3,7 @@
     "type": "ai_personality",
     "id": "ai_personality.robotoids",
     "order": 0,
-    "brain": "baseline"
+    "brain": "robotoids"
   },
   {
     "type": "ai_personality",
