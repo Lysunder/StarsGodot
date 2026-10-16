@@ -93,6 +93,7 @@
     "cost": 120,
     "params": {
       "packet.reveals_catcher": 1,
+      "ai.no_packets_at_starbases": 1,
       "race.ap_nas_penalty": 280,
       "production.packet_mineral_cost": 70,
       "production.mixed_packet_mineral_cost": 25,
@@ -141,7 +142,8 @@
       "packet.no_damage": 1,
       "movement.transit_loss_pct": 3,
       "scanner.population_range": 1,
-      "estimate.hides_population": 1
+      "estimate.hides_population": 1,
+      "production.no_planetary_scanner": 1
     }
   },
   {

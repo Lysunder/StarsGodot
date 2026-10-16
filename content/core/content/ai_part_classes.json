@@ -1,0 +1,856 @@
+[
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.torpedo",
+    "candidates": [
+      [
+        "part.torpedo.anti_matter_torpedo",
+        "part.torpedo.omega_torpedo",
+        "part.torpedo.upsilon_torpedo",
+        "part.torpedo.rho_torpedo",
+        "part.torpedo.epsilon_torpedo",
+        "part.torpedo.delta_torpedo",
+        "part.torpedo.beta_torpedo",
+        "part.torpedo.alpha_torpedo"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.missile",
+    "candidates": [
+      [
+        "part.torpedo.armageddon_missile",
+        "part.torpedo.doomsday_missile",
+        "part.torpedo.juggernaut_missile",
+        "part.torpedo.jihad_missile"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_heavy",
+    "candidates": [
+      [
+        "part.beam.multi_contained_munition"
+      ],
+      [
+        "part.beam.mega_disruptor"
+      ],
+      [
+        "part.beam.heavy_blaster"
+      ],
+      [
+        "part.beam.colloidal_phaser"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_medium",
+    "candidates": [
+      [
+        "part.beam.anti_matter_pulverizer"
+      ],
+      [
+        "part.beam.disruptor"
+      ],
+      [
+        "part.beam.mark_iv_blaster"
+      ],
+      [
+        "part.beam.phaser_bazooka"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_light",
+    "candidates": [
+      [
+        "part.beam.streaming_pulverizer"
+      ],
+      [
+        "part.beam.myopic_disruptor"
+      ],
+      [
+        "part.beam.mini_blaster"
+      ],
+      [
+        "part.beam.yakimora_light_phaser"
+      ],
+      [
+        "part.beam.x_ray_laser"
+      ],
+      [
+        "part.beam.laser"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_short",
+    "candidates": [
+      [
+        "part.beam.blunderbuss"
+      ],
+      [
+        "part.beam.bludgeon"
+      ],
+      [
+        "part.beam.blackjack"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_gatling",
+    "candidates": [
+      [
+        "part.beam.big_mutha_cannon"
+      ],
+      [
+        "part.beam.gatling_neutrino_cannon"
+      ],
+      [
+        "part.beam.gatling_gun"
+      ],
+      [
+        "part.beam.mini_gun"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.beam_sapper",
+    "candidates": [
+      [
+        "part.beam.syncro_sapper"
+      ],
+      [
+        "part.beam.phased_sapper"
+      ],
+      [
+        "part.beam.pulsed_sapper"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.engine_scoop",
+    "candidates": [
+      [
+        "part.engine.galaxy_scoop"
+      ],
+      [
+        "part.engine.enigma_pulsar"
+      ],
+      [
+        "part.engine.trans_galactic_mizer_scoop",
+        "part.engine.trans_galactic_super_scoop",
+        "part.engine.trans_galactic_fuel_scoop",
+        "part.engine.sub_galactic_fuel_scoop",
+        "part.engine.radiating_hydro_ram_scoop"
+      ],
+      [
+        "part.engine.fuel_mizer"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.armor",
+    "candidates": [
+      [
+        "part.armor.superlatanium"
+      ],
+      [
+        "part.armor.mega_poly_shell"
+      ],
+      [
+        "part.armor.valanium"
+      ],
+      [
+        "part.armor.depleted_neutronium"
+      ],
+      [
+        "part.armor.neutronium"
+      ],
+      [
+        "part.armor.fielded_kelarium",
+        "part.armor.kelarium",
+        "part.armor.organic_armor",
+        "part.armor.strobnium",
+        "part.armor.carbonic_armor",
+        "part.armor.crobmnium",
+        "part.armor.tritanium"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.shield",
+    "candidates": [
+      [
+        "part.shield.complete_phase_shield",
+        "part.shield.elephant_hide_fortress"
+      ],
+      [
+        "part.shield.langston_shell"
+      ],
+      [
+        "part.shield.gorilla_delagator"
+      ],
+      [
+        "part.shield.croby_sharmor"
+      ],
+      [
+        "part.shield.shadow_shield"
+      ],
+      [
+        "part.shield.bear_neutrino_barrier"
+      ],
+      [
+        "part.shield.wolverine_diffuse_shield",
+        "part.shield.cow_hide_shield",
+        "part.shield.mole_skin_shield"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.battle_computer",
+    "candidates": [
+      [
+        "part.electrical.battle_nexus",
+        "part.electrical.battle_super_computer",
+        "part.electrical.battle_computer"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.combat_support",
+    "candidates": [
+      [
+        "part.electrical.multi_function_pod"
+      ],
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.mechanical.beam_deflector"
+      ],
+      [
+        "part.mechanical.overthruster",
+        "part.mechanical.maneuvering_jet"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.stealth_support",
+    "candidates": [
+      [
+        "part.electrical.multi_function_pod"
+      ],
+      [
+        "part.mechanical.overthruster",
+        "part.mechanical.maneuvering_jet"
+      ],
+      [
+        "part.electrical.ultra_stealth_cloak"
+      ],
+      [
+        "part.mechanical.beam_deflector"
+      ],
+      [
+        "part.electrical.super_stealth_cloak",
+        "part.electrical.stealth_cloak"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.capacitor_or_tank",
+    "candidates": [
+      [
+        "part.electrical.flux_capacitor",
+        "part.electrical.energy_capacitor",
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.mechanical.super_fuel_tank",
+        "part.mechanical.fuel_tank"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.deflector_or_capacitor",
+    "candidates": [
+      [
+        "part.mechanical.beam_deflector"
+      ],
+      [
+        "part.electrical.flux_capacitor",
+        "part.electrical.energy_capacitor",
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.mechanical.super_fuel_tank",
+        "part.mechanical.fuel_tank"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.cargo_pod",
+    "candidates": [
+      [
+        "part.mechanical.multi_cargo_pod",
+        "part.mechanical.super_cargo_pod",
+        "part.mechanical.cargo_pod"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.armor_heavy",
+    "candidates": [
+      [
+        "part.armor.mega_poly_shell"
+      ],
+      [
+        "part.armor.superlatanium",
+        "part.armor.valanium",
+        "part.armor.mega_poly_shell",
+        "part.armor.neutronium",
+        "part.armor.depleted_neutronium",
+        "part.armor.fielded_kelarium",
+        "part.armor.kelarium",
+        "part.armor.organic_armor",
+        "part.armor.strobnium",
+        "part.armor.carbonic_armor",
+        "part.armor.crobmnium",
+        "part.armor.tritanium"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.thruster_or_tank",
+    "candidates": [
+      [
+        "part.mechanical.overthruster",
+        "part.mechanical.maneuvering_jet"
+      ],
+      [
+        "part.mechanical.beam_deflector"
+      ],
+      [
+        "part.mechanical.super_fuel_tank",
+        "part.mechanical.fuel_tank"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.jammer_or_computer",
+    "candidates": [
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.battle_nexus",
+        "part.electrical.battle_super_computer",
+        "part.electrical.battle_computer"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.capacitor_or_cloak",
+    "candidates": [
+      [
+        "part.electrical.flux_capacitor",
+        "part.electrical.energy_capacitor",
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.multi_function_pod",
+        "part.electrical.ultra_stealth_cloak",
+        "part.electrical.super_stealth_cloak",
+        "part.electrical.stealth_cloak"
+      ],
+      [
+        "part.electrical.battle_nexus",
+        "part.electrical.battle_super_computer",
+        "part.electrical.battle_computer"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.bomb",
+    "candidates": [
+      [
+        "part.bomb.hush_a_boom"
+      ],
+      [
+        "part.bomb.cherry_bomb",
+        "part.bomb.m_80_bomb",
+        "part.bomb.m_70_bomb",
+        "part.bomb.black_cat_bomb",
+        "part.bomb.lady_finger_bomb"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.bomb_smart",
+    "candidates": [
+      [
+        "part.bomb.hush_a_boom"
+      ],
+      [
+        "part.bomb.retro_bomb"
+      ],
+      [
+        "part.bomb.annihilator_bomb",
+        "part.bomb.peerless_bomb",
+        "part.bomb.enriched_neutron_bomb",
+        "part.bomb.neutron_bomb",
+        "part.bomb.smart_bomb"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.bomb_any",
+    "candidates": [
+      [
+        "part.bomb.hush_a_boom"
+      ],
+      [
+        "part.bomb.annihilator_bomb",
+        "part.bomb.peerless_bomb",
+        "part.bomb.enriched_neutron_bomb",
+        "part.bomb.neutron_bomb",
+        "part.bomb.smart_bomb"
+      ],
+      [
+        "part.bomb.cherry_bomb",
+        "part.bomb.m_80_bomb",
+        "part.bomb.m_70_bomb",
+        "part.bomb.black_cat_bomb",
+        "part.bomb.lady_finger_bomb"
+      ],
+      [
+        "part.bomb.retro_bomb"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.engine_ramscoop",
+    "candidates": [
+      [
+        "part.engine.galaxy_scoop"
+      ],
+      [
+        "part.engine.radiating_hydro_ram_scoop"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.mine_dispenser",
+    "candidates": [
+      [
+        "part.mine_layer.mine_dispenser_130",
+        "part.mine_layer.mine_dispenser_80",
+        "part.mine_layer.mine_dispenser_50",
+        "part.mine_layer.mine_dispenser_40"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.scanner_long",
+    "candidates": [
+      [
+        "part.scanner.elephant_scanner"
+      ],
+      [
+        "part.scanner.robber_baron_scanner"
+      ],
+      [
+        "part.scanner.dolphin_scanner"
+      ],
+      [
+        "part.scanner.chameleon_scanner"
+      ],
+      [
+        "part.scanner.ferret_scanner"
+      ],
+      [
+        "part.scanner.gazelle_scanner"
+      ],
+      [
+        "part.scanner.possum_scanner"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.scanner_penetrating",
+    "candidates": [
+      [
+        "part.scanner.robber_baron_scanner"
+      ],
+      [
+        "part.scanner.pick_pocket_scanner"
+      ],
+      [
+        "part.scanner.chameleon_scanner",
+        "part.scanner.pick_pocket_scanner",
+        "part.scanner.possum_scanner",
+        "part.scanner.dna_scanner",
+        "part.scanner.mole_scanner",
+        "part.scanner.rhino_scanner",
+        "part.scanner.bat_scanner"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.mining_robot",
+    "candidates": [
+      [
+        "part.mining_robot.alien_miner",
+        "part.mining_robot.robo_ultra_miner",
+        "part.mining_robot.robo_super_miner",
+        "part.mining_robot.robo_maxi_miner",
+        "part.mining_robot.robo_miner",
+        "part.mining_robot.robo_mini_miner",
+        "part.mining_robot.robo_midget_miner"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.orbital_adjuster",
+    "candidates": [
+      [
+        "part.mining_robot.orbital_adjuster"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.engine_warship",
+    "candidates": [
+      [
+        "part.engine.trans_star_10",
+        "part.engine.enigma_pulsar"
+      ],
+      [
+        "part.engine.radiating_hydro_ram_scoop"
+      ],
+      [
+        "part.engine.trans_galactic_super_scoop",
+        "part.engine.trans_galactic_fuel_scoop",
+        "part.engine.sub_galactic_fuel_scoop"
+      ],
+      [
+        "part.engine.trans_galactic_drive",
+        "part.engine.alpha_drive_8",
+        "part.engine.daddy_long_legs_7",
+        "part.engine.long_hump_6"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.colony_module",
+    "candidates": [
+      [
+        "part.mechanical.orbital_construction_module",
+        "part.mechanical.colonization_module"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.speed_trap",
+    "candidates": [
+      [
+        "part.mine_layer.speed_trap_50",
+        "part.mine_layer.speed_trap_30",
+        "part.mine_layer.speed_trap_20"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.munition",
+    "candidates": [
+      [
+        "part.beam.multi_contained_munition"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.starbase_utility",
+    "candidates": [
+      [
+        "part.orbital.ultra_driver_13",
+        "part.orbital.ultra_driver_12",
+        "part.orbital.ultra_driver_11",
+        "part.orbital.ultra_driver_10",
+        "part.orbital.super_driver_9",
+        "part.orbital.super_driver_8",
+        "part.orbital.mass_driver_7",
+        "part.orbital.mass_driver_6",
+        "part.orbital.mass_driver_5"
+      ],
+      [
+        "part.electrical.multi_function_pod",
+        "part.electrical.ultra_stealth_cloak",
+        "part.electrical.super_stealth_cloak",
+        "part.electrical.stealth_cloak"
+      ],
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.battle_nexus",
+        "part.electrical.battle_super_computer",
+        "part.electrical.battle_computer"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.starbase_torpedo",
+    "candidates": [
+      [
+        "part.torpedo.armageddon_missile"
+      ],
+      [
+        "part.torpedo.omega_torpedo"
+      ],
+      [
+        "part.torpedo.doomsday_missile"
+      ],
+      [
+        "part.torpedo.upsilon_torpedo",
+        "part.torpedo.rho_torpedo",
+        "part.torpedo.epsilon_torpedo",
+        "part.torpedo.delta_torpedo",
+        "part.torpedo.beta_torpedo",
+        "part.torpedo.alpha_torpedo"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.starbase_beam",
+    "candidates": [
+      [
+        "part.beam.anti_matter_pulverizer",
+        "part.beam.streaming_pulverizer"
+      ],
+      [
+        "part.beam.disruptor"
+      ],
+      [
+        "part.beam.myopic_disruptor"
+      ],
+      [
+        "part.beam.mark_iv_blaster"
+      ],
+      [
+        "part.beam.mini_blaster"
+      ],
+      [
+        "part.beam.phaser_bazooka"
+      ],
+      [
+        "part.beam.yakimora_light_phaser"
+      ],
+      [
+        "part.beam.x_ray_laser",
+        "part.beam.laser"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.starbase_shield",
+    "candidates": [
+      [
+        "part.shield.langston_shell"
+      ],
+      [
+        "part.shield.complete_phase_shield",
+        "part.shield.elephant_hide_fortress",
+        "part.shield.gorilla_delagator",
+        "part.shield.langston_shell",
+        "part.shield.bear_neutrino_barrier",
+        "part.shield.shadow_shield",
+        "part.shield.croby_sharmor",
+        "part.shield.wolverine_diffuse_shield",
+        "part.shield.cow_hide_shield",
+        "part.shield.mole_skin_shield"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.starbase_beam_heavy",
+    "candidates": [
+      [
+        "part.beam.mega_disruptor"
+      ],
+      [
+        "part.beam.heavy_blaster"
+      ],
+      [
+        "part.beam.colloidal_phaser"
+      ],
+      [
+        "part.beam.phaser_bazooka"
+      ],
+      [
+        "part.beam.laser"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.jammer_or_cloak",
+    "candidates": [
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.electrical.multi_function_pod",
+        "part.electrical.ultra_stealth_cloak",
+        "part.electrical.super_stealth_cloak",
+        "part.electrical.stealth_cloak"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.orbital_construction",
+    "candidates": [
+      [
+        "part.mechanical.orbital_construction_module"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.armor_or_support",
+    "candidates": [
+      [
+        "part.armor.mega_poly_shell"
+      ],
+      [
+        "part.electrical.jammer_50",
+        "part.electrical.jammer_30",
+        "part.electrical.jammer_20",
+        "part.electrical.jammer_10"
+      ],
+      [
+        "part.mechanical.overthruster",
+        "part.mechanical.maneuvering_jet"
+      ],
+      [
+        "part.mechanical.beam_deflector"
+      ],
+      [
+        "part.mechanical.super_fuel_tank",
+        "part.mechanical.fuel_tank"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.mining_robot_large",
+    "candidates": [
+      [
+        "part.mining_robot.alien_miner",
+        "part.mining_robot.robo_ultra_miner",
+        "part.mining_robot.robo_super_miner",
+        "part.mining_robot.robo_maxi_miner"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.mining_robot_alien",
+    "candidates": [
+      [
+        "part.mining_robot.alien_miner",
+        "part.mining_robot.robo_ultra_miner"
+      ],
+      [
+        "part.mining_robot.robo_midget_miner"
+      ]
+    ]
+  },
+  {
+    "type": "ai_part_class",
+    "id": "ai_part_class.engine_fuel",
+    "candidates": [
+      [
+        "part.engine.galaxy_scoop",
+        "part.engine.trans_galactic_mizer_scoop",
+        "part.engine.trans_galactic_super_scoop",
+        "part.engine.trans_galactic_fuel_scoop",
+        "part.engine.sub_galactic_fuel_scoop"
+      ],
+      [
+        "part.engine.fuel_mizer"
+      ]
+    ]
+  }
+]

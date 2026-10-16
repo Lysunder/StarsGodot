@@ -89,7 +89,7 @@ func _build_queue(planet: Planet, player: Player, avail: Array[int]) -> void:
 			alchemy_above = true
 			i += 1
 			continue
-		var result := _spend(planet, player, item, avail, alchemy_above)
+		var result := spend(planet, player, item, avail, alchemy_above)
 		if result.built > 0:
 			if not _complete(planet, player, item, result.built) and not def.get("auto", false):
 				item.count = 0
@@ -171,7 +171,8 @@ static func _built(planet: Planet, effect: String) -> int:
 # --- Step 5: spending --------------------------------------------------------------------------
 
 
-func _spend(
+## Spends on one queue item (S09 step 5); also the classic AI's completion estimate (S22).
+func spend(
 	planet: Planet, player: Player, item: QueueItem, avail: Array[int], alchemy_above: bool
 ) -> SpendResult:
 	var out := SpendResult.new()

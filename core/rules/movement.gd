@@ -511,6 +511,17 @@ static func _lower_warp(
 static func _ram_scoops(
 	fleet: Fleet, owner: Player, warp: int, distance: int, content: ContentRegistry
 ) -> int:
+	var made := scoop_fuel(fleet, owner, warp, distance, content)
+	if made > 0:
+		var space := fuel_capacity(fleet, owner, content) - fleet.cargo[Fleet.CARGO_FUEL]
+		fleet.cargo[Fleet.CARGO_FUEL] += clampi(made, 0, maxi(space, 0))
+	return made
+
+
+## The fuel engines that use none at `warp` make over `distance` light years (S12 step 6).
+static func scoop_fuel(
+	fleet: Fleet, owner: Player, warp: int, distance: int, content: ContentRegistry
+) -> int:
 	if warp > SCOOP_MAX_WARP:
 		return 0
 	var made := 0
@@ -531,9 +542,6 @@ static func _ram_scoops(
 				if warp <= 7 and table[warp + 3] == 0:
 					k = 10 * engines
 		made += stack.count * k * distance
-	if made > 0:
-		var space := fuel_capacity(fleet, owner, content) - fleet.cargo[Fleet.CARGO_FUEL]
-		fleet.cargo[Fleet.CARGO_FUEL] += clampi(made, 0, maxi(space, 0))
 	return made
 
 

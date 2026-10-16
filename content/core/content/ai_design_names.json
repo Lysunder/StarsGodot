@@ -1,0 +1,212 @@
+[
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.scout",
+    "hulls": [
+      "hull.scout",
+      "hull.frigate"
+    ],
+    "names": [
+      "Seeker",
+      "Lookout",
+      "Pathmark",
+      "Outrider",
+      "Glimmer",
+      "Farsight",
+      "Skimmer",
+      "Wanderer",
+      "Trailblazer",
+      "Starfinch"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.capital",
+    "hulls": [
+      "hull.cruiser",
+      "hull.battle_cruiser",
+      "hull.battleship",
+      "hull.dreadnought"
+    ],
+    "names": [
+      "Bulwark",
+      "Sentinel",
+      "Steadfast",
+      "Ironclad",
+      "Vanguard",
+      "Bastion",
+      "Tempest",
+      "Juggernaut",
+      "Paladin",
+      "Colossus",
+      "Halberd",
+      "Rampart",
+      "Thunderer",
+      "Monitor",
+      "Battlement",
+      "Gauntlet"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.bomber",
+    "hulls": [
+      "hull.mini_bomber",
+      "hull.b_17_bomber",
+      "hull.stealth_bomber",
+      "hull.b_52_bomber"
+    ],
+    "names": [
+      "Hailstorm",
+      "Firefall",
+      "Earthshaker",
+      "Cinder",
+      "Scorcher",
+      "Groundbreaker",
+      "Nightjar",
+      "Meteor Rain",
+      "Pounder",
+      "Rubblemaker",
+      "Quake",
+      "Smolder"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.miner",
+    "hulls": [
+      "hull.midget_miner",
+      "hull.mini_miner",
+      "hull.miner",
+      "hull.maxi_miner",
+      "hull.ultra_miner"
+    ],
+    "names": [
+      "Delver",
+      "Lodecutter",
+      "Rockhound",
+      "Quarryman",
+      "Ore Hauler",
+      "Seamfinder",
+      "Lodestone",
+      "Digger"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.colony",
+    "hulls": [
+      "hull.mini_colony_ship",
+      "hull.colony_ship"
+    ],
+    "names": [
+      "Homestead",
+      "Trekker",
+      "New Hope",
+      "Sapling",
+      "Newcomer",
+      "Frontier",
+      "Founder",
+      "Landfall"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.freighter",
+    "hulls": [
+      "hull.small_freighter",
+      "hull.medium_freighter",
+      "hull.large_freighter",
+      "hull.super_freighter"
+    ],
+    "names": [
+      "Cargomaster",
+      "Packmule",
+      "Bulk Carrier",
+      "Supply Line",
+      "Long Hauler",
+      "Drayman",
+      "Stevedore",
+      "Tradewind"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.raider",
+    "hulls": [
+      "hull.privateer",
+      "hull.rogue",
+      "hull.galleon"
+    ],
+    "names": [
+      "Sea Wolf",
+      "Buccaneer",
+      "Smuggler",
+      "Nightjar",
+      "Marauder",
+      "Blockade Runner",
+      "Rover",
+      "Freebooter"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.utility",
+    "hulls": [],
+    "names": [
+      "Handyman",
+      "Tender",
+      "Workhorse",
+      "Auxiliary",
+      "Shepherd",
+      "Sower",
+      "Changeling",
+      "Odd Job"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.destroyer",
+    "hulls": [
+      "hull.destroyer"
+    ],
+    "names": [
+      "Lancet",
+      "Skirmisher",
+      "Hound",
+      "Gadfly",
+      "Yellowjacket",
+      "Jackal",
+      "Rapier",
+      "Sabre",
+      "Kestrel",
+      "Falcon",
+      "Striker",
+      "Harrier",
+      "Spearpoint",
+      "Viper",
+      "Raptor",
+      "Spurwing"
+    ]
+  },
+  {
+    "type": "ai_design_names",
+    "id": "ai_design_names.starbase",
+    "hulls": [],
+    "names": [
+      "Outpost",
+      "Shelter",
+      "Bastille",
+      "Anchorage",
+      "Watchtower",
+      "Keep",
+      "Stronghold",
+      "Harbor",
+      "Aerie",
+      "Redoubt",
+      "Spire",
+      "Gatehouse",
+      "Fortress"
+    ]
+  }
+]

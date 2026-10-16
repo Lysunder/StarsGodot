@@ -360,6 +360,65 @@ const TYPES := {
 		"fields": {"hulls": {"t": "list", "of": {"t": "ref", "to": "hull"}}},
 		"required": ["hulls"],
 	},
+	# the parts the classic personalities put in a slot of a kind (S22 "Classic designs"): groups
+	# of parts, best first; the first part the player can use wins
+	"ai_part_class":
+	{
+		"fields":
+		{
+			"candidates":
+			{
+				"t": "list",
+				"of": {"t": "list", "of": {"t": "ref", "to": "part"}, "min": 1},
+				"min": 1,
+			},
+		},
+		"required": ["candidates"],
+	},
+	# a classic personality's design: a hull and a part class per hull slot
+	"ai_design_template":
+	{
+		"fields":
+		{
+			"hull": {"t": "ref", "to": "hull"},
+			"slots": {"t": "list", "of": {"t": "ref", "to": "ai_part_class"}, "min": 1},
+		},
+		"required": ["hull", "slots"],
+	},
+	# names the classic personalities give their designs of these hulls (no hulls: the list for
+	# any other hull; ai_design_names.starbase for starbases)
+	"ai_design_names":
+	{
+		"fields":
+		{
+			"hulls": {"t": "list", "of": {"t": "ref", "to": "hull"}},
+			"names": {"t": "list", "of": {"t": "string"}, "min": 1},
+		},
+		"required": ["names"],
+	},
+	# a classic personality's research order: steps of a tech field and a level
+	"ai_research_plan":
+	{
+		"fields":
+		{
+			"steps":
+			{
+				"t": "list",
+				"of":
+				{
+					"t": "object",
+					"fields":
+					{
+						"field": {"t": "ref", "to": "tech_field"},
+						"level": {"t": "int", "min": 0, "max": 31},
+					},
+					"required": ["field", "level"],
+				},
+				"min": 1,
+			},
+		},
+		"required": ["steps"],
+	},
 	# a computer player's personality (S22): the brain it runs, its parameters, and per difficulty
 	# level (ComputerPlayers.LEVELS) the parameters that level changes
 	"ai_personality":

@@ -218,8 +218,11 @@ static func _words(wp: Waypoint) -> Array[int]:
 
 
 ## The fleet's default warp (`Fleet_CalcWarp@1048:678c`): the fastest speed every engine runs
-## below 121 per mille fuel use, eased down to a nearby free speed; 0 when a design has no engine.
-static func default_warp(fleet: Fleet, owner: Player, content: ContentRegistry) -> int:
+## below 121 per mille fuel use, eased down to a nearby free speed unless `ease` is false; 0 when
+## a design has no engine.
+static func default_warp(
+	fleet: Fleet, owner: Player, content: ContentRegistry, ease: bool = true
+) -> int:
 	var warp := WARP_MAX
 	for stack in fleet.stacks:
 		if stack.count <= 0:
@@ -232,7 +235,7 @@ static func default_warp(fleet: Fleet, owner: Player, content: ContentRegistry) 
 		var tags: Array = part.get("tags", [])
 		while warp > 0:
 			if int(table[warp]) < FUEL_LIMIT:
-				if int(table[warp]) > 0 and not tags.has(FULL_TAG):
+				if ease and int(table[warp]) > 0 and not tags.has(FULL_TAG):
 					if warp >= 5 and int(table[warp - 1]) == 0:
 						warp -= 1
 					elif warp >= 6 and int(table[warp - 2]) == 0:

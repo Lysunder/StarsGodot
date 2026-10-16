@@ -285,6 +285,38 @@ message and the fleet stays where it is.
 8. The fleet is placed on the destination. Other players' waypoints that target it are frozen at its old position
    (`RetargetFollowers@1078:133e`). The fleet is marked as gated this turn (no repair, S19).
 
+### Default warp for a waypoint (`Waypoint_DefaultWarp@1050:5650`, `Waypoint_FuelNeeded@1048:6948`)
+
+The speed a new waypoint gets unless the player sets one; the classic computer players also set their fleets'
+speeds with it (S22).
+
+**Fuel to a waypoint**: the most fuel the fleet holds on the way, leg by leg from waypoint 0, each leg at its
+waypoint's warp:
+
+- A leg at warp 0 or above 10 uses none.
+- The leg's distance D is the distance rounded up (+ 0.99999), and its years are trunc(D / warp² + 0.9999).
+- It uses the fuel of the whole leg at once (S12 "Fuel use", truncated distance). Over more than one year, it uses
+  the larger of that and (years - 1) x a year's fuel (warp² light years) plus the fuel for the rest.
+- Engines that make fuel at that warp, and fuel transports (`fuel_generation` per ship and year), can bring that down:
+  to one year's fuel when they make as much; otherwise to that year's fuel plus their shortfall each further year,
+  when that is less.
+- The running total starts again at each of the player's own planets with a dock.
+
+**The default warp** of waypoint k (k 0 is the fleet's default warp, `Fleet_CalcWarp` with easing):
+
+1. Start from the fleet's default warp, W.
+2. Below 9, a fleet heading for its own or an unowned planet, or carrying colonizers, or told to colonize or scrap,
+   starts from 9.
+3. Other fleets start from one above W (or above the previous waypoint's warp when that is faster, up to 10). That
+   needs a tenth of their fuel capacity more than the trip needs, and seven tenths of it in the tank.
+4. From there the speed comes down to W until the trip needs no more than the fuel aboard and either half of it, or
+   the destination is the player's own dock, or the fleet counts as a colonizer.
+5. For a computer player, every fleet counts as a colonizer here. A fleet that was not one keeps within its top warp
+   (without easing), unless it goes to its own planet with a starbase that is not a fort.
+6. The speed then drops to the slowest taking as many years (not below 2; not for a fleet target).
+7. It becomes 11 when the player's own stargates at both ends (or Jump Gates on every ship, to a gate of its own)
+   take every ship with no damage, and the fleet has no cargo to leave (S12 "Stargates").
+
 ### Wormholes shift (S02 phase 14)
 
 After production, every wormhole end, in wormhole number order (S03), moves:

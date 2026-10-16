@@ -34,7 +34,7 @@ static func jump(
 		if not _ours_or_friend(state, source, fleet.owner):
 			_refuse(state, content, fleet, "gate_source_not_ours", [source.id, source.id])
 			return "stayed"
-	elif not _all_have_jump_gate(fleet, owner, content):
+	elif not all_have_jump_gate(fleet, owner, content):
 		var where := [NO_X, source.id] if source != null else [here.x, here.y]
 		_refuse(state, content, fleet, "gate_none_here", where)
 		return "stayed"
@@ -138,7 +138,7 @@ static func _ours_or_friend(state: GameState, planet: Planet, player: int) -> bo
 	return player < relations.size() and relations[player] == "friend"
 
 
-static func _all_have_jump_gate(fleet: Fleet, owner: Player, content: ContentRegistry) -> bool:
+static func all_have_jump_gate(fleet: Fleet, owner: Player, content: ContentRegistry) -> bool:
 	if fleet.stacks.is_empty():
 		return false
 	for stack in fleet.stacks:

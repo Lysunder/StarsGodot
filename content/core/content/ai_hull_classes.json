@@ -8,5 +8,59 @@
       "hull.stealth_bomber",
       "hull.b_52_bomber"
     ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.combat",
+    "hulls": [
+      "hull.destroyer",
+      "hull.cruiser",
+      "hull.battle_cruiser",
+      "hull.battleship",
+      "hull.dreadnought"
+    ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.escort",
+    "hulls": [
+      "hull.frigate"
+    ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.multirole",
+    "hulls": [
+      "hull.nubian",
+      "hull.meta_morph"
+    ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.freighter",
+    "hulls": [
+      "hull.small_freighter",
+      "hull.medium_freighter",
+      "hull.large_freighter",
+      "hull.super_freighter",
+      "hull.privateer",
+      "hull.rogue",
+      "hull.galleon"
+    ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.cargo_morph",
+    "hulls": [
+      "hull.meta_morph"
+    ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.colony",
+    "hulls": [
+      "hull.mini_colony_ship",
+      "hull.colony_ship"
+    ]
   }
 ]

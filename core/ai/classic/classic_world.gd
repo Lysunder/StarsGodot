@@ -9,7 +9,9 @@ extends RefCounted
 ##
 ## Also the per-turn setup every classic personality shares (`AI_PlayTurn`): the player's
 ## planets in shuffled order (the turn's first draws), a 16-byte record per planet
-## (`planet_info`), the design ratings, and each known minefield's radius squared.
+## (`planet_info`), the design ratings, and each known minefield's radius squared; and the
+## working memory the personality keeps from turn to turn (the original keeps it in the player's
+## history file; we keep it in the player's knowledge, `MEMORY_KEY`).
 
 ## Detail levels (S15).
 const SCANNED := 3
@@ -17,10 +19,29 @@ const OWN := 7
 ## `planet_info` bytes: an enemy bomber orbits this planet of the player's (`AI_ScanFleets`).
 const INFO_BOMBERS := 8
 const INFO_SIZE := 16
-## The original's working memory per AI turn: 0x2000 bytes of 16-bit words, the first one 2.
+## The original's working memory: 0x2000 bytes of 16-bit words; the first holds the bytes in
+## use, the word itself included (2 when empty).
 const MEMORY_WORDS := 0x1000
 const MEMORY_FIRST := 2
+const MEMORY_KEY := "ai_memory"
 const BOMBER_CLASS := "ai_hull_class.bomber"
+const ROBOTOIDS := "ai_personality.robotoids"
+const TURINDRONES := "ai_personality.turindrones"
+const AUTOMITRONS := "ai_personality.automitrons"
+const ROTOTILLS := "ai_personality.rototills"
+const CYBERTRONS := "ai_personality.cybertrons"
+const MACINTI := "ai_personality.macinti"
+## Freighter depot records in the memory (`AI_PlanFreighterDepots`): the count in word 1, then
+## DEPOT_WORDS words each from word 2: the planet, how many fleets, and up to DEPOT_FLEETS fleets.
+const DEPOT_COUNT := 1
+const DEPOT_FIRST := 2
+const DEPOT_WORDS := 10
+const DEPOT_FLEETS := 8
+const SELECT_NONE := 0
+const SELECT_PLANET := 1
+const SELECT_FLEET := 2
+## A fleet's id word (owner << 9 | number), for the selection.
+const FLEET_ID_OWNER_SHIFT := 9
 
 var state: GameState
 var content: ContentRegistry
@@ -28,6 +49,8 @@ var player: int = 0
 var rng: StarsRandom
 ## Planet id -> detail level as loaded (0 never seen, 1 glimpsed, 3 scanned, 7 own).
 var detail := {}
+## Planet id -> the turn it was last seen (this turn for the player's own; 0 never seen).
+var seen_turn := {}
 ## The player's planets, shuffled.
 var own_planets: Array[Planet] = []
 ## Planet id -> PackedByteArray(INFO_SIZE).
@@ -36,9 +59,22 @@ var planet_info := {}
 var ratings := {}
 ## Minefield -> its radius squared, trunc(sqrt(mines))^2 (`AI_InitScale`).
 var minefield_scale := {}
+## The working memory, MEMORY_WORDS words.
 var memory := PackedInt32Array()
 var orders: OrderSet
 var rejected := PackedStringArray()
+
+## The selection the original edits through (`SetSelection`): a planet or a fleet, and the copy
+## of a planet being edited (`g_curPlanet`): the selected planet, or the selected fleet's. Edits
+## to the copy reach the world only when committed; selecting what is already selected keeps the
+## copy as it is.
+var selected_kind := SELECT_NONE
+var selected_id := -1
+var cur_planet: Planet = null
+## The production being edited (ClassicProduction.Edit), or null.
+var editing: RefCounted = null
+## Colony targets were rated this turn (personalities other than Robotoids and Macinti rate once).
+var colony_targets_rated := false
 
 
 static func build(
@@ -54,14 +90,41 @@ static func build(
 	w._mask_fleets(host)
 	w._mask_designs(host)
 	w._mask_minefields()
-	w.memory.resize(MEMORY_WORDS)
-	w.memory[0] = MEMORY_FIRST
+	w._mask_objects(host)
+	w._load_memory()
 	w._setup()
 	return w
 
 
 func me() -> Player:
 	return state.player(player)
+
+
+## The content id of the player's personality.
+func personality_id() -> String:
+	return ComputerPlayers.personality_id(ComputerPlayers.personality_of(me()))
+
+
+func _load_memory() -> void:
+	memory.resize(MEMORY_WORDS)
+	memory.fill(0)
+	memory[0] = MEMORY_FIRST
+	var saved: Array = me().knowledge.get(MEMORY_KEY, [])
+	for i in mini(saved.size(), MEMORY_WORDS):
+		memory[i] = int(saved[i])
+
+
+## Keeps the working memory in player `p`'s knowledge for the next turn: the words in use, or
+## nothing when it is empty.
+func save_memory(p: Player) -> void:
+	var words := clampi(memory[0] / 2, 1, MEMORY_WORDS)
+	if words <= 1:
+		p.knowledge.erase(MEMORY_KEY)
+		return
+	var out: Array = []
+	for i in words:
+		out.append(memory[i])
+	p.knowledge[MEMORY_KEY] = out
 
 
 ## Gives an order: applied to the world at once, and kept for the turn when accepted.
@@ -74,6 +137,60 @@ func order(o: Dictionary) -> String:
 	return reason
 
 
+## Whether a planet is one of the freighter depots in the memory.
+func is_depot(planet_id: int) -> bool:
+	return depot_of_planet(planet_id) >= 0
+
+
+## The depot record of a planet, or -1.
+func depot_of_planet(planet_id: int) -> int:
+	for i in memory[DEPOT_COUNT]:
+		if memory[DEPOT_FIRST + i * DEPOT_WORDS] == planet_id:
+			return i
+	return -1
+
+
+# --- Selection ------------------------------------------------------------------------------
+
+
+## Selects a planet (`SetSelection(1, id)`): the planet copy is loaded unless it is selected
+## already.
+func select_planet(id: int) -> void:
+	if selected_kind == SELECT_PLANET and selected_id == id:
+		return
+	var planet := state.planet(id)
+	if planet == null:
+		return
+	cur_planet = planet.copy() as Planet
+	selected_kind = SELECT_PLANET
+	selected_id = id
+
+
+## Selects one of the player's fleets (`SetSelection(2, id)`): the planet copy becomes the
+## fleet's planet (none in deep space) unless that planet's copy is loaded already.
+func select_fleet(fleet: Fleet) -> void:
+	var id := fleet.owner << FLEET_ID_OWNER_SHIFT | fleet.number
+	if selected_kind == SELECT_FLEET and selected_id == id:
+		return
+	if fleet.planet < 0:
+		cur_planet = null
+	elif cur_planet == null or cur_planet.id != fleet.planet:
+		cur_planet = state.planet(fleet.planet).copy() as Planet
+	selected_kind = SELECT_FLEET
+	selected_id = id
+
+
+## Reloads the planet copy from the world (after a commit).
+func reload_planet() -> void:
+	if cur_planet != null:
+		cur_planet = state.planet(cur_planet.id).copy() as Planet
+
+
+## A fleet's id word, as the memory keeps it.
+static func fleet_id(fleet: Fleet) -> int:
+	return fleet.owner << FLEET_ID_OWNER_SHIFT | fleet.number
+
+
 # --- Masking --------------------------------------------------------------------------------
 
 
@@ -83,9 +200,11 @@ func _mask_planets() -> void:
 	for planet in state.planets:
 		if planet.owner == player:
 			detail[planet.id] = OWN
+			seen_turn[planet.id] = state.turn
 			continue
 		var r: Dictionary = known.get(str(planet.id), {})
 		detail[planet.id] = int(r.get("detail", 0))
+		seen_turn[planet.id] = int(r.get("turn", 0))
 		var seen_surface := _seen_level(planet.id) >= Scanning.MINERALS
 		var surface := planet.surface.duplicate()
 		_blank(planet)
@@ -187,6 +306,25 @@ func _mask_minefields() -> void:
 		if field.owner == player or field.known_by.has(player):
 			kept.append(field)
 	state.minefields = kept
+
+
+## Packets and salvage seen this turn (or the player's own), wormholes in view or seen before.
+func _mask_objects(host: GameState) -> void:
+	var view: Dictionary = {}
+	if player < host.views.size() and host.views[player] is Dictionary:
+		view = host.views[player]
+	var seen_packets: Array = view.get("packets", [])
+	var packets: Array[Packet] = []
+	for packet in state.packets:
+		if packet.owner == player or seen_packets.has("%d/%d" % [packet.owner, packet.number]):
+			packets.append(packet)
+	state.packets = packets
+	var seen_holes: Array = view.get("wormholes", [])
+	var holes: Array[Wormhole] = []
+	for hole in state.wormholes:
+		if hole.seen_by.has(player) or seen_holes.has(hole.number):
+			holes.append(hole)
+	state.wormholes = holes
 
 
 # --- The per-turn setup ---------------------------------------------------------------------
