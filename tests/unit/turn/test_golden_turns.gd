@@ -603,3 +603,63 @@ func test_turin1(
 	]
 ) -> void:
 	_check_turn("turin1", turn, true)
+
+
+## Five Automitrons computer players and an idle human (S22 stage 4).
+func test_auto1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[60],
+		[61],
+		[62],
+		[63],
+		[64],
+		[65],
+		[66],
+		[67],
+		[68],
+		[69],
+		[70],
+		[71],
+		[72],
+		[73],
+		[74],
+		[75],
+		[76],
+		[77],
+		[78],
+		[79],
+	]
+) -> void:
+	_check_turn("auto1", turn, true)
+
+
+## Five Rototills computer players and an idle human (S22 stage 4).
+func test_roto1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[60],
+		[61],
+		[62],
+		[63],
+		[64],
+		[65],
+		[66],
+		[67],
+		[68],
+		[69],
+		[70],
+		[71],
+		[72],
+		[73],
+		[74],
+		[75],
+		[76],
+		[77],
+		[78],
+		[79],
+	]
+) -> void:
+	_check_turn("roto1", turn, true)

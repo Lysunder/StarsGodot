@@ -30,6 +30,8 @@ material from the original. Golden-turn tests compare our engine's turn N → N+
 | `prod1/` | tiny, normal density, no random events, 2 humans (same race file), seed 2001; player 0 gave production orders in the original client each turn | `t000` … `t005`, orders `t000` … `t004` |
 | `big1/` | the 80-turn computer game (S22 stage 4): five Robotoids computer players and an idle human, turns 60-80 kept. Names are neutral except the computer players' own designs, which carry our names for them from `ai_design_names.json` at the same place in the same list (the computer players avoid names in use). Each player's `knowledge` holds what our replay of turns 0 … N-1 carried into turn N: the planet history (from the original's turn files) and the computer players' memory (from our computer players). The golden test lets our computer players play each turn before generating it | `t060` … `t080` |
 | `turin1/` | a second 80-turn computer game, made the same way as `big1/` (seed 779): five Turindrones computer players and an idle human, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
+| `auto1/` | made the same way as `big1/` (seed 781): five Automitrons computer players and an idle human, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
+| `roto1/` | made the same way as `big1/` (seed 783): five Rototills computer players and an idle human, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
 
 **Orders:** `tNNN.pP.orders.json` holds player P's orders given in turn NNN (our order file format, S11), converted
 from the original's `.x` file with `tools/harness/stars_orders.py`. The golden-turn test applies them before
