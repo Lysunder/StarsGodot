@@ -34,6 +34,11 @@ const TURN_IGNORE := {
 	{
 		74: ["/planets/118/environment*"],
 	},
+	# B38 likewise
+	"turin1":
+	{
+		72: ["/planets/67/environment*"],
+	},
 }
 
 const CompatContent := preload("res://tests/unit/compat_content.gd")
@@ -569,3 +574,32 @@ func test_big1(
 	]
 ) -> void:
 	_check_turn("big1", turn, true)
+
+
+## Five Turindrones computer players and an idle human (S22 stage 4). Turns left out: B32 (61:
+## merged damage), B12 (71: a caught fleet that was itself chasing stops) and 77 (mining one off on
+## several planets, battle token order and wormholes differ; not found yet).
+func test_turin1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[60],
+		[62],
+		[63],
+		[64],
+		[65],
+		[66],
+		[67],
+		[68],
+		[69],
+		[70],
+		[72],
+		[73],
+		[74],
+		[75],
+		[76],
+		[78],
+		[79],
+	]
+) -> void:
+	_check_turn("turin1", turn, true)
