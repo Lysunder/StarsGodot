@@ -86,6 +86,8 @@ static func update(state: GameState, content: ContentRegistry, rng: StarsRandom)
 				_check_wormhole(state, content, fleet, wp)
 			elif wp.target == "trader":
 				_follow_trader(state, wp)
+			elif wp.target == "packet" or wp.target == "minefield":
+				_follow_object(state, wp)
 
 
 ## A waypoint's fleet target: still there (claimed), or retargeted among the fleets at the
@@ -115,6 +117,13 @@ static func _check_target(
 			picked = other
 	var chosen := heaviest if heaviest != null else picked
 	if chosen == null:
+		if target == null:
+			# a fleet that no longer exists: the waypoint stays where it was, on the planet there or
+			# in deep space
+			var planet := WaypointWarp.planet_at(state, wp.x, wp.y)
+			wp.target = "planet" if planet != null else "none"
+			wp.target_owner = -1
+			wp.target_id = planet.id if planet != null else -1
 		return
 	wp.target_owner = chosen.owner
 	wp.target_id = chosen.number
@@ -146,6 +155,20 @@ static func _follow_trader(state: GameState, wp: Waypoint) -> void:
 		if trader.number == wp.target_id:
 			wp.x = trader.x
 			wp.y = trader.y
+			return
+	wp.target = "none"
+	wp.target_owner = -1
+	wp.target_id = -1
+
+
+## A waypoint's packet, salvage or minefield: it takes the object's position; deep space when the
+## object is gone.
+static func _follow_object(state: GameState, wp: Waypoint) -> void:
+	var objects: Array = state.packets if wp.target == "packet" else state.minefields
+	for o: Variant in objects:
+		if o.owner == wp.target_owner and o.number == wp.target_id:
+			wp.x = o.x
+			wp.y = o.y
 			return
 	wp.target = "none"
 	wp.target_owner = -1

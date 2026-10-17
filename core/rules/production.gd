@@ -20,6 +20,8 @@ enum Status {
 ## Starbase designs in a design message word come after the 16 ship slots (owner x 32 + slot).
 const STARBASE_SLOTS := 16
 const AUTO_UNLIMITED := 1000
+## A starbase without a mass driver: the speed setting cleared (stored as warp - 4, so it reads 4).
+const DRIVER_WARP_CLEARED := 4
 const MERGE_HEADROOM := 32766
 ## Installation effects and their single-unit message names (S21).
 const SINGULAR := {"mines": "mine", "factories": "factory", "defenses": "defense"}
@@ -542,13 +544,17 @@ func _complete_starbase(planet: Planet, player: Player, slot: int) -> bool:
 	if warp > 0:
 		planet.mass_driver_warp = warp
 	else:
+		# the original clears the setting, which reads as its lowest speed
 		planet.mass_driver_target = -1
-		planet.mass_driver_warp = 0
-		var kept: Array[QueueItem] = []
-		for q in planet.queue:
+		planet.mass_driver_warp = DRIVER_WARP_CLEARED
+		# in place: the queue being built is this array
+		var k := 0
+		while k < planet.queue.size():
+			var q := planet.queue[k]
 			if q.is_design() or _content.get_def("production_item", q.item)["effect"] != "packet":
-				kept.append(q)
-		planet.queue = kept
+				k += 1
+			else:
+				planet.queue.remove_at(k)
 	design.built += 1
 	design.remaining += 1
 	return true

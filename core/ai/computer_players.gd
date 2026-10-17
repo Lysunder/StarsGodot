@@ -11,6 +11,10 @@ const PERSONALITY := "ai_personality"
 const INACTIVE := "inactive"
 ## The difficulty levels, easiest first (Player.ai_level).
 const LEVELS := ["easy", "standard", "harder", "expert"]
+## Files the original writes for each computer player after it plays (log, history), each
+## drawing a cipher salt (S01 "Draws outside the rules").
+const FILES_WRITTEN := 2
+const FILE_SALT_RANGE := 2000
 
 
 ## The content id of personality `ai` (Player.ai).
@@ -87,4 +91,7 @@ static func add_orders(
 		)
 		brain.play(ctx)
 		out.append(ctx.orders)
+		# the original then writes the player's log and history files, one salt draw each (S01)
+		for f in FILES_WRITTEN:
+			rng.random(FILE_SALT_RANGE)
 	return out

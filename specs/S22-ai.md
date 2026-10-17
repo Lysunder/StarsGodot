@@ -216,7 +216,14 @@ player's orders for the turn.
    (In the tutorial the shuffle is skipped; we have no tutorial game.)
 
 The world also keeps the packets and salvage the player sees this turn (and its own), and the wormholes it sees or
-has seen; and for each planet the turn the player last saw it (this turn for its own).
+has seen; and for each planet the turn the player last saw it (this turn for its own). A planet the player has never
+seen has the population estimate 4095 (the 12-bit field all set; big1 turn 62: a freighter does not carry people
+there). The player's **planet count**, as its turn file's player record has it, is its own planets plus the other
+planets it sees this turn (the file's planet blocks; big1 turns 30-31 for all five players).
+
+After each computer player plays, the original writes its log and history files, and each file draws a cipher salt
+(`random(2000)`, S01): two draws per computer player, made by the AI step whatever the brain (big1: 10 a turn for
+five players, turns 0-8 and later).
 
 **Hull classes.** Where the original's personalities compare hull numbers, the hulls of each class are content
 (`ai_hull_class`, a list of hulls), so a mod's hull can join a class:
@@ -541,11 +548,12 @@ player's planet or fleet gives nothing.
 "build". Later it is "build" when all of these hold:
 
 - the colony fleets number at most universe size index x 20 + 10;
-- they and the player's planets are at most four fifths of all planets;
+- they and the planet counts of the player records loaded are at most four fifths of all planets: the player's own
+  count (above) and, for each other player, the planets its history knows to be theirs (the history file keeps that
+  count for each player; big1 turn 30);
 - colony designs built, less those two, lie from 0 to 25; or there are fewer than 5 colony fleets and a draw of 1 in
   2 says so.
 
-The original adds the planets of every player it has full data on, which in a turn file is the player alone.
 
 **Freighter runs** (`AI_PlanTransport`), from the freighter's depot. Planets are scored per year of travel (distance
 div 25, rounded up, at least 1):
@@ -637,7 +645,7 @@ at most 6; plus 1 more with a starbase. Its byte 9 is 1.
 **9. Ships at starbases.** Each of the player's planets in shuffled order, with a starbase and 200 hundred people:
 its production is opened, and when the queue holds no ship design:
 
-1. K is the larger of (the player's planets div 8) and (depots × 4). With design F, when F's slots have fewer than
+1. K is the larger of (the player's planet count div 8) and (depots × 4). With design F, when F's slots have fewer than
    8K/10 ships, or fewer than K and a draw of 1 in 3: one F at the end.
 2. When colony ships are to be built, or there are fewer than 26 colony fleets and `random(depots × 8)` is 0, and it
    is after turn 4: one ship of slot 1 at the end, two before turn 21. Then, at standard level or above, with the

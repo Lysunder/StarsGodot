@@ -316,7 +316,7 @@ func _queue_ships(planet: Planet) -> bool:
 	var me := w.me()
 	var changed := false
 	var depots := w.memory[ClassicWorld.DEPOT_COUNT]
-	var want := maxi(w.own_planets.size() / 8, depots * 4)
+	var want := maxi(w.planet_count / 8, depots * 4)
 	if (
 		freighter != -1
 		and (freighter_ships < want * 8 / 10 or (freighter_ships < want and w.rng.random(3) == 0))

@@ -72,9 +72,13 @@ in phase 14 when a wormhole has vanished (not built yet). For each fleet in flee
    - Meanwhile one candidate is picked at random: with n the count so far, it replaces the pick when
      `random(n)` = 0, and, if n > 1 and it is already claimed, also `random(2)` ≠ 0.
    - The heaviest matching fleet wins, else the random pick; the waypoint takes it (and its position), and it is
-     marked claimed. With no candidate the waypoint is left as it is.
+     marked claimed. With no candidate the waypoint is left as it is, unless its fleet no longer exists (destroyed
+     in battle, by mines, colonizing or scrapping, none of which retarget waypoints, S11): then it targets the planet
+     at its position, else deep space (the original's file can't name a fleet that is gone; big1 turns 63, 67).
    Claimed marks last for the turn's start (they are cleared when the first waypoint-task pass reaches the fleet).
-4. A waypoint that targets a wormhole takes its current position while the fleet's owner tracks it (scanners,
+4. A waypoint that targets a packet, salvage or minefield takes its current position; one whose object no longer
+   exists becomes deep space (`UpdateWaypointTargets`, the space-object branch; big1 turn 65).
+5. A waypoint that targets a wormhole takes its current position while the fleet's owner tracks it (scanners,
    S15, or having come out of it). A wormhole that has moved while not tracked is lost: the waypoint stays at its
    last known position as deep space, with **`fleet.wormhole_vanished`** `[fleet]` (none when the wormhole no
    longer exists).
@@ -295,7 +299,8 @@ waypoint's warp:
 
 - A leg at warp 0 or above 10 uses none.
 - The leg's distance D is the distance rounded up (+ 0.99999), and its years are trunc(D / warp² + 0.9999).
-- It uses the fuel of the whole leg at once (S12 "Fuel use", truncated distance). Over more than one year, it uses
+- It uses the fuel of the whole leg at once (S12 "Fuel use", the distance + 0.9999 truncated, as `Fleet_CalcFuelUsage`
+  rounds a leg's distance when given none; big1 turn 28). Over more than one year, it uses
   the larger of that and (years - 1) x a year's fuel (warp² light years) plus the fuel for the rest.
 - Engines that make fuel at that warp, and fuel transports (`fuel_generation` per ship and year), can bring that down:
   to one year's fuel when they make as much; otherwise to that year's fuel plus their shortfall each further year,

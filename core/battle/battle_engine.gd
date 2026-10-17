@@ -861,6 +861,9 @@ func _starbase_damage(o: Dictionary, x: int, hit: Dictionary) -> void:
 		var race := state.player(planet.owner).race
 		if not RaceMath.trait_param(race, content, "colony.starbase", 0):
 			planet.starbase = null
+			# a planet without a starbase keeps no mass driver settings (S09 6b)
+			planet.mass_driver_target = -1
+			planet.mass_driver_warp = 0
 			# `Queue_RemoveShipItems`, `Queue_RemovePacketItems`: ship designs and packets go,
 			# starbase designs start over
 			var kept: Array[QueueItem] = []
@@ -907,7 +910,8 @@ func _record_losses(o: Dictionary, killed: int) -> void:
 		lost_cargo = FleetOrders.cargo_after_losses(fleet, owner, content, {o.design: killed})
 	var cost := stored_cost(o._design, owner)
 	if RaceMath.trait_param(owner.race, content, "battle.salvage_at_current_tech", 0):
-		cost = ProductionCosts.design_cost(o._design, owner, content)
+		# recomputed without the new-tech double price (the original turns it off here)
+		cost = ProductionCosts.design_cost(o._design, owner, content, true)
 	var minerals: Array[int] = []
 	for m in 3:
 		minerals.append(_div(cost[m] * killed, 3) + lost_cargo[m])

@@ -17,6 +17,8 @@ extends RefCounted
 ## Detail levels (S15).
 const SCANNED := 3
 const OWN := 7
+## The population estimate of a planet the player has never seen (the 12-bit field all set).
+const UNKNOWN_ESTIMATE := 0xFFF
 ## `planet_info` bytes: an enemy bomber orbits this planet of the player's (`AI_ScanFleets`).
 const INFO_BOMBERS := 8
 const INFO_SIZE := 16
@@ -56,6 +58,9 @@ var detail := {}
 var seen_turn := {}
 ## The player's planets, shuffled.
 var own_planets: Array[Planet] = []
+## The planet count of the player's record as its turn file has it: its own planets and the other
+## planets it sees this turn (the planet blocks of the file).
+var planet_count := 0
 ## Planet id -> PackedByteArray(INFO_SIZE).
 var planet_info := {}
 ## "owner/slot" -> rating (`Designs_ComputeRatings`), ship designs of every player loaded.
@@ -98,6 +103,7 @@ static func build(
 	if w.personality.is_empty():
 		w.personality = ComputerPlayers.personality_id(ComputerPlayers.personality_of(w.me()))
 	w.orders = OrderSet.new(p, host.turn)
+	w._count_planets(host)
 	w._mask_planets()
 	w._mask_fleets(host)
 	w._mask_designs(host)
@@ -214,6 +220,15 @@ static func fleet_id(fleet: Fleet) -> int:
 # --- Masking --------------------------------------------------------------------------------
 
 
+func _count_planets(host: GameState) -> void:
+	var seen: Dictionary = {}
+	if player < host.views.size() and host.views[player] is Dictionary:
+		seen = host.views[player].get("planets", {})
+	for planet in host.planets:
+		if planet.owner == player or seen.has(str(planet.id)):
+			planet_count += 1
+
+
 ## Other planets as the planet history records them (scanned values only when it has them).
 func _mask_planets() -> void:
 	var known: Dictionary = me().knowledge.get(PlanetHistory.KEY, {})
@@ -229,6 +244,7 @@ func _mask_planets() -> void:
 		var surface := planet.surface.duplicate()
 		_blank(planet)
 		if r.is_empty():
+			planet.population_estimate = UNKNOWN_ESTIMATE
 			continue
 		planet.owner = int(r["owner"])
 		planet.homeworld = bool(r["homeworld"])

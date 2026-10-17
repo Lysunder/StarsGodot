@@ -227,8 +227,9 @@ Ships are built only on a planet with a starbase.
 3. If the planet had no starbase it now has one; otherwise the old design's existing count drops by 1.
 4. The starbase's design becomes the new design; its damage stays.
 5. Mass driver: the best mass driver of the new design (S14; one more warp when it has two drivers of that speed)
-   becomes the planet's driver speed. Without a mass driver, the planet's packet destination is cleared and every
-   packet item is removed from the queue.
+   becomes the planet's driver speed. Without a mass driver, the planet's packet destination and speed setting are
+   cleared (the setting is stored as speed − 4, so it reads as 4), and every packet item leaves the queue; the
+   finished starbase item then leaves it as usual (big1 turn 3).
 6. The design's built and existing counts grow by 1.
 
 ### 6c. Packets

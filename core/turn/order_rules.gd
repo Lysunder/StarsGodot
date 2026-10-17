@@ -668,6 +668,8 @@ static func _delete_design(
 				and planet.starbase.design == slot
 			):
 				planet.starbase = null
+				planet.mass_driver_target = -1
+				planet.mass_driver_warp = 0
 				var kept: Array[QueueItem] = []
 				for q in planet.queue:
 					var packet: bool = (

@@ -108,9 +108,12 @@ static func colony_ships(w: ClassicWorld) -> Dictionary:
 	var size := w.state.settings.universe_width / 400 - 1
 	if count > size * 20 + 10:
 		return out
-	var planets := (
-		w.state.planets.filter(func(p: Planet) -> bool: return p.owner == w.player).size()
-	)
+	# the planet counts of the player records loaded: its own (planet_count), and for the other
+	# players the planets its history knows to be theirs
+	var planets := w.planet_count
+	for p in w.state.planets:
+		if p.owner >= 0 and p.owner != w.player:
+			planets += 1
 	if planets + count > w.state.planets.size() * 4 / 5:
 		return out
 	var over := built - (planets + count)

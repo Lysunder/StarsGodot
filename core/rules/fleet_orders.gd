@@ -198,9 +198,11 @@ static func delete_fleet(
 	state: GameState, fleet: Fleet, preferred_owner: int, retired := false
 ) -> void:
 	if retired:
+		# a fleet lost in battle, to mines, colonizing or scrapping is not deleted the merging way:
+		# waypoints aimed at it stay until the end of the turn (S12 "Waypoint targets")
 		state.retire_fleet(fleet)
-	else:
-		state.remove_fleet(fleet)
+		return
+	state.remove_fleet(fleet)
 	var here: Fleet = null
 	for f in state.fleets:
 		if f.x == fleet.x and f.y == fleet.y:

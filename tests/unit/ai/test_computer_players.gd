@@ -45,8 +45,13 @@ func test_computer_players_add_their_orders() -> void:
 	for i in [1, 2]:
 		assert_int(sets[i].player).is_equal(i)
 		assert_int(sets[i].turn).is_equal(s.turn)
-	# the idle brain gives no orders and changes nothing
-	assert_bool(s.equals(before)).is_true()
+	# the idle brain gives no orders and changes nothing; the classic stream advances by the two
+	# file salts the original draws for each computer player (S01)
+	assert_array(StateDiff.compare(before, s, PackedStringArray(["/rng"]))).is_empty()
+	var rng := before.rng.get_stream(RngStreams.CLASSIC)
+	for i in 4:
+		rng.random(ComputerPlayers.FILE_SALT_RANGE)
+	assert_dict(s.rng.get_stream(RngStreams.CLASSIC).to_dict()).is_equal(rng.to_dict())
 	assert_array(StandardTurn.generate(s, _content, sets)).is_empty()
 
 

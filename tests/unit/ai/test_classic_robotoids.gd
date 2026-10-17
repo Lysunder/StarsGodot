@@ -162,6 +162,7 @@ func test_target_score_favours_near_planets() -> void:
 	var home := w.state.planet(30)
 	var other := w.state.planet(19)
 	other.owner = 2
+	other.population_estimate = 0
 	# not worth anything until marked
 	assert_int(r.score(home, other, false)).is_equal(0)
 	r._mark_targets()

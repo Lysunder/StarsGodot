@@ -39,7 +39,8 @@ static func fuel_needed(
 			var d := Vector2(to.x - from.x, to.y - from.y).length()
 			dist = int(d + DISTANCE_ROUND_UP)
 			years = int((d + DISTANCE_ROUND_UP) * (1.0 / float(w * w)) + YEARS_ROUND_UP)
-			use = Movement.fuel_needed(fleet, owner, w, int(d), content)
+			# the whole leg, its distance rounded up (`Fleet_CalcFuelUsage` with no distance given)
+			use = Movement.fuel_needed(fleet, owner, w, int(d + YEARS_ROUND_UP), content)
 		if years > 1:
 			var yearly := Movement.fuel_needed(fleet, owner, w, w * w, content)
 			var last := Movement.fuel_needed(fleet, owner, w, (1 - years) * w * w + dist, content)

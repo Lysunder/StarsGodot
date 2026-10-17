@@ -220,9 +220,12 @@ max(1, damaged percent × count div 100) damaged ships carrying its damage each.
 damage T over all of them and N ships in the merged stack: damaged percent = D × 100 / N rounded up, damage =
 T div D (none when D or N is 0).
 
-**Deleting a fleet** (ship move, merge, colonize, scrap): every waypoint of any fleet that targets it is retargeted
+**Deleting a fleet** (ship moves, merges, splits and the orders that empty a fleet, `DeleteFleet`): every waypoint of
+any fleet that targets it is retargeted
 to what is at its position: another fleet there (the ordering player's first, else the first in fleet order), else
-the planet there, else deep space. `RetargetWaypointsFromFleet@1048:796c`, `FindObjectsAt@1030:294e`.
+the planet there, else deep space. `RetargetWaypointsFromFleet@1048:796c`, `FindObjectsAt@1030:294e`. A fleet that
+loses its ships in battle, to mines, colonizing or scrapping is not deleted this way: waypoints aimed at it are
+dealt with at the end of the turn (S12 "Waypoint targets").
 
 ### Task data
 
@@ -376,7 +379,8 @@ with).
 
 Pass 1 only (a scrap task at an arrival waypoint runs at the start of the next turn). Colonize shares this code
 (3/4 of M, see "Colonize"). The fleet is dismantled; per mineral, with M = Σ over stacks of ships × the design's
-cost of that mineral, divided by 4 (rounded down, per stack) for a transferred design:
+cost of that mineral (without Bleeding Edge's double price for parts at the race's own level, which the original
+turns off here; big1 turn 0), divided by 4 (rounded down, per stack) for a transferred design:
 
 | Where | Minerals recovered |
 |---|---|

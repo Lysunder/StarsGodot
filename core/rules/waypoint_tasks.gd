@@ -582,7 +582,8 @@ func _ships_value(fleet: Fleet, owner: Player) -> Array[int]:
 		if stack.count <= 0:
 			continue
 		var design := owner.ship_design(stack.design)
-		var each := ProductionCosts.design_cost(design, owner, _content)
+		# without the new-tech double price, which the original turns off while scrapping
+		var each := ProductionCosts.design_cost(design, owner, _content, true)
 		var recorded := stack.paid.any(func(v: int) -> bool: return v != 0)
 		for m in value.size():
 			var v := stack.count * each[m]

@@ -315,7 +315,8 @@ unchanged. So every hit adds at least 1/500 of the armor per ship.
 **Losses** (`Token_RecordLosses`): the token and its fleet lose the ships; a fleet without ships is destroyed. The
 lost ships take their share of the fleet's cargo (S12's cargo split) and leave salvage: a third of their mineral cost
 (as stored at the start of the turn, but at current tech levels for a race with `battle.salvage_at_current_tech`,
-Bleeding Edge Technology) plus that cargo; at a planet 80% of it (with a starbase there) or 50% lands on the planet, in deep space 75% becomes
+Bleeding Edge Technology, and then without its double price for parts at the race's own tech level: `Battle_ApplyLosses`
+turns that price off while it recomputes the design; big1 turn 63) plus that cargo; at a planet 80% of it (with a starbase there) or 50% lands on the planet, in deep space 75% becomes
 salvage (S14). The losing design's technology is noted for the battle's tech bonus (part 4).
 
 ## Battle results (`FinishBattle`)

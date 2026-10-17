@@ -21,7 +21,10 @@ static func of(cost: Dictionary) -> Array[int]:
 
 
 ## A part's or hull's price for a player (S09 step 2). `def` is the part or hull definition.
-static func part_cost(def: Dictionary, player: Player, content: ContentRegistry) -> Array[int]:
+## `plain`: without `production.cost_at_tech_level_pct` (the battle salvage figure, S16).
+static func part_cost(
+	def: Dictionary, player: Player, content: ContentRegistry, plain: bool = false
+) -> Array[int]:
 	var cost := of(def["cost"])
 	var race := player.race
 	var margin := 1
@@ -48,7 +51,7 @@ static func part_cost(def: Dictionary, player: Player, content: ContentRegistry)
 		_adjust(cost, RaceMath.trait_param(race, content, "cost.%s_adjust_pct" % category, 100))
 		var res_pct := RaceMath.trait_param(race, content, "cost.%s_resources_pct" % category, 100)
 		cost[RESOURCES] = cost[RESOURCES] * res_pct / 100
-	if margin < 1 and _requires_tech(def):
+	if margin < 1 and _requires_tech(def) and not plain:
 		var at_level := RaceMath.trait_param(
 			race, content, "production.cost_at_tech_level_pct", 100
 		)
@@ -57,13 +60,15 @@ static func part_cost(def: Dictionary, player: Player, content: ContentRegistry)
 	return cost
 
 
-## A design's price (S09 step 2a): hull plus each slot's parts.
-static func design_cost(design: Design, player: Player, content: ContentRegistry) -> Array[int]:
-	var cost := part_cost(content.hull(design.hull), player, content)
+## A design's price (S09 step 2a): hull plus each slot's parts; `plain` as for part_cost.
+static func design_cost(
+	design: Design, player: Player, content: ContentRegistry, plain: bool = false
+) -> Array[int]:
+	var cost := part_cost(content.hull(design.hull), player, content, plain)
 	for slot in design.parts:
 		if slot.part.is_empty() or slot.count == 0:
 			continue
-		var each := part_cost(content.part(slot.part), player, content)
+		var each := part_cost(content.part(slot.part), player, content, plain)
 		for i in 4:
 			cost[i] += slot.count * each[i]
 	return cost

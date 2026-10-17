@@ -112,7 +112,16 @@ static func planet_waypoint(w: ClassicWorld, id: int, warp: int, task: String = 
 	wp.target_id = id
 	wp.warp = warp
 	wp.task = task
+	wp.task_data = empty_task_data(task)
 	return wp
+
+
+## The task data an order carries for `task` when nothing is set: none without a task, five zero
+## words for the tasks other than transport (as the original stores its waypoints).
+static func empty_task_data(task: String) -> Dictionary:
+	if task == "none" or task == "transport":
+		return {}
+	return {"raw": [0, 0, 0, 0, 0]}
 
 
 static func fleet_waypoint(target: Fleet, warp: int) -> Waypoint:
@@ -161,6 +170,7 @@ static func clear_task(w: ClassicWorld, fleet: Fleet) -> void:
 	w.select_fleet(fleet)
 	var wp := fleet.waypoints[0].copy() as Waypoint
 	wp.task = "none"
+	wp.task_data = {}
 	change(w, fleet, 0, wp)
 
 
@@ -172,6 +182,8 @@ static func set_task(w: ClassicWorld, fleet: Fleet, task: String, data: Dictiona
 	wp.task = task
 	if not data.is_empty():
 		wp.task_data = data.duplicate(true)
+	elif not wp.task_data.has("raw"):
+		wp.task_data = empty_task_data(task)
 	change(w, fleet, 0, wp)
 
 
