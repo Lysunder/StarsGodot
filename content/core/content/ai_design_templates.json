@@ -770,5 +770,169 @@
       "ai_part_class.jammer_or_computer",
       "ai_part_class.battle_computer"
     ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_colony_ship",
+    "hull": "hull.medium_freighter",
+    "slots": [
+      "ai_part_class.engine_warship",
+      "ai_part_class.colony_module",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_scout",
+    "hull": "hull.scout",
+    "slots": [
+      "ai_part_class.engine_warship",
+      "ai_part_class.scanner_long",
+      "ai_part_class.beam_light"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_destroyer",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_warship",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.stealth_support",
+      "ai_part_class.armor",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_battleship_0",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_gatling",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_short",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_battleship_1",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_battleship_2",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_gatling",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_battleship_3",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_freighter_medium",
+    "hull": "hull.medium_freighter",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_bomber_b17",
+    "hull": "hull.b_17_bomber",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_any",
+      "ai_part_class.combat_support"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_bomber_b52",
+    "hull": "hull.b_52_bomber",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_mine_layer",
+    "hull": "hull.privateer",
+    "slots": [
+      "ai_part_class.engine_warship",
+      "ai_part_class.shield",
+      "ai_part_class.combat_support",
+      "ai_part_class.mine_dispenser",
+      "ai_part_class.speed_trap"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.automitrons_freighter_super",
+    "hull": "hull.super_freighter",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.shield",
+      "ai_part_class.jammer_or_computer"
+    ]
   }
 ]

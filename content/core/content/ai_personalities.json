@@ -15,7 +15,7 @@
     "type": "ai_personality",
     "id": "ai_personality.automitrons",
     "order": 2,
-    "brain": "baseline"
+    "brain": "automitrons"
   },
   {
     "type": "ai_personality",

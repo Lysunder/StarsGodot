@@ -906,13 +906,100 @@ again:
 
 **11. Production** (Classic production) and the last pass.
 
+### Automitrons
+
+The brain `automitrons` (`AI_Automitrons@1090:0400`). After the setup, in this order. Checked against the harness game
+auto1 (five Automitrons and an idle human, 80 turns): 79 turns match; the other, 52, is a comet (S25 B38).
+
+**1. Research**, as for Robotoids (starbase designs, the newer station, depots), then plan `automitrons` with no budget
+before turn 10 and 20% from then on.
+
+**2. Merging.** After turn 50, slots 2-3 and 9-12 into one fleet, then slot 6; after turn 30, slot 14.
+
+**3. This turn's thresholds**, E and B as for Turindrones. A fleet's **strength** here is its ships in slots 11-12
+plus twice those in 9-10 (`AI_Automitrons_HasEscortStrength`).
+
+**4. Retiring** with the age A of Robotoids, one set of obsolete slots: slots 11-12 (the warship design W), 4-5 (the
+freighter design F and how many ships of those slots exist), 2-3 (the bomber design) and 9-10 (the battleship design
+S). Automitrons never design slots 11-12, so W is a design left there, if any.
+
+**5. Splitting**, after turn 60: ships of obsolete slots split off.
+
+**6. Designs** (`AI_Automitrons_Designs`), in this order; "empty" and "spent" as for Turindrones.
+
+| Slot | When | Template (`automitrons_…`) |
+|---|---|---|
+| 4 | empty; Pr 5 | `freighter_medium` |
+| 5 | empty; Pr 7 | `freighter_super` |
+| 14 | empty; Wp 5, El 6, Co 4, Pr 5 | `destroyer`, up to 4 tries, each after a draw of 1 |
+| 1 | spent | the design there is deleted; `colony_ship` (a medium freighter with a colonization module) |
+| 0 | spent | the design there is deleted; `scout` |
+| 6 | empty; Co 4, Pr 5, Bi 6 | `mine_layer` |
+| 2 | empty; Wp 8, El 7, Co 6, Pr 7 | `bomber_b17` |
+| 3 | empty; Wp 11, El 12, Co 15, Pr 9 | `bomber_b52` |
+| 9 | empty; Wp 5, El 6, Co 13, Pr 7 | `battleship_0`-`3`, drawn, up to 5 tries |
+
+Super freighters are an IS hull and the mine layer's parts are SD parts: other races leave those slots empty.
+
+**7. Planets.** P counts the unowned planets as for Turindrones. Then each loaded planet in planet order:
+
+1. Its byte 9 is 1.
+2. The player's own with negative habitability: byte 2 is 1.
+3. Otherwise, the player's own (or unowned) with a starbase and 1500 hundred people or more: its production is opened
+   and, when the queue holds no ship design, ships are added (below), and it is committed.
+4. Another player's: byte 10 is 2 with a starbase, else 1; byte 3 is 1 when the player could terraform it to
+   habitable.
+
+**Ships at such a planet**, at the end of the queue:
+
+1. F as for Turindrones (K, Pr 5, the draw of 1 in 4).
+2. When P is not 0, the colony design has no ships and the turn is after 10: one of slot 1.
+3. Mine layers as Turindrones' slot 12, here slot 6.
+4. With the bomber design, the first of the player's fleets here with strength E decides: when it has B or more ships
+   in slots 2-3, four of the bomber design, and the planet is done.
+5. For W (fewer ships than all planets div 12, plus 8) and S (div 24, plus 4) in turn, each with a design: as
+   Turindrones' step 6.
+
+**8. Home** is the first of the player's planets in planet order with a starbase (none without).
+
+**9. Fleets, first pass**, every fleet in fleet order. Other players' fleets are listed as enemies, the latest first;
+the player's combat fleets (`AI_IsCombatFleet`) as its warships. Then each of the player's freighter fleets and fleets
+with colony ships (slot 1) looks at the planet where it is (no waypoints beyond), else its next waypoint's planet; with
+none, or when that planet is unowned or the player's, nothing happens. At another player's planet: when byte 3 is set,
+the fleet has colonists aboard and the owner's race lacks `ai.no_colonist_drops`, a transport task unloading all
+colonists at warp 0 replaces waypoint 0 (when it targets that planet) or waypoint 1, and byte 3 gets 0x80; otherwise
+the fleet drops its waypoints and its task. Unlike Turindrones, a starbase does not stop the drop and the fleet does
+not go home after it.
+
+**10. Fleets, last pass**, each of the player's fleets in fleet order, after the colony targets are marked for rating
+again:
+
+- A fleet with waypoints beyond where it is scraps when the scout design's engine has no ram scoop (tag
+  `ai_scoopless_engine`) and the fleet has less than 2 mg of fuel; it does nothing else.
+- **Mine layers** (slot 6) with no task lay mines for ever (task data 5, 5).
+- **Colony ships** (slot 1): when the colony design is not on the template's hull, they scrap. With no colonists
+  aboard and away from a planet of the player's with 200 hundred people: away from a planet of the player's with a
+  starbase they scrap when the colony design's engine is one of the two cheapest (tag `ai_earliest_engine`: Settler's
+  Delight, Quick Jump 5) or they cannot go home. Otherwise their colony target is taken (no wormhole); at one of the
+  player's planets they load 150 hundred colonists; with a target they go to colonize it (byte 15 = 4).
+- **Freighters**: without a home the pass ends here. Otherwise a run from their depot, else home.
+- **Bombers** (slots 2-3): at a planet of the player's with a starbase they wait until a bomber slot has more than 1
+  ship and a battleship slot (9-10) more than 2; at another player's planet they stay unless a combat fleet of another
+  player is there. Otherwise as Turindrones' bombers (the target score from where they are, warp 4); in deep space
+  from home (S25 B42).
+- **Scouts** (slot 0): as the fleets with waypoints, they scrap when the scout design has no ram scoop and they have
+  less than 2 mg of fuel; otherwise hunting and exploring (Classic fleets) as for Turindrones. Other fleets (destroyers,
+  battleships without bombers) get no orders here.
+
+**11. Production** (Classic production) and the last pass.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets. The
-toolkit draws where the sections above say so, in the order the personality calls it. Robotoids and Turindrones draw in the
-order of their steps above.
+toolkit draws where the sections above say so, in the order the personality calls it. Robotoids, Turindrones and Automitrons draw in
+the order of their steps above.
 
 ## Edge cases
 
@@ -923,7 +1010,8 @@ order of their steps above.
 
 ## Known bugs
 
-None yet.
+- B42 (S25): Automitrons bombers stopped in deep space rate targets from the planet record past the end of the
+  planet list, unless a freighter earlier in the fleet list found home; ours rate from home.
 
 ## Worked examples
 
@@ -946,7 +1034,7 @@ homeworld.
 ## Open questions
 
 1. The order of the original's draws inside each personality, which golden AI games check (Robotoids: big1;
-   Turindrones: turin1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
+   Turindrones: turin1; Automitrons: auto1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
    token order and the wormholes come out differently, and no single draw added or removed, in the AI or in the
    turn up to the battle, makes it match.
 2. What exactly the inactive personality does each turn (`AI_InactiveHuman`): research plan, colony ships and

@@ -278,5 +278,83 @@
         "level": 14
       }
     ]
+  },
+  {
+    "type": "ai_research_plan",
+    "id": "ai_research_plan.automitrons",
+    "steps": [
+      {
+        "field": "tech_field.electronics",
+        "level": 6
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 4
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 5
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 5
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 4
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 4
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 7
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 6
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 7
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 8
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 6
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 7
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 12
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 13
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 9
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 11
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 7
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 10
+      }
+    ]
   }
 ]

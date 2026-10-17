@@ -27,7 +27,9 @@
       "trait.prt.HE"
     ],
     "tags": [
-      "ai_starter_engine"
+      "ai_starter_engine",
+      "ai_scoopless_engine",
+      "ai_earliest_engine"
     ]
   },
   {
@@ -55,7 +57,9 @@
       1080
     ],
     "tags": [
-      "ai_starter_engine"
+      "ai_starter_engine",
+      "ai_scoopless_engine",
+      "ai_earliest_engine"
     ]
   },
   {
@@ -89,7 +93,8 @@
       "trait.lrt.IFE"
     ],
     "tags": [
-      "ai_starter_engine"
+      "ai_starter_engine",
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -118,6 +123,9 @@
       750,
       900,
       1080
+    ],
+    "tags": [
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -146,6 +154,9 @@
       600,
       750,
       900
+    ],
+    "tags": [
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -174,6 +185,9 @@
       115,
       700,
       840
+    ],
+    "tags": [
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -202,6 +216,9 @@
       90,
       100,
       120
+    ],
+    "tags": [
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -235,7 +252,8 @@
       "trait.lrt.NRSE"
     ],
     "tags": [
-      "warp10_safe"
+      "warp10_safe",
+      "ai_scoopless_engine"
     ]
   },
   {
@@ -274,7 +292,8 @@
     },
     "mystery_trader": true,
     "tags": [
-      "warp10_safe"
+      "warp10_safe",
+      "ai_scoopless_engine"
     ],
     "trader_bit": 9
   },
@@ -306,7 +325,8 @@
       50
     ],
     "tags": [
-      "warp10_safe"
+      "warp10_safe",
+      "ai_scoopless_engine"
     ]
   },
   {

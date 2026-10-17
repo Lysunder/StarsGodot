@@ -9,7 +9,8 @@ const BASELINE := "baseline"
 ## The original's personalities ported (S22), each a brain of its own.
 const ROBOTOIDS := "robotoids"
 const TURINDRONES := "turindrones"
-const IDS := [IDLE, BASELINE, ROBOTOIDS, TURINDRONES]
+const AUTOMITRONS := "automitrons"
+const IDS := [IDLE, BASELINE, ROBOTOIDS, TURINDRONES, AUTOMITRONS]
 
 
 static func has(id: String) -> bool:
@@ -62,4 +63,6 @@ static func create(id: String) -> AiPlayer:
 			return ClassicBrain.new(ClassicWorld.ROBOTOIDS)
 		TURINDRONES:
 			return ClassicBrain.new(ClassicWorld.TURINDRONES)
+		AUTOMITRONS:
+			return ClassicBrain.new(ClassicWorld.AUTOMITRONS)
 	return null
