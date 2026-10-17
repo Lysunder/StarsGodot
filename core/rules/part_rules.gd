@@ -122,8 +122,8 @@ static func engine(design: Design, content: ContentRegistry) -> Array:
 	return ["", false]
 
 
-## A design's armor (S04): the hull's plus each slot's `armor` stat times its count, armor parts
-## scaled by the owner's `design.armor_part_pct` (Regenerating Shields: 50).
+## A design's armor (S04): the hull's plus each slot's `armor` stat times its count, an armor
+## slot's total scaled by the owner's `design.armor_part_pct` (Regenerating Shields: 50).
 static func armor(design: Design, content: ContentRegistry, race: Race = null) -> int:
 	var total: int = content.hull(design.hull).get("armor", 0)
 	var pct := 100
@@ -133,10 +133,10 @@ static func armor(design: Design, content: ContentRegistry, race: Race = null) -
 		if slot.part.is_empty():
 			continue
 		var part := content.part(slot.part)
-		var each: int = part.get("stats", {}).get("armor", 0)
+		var slot_armor: int = slot.count * int(part.get("stats", {}).get("armor", 0))
 		if part.get("category", "") == "armor":
-			each = each * pct / 100
-		total += slot.count * each
+			slot_armor = slot_armor * pct / 100
+		total += slot_armor
 	return total
 
 

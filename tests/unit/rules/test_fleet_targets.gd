@@ -159,6 +159,45 @@ func test_a_waypoint_on_a_fleet_lost_there_this_turn_stays() -> void:
 	assert_array([rng.s1, rng.s2]).is_equal(before)
 
 
+func test_other_players_pick_again_a_fleet_a_ship_move_named() -> void:
+	var s := _game()
+	var other := Player.new()
+	other.index = 1
+	other.set_design(_design(), false)
+	s.players.append(other)
+	var a := s.add_fleet(1, 512)
+	var b := s.add_fleet(1, 512)
+	for f in [a, b]:
+		f.x = 1250
+		f.y = 1250
+		f.add_ships(0, 1)
+		f.waypoints.append(Waypoint.new(1250, 1250))
+	var chaser := _fleet(s, 1100, 1100)
+	var wp := _to(chaser, 1250, 1250, 5)
+	_target(wp, a)
+	var rng := StarsRandom.new()
+	var before := [rng.s1, rng.s2]
+	FleetTargets.update(s, _content, rng)
+	assert_bool(a.claimed).is_true()
+	assert_array([rng.s1, rng.s2]).is_equal(before)
+	# named in a ship move this turn: picked again among the fleets there, with draws
+	a.claimed = false
+	a.reorganized = true
+	FleetTargets.update(s, _content, rng)
+	assert_array([rng.s1, rng.s2]).is_not_equal(before)
+	assert_array([a.number, b.number]).contains([wp.target_id])
+	# the player's own marked fleet is kept as it is
+	var own := _fleet(s, 1300, 1300)
+	own.reorganized = true
+	var follower := _fleet(s, 1100, 1100)
+	_target(_to(follower, 1300, 1300, 5), own)
+	before = [rng.s1, rng.s2]
+	chaser.waypoints.resize(1)
+	FleetTargets.update(s, _content, rng)
+	assert_bool(own.claimed).is_true()
+	assert_array([rng.s1, rng.s2]).is_equal(before)
+
+
 func test_hull_classes_for_battle_plan_targets() -> void:
 	var s := _game()
 	var colony := _fleet(s)

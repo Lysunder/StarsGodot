@@ -596,5 +596,179 @@
       "ai_part_class.starbase_beam",
       "ai_part_class.starbase_shield"
     ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_freighter_rogue",
+    "hull": "hull.rogue",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.shield",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.scanner_penetrating",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.torpedo",
+      "ai_part_class.stealth_support",
+      "ai_part_class.jammer_or_cloak",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_freighter_galleon",
+    "hull": "hull.galleon",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.torpedo",
+      "ai_part_class.stealth_support",
+      "ai_part_class.battle_computer",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.scanner_penetrating"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_colony_ship",
+    "hull": "hull.colony_ship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.colony_module"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_scout",
+    "hull": "hull.frigate",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.scanner_long",
+      "ai_part_class.torpedo",
+      "ai_part_class.starbase_shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_miner",
+    "hull": "hull.miner",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.mining_robot",
+      "ai_part_class.mining_robot",
+      "ai_part_class.mining_robot",
+      "ai_part_class.mining_robot"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_mine_layer",
+    "hull": "hull.privateer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.shield",
+      "ai_part_class.combat_support",
+      "ai_part_class.mine_dispenser",
+      "ai_part_class.mine_dispenser"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_bomber",
+    "hull": "hull.stealth_bomber",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.combat_support",
+      "ai_part_class.jammer_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_destroyer",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_battleship_0",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.beam_gatling",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_short",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_battleship_1",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_battleship_2",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.beam_gatling",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.turindrones_battleship_3",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.combat_support",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer"
+    ]
   }
 ]

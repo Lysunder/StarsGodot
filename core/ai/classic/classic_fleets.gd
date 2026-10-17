@@ -29,6 +29,18 @@ const MINE_WARP_SPEED_BUMP := 5
 ## Colony ships look through wormholes only before this turn.
 const WORMHOLE_TURN := 120
 const NEAR_START := 10000000
+## Planet_info byte 15 for a planet the player's turn file doesn't hold (not Robotoids or Macinti).
+const UNSEEN := 0x10
+## Hull class of `AI_HasWarshipHull` (scout to dreadnought).
+const WARSHIP := "ai_hull_class.warship"
+## planet_info byte rating a planet as a target (`AI_ScoreColonyTarget`), and its "a warship heads
+## there" bit.
+const INFO_TARGET := 10
+const HEADED := 0x80
+## `AI_ChooseColonyTarget` looks for a wormhole on a draw of this many in 100.
+const WORMHOLE_PCT := 5
+## Engines that make a stranded colony ship not worth bringing home (Turindrones).
+const STARTER_ENGINE := "ai_starter_engine"
 const WARSHIP_START := 1000000
 
 
@@ -612,16 +624,20 @@ static func _unmarked_planet(w: ClassicWorld, fleet: Fleet) -> int:
 ## player's planets before WORMHOLE_TURN perhaps a wormhole instead (`pick_wormhole`). Planet_info
 ## byte 15 marks each planet: 0 free (Robotoids and Macinti: any unowned planet; others: unowned
 ## planets they could make habitable, else 8), 1 the player's, 2 another's, 4 claimed by another
-## of the player's fleets heading there (Robotoids and Macinti: to colonize). Returns
-## {planet: id or -1, wormhole: Wormhole or null}; with a wormhole the planet is -1.
-static func colony_target(w: ClassicWorld, fleet: Fleet) -> Dictionary:
+## of the player's fleets heading there (Robotoids and Macinti: to colonize); the others mark the
+## planets their turn file doesn't hold UNSEEN. Returns
+## {planet: id or -1, wormhole: Wormhole or null}; with a wormhole the planet is -1. Without
+## `wormholes` none is looked for (the original's call without a wormhole to fill in).
+static func colony_target(w: ClassicWorld, fleet: Fleet, wormholes := true) -> Dictionary:
 	var pid := w.personality_id()
 	var plain := pid == ClassicWorld.ROBOTOIDS or pid == ClassicWorld.MACINTI
 	if plain or not w.colony_targets_rated:
 		for p in w.state.planets:
 			var mark := 0
-			if p.owner == -1:
-				if not plain and _terraformed_hab(w, p) < 0:
+			if not plain and not w.loaded.has(p.id):
+				mark = UNSEEN
+			elif p.owner == -1:
+				if not plain and terraformed_hab(w, p) < 0:
 					mark = 8
 			elif p.owner == w.player:
 				mark = 1
@@ -645,7 +661,7 @@ static func colony_target(w: ClassicWorld, fleet: Fleet) -> Dictionary:
 			best_d = d
 	w.colony_targets_rated = true
 	var hole: Wormhole = null
-	if fleet.planet != -1 and w.state.turn < WORMHOLE_TURN:
+	if wormholes and fleet.planet != -1 and w.state.turn < WORMHOLE_TURN:
 		if w.state.planet(fleet.planet).owner == w.player:
 			hole = pick_wormhole(w, fleet.x, fleet.y, best_d)
 	if hole != null:
@@ -655,7 +671,7 @@ static func colony_target(w: ClassicWorld, fleet: Fleet) -> Dictionary:
 
 ## A planet's habitability once the player terraforms it as far as it can toward its ideal
 ## (`Planet_HabValueTerraformed`).
-static func _terraformed_hab(w: ClassicWorld, p: Planet) -> int:
+static func terraformed_hab(w: ClassicWorld, p: Planet) -> int:
 	var race := w.me().race
 	var copy := p.copy() as Planet
 	var t := Terraforming.targets(p, race, Terraforming.reach(w.me(), w.content), true)
@@ -702,3 +718,215 @@ static func pick_wormhole(w: ClassicWorld, x: int, y: int, planet_d2: int) -> Wo
 	if best != null and w.rng.random(100) < best_score:
 		return best
 	return null
+
+
+# --- The other personalities' fleets -----------------------------------------------------------
+
+
+## `AI_HasWarshipHull`: ships on a hull of WARSHIP (scout to dreadnought).
+static func has_warship_hull(w: ClassicWorld, fleet: Fleet) -> bool:
+	var owner := w.state.player(fleet.owner)
+	for s in stacks_of(fleet):
+		if hulls_of(w, WARSHIP).has(owner.ship_design(s.design).hull):
+			return true
+	return false
+
+
+## `Fleet_HasArmedShips`: ships of an armed design (S16 `Design_IsArmed`).
+static func is_armed(w: ClassicWorld, fleet: Fleet) -> bool:
+	var owner := w.state.player(fleet.owner)
+	for s in stacks_of(fleet):
+		if BattleSetup.is_armed(owner.ship_design(s.design), w.content):
+			return true
+	return false
+
+
+## `AI_AddWaypoint` appending: the waypoint follows the fleet's last one, or takes its place when
+## it is there. False when refused.
+static func go_after(w: ClassicWorld, fleet: Fleet, wp: Waypoint) -> bool:
+	w.select_fleet(fleet)
+	var last := fleet.waypoints.size() - 1
+	var at := fleet.waypoints[last]
+	var index := last + 1
+	var type := "waypoint_add"
+	if at.x == wp.x and at.y == wp.y:
+		index = last
+		type = "waypoint_change"
+	var reason := w.order(
+		{"type": type, "fleet": fleet.number, "index": index, "waypoint": wp.to_dict()}
+	)
+	return reason.is_empty()
+
+
+## `AI_ScoreColonyTarget` (`spare_computers`) and `AI_ScoreColonyTarget2`: planet_info byte
+## INFO_TARGET of `p` (0 for `from` itself, and with `spare_computers` for computer players'
+## planets), more when near `from`; one marked HEADED counts only on a draw of 1 in 4.
+static func target_score(w: ClassicWorld, from: Planet, p: Planet, spare_computers: bool) -> int:
+	if p == from:
+		return 0
+	if spare_computers and p.owner >= 0 and w.is_computer(p.owner):
+		return 0
+	var worth: int = (w.planet_info[p.id] as PackedByteArray)[INFO_TARGET]
+	if worth == 0:
+		return 0
+	var d := d2(from.x, from.y, p.x, p.y)
+	if d < 2500:
+		worth += 7
+	elif d < 10000:
+		worth += 5
+	elif d < 22500:
+		worth += 4
+	elif d < 40000:
+		worth += 3
+	elif d < 90000:
+		worth += 2
+	elif d < 250000:
+		worth += 1
+	if worth & HEADED == 0 or w.rng.random(4) == 0:
+		return worth
+	return 0
+
+
+## `AI_ChooseColonyTarget`: the nearest planet marked UNSEEN (rating the colony targets first
+## when that wasn't done this turn, without wormholes); with `wormholes`, a fleet at a planet
+## looks for a wormhole on a draw of WORMHOLE_PCT in 100 (`pick_wormhole`), which replaces the
+## planet. Returns {planet: id or -1, wormhole: Wormhole or null}.
+static func choose_colony_target(w: ClassicWorld, fleet: Fleet, wormholes: bool) -> Dictionary:
+	if not w.colony_targets_rated:
+		colony_target(w, fleet, false)
+	var best := -1
+	var best_d := 99999999
+	for p in w.state.planets:
+		if (w.planet_info[p.id] as PackedByteArray)[15] != UNSEEN:
+			continue
+		var d := d2(fleet.x, fleet.y, p.x, p.y)
+		if d < best_d:
+			best = p.id
+			best_d = d
+	var hole: Wormhole = null
+	if wormholes and fleet.planet != -1 and w.rng.random(100) < WORMHOLE_PCT:
+		hole = pick_wormhole(w, fleet.x, fleet.y, best_d)
+	if hole != null:
+		best = -1
+	return {"planet": best, "wormhole": hole}
+
+
+## `AI_DirectFleet` (Turindrones, Automitrons, Rototills): an armed fleet hunts the nearest of
+## `enemies` (with `spare_computers` not computer players' fleets; one that `own` fleets already
+## chase is passed over on a draw of 1 in 3) within CHASE_RANGE2; farther off, low on fuel (under
+## half) it goes home, else to the planet nearest the prey that none of `own` heads for; with no
+## prey at all and `spare_computers`, computer players' fleets count after all. Otherwise, and
+## for an unarmed fleet, it explores (`choose_colony_target`), failing that goes to the planet
+## `AI_ScoreColonyTarget2` rates best from the homeworld, else to any planet, drawn. A fleet
+## already heading for a planet keeps going (-1); a planet chosen is marked claimed (planet_info
+## byte 15 = 4); the orders go at the fleet's top warp, no easing (0, or -1 when refused).
+static func direct_fleet(
+	w: ClassicWorld,
+	fleet: Fleet,
+	own: Array[Fleet],
+	enemies: Array[Fleet],
+	spare_computers: bool,
+	wormholes: bool
+) -> int:
+	var wp: Waypoint = null
+	if is_armed(w, fleet):
+		var best: Fleet = null
+		var best_d := WARSHIP_START
+		for e in enemies:
+			if spare_computers and w.is_computer(e.owner):
+				continue
+			if _chased(own, fleet, e) and w.rng.random(3) == 0:
+				continue
+			var d := d2(e.x, e.y, fleet.x, fleet.y)
+			if d < best_d:
+				best = e
+				best_d = d
+		if best_d < CHASE_RANGE2:
+			wp = fleet_waypoint(best, 0)
+		elif best == null:
+			if spare_computers:
+				return direct_fleet(w, fleet, own, enemies, false, wormholes)
+		else:
+			var half := Movement.fuel_capacity(fleet, w.me(), w.content) / 2
+			if fleet.cargo[Fleet.CARGO_FUEL] < half and return_home(w, fleet, false):
+				return 0
+			var target := _free_planet_near(w, fleet, own, best)
+			if target != null and target.id != fleet.planet:
+				wp = planet_waypoint(w, target.id, 0)
+	if wp == null:
+		wp = _exploring(w, fleet, wormholes)
+	if (
+		fleet.waypoints.size() > 1
+		and fleet.waypoints[1].target == "planet"
+		and wp.target == "planet"
+	):
+		return -1
+	if wp.target == "planet":
+		info_set(w, wp.target_id, 15, 4)
+	wp.warp = Retargeting.default_warp(fleet, w.me(), w.content, false)
+	return 0 if go(w, fleet, wp) else -1
+
+
+## Whether one of `own` (not `fleet`) chases `prey` (its next waypoint targets it).
+static func _chased(own: Array[Fleet], fleet: Fleet, prey: Fleet) -> bool:
+	for o in own:
+		if o == fleet or o.waypoints.size() < 2:
+			continue
+		var next := o.waypoints[1]
+		if (
+			next.target == "fleet"
+			and next.target_owner == prey.owner
+			and next.target_id == prey.number
+		):
+			return true
+	return false
+
+
+## `direct_fleet`'s waypoint for a fleet with no prey: a wormhole or a planet.
+static func _exploring(w: ClassicWorld, fleet: Fleet, wormholes: bool) -> Waypoint:
+	var pick := choose_colony_target(w, fleet, wormholes)
+	var hole: Wormhole = pick["wormhole"]
+	if hole != null:
+		var wp := Waypoint.new(hole.x, hole.y)
+		wp.target = "wormhole"
+		wp.target_id = hole.number
+		return wp
+	var id: int = pick["planet"]
+	if id == -1:
+		var home := w.me().homeworld
+		if home != -1:
+			var from := w.state.planet(home)
+			var rated := best_planet(
+				w, home, func(p: Planet) -> int: return target_score(w, from, p, false)
+			)
+			if rated != null:
+				id = rated.id
+		if id == -1:
+			id = w.state.planets[w.rng.random(w.state.planets.size())].id
+	return planet_waypoint(w, id, 0)
+
+
+## The loaded planet nearest `prey` that none of `own` (but `fleet`) heads for; null for none.
+static func _free_planet_near(
+	w: ClassicWorld, fleet: Fleet, own: Array[Fleet], prey: Fleet
+) -> Planet:
+	var target: Planet = null
+	var target_d := WARSHIP_START
+	for p in w.state.planets:
+		if not w.loaded.has(p.id):
+			continue
+		var taken := false
+		for o in own:
+			if o == fleet or o.waypoints.size() < 2:
+				continue
+			var next := o.waypoints[1]
+			if next.target == "planet" and next.target_id == p.id:
+				taken = true
+				break
+		if taken:
+			continue
+		var d := d2(p.x, p.y, prey.x, prey.y)
+		if d < target_d:
+			target = p
+			target_d = d
+	return target

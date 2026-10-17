@@ -582,8 +582,18 @@ func _ships_value(fleet: Fleet, owner: Player) -> Array[int]:
 		if stack.count <= 0:
 			continue
 		var design := owner.ship_design(stack.design)
-		# without the new-tech double price, which the original turns off while scrapping
-		var each := ProductionCosts.design_cost(design, owner, _content, true)
+		# without the new-tech double price, which the original turns off while scrapping; at the
+		# design's stored stats (the tech levels the turn started with) unless Bleeding Edge
+		# prices it again at current tech
+		var levels: Array[int] = []
+		var start: Variant = _state.turn_start_tech.get(owner.index)
+		var bleeding := (
+			RaceMath.trait_param(owner.race, _content, "production.cost_at_tech_level_pct", 100)
+			!= 100
+		)
+		if start != null and not bleeding:
+			levels.assign(start)
+		var each := ProductionCosts.design_cost(design, owner, _content, true, levels)
 		var recorded := stack.paid.any(func(v: int) -> bool: return v != 0)
 		for m in value.size():
 			var v := stack.count * each[m]

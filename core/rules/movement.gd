@@ -579,7 +579,14 @@ static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet
 		if wp.target != "fleet":
 			continue
 		var target := state.fleet(wp.target_owner, wp.target_id)
-		if target == null:
+		var gone: Variant = state.retired_fleet_numbers.get(wp.target_owner, {}).get(wp.target_id)
+		if target == null and gone != null:
+			# lost this turn: the original keeps it, empty, where it was until the turn's files are
+			# written (the lost targets then deal with the waypoint, S15)
+			if not wp.frozen:
+				wp.x = gone.x
+				wp.y = gone.y
+		elif target == null:
 			wp.target = "none"
 			wp.target_owner = -1
 			wp.target_id = -1

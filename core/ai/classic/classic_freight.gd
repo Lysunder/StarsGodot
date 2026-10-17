@@ -4,6 +4,10 @@ extends RefCounted
 ## ships to keep (`AI_CountColonyShips`), freighter runs (`AI_PlanTransport`,
 ## `AI_PickUpSalvage`) and the freighter depots kept in the memory (`AI_PlanFreighterDepots`).
 
+## Turindrones' freighters leaving home with more than TURINDRONES_PEOPLE_FROM people (hundreds)
+## for a smaller owned planet take TURINDRONES_PEOPLE along.
+const TURINDRONES_PEOPLE_FROM := 1200
+const TURINDRONES_PEOPLE := 1000
 const F := preload("res://core/ai/classic/classic_fleets.gd")
 
 ## Colony ships are counted from this turn; easy computer players count on even turns only.
@@ -140,8 +144,9 @@ static func _years(fleet: Fleet, p: Planet) -> int:
 ## under a quarter); Robotoids also carry people from home (with 1101 people or 301) to thinly
 ## peopled planets (65). Planets other freighters of its kind head for are passed over. Salvage
 ## nearby may score better. The freighter loads at the target (unloads at home), at RUN_WARP;
-## Robotoids leaving home with people for a planet take some along. Returns the target planet or
-## salvage, or -1.
+## Robotoids leaving home with people for a planet take some along; Turindrones' freighters take
+## people from a well-peopled home to a smaller owned planet and unload people at any owned
+## planet but home. Returns the target planet or salvage, or -1.
 static func plan_transport(w: ClassicWorld, fleet: Fleet, home: Planet) -> int:
 	for p in w.state.planets:
 		F.info_set(w, p.id, 14, 0)
@@ -213,7 +218,21 @@ static func plan_transport(w: ClassicWorld, fleet: Fleet, home: Planet) -> int:
 	if salvage == null and home.id == target_id:
 		actions = ["unload_all", "unload_all", "unload_all", "none", "none"]
 	var amounts := [0, 0, 0, 0, 0]
-	if robotoids and at_home and salvage == null and target.owner != -1:
+	if w.personality_id() == ClassicWorld.TURINDRONES:
+		var owned := salvage == null and target.owner != -1
+		if at_home:
+			w.select_fleet(fleet)
+			if (
+				home.population > TURINDRONES_PEOPLE_FROM
+				and owned
+				and target.population < home.population
+			):
+				move_cargo(
+					w, fleet, {"planet": fleet.planet}, Fleet.CARGO_COLONISTS, TURINDRONES_PEOPLE
+				)
+		if owned and target != home:
+			actions[3] = "unload_all"
+	elif robotoids and at_home and salvage == null and target.owner != -1:
 		var n := _people_to_take(w, home, target)
 		if n >= 0:
 			w.select_fleet(fleet)

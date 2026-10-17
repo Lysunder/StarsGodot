@@ -33,6 +33,9 @@ var did_not_move: bool = false
 var following: bool = false
 ## Turn-only mark: a waypoint targets this fleet (S12 "Waypoint targets").
 var claimed: bool = false
+## Turn-only mark: a ship move or merge order this turn named the fleet (S11); other players'
+## waypoints on it pick their fleet again (S12 "Waypoint targets"). The first task pass clears it.
+var reorganized: bool = false
 ## Turn-only mark: the fleet went through a stargate this turn (S12; no repair, S19).
 var gated: bool = false
 ## Turn-only mark: a minefield hit or damaged the fleet this turn (S13; no repair, S19).

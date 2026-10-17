@@ -17,6 +17,8 @@ func play(ctx: AiContext) -> void:
 	match personality:
 		ClassicWorld.ROBOTOIDS:
 			ClassicRobotoids.play(w)
+		ClassicWorld.TURINDRONES:
+			ClassicTurindrones.play(w)
 	var memory := w.memory_order()
 	if not memory.is_empty():
 		w.order(memory)

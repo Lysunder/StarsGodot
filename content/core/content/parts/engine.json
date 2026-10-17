@@ -25,6 +25,9 @@
     ],
     "required_traits": [
       "trait.prt.HE"
+    ],
+    "tags": [
+      "ai_starter_engine"
     ]
   },
   {
@@ -50,6 +53,9 @@
       800,
       900,
       1080
+    ],
+    "tags": [
+      "ai_starter_engine"
     ]
   },
   {
@@ -81,6 +87,9 @@
     ],
     "required_traits": [
       "trait.lrt.IFE"
+    ],
+    "tags": [
+      "ai_starter_engine"
     ]
   },
   {

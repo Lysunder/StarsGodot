@@ -93,6 +93,8 @@ func test_split_then_move_takes_a_share_of_cargo_and_fuel() -> void:
 	assert_array([a.ship_count(), b.ship_count()]).is_equal([2, 1])
 	assert_array(a.cargo).is_equal([20, 0, 0, 0, 200])
 	assert_array(b.cargo).is_equal([10, 0, 0, 0, 100])
+	# both fleets are marked for the turn's waypoint targets (S12)
+	assert_array([a.reorganized, b.reorganized]).is_equal([true, true])
 
 
 func test_cargo_leftover_goes_one_unit_per_type() -> void:

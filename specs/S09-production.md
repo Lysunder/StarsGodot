@@ -90,19 +90,22 @@ Start from the part's listed cost (S04).
 
 The hull's cost and each slot's part cost, both for the design's owner (step 2), times the slot's count, summed per
 component. The original keeps each total in 16 bits (wrapping); our totals are wide integers, and no buildable design
-reaches 65536 in any component. The original stores the total with the design when the design is saved; when it
-is recomputed after tech levels change is an open question (the turn's design refresh, S02 phase 25, does not
-recompute it).
+reaches 65536 in any component. The original stores the total with the design when the design is saved or loaded,
+and production reads the stored total (`Design_GetMineralCost`): during the turn's generation a design costs what it
+cost at the start of the turn, at the tech levels the player had then, even after a level gained this turn (a tech
+bonus from an invasion, S24; turin1 turn 57: a player whose construction level rose before production pays the
+start-of-turn price for its destroyers and its starbase upgrade). When the stored total is recomputed after tech
+levels change is still open (the turn's design refresh, S02 phase 25, does not recompute it).
 
 ### 2b. Starbase upgrade price
 
 When a starbase design is built on a planet that already has a starbase (old design O, new design N), start from
-N's cost (step 2a), per component:
+N's cost (step 2a, the stored total), per component:
 
-1. **Different hull:** c = max(c − O's cost div 2, c div 2).
-2. **Same hull:** subtract the hull's cost (step 2) from c. Then for each slot k of O (in slot order, up to O's slot
-   count) where both O and N have a part (count > 0): with o = O's count × O's part cost and n = N's count × N's
-   part cost (per component, step 2):
+1. **Different hull:** c = max(c − O's cost div 2, c div 2), O's cost also the stored total.
+2. **Same hull:** subtract the hull's cost (step 2, at the current tech levels) from c. Then for each slot k of O
+   (in slot order, up to O's slot count) where both O and N have a part (count > 0): with o = O's count × O's part
+   cost and n = N's count × N's part cost (per component, step 2, at the current tech levels):
    - same part: credit = min(n, o);
    - same category, different part: credit = n − max(n − (8 × o) div 10, (2 × n) div 10);
    - different category: credit = n − max(n − (7 × o) div 10, (3 × n) div 10);

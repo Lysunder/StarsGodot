@@ -721,18 +721,23 @@ static func _fleet_ships(
 				if not count is int:
 					return "bad ship count"
 				ships[design] = ships.get(design, 0) + count
+			fleet.reorganized = true
+			b.reorganized = true
 			FleetOrders.move_ships(state, content, fleet, b, ships, player)
 		"fleet_merge":
 			if not order.get("fleets", []) is Array:
 				return "fleets must be a list"
 			var others: Array[Fleet] = []
 			var listed: Array = order.get("fleets", [])
+			fleet.reorganized = true
 			if listed.is_empty():
 				for f in state.fleets_of(player):
 					if f != fleet and f.x == fleet.x and f.y == fleet.y:
 						others.append(f)
 			for number: Variant in listed:
 				var f := state.fleet(player, number) if number is int else null
+				if f != null:
+					f.reorganized = true
 				if f != null and f != fleet and f.x == fleet.x and f.y == fleet.y:
 					if not others.has(f):
 						others.append(f)

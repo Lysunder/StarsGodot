@@ -62,5 +62,18 @@
       "hull.mini_colony_ship",
       "hull.colony_ship"
     ]
+  },
+  {
+    "type": "ai_hull_class",
+    "id": "ai_hull_class.warship",
+    "hulls": [
+      "hull.scout",
+      "hull.frigate",
+      "hull.destroyer",
+      "hull.cruiser",
+      "hull.battle_cruiser",
+      "hull.battleship",
+      "hull.dreadnought"
+    ]
   }
 ]

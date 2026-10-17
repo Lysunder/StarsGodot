@@ -82,6 +82,9 @@ static func generate(
 ) -> PackedStringArray:
 	TurnMessages.clear(state)
 	state.retired_fleet_numbers.clear()
+	state.turn_start_tech.clear()
+	for p in state.players:
+		state.turn_start_tech[p.index] = p.tech_levels.duplicate()
 	state.recycled.clear()
 	state.dropped_colonists.clear()
 	var ctx := TurnContext.new(state, content, orders)

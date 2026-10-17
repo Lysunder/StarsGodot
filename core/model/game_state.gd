@@ -33,6 +33,9 @@ var history: Array = []
 var mod_data: Dictionary = {}
 ## Turn-only: per owner, the fleets retired this turn and where they were ({number: Vector2i}).
 var retired_fleet_numbers: Dictionary = {}
+## Turn-only: per player index, the tech levels at the start of the turn's generation, which the
+## designs' stored stats were computed with (S11 scrap and colonize values).
+var turn_start_tech: Dictionary = {}
 ## Turn-only: per planet id, the resources Ultimate Recycling banked there this turn (S11).
 var recycled: Dictionary = {}
 ## Turn-only: colonists dropped by hand on planets the player doesn't own, waiting for the turn's

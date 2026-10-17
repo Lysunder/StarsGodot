@@ -22,14 +22,21 @@ static func of(cost: Dictionary) -> Array[int]:
 
 ## A part's or hull's price for a player (S09 step 2). `def` is the part or hull definition.
 ## `plain`: without `production.cost_at_tech_level_pct` (the battle salvage figure, S16).
+## `tech`: the tech levels to price at (the player's own when empty).
 static func part_cost(
-	def: Dictionary, player: Player, content: ContentRegistry, plain: bool = false
+	def: Dictionary,
+	player: Player,
+	content: ContentRegistry,
+	plain: bool = false,
+	tech: Array[int] = []
 ) -> Array[int]:
 	var cost := of(def["cost"])
 	var race := player.race
 	var margin := 1
 	if def.get("miniaturize", true):
-		margin = _tech_margin(def, player, content)
+		var at: Array[int] = []
+		at.assign(player.tech_levels if tech.is_empty() else tech)
+		margin = _tech_margin(def, at, content)
 		if margin > 0:
 			var levels := mini(
 				margin, content.constant("constant.production.miniaturization_levels")
@@ -60,28 +67,34 @@ static func part_cost(
 	return cost
 
 
-## A design's price (S09 step 2a): hull plus each slot's parts; `plain` as for part_cost.
+## A design's price (S09 step 2a): hull plus each slot's parts; `plain` and `tech` as for
+## part_cost.
 static func design_cost(
-	design: Design, player: Player, content: ContentRegistry, plain: bool = false
+	design: Design,
+	player: Player,
+	content: ContentRegistry,
+	plain: bool = false,
+	tech: Array[int] = []
 ) -> Array[int]:
-	var cost := part_cost(content.hull(design.hull), player, content, plain)
+	var cost := part_cost(content.hull(design.hull), player, content, plain, tech)
 	for slot in design.parts:
 		if slot.part.is_empty() or slot.count == 0:
 			continue
-		var each := part_cost(content.part(slot.part), player, content, plain)
+		var each := part_cost(content.part(slot.part), player, content, plain, tech)
 		for i in 4:
 			cost[i] += slot.count * each[i]
 	return cost
 
 
 ## The price of a starbase design built where `old` stands (S09 step 2b), before the starbase
-## adjustments of step 1.
+## adjustments of step 1. The designs' prices are at `tech` (the stored stats, priced at the turn's
+## start; empty: the current levels), the hull and the parts credited at the current levels.
 static func upgrade_cost(
-	new: Design, old: Design, player: Player, content: ContentRegistry
+	new: Design, old: Design, player: Player, content: ContentRegistry, tech: Array[int] = []
 ) -> Array[int]:
-	var cost := design_cost(new, player, content)
+	var cost := design_cost(new, player, content, false, tech)
 	if new.hull != old.hull:
-		var old_cost := design_cost(old, player, content)
+		var old_cost := design_cost(old, player, content, false, tech)
 		for i in 4:
 			cost[i] = maxi(cost[i] - old_cost[i] / 2, cost[i] / 2)
 		return cost
@@ -114,12 +127,14 @@ static func upgrade_cost(
 	return cost
 
 
-## One unit of a queue item on a planet (S09 step 1).
+## One unit of a queue item on a planet (S09 step 1). Designs are priced at `tech`: the turn's
+## generation passes the levels at its start, which the original's stored design stats hold (a
+## level gained during the turn doesn't change them); empty: the current levels.
 static func unit_cost(
-	planet: Planet, item: QueueItem, player: Player, content: ContentRegistry
+	planet: Planet, item: QueueItem, player: Player, content: ContentRegistry, tech: Array[int] = []
 ) -> Array[int]:
 	if item.is_design():
-		return _design_unit_cost(planet, item, player, content)
+		return _design_unit_cost(planet, item, player, content, tech)
 	var race := player.race
 	var def := content.get_def("production_item", item.item)
 	var cost: Array[int] = [0, 0, 0, 0]
@@ -164,16 +179,17 @@ static func unit_cost(
 
 
 static func _design_unit_cost(
-	planet: Planet, item: QueueItem, player: Player, content: ContentRegistry
+	planet: Planet, item: QueueItem, player: Player, content: ContentRegistry, tech: Array[int]
 ) -> Array[int]:
 	if not item.starbase:
-		return design_cost(player.ship_design(item.design), player, content)
+		return design_cost(player.ship_design(item.design), player, content, false, tech)
 	var design := player.starbase_design(item.design)
 	var cost: Array[int]
 	if planet.starbase != null:
-		cost = upgrade_cost(design, player.starbase_design(planet.starbase.design), player, content)
+		var old := player.starbase_design(planet.starbase.design)
+		cost = upgrade_cost(design, old, player, content, tech)
 	else:
-		cost = design_cost(design, player, content)
+		cost = design_cost(design, player, content, false, tech)
 	var adjust := RaceMath.trait_param(player.race, content, "production.starbase_adjust_pct", 100)
 	_adjust(cost, adjust)
 	var price := content.constant("constant.production.starbase_price_pct")
@@ -184,16 +200,16 @@ static func _design_unit_cost(
 
 ## The smallest margin (player level - required level) over the required fields, or the
 ## player's lowest level for a part without requirements.
-static func _tech_margin(def: Dictionary, player: Player, content: ContentRegistry) -> int:
+static func _tech_margin(def: Dictionary, levels: Array[int], content: ContentRegistry) -> int:
 	var tech: Dictionary = def.get("tech", {})
 	var margin := 100
 	for field: String in tech:
 		var need := int(tech[field])
 		if need > 0:
 			var order := int(content.tech_field(field)["order"])
-			margin = mini(margin, player.tech_levels[order] - need)
+			margin = mini(margin, levels[order] - need)
 	if margin == 100:
-		for level in player.tech_levels:
+		for level in levels:
 			margin = mini(margin, level)
 	return margin
 

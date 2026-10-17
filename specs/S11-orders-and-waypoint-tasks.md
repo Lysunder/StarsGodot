@@ -123,6 +123,9 @@ the fleets of a ship move have the same owner, and trusts the client for the res
   An empty list means every other fleet of the player at the target's position, in fleet order. For each merged
   fleet its ships per design and its cargo are added to the target, and the fleet is deleted; the target keeps its
   waypoints, name, battle plan and repeat setting. Damage is combined (below). Block 37, `MergeFleetList@1030:2230`.
+- Ship moves and merges mark every fleet they name (both fleets of a ship move; the target and the listed fleets of
+  a merge, or the target and the fleets at its position for an empty list) for the rest of the turn's start: other
+  players' waypoints on a marked fleet pick their target again (S12 "Waypoint targets"). Splits mark nothing.
 - **`fleet_repeat`** `{owner, fleet, repeat}`: turns repeating orders on or off. Block 10.
 - **`fleet_rename`** `{owner, fleet, name}`: up to 31 characters; "" restores the default name. Block 44.
 - **`fleet_battle_plan`** `{owner, fleet, plan}`: an index into the player's battle plans. Block 42.
@@ -350,7 +353,9 @@ player a message and the task stays):
 4. At least one ship type in the fleet has a Colonization Module or an Orbital Construction Module in its design.
 
 The fleet is then dismantled: 3/4 of the ships' mineral cost (per mineral, rounded down; the design cost as
-stored, recomputed at current tech for Bleeding Edge) plus all minerals in the cargo go to the planet's surface,
+stored: priced at the tech levels the turn started with, since the original computes the designs' stats
+when it loads the turn and research or a tech gain later in the turn doesn't change them; recomputed at current tech for
+Bleeding Edge; turin1 turn 36) plus all minerals in the cargo go to the planet's surface,
 each design's existing count drops by its ships, the fleet is gone, and the colonization (player, planet,
 colonists) is recorded and resolved together with ground combat (S02 5c, 16d), so several players colonizing the
 same planet in one turn are resolved there.

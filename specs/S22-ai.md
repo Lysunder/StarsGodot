@@ -210,16 +210,17 @@ player's orders for the turn.
 3. **Bombers in orbit** (`AI_ScanFleets`): for each other player's fleet in orbit of one of the player's planets
    with ships on a hull of class `ai_hull_class.bomber` (the original's hulls 16-19), byte 8 of that planet's record
    is 1.
-4. **Minefield radii** (`AI_InitScale`): each loaded minefield's radius squared, trunc(sqrt(mines))².
+4. **Minefield radii** (`AI_InitScale`): each loaded minefield's radius, rounded, plus 10 light years, squared:
+   trunc(sqrt(mines) + 10.5)² (the constant is the double at DS:0x2050; turin1 turn 48).
 5. **The player's planets** (`AI_BuildOwnPlanetList`): in planet order, then shuffled: for each place i from the
    first to the last but one, swap it with place i + `random(n − i)` (n planets). These are the turn's first draws.
    (In the tutorial the shuffle is skipped; we have no tutorial game.)
 
-The world also keeps the packets and salvage the player sees this turn, its own included only when seen (its turn file lists just the objects in view; big1 turn 68: freighters pass over the player's own salvage out of scanner range), and the wormholes it sees or
-has seen; and for each planet the turn the player last saw it (this turn for its own). A planet the player has never
+The player's **loaded planets** are those its turn file holds: its own and those the planet history records (the original's `g_planets`, against all the universe's planets). The world also keeps the packets and salvage the player sees this turn, its own included only when seen (its turn file lists just the objects in view; big1 turn 68: freighters pass over the player's own salvage out of scanner range), and the wormholes its turn file holds (those in view this turn: a wormhole seen in an earlier year is not there; turin1 turn 45: a colony ship's wormhole draw finds none, so no second draw); and for each planet the turn the player last saw it (this turn for its own). A planet the player has never
 seen has the population estimate 4095 (the 12-bit field all set; big1 turn 62: a freighter does not carry people
-there). The player's **planet count**, as its turn file's player record has it, is its own planets plus the other
-planets it sees this turn (the file's planet blocks; big1 turns 30-31 for all five players).
+there). The player's **planet count** is the number of planets it owns. Its turn file's player record counts the
+planets it sees as well, but the brain reads the own count (turin1 turn 69: with 19 planets of its own and 30 in the
+record, Turindrones build no freighter; big1 plays the same either way).
 
 After each computer player plays, the original writes its log and history files, and each file draws a cipher salt
 (`random(2000)`, S01): two draws per computer player, made by the AI step whatever the brain (big1: 10 a turn for
@@ -505,7 +506,8 @@ in those slots and in others splits them off; cargo and fuel follow the ships (S
 **Safe speeds** (`AI_AvoidMinefieldsAll`, `AI_SetMinefieldSafeWarp`). Each of the player's fleets with somewhere to go
 gets its next speed:
 
-- Inside a known minefield of another player (not a speed bump, by the setup's radius squared): heavy fields warp 6;
+- Inside a minefield of another player in the player's turn file (seen this turn: one known from an earlier year is
+  not there; turin1 turn 48), not a speed bump, by the setup's radius squared: heavy fields warp 6;
   standard warp 4, or 5 on a draw of 6 in 10; one more with `minefield.speed_bonus`.
 - Elsewhere: the default warp (S12), as a computer player.
 
@@ -527,7 +529,9 @@ gets its next speed:
 - 0, free: Robotoids and Macinti take any unowned planet, the others only unowned planets they can terraform to
   habitable (else 8);
 - 1, the player's; 2, another player's;
-- 4, claimed: another of the player's fleets heads there (for Robotoids and Macinti, to colonize).
+- 4, claimed: another of the player's fleets heads there (for Robotoids and Macinti, to colonize);
+- 0x10, unseen: for the other personalities, every planet the player hasn't loaded (they start by marking every planet
+  0x10, then mark the loaded ones; Robotoids and Macinti start from 0).
 
 The other personalities mark only once a turn. The target is the nearest free planet. For a fleet at one of the
 player's planets before turn 120, a wormhole may be taken instead (`AI_PickWeighted`):
@@ -537,6 +541,41 @@ player's planets before turn 120, a wormhole may be taken instead (`AI_PickWeigh
 2. Its score is 50 when unseen and farther than the planet, 90 when unseen and nearer, and 70 less 10 per percent of
    jump chance when seen (S18).
 3. The best (the nearer of equals) is taken when a draw of 100 falls under its score.
+
+A call that asks for no wormhole (Turindrones' colony ships) skips this part.
+
+**Appending orders** (`AI_AddWaypoint` with its append flag): the waypoint follows the fleet's last one, or replaces it
+when it is at the same place.
+
+**Warship hulls** (`AI_HasWarshipHull`): a fleet with ships on a hull of class `ai_hull_class.warship` (scout,
+frigate, destroyer, cruiser, battle cruiser, battleship, dreadnought). **Armed** (`Fleet_HasArmedShips`): ships of a
+design with a weapon (S16 `Design_IsArmed`).
+
+**Exploring** (`AI_ChooseColonyTarget(wormhole)`): when the colony targets weren't rated this turn they are, asking for
+no wormhole. The target is the nearest planet marked 0x10 (unseen). When a wormhole is asked for and the fleet is at a
+planet, a draw of 100 under 5 looks for one as above (`AI_PickWeighted`, against the unseen planet's distance); one
+found replaces the planet.
+
+**Hunting and exploring** (`AI_DirectFleet(own, enemies, spare_computers, wormhole)`), for Turindrones, Automitrons and
+Rototills:
+
+1. An armed fleet looks for prey among the enemy fleets, in the order given: with `spare_computers` computer players'
+   fleets are left out; a fleet one of `own` already chases (its next waypoint targets it) is passed over on a draw of
+   1 in 3 (drawn only for chased fleets). The prey is the nearest.
+2. Prey within 180 light years is chased.
+3. With no prey at all and `spare_computers`, the search runs again counting computer players. Without
+   `spare_computers` the fleet explores (5).
+4. With prey too far: under half its fuel capacity, the fleet goes home if it can, and is done. Otherwise it heads for
+   the loaded planet nearest the prey that none of `own` heads for, unless there is none or it is the planet the fleet
+   is at: then it explores.
+5. Exploring, and for an unarmed fleet: the exploring target above (with a wormhole when asked). Without one, the
+   planet the target score without sparing rates highest from the player's homeworld (no homeworld: none), else a
+   planet drawn among all.
+6. A fleet already heading for a planet keeps its orders when the new target is a planet too. A planet chosen gets
+   byte 15 = 4 (claimed). The orders go at the fleet's top warp (S12's default warp without easing) and no task.
+
+The **target score** (`AI_ScoreColonyTarget`, `AI_ScoreColonyTarget2`) is described with Robotoids; it is the
+toolkit's, reading byte 10 as each personality sets it.
 
 ### Classic freight
 
@@ -579,8 +618,10 @@ The freighter goes at warp 4:
 
 Robotoids leaving home with people take some to the target: 300 hundred to another player's planet (100 when home has
 900 or fewer). To their own small planets they take a share by home's size: 10% over 2000, 8% over 1500, 5% over
-1000, else (people - 400)/100 %; none when the target has 1000 or two thirds of home's. Turindrones' own way comes
-with Turindrones.
+1000, else (people - 400)/100 %; none when the target has 1000 or two thirds of home's. Turindrones' freighters at
+home load 1000 hundred people when home has more than 1200 hundred and the target is an owned planet (another
+player's or theirs) with fewer people; whenever the target is an owned planet other than home they unload all
+colonists there (turin1 turn 65).
 
 **Depots** (`AI_PlanFreighterDepots`), kept in the memory. A record is a planet, a count of fleets and up to 8 fleet id
 words (owner << 9 | number), 10 words in all. There are at most 64 records, and the byte count is records x 20 + 4.
@@ -743,12 +784,134 @@ whose byte 10 is 0 (and, sparing computer players, for theirs). Otherwise byte 1
 (distance² under 2500), 5 under 10000, 4 under 22500, 3 under 40000, 2 under 90000, 1 under 250000. A score with 0x80
 set counts only on a draw of 1 in 4, and is 0 otherwise.
 
+### Turindrones
+
+The brain `turindrones` (`AI_Turindrones@1080:234e`). After the setup, in this order. Checked against the harness game
+turin1 (five Turindrones and an idle human, 80 turns): 72 turns match; of the others, 31, 55, 59 and 72 are comets (S25
+B38), 61 damage on ship moves (B32), 71 a chaser that the original stops (B12); 19 is the fuel question big1 turns 8
+and 12 share, and 77 is open (see Open questions).
+
+**1. Research**, as for Robotoids (starbase designs, the newer station, depots), then plan `turindrones` with a budget
+of 15% from the first turn.
+
+**2. Merging**, each only when the first slot named holds a design: slots 4-7 and 13-15 when slot 13 does; slot 12;
+slots 10-11 when slot 10 does; slots 2-3 when slot 2 does.
+
+**3. This turn's thresholds.** The escort strength E is 3, and after turn 130 3 + (turn − 120) div 20, at most 50. The
+bomber count B is 6, and after turn 115 6 + (turn − 100) div 22, at most 12. A fleet's strength is as for Robotoids
+(ships in slots 2-5 plus twice those in 6-7).
+
+**4. Retiring** (`AI_FindDesignForHulls`) with the age A of Robotoids, all marking one set of obsolete slots: slots 6-7
+(the warship design W), 8-9 (the freighter design F and how many ships of those slots exist), 13-14 (the bomber design),
+4-5 (the battleship design S), 12, 15 (the raider design R), 2-3 when construction is 7 or more, and 10-11 (the
+destroyer design D).
+
+**5. Splitting**, after turn 60: ships of obsolete slots split off.
+
+**6. Designs** (`AI_Turindrones_Designs`), in this order. Tech levels as for Robotoids. "Spent" means the slot is empty
+or no ships of its design are left.
+
+| Slot | When | Template (`turindrones_…`) |
+|---|---|---|
+| 8 | empty; Pr 5, Co 8 | `freighter_rogue` |
+| 9 | empty; Pr 7, Co 11 | `freighter_galleon` |
+| 10 | empty; Wp 5, El 5, Co 4, Pr 5 | `destroyer`, up to 4 tries, each after a draw of 1 |
+| 1 | spent | the design there is deleted unless it is on a privateer hull; `colony_ship` |
+| 0 | spent | the design there is deleted; `scout` |
+| 2 | spent; Co 7, El 4 | the design there is deleted; `miner` |
+| 12 | spent; Co 4, Bi 4 | `mine_layer` |
+| 13 | empty; Wp 8, El 7, Co 6 | `bomber` |
+| 14 | empty; Wp 11, El 12, Co 15, Pr 9 | `bomber` |
+| 4 | empty; Wp 5, El 6, Co 13, Pr 7 | `battleship_0`-`3`, drawn, up to 5 tries |
+| 15 | empty; Wp 5, El 6, Co 13, Pr 7 | `freighter_rogue`, made five times over, each replacing the last |
+
+Rogues and stealth bombers need Super Stealth, miners Advanced Remote Mining (S04): other races leave those slots empty.
+
+**7. Planets.** First, P counts the loaded unowned planets the player has scanned (detail over 2) that it could
+terraform to habitable. Then each loaded planet in planet order:
+
+1. Its byte 9 is 1.
+2. Unowned and scanned: byte 1 is its **mining worth**, each mineral's concentration halved, or 75 from 67, added up,
+   at most 127.
+3. The player's own: when its habitability is negative, byte 2 is 1. Otherwise, without a starbase or with fewer than
+   200 hundred people, its leftover-to-research setting becomes "under 200 hundred people" (a `planet_settings` order
+   when it changes). Otherwise its production is opened and, when the queue holds no ship design, ships are added
+   (below), and it is committed.
+4. Another player's: byte 10 is 2 with a starbase, else 1. When the player could terraform it to habitable, byte 3 is
+   that habitability and Q (the other players' planets met so far, 0 at the start) grows by 1.
+
+**Ships at a starbase planet**, at the end of the queue:
+
+1. On turn 0, n starting at the universe's planet count: while n is above 0, one scout (slot 0), n less 30 (100 from
+   191 planets). Later, when slot 0 holds a design on the scout template's hull (a frigate) with fewer ships than the
+   planets div 4 (at most 32), and its ships built div 10 fewer than those: one scout.
+2. K is the larger of (the player's planet count div 10) and (depots × 2). With Pr 5 and design F, when F's slots have
+   fewer than K ships, or fewer than 10K/7 and a draw of 1 in 4: one F.
+3. When P or Q is not 0 and the colony design has fewer than 2 ships: four of slot 1 (one at a time).
+4. With a design in slot 12, on a draw of 1 in 3: with n the slot-12 ships of the first of the player's fleets here
+   that has some (0 when none), three of slot 12 when n is under 10 (or under 17 on a draw of 1 in 8) and a draw of 1
+   in 2n + 1 says so.
+5. With the bomber design, the first of the player's fleets here with strength E decides: when it has B or more ships
+   in slots 13-14, four of the bomber design, and the planet is done.
+6. For S (fewer ships than all planets div 24, plus 4), W (div 12, plus 8), D (div 4, plus 12) and R (div 12, plus 8)
+   in turn, each with a design: this year's output less the cost of the queue as it stands, the planet done when any of
+   the four is negative; then up to five times, less the design's cost: negative, the planet is done; otherwise one of
+   the design.
+
+**8. Home** is the first of the player's planets (shuffled order) with a starbase; without one, the last of them; none
+without planets.
+
+**9. Fleets, first pass**, every fleet in fleet order. Other players' fleets are listed as enemies, the latest first;
+the player's fleets with warship hulls (Classic fleets) as its warships. Then, for the player's fleets:
+
+- With miners (slots 2-3) whose last waypoint has a task: in deep space with a next waypoint, that waypoint's task
+  becomes remote mining (the original edits it in place) and its planet is marked mined (byte 1 | 0x80); at a planet
+  another player owns, the fleet drops its waypoints beyond where it is and its task; at an unowned planet, that planet
+  is marked mined.
+- Otherwise, with no ships in slots 8-9: a fleet with colony ships (slot 1) looks at the planet where it is (no
+  waypoints beyond) or its next waypoint's planet. When that planet has byte 3 set it is treated as a freighter's
+  (below); otherwise, at another player's planet it drops its waypoints and its task.
+- With ships in slots 8-9, the planet where it is (no waypoints beyond), else the next waypoint's planet, else none:
+  - None: when its next waypoint is in deep space it drops its waypoints beyond where it is and its task.
+  - Another player's planet: when the planet has byte 3 set, the fleet has colonists aboard, the owner's race lacks
+    `ai.no_colonist_drops` (AR) and the planet has no starbase, a transport task unloading all colonists at warp 0
+    replaces waypoint 0 (when it targets that planet) or waypoint 1; byte 3 gets 0x80; then it goes home (Classic
+    fleets), which replaces waypoint 1. Otherwise it drops its waypoints and its task.
+
+**10. Fleets, last pass**, each of the player's fleets in fleet order, after the colony targets are marked for rating
+again:
+
+- **Miners**: on turn 0 they scrap. At a planet worth less than 4 (byte 1, its mark included), the planet the **mining
+  score** rates highest from here is appended to its orders, remote mining at warp 6; that planet is marked mined and
+  this planet's worth cleared (its mark kept). The mining score of a planet: 0 for this one or with no worth; otherwise
+  a draw of 100 (for every such planet): its worth when under 25 or it isn't marked, else 0.
+- Fleets with waypoints beyond where they are are done.
+- **Colony ships** (slot 1): with no colonists aboard and away from a planet of the player's with 50 hundred people:
+  away from a planet of the player's with a starbase, they scrap when the colony design's first part is a starter
+  engine (tag `ai_starter_engine`: Settler's Delight, Quick Jump 5, Fuel Mizer) or they cannot go home. Otherwise their
+  colony target is taken (no wormhole); at one of the player's planets they load 25 hundred colonists first, and the
+  planet to drop from is that one, else home. With a target, they go to colonize it (byte 15 = 4). Without one, the
+  nearest planet to the drop planet (not itself) of another player with byte 10 = 1 and byte 3 set whose race takes
+  drops gets byte 10 | 0x80, and the fleet goes there at warp 6, unloading all colonists.
+- **Freighters** (slots 8-9): on turn 0 they scrap. Without a home the pass ends here (the remaining fleets do
+  nothing). Otherwise a run (Classic freight) from their depot, else home.
+- **Bombers** (slots 13-14): at a planet of the player's with a starbase they wait until they have B or more bombers and
+  E div 2 ships in slots 4-5; at another player's planet they stay unless a warship (Classic fleets) of another player
+  is there. Otherwise the planet rated highest by the target score from here (from home in deep space), first sparing
+  computer players' planets when they form alliances, gets byte 10 | 0x80 and the fleet goes there at warp 4.
+- **Scouts and destroyers** (slots 0, 10-11): with scouts, construction 6 and slot 0's design on the starting scout's
+  hull, the fleet scraps. Otherwise hunting and exploring (Classic fleets), with the listed warships and enemies,
+  sparing computer players when they form alliances, a wormhole asked for.
+- **Mine layers** (slot 12) with no waypoints beyond and no task lay mines for ever (task data 5, 5).
+
+**11. Production** (Classic production) and the last pass.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets. The
-toolkit draws where the sections above say so, in the order the personality calls it. Robotoids draw in the
+toolkit draws where the sections above say so, in the order the personality calls it. Robotoids and Turindrones draw in the
 order of their steps above.
 
 ## Edge cases
@@ -782,6 +945,9 @@ homeworld.
 
 ## Open questions
 
-1. The order of the original's draws inside each personality, which golden AI games will check (Robotoids: big1).
+1. The order of the original's draws inside each personality, which golden AI games check (Robotoids: big1;
+   Turindrones: turin1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
+   token order and the wormholes come out differently, and no single draw added or removed, in the AI or in the
+   turn up to the battle, makes it match.
 2. What exactly the inactive personality does each turn (`AI_InactiveHuman`): research plan, colony ships and
    scouts going home or settling.

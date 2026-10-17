@@ -27,6 +27,8 @@ const INFO_SIZE := 16
 const MEMORY_WORDS := 0x1000
 const MEMORY_FIRST := 2
 const MEMORY_KEY := OrderRules.AI_MEMORY_KEY
+## Light years the computer players add to a minefield's radius (`AI_InitScale`).
+const MINEFIELD_MARGIN := 10
 const BOMBER_CLASS := "ai_hull_class.bomber"
 const ROBOTOIDS := "ai_personality.robotoids"
 const TURINDRONES := "ai_personality.turindrones"
@@ -54,18 +56,23 @@ var personality := ""
 var rng: StarsRandom
 ## Planet id -> detail level as loaded (0 never seen, 1 glimpsed, 3 scanned, 7 own).
 var detail := {}
+## Planet ids the player's turn file holds (its own and those the planet history records): the
+## original's loaded planets, {id: true}.
+var loaded := {}
 ## Planet id -> the turn it was last seen (this turn for the player's own; 0 never seen).
 var seen_turn := {}
 ## The player's planets, shuffled.
 var own_planets: Array[Planet] = []
-## The planet count of the player's record as its turn file has it: its own planets and the other
-## planets it sees this turn (the planet blocks of the file).
+## The planet count of the player's record while the brain plays: its own planets (the turn
+## file's record counts the planets it sees too, but turin1 turn 69's freighters follow the own
+## count).
 var planet_count := 0
 ## Planet id -> PackedByteArray(INFO_SIZE).
 var planet_info := {}
 ## "owner/slot" -> rating (`Designs_ComputeRatings`), ship designs of every player loaded.
 var ratings := {}
-## Minefield -> its radius squared, trunc(sqrt(mines))^2 (`AI_InitScale`).
+## Minefield -> the radius squared the computer player keeps clear of: trunc(sqrt(mines) + 10.5),
+## squared (`AI_InitScale`: the field's radius rounded, plus MINEFIELD_MARGIN light years).
 var minefield_scale := {}
 ## The working memory, MEMORY_WORDS words.
 var memory := PackedInt32Array()
@@ -221,11 +228,8 @@ static func fleet_id(fleet: Fleet) -> int:
 
 
 func _count_planets(host: GameState) -> void:
-	var seen: Dictionary = {}
-	if player < host.views.size() and host.views[player] is Dictionary:
-		seen = host.views[player].get("planets", {})
 	for planet in host.planets:
-		if planet.owner == player or seen.has(str(planet.id)):
+		if planet.owner == player:
 			planet_count += 1
 
 
@@ -236,8 +240,11 @@ func _mask_planets() -> void:
 		if planet.owner == player:
 			detail[planet.id] = OWN
 			seen_turn[planet.id] = state.turn
+			loaded[planet.id] = true
 			continue
 		var r: Dictionary = known.get(str(planet.id), {})
+		if not r.is_empty():
+			loaded[planet.id] = true
 		detail[planet.id] = int(r.get("detail", 0))
 		seen_turn[planet.id] = int(r.get("turn", 0))
 		var seen_surface := _seen_level(planet.id) >= Scanning.MINERALS
@@ -339,13 +346,14 @@ func _mask_designs(host: GameState) -> void:
 func _mask_minefields() -> void:
 	var kept: Array[Minefield] = []
 	for field in state.minefields:
-		if field.owner == player or field.known_by.has(player):
+		if field.owner == player or field.seen_by.has(player):
 			kept.append(field)
 	state.minefields = kept
 
 
 ## Packets and salvage seen this turn (the player's own too only when seen; all of its own when
-## there is no view yet), wormholes in view or seen before.
+## there is no view yet), and the wormholes its turn file holds (those it has seen when there is
+## no view yet).
 func _mask_objects(host: GameState) -> void:
 	var view: Dictionary = {}
 	if player < host.views.size() and host.views[player] is Dictionary:
@@ -360,7 +368,8 @@ func _mask_objects(host: GameState) -> void:
 	var seen_holes: Array = view.get("wormholes", [])
 	var holes: Array[Wormhole] = []
 	for hole in state.wormholes:
-		if hole.seen_by.has(player) or seen_holes.has(hole.number):
+		var known := hole.seen_by.has(player) if view.is_empty() else seen_holes.has(hole.number)
+		if known:
 			holes.append(hole)
 	state.wormholes = holes
 
@@ -409,7 +418,13 @@ func _scan_fleets() -> void:
 ## `AI_InitScale`.
 func _scale_minefields() -> void:
 	for field in state.minefields:
-		var r := int(sqrt(float(field.mines)))
+		var root := int(sqrt(float(field.mines)))
+		while root * root > field.mines:
+			root -= 1
+		while (root + 1) * (root + 1) <= field.mines:
+			root += 1
+		# + 10.5, truncated: one more when the root's fraction is a half or more
+		var r := root + MINEFIELD_MARGIN + (1 if field.mines > root * root + root else 0)
 		minefield_scale[field] = r * r
 
 

@@ -36,6 +36,7 @@ class Waypoint0Tasks:
 		# the first task pass clears the marks the start of the turn left (S12 "Waypoint targets")
 		for fleet in ctx.state.fleets:
 			fleet.claimed = false
+			fleet.reorganized = false
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
 		tasks.run_pass(1)
 		tasks.resolve()

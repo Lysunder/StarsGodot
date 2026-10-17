@@ -178,7 +178,9 @@ func spend(
 	planet: Planet, player: Player, item: QueueItem, avail: Array[int], alchemy_above: bool
 ) -> SpendResult:
 	var out := SpendResult.new()
-	var cost := ProductionCosts.unit_cost(planet, item, player, _content)
+	var tech: Array[int] = []
+	tech.assign(_state.turn_start_tech.get(player.index, []))
+	var cost := ProductionCosts.unit_cost(planet, item, player, _content, tech)
 	var def := {} if item.is_design() else _content.get_def("production_item", item.item)
 	var auto: bool = def.get("auto", false)
 	var count := item.count

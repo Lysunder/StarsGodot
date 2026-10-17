@@ -205,7 +205,7 @@ func test_minefields_slow_fleets() -> void:
 	field.x = 1344
 	field.y = 1303
 	field.mines = 400
-	field.known_by.append(1)
+	field.seen_by.append(1)
 	s.minefields.append(field)
 	var f := s.fleet(1, 1)
 	var wp := Waypoint.new(1300, 1300)
@@ -228,6 +228,7 @@ func test_wormhole_distance_wraps_in_16_bits() -> void:
 	hole.x = 1344 + 190
 	hole.y = 1303
 	hole.seen_by.append(1)
+	s.views[1]["wormholes"] = [1]
 	s.wormholes.append(hole)
 	var w := _world(s)
 	var found := 0

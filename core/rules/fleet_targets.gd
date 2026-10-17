@@ -91,14 +91,16 @@ static func update(state: GameState, content: ContentRegistry, rng: StarsRandom)
 
 
 ## A waypoint's fleet target: still there (claimed), or retargeted among the fleets at the
-## waypoint's position owned by the old target's owner.
+## waypoint's position owned by the old target's owner. Another player's fleet that a ship move
+## or merge order named this turn is picked again too.
 static func _check_target(
 	state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, wp: Waypoint
 ) -> void:
 	var target := state.fleet(wp.target_owner, wp.target_id)
 	if target != null and target.x == wp.x and target.y == wp.y:
-		target.claimed = true
-		return
+		if not (target.reorganized and target.owner != fleet.owner):
+			target.claimed = true
+			return
 	# a fleet lost this turn stays, empty, where it was until the turn's files are written: a
 	# waypoint there keeps it (the lost targets at the end of the turn deal with it, S15)
 	var gone: Variant = state.retired_fleet_numbers.get(wp.target_owner, {}).get(wp.target_id)

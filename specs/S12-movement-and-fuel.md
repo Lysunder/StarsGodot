@@ -60,7 +60,10 @@ in phase 14 when a wormhole has vanished (not built yet). For each fleet in flee
 2. The fleet's position (and waypoint 0's) is kept inside the universe: 1000 … width + 1000 on each axis.
 3. For each later waypoint (from waypoint 0 for a following fleet) that targets a fleet and isn't frozen (a target
    that jumped through a gate, S12 stargates): if the target still exists, is at the waypoint's position, and isn't
-   another player's fleet that went through a gate this turn, the target is marked **claimed**. A fleet lost this
+   another player's fleet that a ship-move or merge order (S11, blocks 23 and 37) named this turn, the target is
+   marked **claimed**. Such a fleet is picked again as below even though it is still there (the order marks every
+   fleet it names, both fleets of a ship move and all those of a merge; turin1 turns 57 and 69: a chaser of a fleet
+   that took ships from others draws for it). A fleet lost this
    turn (in battle, to mines, colonizing or scrapping) still exists in the original, empty, until the turn's files
    are written: a waypoint at the place it was lost is left as it is (no retargeting, no draws), and the lost targets
    at the end of the turn send it to the planet there or deep space (S15; big1 turn 71: a chaser whose prey died in
@@ -79,7 +82,8 @@ in phase 14 when a wormhole has vanished (not built yet). For each fleet in flee
      marked claimed. With no candidate the waypoint is left as it is, unless its fleet no longer exists (destroyed
      in battle, by mines, colonizing or scrapping, none of which retarget waypoints, S11): then it targets the planet
      at its position, else deep space (the original's file can't name a fleet that is gone; big1 turns 63, 67).
-   Claimed marks last for the turn's start (they are cleared when the first waypoint-task pass reaches the fleet).
+   Claimed marks and the order marks last for the turn's start (both are cleared when the first waypoint-task pass
+   reaches the fleet).
 4. A waypoint that targets a packet, salvage or minefield takes its current position; one whose object no longer
    exists becomes deep space (`UpdateWaypointTargets`, the space-object branch; big1 turn 65).
 5. A waypoint that targets a wormhole takes its current position while the fleet's owner tracks it (scanners,
@@ -223,7 +227,10 @@ After all movement passes:
 
 1. Waypoints that target a fleet (from waypoint 1) are moved to that fleet's position (unless frozen because the
    target jumped through a gate); if the target no longer exists the waypoint becomes a deep-space waypoint
-   (`UpdateFleetTargetPositions@1078:1060`). A following fleet only drops its waypoint 1 (above).
+   (`UpdateFleetTargetPositions@1078:1060`). A fleet lost this turn (colonizing, scrapped, in battle, to mines) still
+   exists in the original, empty, until the turn's files are written: the waypoint keeps targeting it at the place it
+   was lost, and the lost targets at the end of the turn send it to the planet there or deep space (S15; turin1 turn
+   41: a warship chasing a colony ship that settled a planet ends up targeting that planet). A following fleet only drops its waypoint 1 (above).
 2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
    the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
    only part of the way has its current waypoint moved to its position as a deep-space waypoint; the waypoint keeps
@@ -380,8 +387,8 @@ per position try.
 
 1. Retargeting a waypoint whose fleet is gone or moved (`UpdateWaypointTargets`) is read from the code but not yet
    seen in a fixture: a fleet deleted by an order or task already has its chasers retargeted (S11), so it mostly
-   matters for other players' fleets going out of sight (S15). Also unconfirmed: whether "other player's fleet
-   that went through a gate" is the flag read there, and the effect of B12 (a chaser reached by another chaser
+   matters for other players' fleets going out of sight (S15) and fleets named in ship-move and merge orders (seen in
+   turin1). Also unconfirmed: the effect of B12 (a chaser reached by another chaser
    stops: our engine doesn't stop it).
 2. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
    planned usage; purpose unclear).

@@ -9,7 +9,7 @@
     "type": "ai_personality",
     "id": "ai_personality.turindrones",
     "order": 1,
-    "brain": "baseline"
+    "brain": "turindrones"
   },
   {
     "type": "ai_personality",

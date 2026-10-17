@@ -692,30 +692,7 @@ func _drop(fleet: Fleet, here: Planet) -> void:
 	ClassicFreight.move_cargo(w, fleet, {"planet": here.id}, Fleet.CARGO_COLONISTS, -n)
 
 
-## `AI_ScoreColonyTarget` (`spare_computers`) and `AI_ScoreColonyTarget2`: a planet's worth as an
-## invasion target from `from`, more when near; a planet a warship heads for counts only on a
-## draw of 1 in 4.
+## `AI_ScoreColonyTarget` (`spare_computers`) and `AI_ScoreColonyTarget2` (ClassicFleets): a
+## planet's worth as an invasion target from `from`.
 func score(from: Planet, p: Planet, spare_computers: bool) -> int:
-	if p == from:
-		return 0
-	if spare_computers and p.owner >= 0 and w.is_computer(p.owner):
-		return 0
-	var worth: int = (w.planet_info[p.id] as PackedByteArray)[INFO_WORTH]
-	if worth == 0:
-		return 0
-	var d := F.d2(from.x, from.y, p.x, p.y)
-	if d < 2500:
-		worth += 7
-	elif d < 10000:
-		worth += 5
-	elif d < 22500:
-		worth += 4
-	elif d < 40000:
-		worth += 3
-	elif d < 90000:
-		worth += 2
-	elif d < 250000:
-		worth += 1
-	if worth & HEADED == 0 or w.rng.random(4) == 0:
-		return worth
-	return 0
+	return F.target_score(w, from, p, spare_computers)

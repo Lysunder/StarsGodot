@@ -97,3 +97,14 @@ func test_race_availability() -> void:
 		["trait.prt.HE"]
 	)
 	assert_bool(_reg.part("part.beam.laser").has("required_traits")).is_false()
+
+
+func test_regenerating_shields_halve_each_armor_slot() -> void:
+	# S04: (count x armor) >> 1 per armor slot, so two Organic Armor (175) give 175, not 2 x 87
+	var d := Design.new()
+	d.hull = "hull.rogue"
+	d.parts.assign([DesignSlot.new("part.armor.organic_armor", 2)])
+	var race := Race.new()
+	assert_int(PartRules.armor(d, _reg, race)).is_equal(450 + 350)
+	race.lesser_traits.assign(["trait.lrt.RS"])
+	assert_int(PartRules.armor(d, _reg, race)).is_equal(450 + 175)
