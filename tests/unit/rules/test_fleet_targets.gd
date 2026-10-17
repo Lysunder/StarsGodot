@@ -142,6 +142,23 @@ func test_a_waypoint_whose_fleet_is_gone_takes_one_left_there() -> void:
 	assert_bool(left.claimed).is_true()
 
 
+func test_a_waypoint_on_a_fleet_lost_there_this_turn_stays() -> void:
+	var s := _game()
+	var chaser := _fleet(s, 1100, 1100)
+	var prey := _fleet(s, 1250, 1250)
+	var wp := _to(chaser, 1250, 1250, 5)
+	_target(wp, prey)
+	var other := _fleet(s, 1250, 1250)
+	FleetOrders.delete_fleet(s, prey, 0, true)
+	var rng := StarsRandom.new()
+	var before := [rng.s1, rng.s2]
+	FleetTargets.update(s, _content, rng)
+	# the lost fleet is still there, empty, so nothing is retargeted and nothing drawn
+	assert_int(wp.target_id).is_equal(prey.number)
+	assert_bool(other.claimed).is_false()
+	assert_array([rng.s1, rng.s2]).is_equal(before)
+
+
 func test_hull_classes_for_battle_plan_targets() -> void:
 	var s := _game()
 	var colony := _fleet(s)

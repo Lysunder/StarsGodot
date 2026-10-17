@@ -135,6 +135,32 @@ func test_lost_fleet_targets() -> void:
 	assert_int(hunter.waypoints[2].x).is_equal(1200)
 
 
+func test_fleets_seen_only_in_a_battle_are_lost() -> void:
+	var s := _world()
+	var pl := _planet(s, 1300, 1000)
+	var hunter := _fleet(s, 0, [], 1000, 1000)
+	var prey := _fleet(s, 1, [], 1300, 1000, pl.id)
+	var wp := Waypoint.new(prey.x, prey.y)
+	wp.target = "fleet"
+	wp.target_owner = 1
+	wp.target_id = prey.number
+	hunter.waypoints.append(wp)
+	var token := {
+		"owner": 1,
+		"kind": BattleSetup.SHIPS,
+		"design": prey.stacks[0].design,
+		"fleet_owner": 1,
+		"fleet": prey.number,
+	}
+	s.battles = [{"players": [0, 1], "planet": pl.id, "tokens": [token]}]
+	_write(s)
+	# the battle shows the fleet, but only after the waypoint lost it
+	assert_bool(s.views[0].fleets.has("1/%d" % prey.number)).is_true()
+	assert_array(_types(s)).is_equal(["message.fleet.target_behind_planet"])
+	assert_str(hunter.waypoints[1].target).is_equal("planet")
+	assert_int(hunter.waypoints[1].target_id).is_equal(pl.id)
+
+
 func test_lost_objects_and_waypoint_zero() -> void:
 	var s := _world()
 	var pl := _planet(s, 1000, 1000)

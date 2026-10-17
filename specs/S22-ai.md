@@ -215,7 +215,7 @@ player's orders for the turn.
    first to the last but one, swap it with place i + `random(n − i)` (n planets). These are the turn's first draws.
    (In the tutorial the shuffle is skipped; we have no tutorial game.)
 
-The world also keeps the packets and salvage the player sees this turn (and its own), and the wormholes it sees or
+The world also keeps the packets and salvage the player sees this turn, its own included only when seen (its turn file lists just the objects in view; big1 turn 68: freighters pass over the player's own salvage out of scanner range), and the wormholes it sees or
 has seen; and for each planet the turn the player last saw it (this turn for its own). A planet the player has never
 seen has the population estimate 4095 (the 12-bit field all set; big1 turn 62: a freighter does not carry people
 there). The player's **planet count**, as its turn file's player record has it, is its own planets plus the other
@@ -496,7 +496,7 @@ first.
 When avoiding starbases, the pick is drawn again up to twice while it has one.
 
 **Merging** (`AI_MergeFleetsByHull(slots)`): fleets with ships in those slots merge, in fleet order, into the first
-such fleet at the same place. At most 32 fleets are kept to merge into; the rest wait for another pass. A merged fleet
+such fleet at the same place (`MergeFleets@1048:78b6`): all of a merged fleet's ships move into the other as a ship move (S11 "Fleet orders", `fleet_move_ships`), so cargo, fuel and damage follow as for a ship move, not as for a merge order, and the emptied fleet is deleted. At most 32 fleets are kept to merge into; the rest wait for another pass. A merged fleet
 leaves the list, so the fleet after it is passed over.
 
 **Splitting** (`AI_SplitFleets(slots)`): while the player has fewer than 501 fleets, the first fleet with ships both

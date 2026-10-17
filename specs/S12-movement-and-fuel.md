@@ -60,7 +60,11 @@ in phase 14 when a wormhole has vanished (not built yet). For each fleet in flee
 2. The fleet's position (and waypoint 0's) is kept inside the universe: 1000 … width + 1000 on each axis.
 3. For each later waypoint (from waypoint 0 for a following fleet) that targets a fleet and isn't frozen (a target
    that jumped through a gate, S12 stargates): if the target still exists, is at the waypoint's position, and isn't
-   another player's fleet that went through a gate this turn, the target is marked **claimed**. Otherwise the
+   another player's fleet that went through a gate this turn, the target is marked **claimed**. A fleet lost this
+   turn (in battle, to mines, colonizing or scrapping) still exists in the original, empty, until the turn's files
+   are written: a waypoint at the place it was lost is left as it is (no retargeting, no draws), and the lost targets
+   at the end of the turn send it to the planet there or deep space (S15; big1 turn 71: a chaser whose prey died in
+   a battle at a planet where the prey's owner had other fleets). Otherwise the
    waypoint is **retargeted** among the fleets at the waypoint's position owned by the old target's owner, in fleet
    order (the fleet itself can be one):
    - The heaviest one (ships' mass plus cargo, not fuel) with a ship of the class the moving fleet's battle plan
@@ -191,7 +195,7 @@ form); when u is 0 the range is unlimited.
    ≤ m), so it can arrive although fuel was charged for the distance rounded up (seen in long1 turn 15: 36.7 ly at
    warp 6, and terra1 turn 33: 1.4 ly at warp 1); a fleet whose rounded position is its target's has also arrived.
 4. Minefields are checked along the path (S13) and may stop the fleet early.
-5. A fleet that moves loses its "didn't move" mark.
+5. A fleet that moves loses its "didn't move" mark: any fleet with fuel range left does, even one whose waypoint is where it already is (distance 0, which counts as arriving, so the waypoint is reached; seen in big1 turn 63: a chaser whose prey came to the chaser's planet). A fleet with no fuel range keeps the mark (`MoveFleets` clears it after the fuel check unless the range is 0).
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the
    number of engines on the design, k = e; if warp w + 1 is also free, k = 3e; if w + 2 is too, k = 6e; if w ≤ 7 and
    w + 3 is free as well, k = 10e. Fuel made = Σ ships × k × s, where s = min(m, trunc(distance − 0.99999)) (the

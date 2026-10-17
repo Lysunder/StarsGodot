@@ -169,6 +169,10 @@ packets in view (own ones too), the wormholes tracked in this pass and the trade
 
 ### Orders changed by sight (`WriteGameFile`, right after the player's scanning)
 
+These go by the player's scanning only: the fleets step 7 adds (seen only in a battle) don't count, because the
+original writes the battle blocks after changing these orders. A fleet seen only in a battle is in the player's view,
+yet a waypoint chasing it loses its target, and no patrol picks it.
+
 For each of the player's fleets, in fleet order:
 
 1. **Waypoint 0** targeting a fleet now targets the planet at its position, or deep space.

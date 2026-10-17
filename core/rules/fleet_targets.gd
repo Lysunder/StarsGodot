@@ -99,6 +99,11 @@ static func _check_target(
 	if target != null and target.x == wp.x and target.y == wp.y:
 		target.claimed = true
 		return
+	# a fleet lost this turn stays, empty, where it was until the turn's files are written: a
+	# waypoint there keeps it (the lost targets at the end of the turn deal with it, S15)
+	var gone: Variant = state.retired_fleet_numbers.get(wp.target_owner, {}).get(wp.target_id)
+	if target == null and gone == Vector2i(wp.x, wp.y):
+		return
 	var plan_target := primary_target(state, fleet)
 	var heaviest: Fleet = null
 	var heaviest_mass := 0

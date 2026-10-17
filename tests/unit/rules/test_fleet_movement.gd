@@ -92,6 +92,24 @@ func test_partial_move_and_deep_space_waypoint() -> void:
 	assert_str(f.waypoints[0].task).is_equal("colonize")
 
 
+func test_a_waypoint_where_the_fleet_is_is_reached() -> void:
+	var s := _game()
+	var f := _fleet(s)
+	_goto(f, s.planets[0], 6)
+	Movement.move_all(s, _content, StarsRandom.new())
+	assert_bool(f.did_not_move).is_false()
+	assert_int(f.waypoints.size()).is_equal(1)
+	assert_int(f.waypoints[0].warp).is_equal(6)
+	assert_int(f.planet).is_equal(0)
+	# without fuel the fleet keeps its mark and its waypoint
+	var dry := _fleet(s)
+	dry.cargo[Fleet.CARGO_FUEL] = 0
+	_goto(dry, s.planets[0], 6)
+	Movement.move_all(s, _content, StarsRandom.new())
+	assert_bool(dry.did_not_move).is_true()
+	assert_int(dry.waypoints.size()).is_equal(2)
+
+
 func test_out_of_fuel_stops_early() -> void:
 	var s := _game()
 	var f := _fleet(s)

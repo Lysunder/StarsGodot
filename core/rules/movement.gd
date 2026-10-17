@@ -378,7 +378,9 @@ static func _step(
 				goto,
 				[word, next.warp]
 			)
-	if move <= 0:
+	# any fuel range left takes the mark away, even with the target where the fleet is (distance
+	# 0, which counts as arriving)
+	if reach <= 0:
 		return false
 	fleet.did_not_move = false
 	# minefields on the way (S13) over min(move, trunc(distance - 0.99999)), as for scoops: a hit

@@ -31,7 +31,7 @@ var views: Array = []
 ## The score history (S20 "History"): one entry a turn, {turn, records: per player}.
 var history: Array = []
 var mod_data: Dictionary = {}
-## Turn-only: per owner, the numbers of fleets retired this turn ({number: true}).
+## Turn-only: per owner, the fleets retired this turn and where they were ({number: Vector2i}).
 var retired_fleet_numbers: Dictionary = {}
 ## Turn-only: per planet id, the resources Ultimate Recycling banked there this turn (S11).
 var recycled: Dictionary = {}
@@ -166,7 +166,7 @@ func retire_fleet(f: Fleet) -> void:
 	fleets.erase(f)
 	if not retired_fleet_numbers.has(f.owner):
 		retired_fleet_numbers[f.owner] = {}
-	retired_fleet_numbers[f.owner][f.number] = true
+	retired_fleet_numbers[f.owner][f.number] = Vector2i(f.x, f.y)
 
 
 func add_minefield(owner: int, limit: int) -> Minefield:

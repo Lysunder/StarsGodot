@@ -64,6 +64,21 @@ func test_other_fleets_and_designs_only_when_seen() -> void:
 	assert_int(w.state.player(2).ship_designs.size()).is_equal(0)
 
 
+func test_packets_only_when_seen() -> void:
+	var s := _state()
+	for i in 3:
+		var pk := Packet.new()
+		pk.owner = [0, 1, 1][i]
+		pk.number = [2, 0, 1][i]
+		pk.salvage = true
+		s.packets.append(pk)
+	s.views[1]["packets"] = ["1/0", "0/2"]
+	var w := ClassicWorld.build(s, _content, 1, StarsRandom.new())
+	var seen := w.state.packets.map(func(p: Packet) -> String: return "%d/%d" % [p.owner, p.number])
+	# its own salvage out of sight (1/1) is not loaded
+	assert_array(seen).is_equal(["0/2", "1/0"])
+
+
 ## The turn's first draws: the player's planets shuffled with one random(n - i) per place but the
 ## last.
 func test_own_planets_are_shuffled() -> void:

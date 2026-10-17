@@ -344,7 +344,8 @@ func _mask_minefields() -> void:
 	state.minefields = kept
 
 
-## Packets and salvage seen this turn (or the player's own), wormholes in view or seen before.
+## Packets and salvage seen this turn (the player's own too only when seen; all of its own when
+## there is no view yet), wormholes in view or seen before.
 func _mask_objects(host: GameState) -> void:
 	var view: Dictionary = {}
 	if player < host.views.size() and host.views[player] is Dictionary:
@@ -352,7 +353,8 @@ func _mask_objects(host: GameState) -> void:
 	var seen_packets: Array = view.get("packets", [])
 	var packets: Array[Packet] = []
 	for packet in state.packets:
-		if packet.owner == player or seen_packets.has("%d/%d" % [packet.owner, packet.number]):
+		var mine := view.is_empty() and packet.owner == player
+		if mine or seen_packets.has("%d/%d" % [packet.owner, packet.number]):
 			packets.append(packet)
 	state.packets = packets
 	var seen_holes: Array = view.get("wormholes", [])

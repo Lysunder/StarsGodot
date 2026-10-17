@@ -2,7 +2,8 @@ class_name Retargeting
 extends RefCounted
 ## Orders changed by sight (spec S15 "Orders changed by sight"; `WriteGameFile@1068:35b0`): right
 ## after a player's scanning, patrolling fleets pick a target, and waypoints aimed at what the
-## player no longer sees lose their target.
+## player no longer sees lose their target. Fleets seen only in a battle don't count: the original
+## marks them when it writes the battle blocks, after this.
 
 const WARP_MAX := 10
 ## The highest warp a default speed may use: fuel use below this (per mille of the table).
@@ -75,7 +76,7 @@ static func _patrol(
 	var best_d2 := NO_CHOICE
 	var unpicked := false
 	for other in state.fleets:
-		if other.owner == fleet.owner or not sight.fleets.has(other):
+		if other.owner == fleet.owner or not sight.scanned.has(other):
 			continue
 		var d2 := (other.x - x) * (other.x - x) + (other.y - y) * (other.y - y)
 		var free := not picked.has(other)
@@ -147,7 +148,7 @@ static func _lost_targets(
 				if target == null or target.ship_count() == 0:
 					type = "message.fleet.target_gone"
 					params.append(wp.target_owner * 512 + wp.target_id)
-				elif sight.fleets.has(target):
+				elif sight.scanned.has(target):
 					continue
 				elif target.planet < 0 or stopped:
 					type = "message.fleet.target_out_of_range"

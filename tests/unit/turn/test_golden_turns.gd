@@ -29,6 +29,11 @@ const TURN_IGNORE := {
 	{
 		22: ["/fleets[0:2]/cargo/0", "/fleets[1:1]/cargo/0", "/messages/0/6*"],
 	},
+	# B38: the comet changes the axes its message names, not gravity first
+	"big1":
+	{
+		74: ["/planets/118/environment*"],
+	},
 }
 
 const CompatContent := preload("res://tests/unit/compat_content.gd")
@@ -61,11 +66,16 @@ func _orders(game: String, turn: int, players: int) -> Array[OrderSet]:
 	return out
 
 
-func _check_turn(game: String, turn: int) -> void:
+## With `computers`, the computer players play first (S22), knowing what the fixture's players
+## know (their planet history and memory, as our replay of the earlier turns carried them).
+func _check_turn(game: String, turn: int, computers := false) -> void:
 	var state := _load(game, turn)
-	var rejected := StandardTurn.generate(
-		state, _content, _orders(game, turn, state.players.size())
-	)
+	var sets := _orders(game, turn, state.players.size())
+	if computers:
+		var errors := PackedStringArray()
+		sets.append_array(ComputerPlayers.add_orders(state, _content, [], errors))
+		assert_array(Array(errors)).override_failure_message("\n".join(errors)).is_empty()
+	var rejected := StandardTurn.generate(state, _content, sets)
 	assert_array(Array(rejected)).override_failure_message("\n".join(rejected)).is_empty()
 	var expected := _load(game, turn + 1)
 	var ignore := PackedStringArray(IGNORE)
@@ -532,3 +542,30 @@ func test_plan1(
 	]
 ) -> void:
 	_check_turn("plan1", turn)
+
+
+## Five Robotoids computer players and an idle human (S22 stage 4). Turns left out: B32 (66, 68:
+## merged damage), B12 (73, 75: a caught fleet that was itself chasing stops) and 69 (one draw short
+## somewhere between player 5's last fleet pass and the first engine roll; not found yet).
+func test_big1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[60],
+		[61],
+		[62],
+		[63],
+		[64],
+		[65],
+		[67],
+		[70],
+		[71],
+		[72],
+		[74],
+		[76],
+		[77],
+		[78],
+		[79],
+	]
+) -> void:
+	_check_turn("big1", turn, true)

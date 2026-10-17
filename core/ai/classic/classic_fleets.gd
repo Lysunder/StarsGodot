@@ -352,7 +352,8 @@ static func join_nearest(
 
 
 ## `AI_MergeFleetsByHull`: the player's fleets with ships in the design slots of `slots` merge
-## with the first such fleet at the same place, in fleet order; up to MERGE_LIST fleets are kept
+## with the first such fleet at the same place, in fleet order (all its ships move over as a ship
+## move, S11, so cargo and damage follow as for one); up to MERGE_LIST fleets are kept
 ## to merge into, then another pass starts where the list ran out. A merged fleet leaves the
 ## fleet list, so the fleet after it is passed over.
 static func merge_by_slots(w: ClassicWorld, slots: Array) -> void:
@@ -376,7 +377,21 @@ static func merge_by_slots(w: ClassicWorld, slots: Array) -> void:
 					into = k
 					break
 			if into != null:
-				w.order({"type": "fleet_merge", "fleet": into.number, "fleets": [f.number]})
+				# MergeFleets: all ships move as a ship move (S11), not as a merge order
+				var moved := []
+				for st in stacks_of(f):
+					moved.append({"design": st.design, "count": st.count})
+				(
+					w
+					. order(
+						{
+							"type": "fleet_move_ships",
+							"fleet": into.number,
+							"other": f.number,
+							"ships": moved,
+						}
+					)
+				)
 			elif kept.size() == MERGE_LIST:
 				if resume < 0:
 					resume = i

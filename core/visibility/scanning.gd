@@ -169,6 +169,9 @@ class Sight:
 	## Planet id -> level; fleet -> level (the player's own at FULL).
 	var planets := {}
 	var fleets := {}
+	## The fleets seen before the battles add theirs: what patrols and lost targets go by, since
+	## the original writes the battle blocks after changing those orders (Retargeting).
+	var scanned := {}
 	## [owner, slot] of other players' designs seen this turn.
 	var ship_designs := {}
 	var starbase_designs := {}
@@ -193,6 +196,7 @@ class Sight:
 		_packet_scanners()
 		_minefield_scanners()
 		_messages()
+		scanned = fleets.duplicate()
 		_battles()
 
 	## `WriteBattleBlocks@1068:444e` (when the player's file is written, before anything else of
