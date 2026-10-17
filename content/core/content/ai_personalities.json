@@ -21,7 +21,7 @@
     "type": "ai_personality",
     "id": "ai_personality.rototills",
     "order": 3,
-    "brain": "baseline"
+    "brain": "rototills"
   },
   {
     "type": "ai_personality",

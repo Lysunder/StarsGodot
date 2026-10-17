@@ -10,7 +10,8 @@ const BASELINE := "baseline"
 const ROBOTOIDS := "robotoids"
 const TURINDRONES := "turindrones"
 const AUTOMITRONS := "automitrons"
-const IDS := [IDLE, BASELINE, ROBOTOIDS, TURINDRONES, AUTOMITRONS]
+const ROTOTILLS := "rototills"
+const IDS := [IDLE, BASELINE, ROBOTOIDS, TURINDRONES, AUTOMITRONS, ROTOTILLS]
 
 
 static func has(id: String) -> bool:
@@ -65,4 +66,6 @@ static func create(id: String) -> AiPlayer:
 			return ClassicBrain.new(ClassicWorld.TURINDRONES)
 		AUTOMITRONS:
 			return ClassicBrain.new(ClassicWorld.AUTOMITRONS)
+		ROTOTILLS:
+			return ClassicBrain.new(ClassicWorld.ROTOTILLS)
 	return null

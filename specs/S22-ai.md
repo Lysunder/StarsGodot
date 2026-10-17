@@ -993,13 +993,59 @@ again:
 
 **11. Production** (Classic production) and the last pass.
 
+### Rototills
+
+The brain `rototills` (`AI_Rototills@1090:1594`). Rototills make no designs of their own (their design step is an empty
+function) and keep no fleets merged, split or retired. After the setup, in this order. Checked against the harness game
+roto1 (five Rototills and an idle human, 80 turns): all 80 turns match.
+
+**1. Research**, as for Robotoids (starbase designs, the newer station, depots), with no plan: the lowest field
+(Classic research, every step done), with no budget before turn 20 and 15% from then on.
+
+**2. Planets.** P counts the unowned planets as for Turindrones. Then each loaded planet in planet order:
+
+1. Its byte 9 is 1.
+2. Unowned and scanned: byte 1 is its mining worth, as for Turindrones.
+3. The player's own with negative habitability: byte 2 is 1.
+4. Otherwise, the player's own (or unowned) with a starbase and 1000 hundred people or more: its production is opened.
+   When the queue holds no starbase design other than the first starbase slot's: on turn 0 two scouts are added and
+   the queue is not given (so nothing changes); later, once a turn over all planets, one colony ship (slot 1) is added
+   when the colony design has no ships or has fewer than P − 1. It is committed.
+5. Another player's: bytes 10 and 3 as for Automitrons.
+
+**3. Home** is the first of the player's planets in planet order with a starbase (none without).
+
+**4. Fleets, first pass**, every fleet in fleet order. Other players' fleets are listed as enemies, the latest first;
+the player's fleets with warship hulls as its warships. Then, for the player's fleets:
+
+- With miners (slots 7-8): in deep space, the planet of the next waypoint is marked mined (byte 1 | 0x80); at a
+  planet someone owns, the fleet drops its waypoints and its task; at an unowned planet, that planet is marked mined.
+- Otherwise freighter fleets and fleets with colony ships drop their people or stop as for Automitrons.
+
+**5. Fleets, last pass**, each of the player's fleets in fleet order, after the colony targets are marked for rating
+again:
+
+- **Miners** (slots 7-8) at a planet worth less than 4 move on as Turindrones' miners (no scrapping on turn 0).
+- Fleets with waypoints beyond where they are are done.
+- **Colony ships** (slot 1): with no colonists aboard and away from a planet of the player's with 50 hundred people,
+  as Automitrons' colony ships. Otherwise their colony target is taken, with a wormhole asked for unless the colony
+  design's engine is one of the two cheapest (tag `ai_earliest_engine`); at one of the player's planets they load 25
+  hundred colonists; with a target they go to colonize it (byte 15 = 4), else into the wormhole when one was given.
+- **Freighters**: without a home the pass ends here. Otherwise a run from their depot, else home.
+- **Bombers** (slots 13-14): at a planet of the player's with a starbase they wait until a bomber slot has more than
+  1 ship; otherwise as Automitrons' bombers (in deep space from home, S25 B42).
+- **Scouts** (slot 0): when the scout design's engine is the starting scout's (tag `ai_starting_scout_engine`, Quick
+  Jump 5) and the fleet has less than 2 mg of fuel, they scrap; otherwise hunting and exploring as for Turindrones.
+
+**6. Production** (Classic production) and the last pass.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets. The
-toolkit draws where the sections above say so, in the order the personality calls it. Robotoids, Turindrones and Automitrons draw in
-the order of their steps above.
+toolkit draws where the sections above say so, in the order the personality calls it. Robotoids, Turindrones, Automitrons and
+Rototills draw in the order of their steps above.
 
 ## Edge cases
 
@@ -1010,8 +1056,9 @@ the order of their steps above.
 
 ## Known bugs
 
-- B42 (S25): Automitrons bombers stopped in deep space rate targets from the planet record past the end of the
-  planet list, unless a freighter earlier in the fleet list found home; ours rate from home.
+- B42 (S25): Automitrons and Rototills bombers stopped in deep space rate targets from a planet pointer that holds
+  no planet (past the end of the list, or null), unless a freighter earlier in the fleet list found home; ours rate
+  from home.
 
 ## Worked examples
 
@@ -1034,7 +1081,7 @@ homeworld.
 ## Open questions
 
 1. The order of the original's draws inside each personality, which golden AI games check (Robotoids: big1;
-   Turindrones: turin1; Automitrons: auto1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
+   Turindrones: turin1; Automitrons: auto1; Rototills: roto1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
    token order and the wormholes come out differently, and no single draw added or removed, in the AI or in the
    turn up to the battle, makes it match.
 2. What exactly the inactive personality does each turn (`AI_InactiveHuman`): research plan, colony ships and

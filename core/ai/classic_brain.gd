@@ -21,6 +21,8 @@ func play(ctx: AiContext) -> void:
 			ClassicTurindrones.play(w)
 		ClassicWorld.AUTOMITRONS:
 			ClassicAutomitrons.play(w)
+		ClassicWorld.ROTOTILLS:
+			ClassicRototills.play(w)
 	var memory := w.memory_order()
 	if not memory.is_empty():
 		w.order(memory)
