@@ -1039,13 +1039,162 @@ again:
 
 **6. Production** (Classic production) and the last pass.
 
+### Cybertrons
+
+The brain `cybertrons` (`AI_Cybertrons@10a0:0000`). Cybertrons keep per-planet state in the working memory: a lasting
+word **A** per planet (word 1 + planet id) and a word **B** per planet after them (word planets + 1 + id), cleared every
+turn; the memory's use count covers the A words only. With an empty memory (use count 2) the whole memory is zeroed
+and the use count set to (planets + 1) x 2. Checked against the harness game cyber1 (three Cybertrons, a Robotoids,
+a Rototills and an idle human, 80 turns; the definition file can only pick personalities 1-4, so the three came from
+a random pick), with the compat formulas for B44-B46 and B48: 75 turns match; 27, 58 and 59 are comets (S25 B38),
+70 and 71 damage on ship moves (B32).
+
+A: bits 0-2 the packet sector, 0x08 a colony ship queued, 0x10 a sector packet thrown, 0x60 a packet timer (one less
+each turn), 0x80 a long throw under way. B: 0x01 no colony target, 0x06 people unloaded (a count to 3), 0x18
+transports heading there (a count to 3), 0x20 few guards, 0x40 guarded; in the high byte, bits 1, 2 and 4 short of
+ironium, boranium and germanium.
+
+**1. Research**, as for Robotoids (starbase designs, the newer station; no depots for Cybertrons), then plan
+`cybertrons` (42 steps) with a budget of 17%.
+
+**2. Designs** (`AI_Cybertrons_Designs`), in this order. A *pool draw* of n over templates k0... tries up to n times,
+each time a draw of the remaining count (n, n − 1, ... 1) picking template k0 + draw; it stops at the first design
+made. Templates are `cybertrons_…`: `destroyer_0`-`9`, `privateer_0`/`1`, `scout` (a mine-laying frigate),
+`b52_0`/`1`, `battleship_flag`, `nubian_flag`, `cruiser_0`-`8`, `battleship_0`-`6`, `nubian_0`-`2`.
+
+1. A scout design not on a frigate with no ships left is deleted after turn 5 at levels 2 and 3; an empty slot 0 gets
+   `scout`.
+2. Slot 4, empty, after turn 30: `destroyer_0` up to turn 75, then (or when that fails) a pool draw of 5 from
+   `destroyer_0`. Slot 5, empty, when slot 4's design is more than 20 turns old: likewise from `destroyer_5`.
+3. Slot 2, empty, after turn 20: `privateer_0`. Slot 3, empty, when slot 2's design is more than 20 turns old:
+   `privateer_1`.
+4. The warship groups, slots 6-9 and 10-13, each when its first slot is empty and (group 6-9) after turn 40 or
+   (group 10-13) slot 6's design is more than 30 turns old. The slot s starts at first + 2: a pool draw of 3 from
+   `nubian_0`, of 4 from `battleship_3` and of 3 from `battleship_0`, each moving s down one when it makes a design.
+   Then, while s is not below the first slot: cruisers, the first time a pool draw of 3 x (first − s + 3) from
+   `cruiser_` (9 − that), later of 3 from `cruiser_0` (at the first slot) or `cruiser_3`; s moves down after each.
+   Last, slot first + 3 gets the first of `nubian_flag`, `battleship_flag`, `b52_1`, `b52_0` that can be made.
+5. Slots 14 and 15, each when empty and (14) after turn 30 or (15) slot 14's design is more than 20 turns old: a pool
+   draw of 7 from `battleship_0`, failing that of 9 from `cruiser_0`, failing that of 10 from `destroyer_0`.
+
+**3. Merging**, every turn: slot 0; 4-5; 14-15; 6-9; 10-13.
+
+**4. This turn's numbers.** The wanted strength V is 1, after turn 50 (turn − 50) div 10 + 1, and after turn 100 plus
+((turn − 100) div 10) x (turn div 100). E and B as for Turindrones.
+
+**5. Retiring**, with age A 50 before turn 120, 70 before 200, 100 before 400, else 300: `AI_FindDesignForHulls`
+for slots 4-5 (the destroyer D), 14-15 (the heavy design H) and 2-3 (the transport T and its ships), each newest kept
+off the obsolete list (S25 B47). Then each group whose first design is older than A: from its top slot down, a design
+with no ships is deleted (the first slot's only when no slot above it kept a design), the others marked obsolete.
+The newest group G is the one whose first slot was designed last. After turn 80 obsolete ships split off, then slot 0,
+slot 1, and slots 2-3 each split off on their own.
+
+**6. Planets** (loaded, planet order): A's timer counts down; the player's starbase planets set B's short bits for
+minerals under 10 (forts, slots 1, 3, 6, 8) or 1000 (stations); other players' planets get byte 10 = population
+estimate div 250 + 1 (at most 6), plus 1 with a starbase, and byte 9 = 1.
+
+**7. Fleets, first pass**, every fleet in fleet order; before each the colony targets are rated while they are not yet
+(no wormhole). Other players' fleets are listed as enemies, the latest first. The player's fleets: with ships in
+slots 14-15 they count as guards (Ng) and nothing else. Otherwise scouts count (fleets Ns, ships Ss). With ships in
+slots 4-13 the fleet is listed as a warship; when the counter c (below) is under 6, or it has no planet waypoint next
+and is in deep space, it counts as idle (Ni); else its planet (the next waypoint's, else where it is) gets byte 10's
+mark when byte 10 is set, and it counts as busy (Nb). Without warships, a fleet with transports (slots 2-3), colonists
+aboard and a planet waypoint next counts one more transport heading there (B 0x18, S25 B44). The counter c is B,
+except that retiring group 6-9 this turn leaves it at 5, and group 10-13 at 9 (the original's leftover loop counter).
+
+**8. Fleets, last pass**, each of the player's fleets in fleet order:
+
+- A fleet with no ships outside obsolete slots: at one of the player's planets with a starbase, or without one on a
+  draw of 1 in 5, it scraps. Otherwise, unless it is in deep space with somewhere to go, it goes home; when it cannot,
+  it carries on below.
+- Guards (slots 14-15) at a planet: the ships of designs newer than A − 10 turns, when any, mark the planet guarded
+  (B 0x40), and few (0x20) when under 2V.
+- Warships (slots 4-13): without destroyers (slot 4) they invade (below), then with no waypoints beyond, on a draw
+  of 75 in 100, join the nearest fleet of their group before them (`AI_Explore` within 100 light years, 200 on a draw
+  of 1 in 2). With destroyers: when 2 x destroyers reach V or the fleet has somewhere to go, `AI_DirectWarship`; then
+  likewise join destroyers (slots 4-5).
+- Fleets with no waypoints beyond: scouts before turn 6 scrap. Colony ships take their colony target (no wormhole);
+  with none, the planet of waypoint 0 gets B 0x01; with one, they load 250 hundred colonists at one of the player's
+  planets and go to colonize it (byte 15 = 4 for the new waypoint). Transports take battle plan 4 and the colonist
+  transport (below). Scouts, after turn 40 with no waypoints beyond: when Ns reaches 56, or from 41 on a draw of 2 in 3,
+  they join a scout fleet within 72 (108) light years, and stop there when they do; otherwise, with more than 6 ships
+  on a draw of 1 in 5, a random planet within 105 light years that is not this one (`AI_PickRandomTarget`, starbases
+  avoided) gets them, laying mines, at warp 4; otherwise they lay mines where they are for ever (task data 5, 5).
+
+**Colonist transport** (`AI_Cybertrons_ColonistTransport`): in deep space the fleet heads for the planet nearest it.
+At one of the player's planets it loads 1000 hundred colonists when the planet has more than 2000, else unloads 1000.
+At another player's planet without a starbase whose owner takes drops it drops its people (as Turindrones, replacing
+waypoint 0 or 1) and goes home. At an unowned planet or another kind it counts as loaded with colonists aboard. Loaded,
+it heads for the nearest of the player's planets within 400 light years with under 200 hundred people and no transport
+heading there, else the nearest whose people plus 210 per transport heading there stay under 1000 (fewer than 3
+transports); with neither, at one of the player's planets it unloads 1000 and counts B 0x06 up; with one, that
+planet's B 0x18 counts up. Empty, it heads for the nearest of the player's starbase planets with over 2200 hundred
+people. It goes at its default warp, eased.
+
+**Invasion** (`AI_Cybertrons_Invade`) is Robotoids' with these differences: strength is ships in slots 6, 7, 10, 11
+plus twice those in 8 and 12, flagships those in 9 and 13; any planet of the player's is a gathering place (no starbase
+needed) and no troops are loaded; at another player's planet the fleet stays; in deep space it seeks within 450 light
+years. It uses Cybertrons' own E and B (S25 B43).
+
+**9. Production**, each of the player's planets in the own-planet order, skipping a planet whose queue costs more of
+something than its output. Growth g is people x the race's growth rate.
+
+1. Habitability under 10: terraforming x (spare resources div 70 + 1), and the planet is done.
+2. Habitability under what terraforming could reach, with over 70 resources to spare: one terraforming step.
+3. With a station (not a fort):
+   - A colony ship when (A 0x08 is clear or g > 5500), B 0x01 is clear and the colony design has fewer than 40 ships;
+     A 0x08 is set (cleared otherwise); a second when g > 15000 before turn 100.
+   - T when the planet has over 2000 hundred people, slot 2 has a design, T's ships are fewer than 50, B's unload count
+     is 0, and an underfilled colony (as the transport's) lies within reach.
+   - With a frigate scout design, on a draw of 1 in 4 while Ss is under 10000: four scouts, as Turindrones' mine
+     layers (10, 17, a draw of 1 in 10, then of 2n + 1).
+   - The guard choice: H when B 0x20, else none; when none, not guarded and Ng under 40: H on a draw of 50 in 100 with
+     another player's planet within 300 light years, else of 10 in 100.
+   - The economy (`AI_Cybertrons_Economy`), with D unless Ni passed 120 and G unless Nb passed 250: a draw of 100
+     (kept), then, with fewer than 100 mines or factories of room, on a draw of 90 in 100 nothing, else of 60. Then
+     with G and the kept draw over 50: two each of G's first two slots, one of the third on a draw of 75 in 100 and
+     of the fourth on a draw of 50 in 100 (Nb + 1); with the guard and the kept draw over 25: one guard (Ng + 1);
+     with D: one D (Ni + 1).
+
+**10. Production pass** (Classic production) with the newer station, then **packets**, then the last pass.
+
+**Packets** (`AI_Cybertrons_PlanPackets`), each of the player's starbase planets in the own-planet order. Output and
+queue cost are this year's estimates; R is the output's resources.
+
+1. *Feed* (no long throw, a fort with over 700 of some mineral): with n = (R div 2) div 5 of at least 7, the nearest of
+   the player's starbase planets with no timer, short of a mineral this planet has over 700 of, within 3.5 x s²
+   light years where s is the slower of the two drivers (each its speed plus 1 for a matched pair). Each mineral the
+   target has under 10 (fort) or 1000 and this planet over 700: min(n, 7) packets first in the queue, n less those,
+   the short bit cleared. The driver goes to the target at s.
+2. *Attack* (no long throw; level 2-3, or level 1 on a draw of 1 in 3): S = the minerals left after the queue less 210,
+   M = min((((R div 2) − 5) div 5) x 70, S), kept in memory word 2 x planets + 1. With S of at least 151, the nearest
+   other player's planet with no timer whose owner takes drops, without a starbase or with a space dock, whose catcher
+   speed c (its driver, or 0) differs from the throw speed v (this driver's speed + 3), within 2.5 x v² light years,
+   with a population estimate p, where the packets needed K = (min(4p + 100, 1000) x 16000) div h (one less when exact;
+   h = ((v² − c²) x (95 − defense class)) in 16 bits) are at most M x 0.875^(d / v²) with a matched pair, else 0.75^,
+   truncated (d the distance). Then min(K, M) x (8/7 or 4/3)^(d / v²) kilograms go, 70 a packet, each to the mineral
+   with the most left, first in the queue; the driver goes to the target at v; the target's timer is set; a throw
+   longer than v² sets the long-throw bit, and the sector bit clears.
+3. *Sector*: a planet with the sector bit and no long throw only clears it. Otherwise, without a long throw, a draw of
+   7 gives the new sector (one more when it equals the old) and `AI_ChoosePacketTarget` a target; none ends here. With
+   a long throw the target is the driver's (S25 B48). When the target's record has no timer and this planet has 170 of
+   a mineral to spare after the queue (the one with the most), one packet of it goes first in the queue, the target's
+   timer is set (S25 B45), and the sector bit is set when no long throw is under way; else the sector bit clears. The
+   driver goes to v (to the target, unless a long throw was under way, which then ends).
+
+**Choosing a sector target** (`AI_ChoosePacketTarget`): on the map W light years wide (origin 1000, 1000), from the
+planet in the sector's direction (0 east, then counterclockwise in eighths, 2 toward y 0) to the map edge; then along
+the edge by a draw of (3W div 10 − 1) less (3W div 20 − 1) (what passes a corner turns onto the other edge), and in from
+the edge by a draw of v²; the planet nearest that point (lowest id on ties), unless it is the player's own or nearer
+than v² light years (S25 B46).
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
 draws of each personality are listed with its part of this spec. The idle and baseline brains draw nothing.
 A classic personality's turn starts with the setup's shuffle: n − 1 draws for a player with n planets. The
-toolkit draws where the sections above say so, in the order the personality calls it. Robotoids, Turindrones, Automitrons and
-Rototills draw in the order of their steps above.
+toolkit draws where the sections above say so, in the order the personality calls it. Robotoids, Turindrones, Automitrons,
+Rototills and Cybertrons draw in the order of their steps above.
 
 ## Edge cases
 
@@ -1059,6 +1208,8 @@ Rototills draw in the order of their steps above.
 - B42 (S25): Automitrons and Rototills bombers stopped in deep space rate targets from a planet pointer that holds
   no planet (past the end of the list, or null), unless a freighter earlier in the fleet list found home; ours rate
   from home.
+- B43-B48 (S25): Cybertrons' thresholds, fleet marks, packet records, sector reach, retirement and long throws
+  (see Cybertrons).
 
 ## Worked examples
 
@@ -1081,7 +1232,7 @@ homeworld.
 ## Open questions
 
 1. The order of the original's draws inside each personality, which golden AI games check (Robotoids: big1;
-   Turindrones: turin1; Automitrons: auto1; Rototills: roto1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
+   Turindrones: turin1; Automitrons: auto1; Rototills: roto1; Cybertrons: cyber1). turin1 turn 77 is unexplained: the fleets' orders and moves match, but mining, a battle's
    token order and the wormholes come out differently, and no single draw added or removed, in the AI or in the
    turn up to the battle, makes it match.
 2. What exactly the inactive personality does each turn (`AI_InactiveHuman`): research plan, colony ships and

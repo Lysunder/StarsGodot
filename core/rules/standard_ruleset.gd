@@ -17,4 +17,8 @@ static func build() -> Ruleset:
 	ruleset.register(MINE_TOP_UP, Minefields.top_up_share)
 	ruleset.register(SHIP_RATING, Score.ship_rating)
 	ruleset.register(PLAYER_SCORE, Score.record)
+	ruleset.register(ClassicCybertrons.MARKS_BASE, ClassicCybertrons.marks_base)
+	ruleset.register(ClassicCybertrons.PACKET_RECORD, ClassicCybertrons.packet_record)
+	ruleset.register(ClassicCybertrons.SECTOR_REACH, ClassicCybertrons.sector_reach)
+	ruleset.register(ClassicCybertrons.LONG_TARGET, ClassicCybertrons.long_target)
 	return ruleset

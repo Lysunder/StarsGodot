@@ -29,6 +29,7 @@ The runner has two modes:
 |---|---|---|---|---|
 | B09 | Armor damage rounded up per hit, at least 1/500 of the armor per ship | formulas `battle.armor_damage`, `battle.starbase_damage` | S16 | done |
 | B04 | Mine damage top-up applied to the first design stack only | formula `minefield.top_up` | S13 | done |
+| B44, B45, B46, B48 | Cybertrons' packet and fleet marks as the original keeps them | formulas `ai.cybertrons_*` | S22 | done |
 
 B08 (the 256-token battle limit) is not here: no fixture battle comes near it.
 

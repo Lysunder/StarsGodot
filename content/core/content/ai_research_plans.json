@@ -356,5 +356,179 @@
         "level": 10
       }
     ]
+  },
+  {
+    "type": "ai_research_plan",
+    "id": "ai_research_plan.cybertrons",
+    "steps": [
+      {
+        "field": "tech_field.construction",
+        "level": 4
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 2
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 3
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 3
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 3
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 6
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 6
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 6
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 10
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 10
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 8
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 13
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 6
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 9
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 9
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 7
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 9
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 16
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 14
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 11
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 12
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 11
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 13
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 18
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 15
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 18
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 17
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 17
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 20
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 17
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 18
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 21
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 23
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 22
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 21
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 23
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 26
+      },
+      {
+        "field": "tech_field.electronics",
+        "level": 26
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 26
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 26
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 26
+      },
+      {
+        "field": "tech_field.biotech",
+        "level": 26
+      }
+    ]
   }
 ]

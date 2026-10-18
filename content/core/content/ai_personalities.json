@@ -27,7 +27,7 @@
     "type": "ai_personality",
     "id": "ai_personality.cybertrons",
     "order": 4,
-    "brain": "baseline"
+    "brain": "cybertrons"
   },
   {
     "type": "ai_personality",

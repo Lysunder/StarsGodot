@@ -934,5 +934,558 @@
       "ai_part_class.shield",
       "ai_part_class.jammer_or_computer"
     ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_0",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_1",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_short",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_2",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_3",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.capacitor_or_tank",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_4",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_5",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_6",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_7",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_8",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_destroyer_9",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_privateer_0",
+    "hull": "hull.privateer",
+    "slots": [
+      "ai_part_class.engine_fuel",
+      "ai_part_class.shield",
+      "ai_part_class.deflector_or_capacitor",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_privateer_1",
+    "hull": "hull.privateer",
+    "slots": [
+      "ai_part_class.engine_fuel",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_scout",
+    "hull": "hull.frigate",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.scanner_long",
+      "ai_part_class.mine_dispenser",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_b52_0",
+    "hull": "hull.b_52_bomber",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_b52_1",
+    "hull": "hull.b_52_bomber",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_flag",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_tank",
+      "ai_part_class.shield",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_nubian_flag",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_0",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.stealth_support",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_1",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_2",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_3",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_4",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_5",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_6",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_7",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_cruiser_8",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_0",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.shield",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_1",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.shield",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_2",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_3",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_4",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_5",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_battleship_6",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_nubian_0",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.deflector_or_capacitor",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_nubian_1",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.deflector_or_capacitor",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.cybertrons_nubian_2",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.deflector_or_capacitor",
+      "ai_part_class.jammer_or_computer"
+    ]
   }
 ]
