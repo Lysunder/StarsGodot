@@ -125,8 +125,15 @@ B = w². Later passes (up to 11 in all) repeat while any chaser has budget left:
    range taken before the first step, less what was moved.
 4. If it didn't arrive, the step is added to what was moved and taken from the budget; with budget left (and fuel),
    it takes part in the next pass.
-5. A fleet arriving on its target in a later pass marks the target as finished moving (the original then stops a
-   target that was itself chasing: B12; our engine doesn't).
+5. A fleet arriving on its target in a later pass (covering the distance, not landing on it by rounding) marks the
+   target as finished moving (`MoveFleets` sets the target's "done this pass" flag). The original then stops a
+   target that was itself chasing, wherever it was going (B12). Our engine stops it only when it has nothing left to
+   do: its own target has finished moving and it is already at the point its waypoint 1 leads to (the target's
+   position, or the frozen point). That is always so for two fleets chasing each other. Such a fleet doesn't move
+   again this turn and keeps its "didn't move" mark if it had not moved yet. Its chasers that come later in the same
+   pass take the rest of their budgets at once. A reached chaser with somewhere left to go keeps chasing (the B12
+   fix). Seen in mac1 turns 62, 63 and 66: a chaser's chaser later in the pass ended 1 ly off when it moved a fifth
+   instead.
 
 Each fleet's first-pass work happens once; only chasers take part in later passes, in fleet order.
 Fourth pass (2026-10-09): warp-10 damage and Alternate Reality transit losses implemented (`Movement._move`).
@@ -243,7 +250,9 @@ After all movement passes:
    exists in the original, empty, until the turn's files are written: the waypoint keeps targeting it at the place it
    was lost, and the lost targets at the end of the turn send it to the planet there or deep space (S15; turin1 turn
    41: a warship chasing a colony ship that settled a planet ends up targeting that planet). A following fleet only drops its waypoint 1 (above).
-2. A fleet that reached its next waypoint copies it into its current waypoint (if that targeted a fleet, it becomes
+2. A fleet at the position of its next waypoint has reached it, even if it didn't move this turn (a dry fleet, or a
+   chased fleet finished where it was, step 5 of "Chasing a fleet"; `UpdateFleetTargetPositions` only compares the
+   positions). It copies that waypoint into its current waypoint (if that targeted a fleet, it becomes
    the planet or deep space the fleet is at), then the reached waypoint is removed from the list. A fleet that moved
    only part of the way has its current waypoint moved to its position as a deep-space waypoint; the waypoint keeps
    its warp and task (seen in the harness: warp 6 kept, terra1 turn 36).
@@ -401,6 +410,6 @@ per position try.
    seen in a fixture: a fleet deleted by an order or task already has its chasers retargeted (S11), so it mostly
    matters for other players' fleets going out of sight (S15) and fleets named in ship-move and merge orders (seen in
    turin1). Also unconfirmed: the effect of B12 (a chaser reached by another chaser
-   stops: our engine doesn't stop it).
+   stops) on a chaser that still had somewhere to go; our engine doesn't stop that one.
 2. The fuel adjustment after a move for fleets that started with enough fuel (the code sets fuel to at least the
    planned usage; purpose unclear).

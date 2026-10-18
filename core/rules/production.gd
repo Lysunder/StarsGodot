@@ -426,7 +426,7 @@ func _complete_ships(planet: Planet, player: Player, slot: int, n: int) -> bool:
 		_message(player.index, "production.plans_lost", planet, [planet.id, slot + 1])
 		return false
 	var limit := _content.constant("constant.limits.fleets_per_player")
-	if _state.fleets_of(player.index).size() >= limit:
+	if _state.fleet_count(player.index) >= limit:
 		if _merge_ships(planet, player, design, n):
 			return true
 		_message(

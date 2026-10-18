@@ -331,6 +331,25 @@ static func _chase(
 		chase["budget"] = left - step
 	if not going or chase["budget"] <= 0:
 		chasers.erase(fleet)
+		if chase.get("reached", false) and target != null:
+			_finish_if_there(state, target, chasers)
+
+
+## A chaser reached by its own chaser has finished moving if it has nothing left to do: its target
+## has finished and it is already where its waypoint leads (two fleets chasing each other). Its
+## chasers then take the rest of their budgets at once (S12 "Chasing a fleet" step 5). The original
+## stops a reached chaser in every case (B12); one with somewhere left to go goes on here.
+static func _finish_if_there(state: GameState, fleet: Fleet, chasers: Dictionary) -> void:
+	if not chasers.has(fleet):
+		return
+	var next := fleet.waypoints[1]
+	var target := state.fleet(next.target_owner, next.target_id)
+	if target == null or chasers.has(target):
+		return
+	var x := next.x if next.frozen else target.x
+	var y := next.y if next.frozen else target.y
+	if fleet.x == x and fleet.y == y:
+		chasers.erase(fleet)
 
 
 ## Moves the fleet up to `budget` light years toward its next waypoint (S12 "Moving"). `chase` is
@@ -412,6 +431,9 @@ static func _step(
 	var arrived := move >= int(exact)
 	# the move reaches the target when it covers the distance rounded down (fuel counts it rounded up)
 	if arrived:
+		# covered the whole way (not a rounding landing): a chased fleet reached counts as finished
+		# when it has nothing left to do (`_finish_if_there`)
+		chase["reached"] = true
 		fleet.x = next.x
 		fleet.y = next.y
 		fleet.planet = next.target_id if next.target == "planet" else -1
@@ -641,8 +663,8 @@ static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet
 		elif not wp.frozen:
 			wp.x = target.x
 			wp.y = target.y
-	if fleet.did_not_move:
-		return
+	# a fleet where its next waypoint is has reached it, even one that didn't move (a dry fleet, a
+	# chased fleet finished where it was, `_finish_if_there`)
 	var next := fleet.waypoints[1]
 	if fleet.x == next.x and fleet.y == next.y:
 		var last := fleet.waypoints[-1]
@@ -668,7 +690,8 @@ static func _advance_waypoints(state: GameState, content: ContentRegistry, fleet
 				[fleet.owner * 512 + fleet.number]
 			)
 		return
-	_settle_here(fleet)
+	if not fleet.did_not_move:
+		_settle_here(fleet)
 
 
 ## Waypoint 0 becomes where the fleet is: its planet, or deep space.

@@ -214,7 +214,8 @@ Ships are built only on a planet with a starbase.
    - otherwise default orders (S11 "Route"): a fleet with mining robots built over an Alternate Reality race's own
      planet is set to remote-mine it (other new fleets get no orders; the merge-with-a-miner rule applies only to
      unowned planets), and the usual built messages.
-2. **512 fleets:** the ships join the first of the player's fleets (fleet order) at the planet's position whose
+2. **512 fleets** (fleets lost earlier in the turn count: their numbers stay taken until the turn's files are
+   written, S03): the ships join the first of the player's fleets (fleet order) at the planet's position whose
    stack of that design holds fewer than 32766 − n ships. Damage carries over: with N ships in the stack, p its
    damaged percentage and D its damage (in 1/500 of the design's armor A): if N = 0 or p = 0 the stack becomes
    undamaged; otherwise k = max(N × p div 100, 1) damaged ships carry E = ((D × A div 10) × k) div 50 damage points;

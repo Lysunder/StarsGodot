@@ -245,6 +245,32 @@ func test_ships_need_a_starbase() -> void:
 	assert_array(research).is_equal([7])
 
 
+func test_fleets_lost_this_turn_count_toward_the_limit() -> void:
+	var s := _game([QueueItem.of_design(0, false, 1)])
+	var p := s.players[0]
+	var scout := _design(
+		0, "hull.scout", [["part.engine.quick_jump_5", 1], ["part.scanner.bat_scanner", 1]]
+	)
+	p.set_design(scout, false)
+	p.set_design(_design(0, "hull.orbital_fort", []), true)
+	var pl := s.planets[0]
+	pl.surface.assign([100, 100, 100])
+	pl.starbase = Starbase.new()
+	var limit := _content.constant("constant.limits.fleets_per_player")
+	for i in limit:
+		var f := s.add_fleet(0, limit)
+		f.x = pl.x + 1
+		f.add_ships(0, 1)
+	# two fleets lost earlier this turn: their numbers stay taken, so the player is at the limit
+	s.retire_fleet(s.fleets[0])
+	s.retire_fleet(s.fleets[0])
+	assert_int(s.fleet_count(0)).is_equal(limit)
+	_run(s)
+	# no fleet at the planet to join: the ship is lost, and no new fleet appears
+	assert_int(s.fleets.size()).is_equal(limit - 2)
+	assert_bool(pl.queue.is_empty()).is_true()
+
+
 func test_starbase_is_built() -> void:
 	var s := _game([QueueItem.of_design(0, true, 1)])
 	var p := s.players[0]

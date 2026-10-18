@@ -1273,8 +1273,9 @@ than v² light years (S25 B46).
 The brain `macinti` (`AI_Macinti@1098:0000`). Macinti races live in space (Alternate Reality, S08), so the brain
 plans around starbases, packets and moving people. Checked against the harness game mac1 (three Macinti, a Robotoids,
 a Turindrones and an idle human, 80 turns; the three came from a random pick, as for Cybertrons), with the compat
-formulas for B51, B52 and B54: 72 turns match; 16 and 27 are comets (S25 B38), 59, 76 and 79 are B12, and 62, 63
-and 66 are one light year off in chase chains (unconfirmed, probably B12 too).
+formulas for B51, B52 and B54: 75 turns match; 16 and 27 are comets (S25 B38), 59, 76 and 79 are B12. Turns 62,
+63 and 66 (a chaser's chaser one light year off) showed two fleets chasing each other: the one reached has finished
+(S12 "Chasing a fleet" step 5).
 
 **1. Research**: plan `macinti` (8 steps) with a budget of 15%; no starbase design upkeep and no depots.
 

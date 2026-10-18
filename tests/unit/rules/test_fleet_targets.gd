@@ -129,6 +129,26 @@ func test_a_chaser_of_a_fleet_that_has_moved_uses_its_whole_budget() -> void:
 	assert_int(chaser.cargo[Fleet.CARGO_FUEL]).is_equal(200 - fuel)
 
 
+func test_a_chaser_reached_by_the_fleet_it_chases_has_finished() -> void:
+	var s := _game()
+	var first := _fleet(s, 1200, 1100)
+	var second := _fleet(s, 1200, 1104)
+	_target(_to(first, 1200, 1104, 5), second)
+	_target(_to(second, 1200, 1100, 5), first)
+	var third := _fleet(s, 1244, 1194)
+	_target(_to(third, 1200, 1104, 9), second)
+	Movement.move_all(s, _content, StarsRandom.new())
+	# the first fleet reaches the second in its first step; the second has nothing left to do, so
+	# it is finished where it is (without moving) and the third takes its 81 ly in one step
+	# (in fifths it would end at 1209,1122)
+	assert_int(first.y).is_equal(1104)
+	assert_bool(second.did_not_move).is_true()
+	assert_int(second.waypoints.size()).is_equal(1)
+	assert_str(second.waypoints[0].target).is_equal("none")
+	assert_int(third.x).is_equal(1208)
+	assert_int(third.y).is_equal(1121)
+
+
 func test_a_waypoint_whose_fleet_is_gone_takes_one_left_there() -> void:
 	var s := _game()
 	var chaser := _fleet(s, 1100, 1100)

@@ -159,6 +159,12 @@ func add_fleet(owner: int, limit: int) -> Fleet:
 	return created
 
 
+## The fleets player `owner` holds toward the fleet limit: its fleets and the numbers of those it
+## lost this turn (the original counts them until it writes the turn's files).
+func fleet_count(owner: int) -> int:
+	return fleets_of(owner).size() + (retired_fleet_numbers.get(owner, {}) as Dictionary).size()
+
+
 func remove_fleet(f: Fleet) -> void:
 	fleets.erase(f)
 

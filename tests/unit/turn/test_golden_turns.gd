@@ -705,16 +705,19 @@ func test_cyber1(
 
 
 ## An idle human, a Robotoids, three Macinti and a Turindrones computer player (S22 stage 4).
-## Turns left out: B12 (76, 79: a fleet a lower-numbered fleet chases doesn't move) and 62, 63, 66
-## (chasers in chase chains one light year off; probably B12, not confirmed).
+## Turns left out: B12 (76, 79: a fleet a lower-numbered fleet chases doesn't move). 62, 63 and 66
+## have two fleets chasing each other: the one reached has finished, and its chasers go at once.
 func test_mac1(
 	turn: int,
 	# gdlint: ignore=unused-argument
 	test_parameters := [
 		[60],
 		[61],
+		[62],
+		[63],
 		[64],
 		[65],
+		[66],
 		[67],
 		[68],
 		[69],
