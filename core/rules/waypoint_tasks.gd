@@ -31,6 +31,11 @@ const LOAD_ACTIONS := ["load_all", "load", "fill_percent", "wait_percent"]
 const PERCENT_CAPACITY_MAX := 2000000
 const PERCENT_SPLIT := 65536
 
+## Planet id -> true for the planets that had an owner when the task pass began
+## (`DoWaypointTasks` marks them before the waypoint 1 pass's battles): colonists unloaded onto
+## one that has lost its owner since still land (S11 "Unloading").
+var owned_at_start := {}
+
 var _state: GameState
 var _content: ContentRegistry
 var _rng: StarsRandom
@@ -50,6 +55,16 @@ func _init(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void
 	_content = content
 	_rng = rng
 	_combat = GroundCombat.new(state, content, rng)
+	owned_at_start = owned_planets(state)
+
+
+## The planets that have an owner now, {id: true}.
+static func owned_planets(state: GameState) -> Dictionary:
+	var out := {}
+	for planet in state.planets:
+		if planet.owner >= 0:
+			out[planet.id] = true
+	return out
 
 
 ## Pass 1 and 3 unload, pass 2 and 4 load (S11 "Passes"), at each fleet's current waypoint.
@@ -502,7 +517,7 @@ func _unload(fleet: Fleet, other: Fleet, planet: Planet, c: int, amount: int) ->
 		return true
 	var race := _state.player(fleet.owner).race
 	var refusal := ""
-	if planet.owner < 0:
+	if planet.owner < 0 and not owned_at_start.has(planet.id):
 		refusal = "fleet.colonists_to_empty_planet"
 	elif RaceMath.trait_param(race, _content, "transport.no_invasion", 0):
 		refusal = "fleet.colonists_overruled"

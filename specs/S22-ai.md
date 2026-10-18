@@ -294,8 +294,17 @@ One name is in two lists (the bombers' 7th is the raiders' 4th), as in the origi
 name is one of our starting design names.
 
 **Saving** (`AI_SaveDesign`). The design gets this turn as its turn designed, and nothing built. A design already in
-the slot is deleted first (orders `design_delete`, then `design_change`). A new ship design's rating counts as 0 for
-the rest of the turn.
+the slot is deleted first (orders `design_delete`, then `design_change`), so the host takes the old design out of the
+queues and fleets. The computer player's own world only overwrites the slot (the original marks it empty and copies the
+new design in): queue items, ships and starbases of the slot stay and refer to the new design. A design deleted
+outright (order `design_delete`) likewise leaves the world's queues and fleets alone. A new ship design's rating counts
+as 0 for the rest of the turn.
+
+**The shared design buffer** (S25 B54). The original plays each computer player of a turn by loading its file into one
+buffer of ship designs, which only marks an empty slot empty: its other fields are what the computer player loaded
+before it (in player order) left there, or the player's own deleted design (stamped with this turn). The classic world
+keeps each slot's turn designed in that buffer, shared by the computer players of one turn; only the compat formula
+`ai.empty_slot_turn` reads it.
 
 **Starbase designs** (`AI_CreateDesign`) come in sizes 1 (small), 2 and 3 (full):
 
@@ -320,7 +329,10 @@ else 0 (1).
 
 **Retiring** (`AI_FindDesignForHulls(low, high, age)`): among ship slots low to high, the newest design is the first
 of the latest turn designed. Each design older than `age` turns is deleted when it has no ships left, even if it is
-the one returned; otherwise it is marked obsolete. Also returned: the ships of those slots, at most 32000.
+the one returned; otherwise it is marked obsolete. A design deleted this way counts as designed this turn for the
+comparisons with the slots after it (the original deletes through `AI_SaveDesign`, which stamps the turn, and reads
+the best slot's turn designed back from the design list), so a deleted design that was the best stays the one
+returned (mac1 turn 78: the Robotoids queue the freighter slot they had just emptied and redesigned). Also returned: the ships of those slots, at most 32000.
 
 ### Classic research (`AI_RunResearchPlan`)
 
@@ -361,11 +373,14 @@ count to the list (0 when the item is not listed) and commits. With an edit open
 low 10 bits, as the original stores it). A planet with more than 200 queue items takes nothing.
 
 **Committing** with changes gives the planet's `production_queue` order. A design item for an empty slot is left out:
-the original sends it, and the year's production removes it.
+the original sends it, and the year's production removes it. The original logs the differences between the planet's old and new copies (`LogPlanetChanges`), so a queue that
+comes out as it was gives no order (mac1 turn 62: a queue whose ship item the host then drops with its replaced
+design is not sent again).
 
 **Estimates**:
 
-- *Output* (`AI_EstimatePlanetOutput`): the surface plus this year's mining (-1 each with no people), and the
+- *Output* (`AI_EstimatePlanetOutput`): the surface plus this year's mining (with an Alternate Reality owner's miners
+  in orbit, S08; -1 each with no people), and the
   resources less the research share. The share is left in when the selected planet copy gives only leftovers to
   research.
 - *Queue cost* (`AI_EstimateQueueCost`): every item at its full count, auto items included, progress ignored.
@@ -1191,6 +1206,124 @@ the edge by a draw of (3W div 10 − 1) less (3W div 20 − 1) (what passes a co
 the edge by a draw of v²; the planet nearest that point (lowest id on ties), unless it is the player's own or nearer
 than v² light years (S25 B46).
 
+### Macinti
+
+The brain `macinti` (`AI_Macinti@1098:0000`). Macinti races live in space (Alternate Reality, S08), so the brain
+plans around starbases, packets and moving people. Checked against the harness game mac1 (three Macinti, a Robotoids,
+a Turindrones and an idle human, 80 turns; the three came from a random pick, as for Cybertrons), with the compat
+formulas for B51, B52 and B54: 72 turns match; 16 and 27 are comets (S25 B38), 59, 76 and 79 are B12, and 62, 63
+and 66 are one light year off in chase chains (unconfirmed, probably B12 too).
+
+**1. Research**: plan `macinti` (8 steps) with a budget of 15%; no starbase design upkeep and no depots.
+
+**2. The early colony slot.** Before turn 40, or while slot 7 holds a design on the colony ship hull, slot 7 is the
+early colony slot; once the Galaxy Scoop is available and that design has no ships, it is deleted and slot 7 is a
+warship slot again. The last warship slot is 6 while the early colony slot exists, else 7.
+
+**3. Merging**: warship slots 2-9 (without 7 while it is the early colony slot); slot 0; 14-15; 12-13.
+
+**4. This turn's numbers.** The escort strength E is 6, after turn 130 (turn − 120) div 20 + 6, at most 50; the
+troops wanted T are 6, after turn 115 (turn − 100) div 22 + 6, at most 12.
+
+**5. Retiring**, with age A 50 before turn 120, 70 before 200, else 100 (S22 "Classic designs"): nubians (slots
+12-13: the newest N and their ships; Nubian-hull designs are never obsolete), miners (14-15, age 5000), freighters
+(10-11), bombers (8-9) and warships (2-4, and 5 to the last warship slot). With a design in slot 15 and the Alien
+Miner available, slot 14 without Alien Miners in its third slot (else slot 15 without them, when the Galaxy Scoop is
+available and slot 14's engine is not one) makes way: deleted when it has no ships, otherwise marked obsolete (S25
+B50). After turn 80 the obsolete ships split off, then slot 0, slot 1, slots 14-15 and slots 10-11, each on its own
+(S25 B49).
+
+**6. Designs** (`AI_Macinti_Designs`). A *try* draws 4 and outfits pool template k + draw, up to 5 times, stopping
+at the first design made. "Older than n turns" counts a design whose turn designed is after this turn as old (the
+original compares unsigned; the starting designs carry turn 1).
+
+1. Miners: each empty slot of 14 and 15 (15 at levels 2-3 only from construction 15) gets `ultra_miner` (levels
+   2-3) or `maxi_miner`, failing that, in slot 14, `miner` or `mini_miner`.
+2. Nubians: slot 12, empty, from weapons 5 and propulsion 6: `nubian_1`, failing that tries from `destroyer_a`;
+   slot 13, empty, from weapons 10 and propulsion 9: likewise, tries from `destroyer_b`.
+3. Freighters: an empty slot 10 gets `freighter_large`, failing that `freighter_medium`; an empty slot 11
+   `freighter_large`.
+4. Before turn 20 a design in slot 2 with no ships is deleted. Each empty slot of 2, 3 and 4 then gets tries from
+   `cruiser_` when it is slot 2 or the previous slot's design is older than 20 turns; an empty previous slot counts
+   as turn 0 (S25 B54).
+5. Before turn 40 an empty slot 7 gets `colony_ship`. With the Galaxy Scoop available, a slot 1 design with no ships
+   and another engine is redesigned as `colony_ship`.
+6. Battleships: each empty slot of 5, 6 and 7 when it is slot 5 or the previous slot's design (which must exist) is
+   older than 20 turns. The pool is `battleship_a`, for 6 and 7 `battleship_b` (for 7 a draw of 2: non-zero picks
+   `battleship_a`). A draw of 3: on non-zero `nubian_0` comes first; then tries from the pool.
+7. Bombers, from weapons 14: each empty slot of 8 and 9 when it is slot 8 or slot 8's design (which must exist) is
+   older than 15 turns: `battleship_flag`, failing that `b52_0` (slot 8) or `b52_1` (slot 9).
+8. A scout: when slot 0's design (if any) is not on the frigate hull and has no ships, at levels 2-3 with biotech 4,
+   electronics 5, construction 6, propulsion 6 and energy 6, slot 0 is redesigned as `scout`.
+
+**7. Starbase designs** (`AI_Macinti_ReviewDesigns`): a verdict per starbase slot, 0 keep, 1 could not be made,
+2 refresh, 3 replace.
+
+1. Slots 1, 2 and 3: a design with starbases left is kept (0) until it is 35 turns old (slot 1 gets 3 from turn 26
+   unless it is a full dock of 8 slots), then gets 2 until 50, then 3. A slot without starbases is designed again
+   (size 1 in slots 1 and 2, 2 in slot 3; templates `dock`, `station`, `ultra_station`): 0 when made, else 1. Of the
+   slots marked 2 or 3 only the highest mark stays (the older design between equal marks).
+2. Generations 4-6 and 7-9: a generation none of whose designs has starbases is designed again, small, medium and
+   full, each from the first of `death_star`, `ultra_station_b` and the standard station that can be made.
+3. Slots 4-9 then get 1 when empty, else 0; the older generation (by its first slot's turn designed) gets 2 when its
+   first design is under 30 turns old, else 3. When the newer generation's hull is below the ultra station, slot 3
+   gets 2, and below the station slot 2 as well.
+
+**8. Counts.** Colony ships as `AI_CountColonyShips` (S22 "Classic freight"). The colony slot is 7 while slot 1 has
+no Galaxy Scoop engine and slot 7 holds a colony-ship-hull design, else 1; when it is slot 1, the early colony slot
+still exists and slot 1's design is more than 5 turns old, slot 7 becomes obsolete. The player's fleets are counted
+(miners, scouts, nubians, freighters, warships: fleets with ships of those slots); a freighter in deep space carrying
+colonists to a planet marks it (planet info byte 14 bit 0); byte 13 marks the player's planets. From turn 121 with
+the Trans-Galactic Super Scoop, planets div 20 genesis devices (at most 10) may be built. Other players' loaded planets
+get byte 10 = population estimate div 250 + 1 (at most 6), plus 1 with a starbase, and byte 9 = 1.
+
+**9. Production**, each of the player's planets (shuffled) with a starbase of design 2 or above (design 1 only before
+turn 26), at least 200 hundred people and fewer than 24 queue items; a queue already holding a ship design gets nothing more:
+
+- Packets, after turn 120: with a driver of warp 10 or more, over 10000 hundred people and a draw of 1 in 4, a
+  mineral over 5000 kT (the first such from a drawn one) goes a fifth at a time (at most 20000 kT, in packets of
+  100 kT) to the player's planet with a warp-10 driver within 302 light years holding the least of it, when that is
+  under a fifth of this planet's; the driver aims there at warp 11.
+- Freighters (a draw of 1 in 3, fewer than 64 freighter fleets and planets div 4); colony ships (while building, or on
+  a draw of 8 in 100; at most 40, before turn 121 100, after it 50; the planet needs 30 kT of each mineral and an
+  unclaimed planet near by), one or two more for fast growth at levels 1-2; miners (fewer than 60 fleets, under 5000
+  of the design left, a draw of 1 in 2) when the planet's miners mine less than three times its concentrations, or on
+  a draw while there are few; scouts (4 at a time, on the frigate hull, while the cap design has under 7500 left,
+  S25 B51, on a draw of 1 in 4 and with fewer than 10, now and then 17, scouts here); bombers (4, 12 when rich in all
+  three minerals, S25 B52) when a strong fleet here lacks troops; genesis devices (with a terraforming order);
+  warships (2, 10 when rich); nubians while the year's output after the queue's cost buys some (up to 20).
+- Then the classic production pass (S22 "Classic production"), whose starbase step follows the verdicts: a starbase
+  whose slot has verdict 3 (or 2 on a draw of 10 in 100) is replaced by the next slot with verdict 0 (slots 0-3) or
+  the other generation's (slots 4-9: three on, else three back); otherwise slots 0-3 grow the same way on a draw of
+  (crowding − 15) × 6 in 100 from crowding 16 on, and slots 4, 5, 7 and 8 to the next slot on a draw of 8 in 100.
+
+**10. Fleets, first pass**, every fleet in fleet order. Other players' fleets are listed as enemies, the latest first.
+A fleet of the player's heading for a minefield, packet, wormhole or the Trader more than 200 light years off stops.
+Before turn 41, or without scouts: miners with no orders mine where they are, move to a richer planet of the player's
+within 72 light years (concentrations 8 × ironium + 10 × boranium + 7 × germanium beating this one's by a fifth) when
+this one is poor or on a draw, or join a miner fleet when there are many; combat fleets are listed as warships and
+armed ones mark their target planet (byte 10 bit 7); freighters without colonists heading for another player's planet
+stop. Then: scouts and transports scrap before turn 11; colony ships settle (at levels 2-3 they colonize the unowned
+planet they are at, or wait at a weak foreign one), else take their colony target with up to 25 hundred colonists.
+Scouts after turn 40 lay mines where they are, now and then moving to a drawn planet within 105 light years, or join
+scout fleets when there are many.
+
+**11. Freighters** with no orders never fight (battle plan 4) and move people (`AI_Macinti_MovePopulation`): at one of
+the player's planets over 25% full with 1000 hundred people, a twentieth of them go to the planet within 200 light
+years where they add the most resources (after losses of 3-12% by distance), when that beats what they make here by
+5 (10 after turn 80, 15 after turn 160); else a fifth of a mineral the planet has over 2499 kT goes to the planet near
+by holding the least of it (under 200 kT); else the freighter goes to the most crowded planet near by (less 2-6 by
+distance). All unload on arrival.
+
+**12. Fleets, last pass**, each of the player's fleets in fleet order: fleets of obsolete designs only scrap at one of
+the player's planets with a starbase (else on a draw of 1 in 5) or go home. Warships (slots 2-9) invade
+(`AI_Macinti_Invade`, as Cybertrons' with E and T and Macinti's strength: slots 2-4 plus twice 5-7, with
+battleship-hull bombers counted twice when short; S25 B53) while warship fleets are few, else join others on draws.
+Other combat fleets not chasing a fleet hunt (`AI_DirectWarship`), nubians first joining nubian fleets when there are
+many.
+
+**13.** The classic planning pass and the end of the turn.
+
 ## Randomness
 
 Computer players draw from the classic stream, in player order, before any draw of turn generation (S01, S02). The
@@ -1213,6 +1346,8 @@ Rototills and Cybertrons draw in the order of their steps above.
   from home.
 - B43-B48 (S25): Cybertrons' thresholds, fleet marks, packet records, sector reach, retirement and long throws
   (see Cybertrons).
+- B49-B53 (S25): Macinti's splits, miner retirement, scout cap, rich test and invasion strength (see Macinti).
+- B54 (S25): empty ship design slots keep the last computer player's data (see "Classic designs").
 
 ## Worked examples
 

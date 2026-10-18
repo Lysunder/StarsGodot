@@ -1,8 +1,8 @@
 extends RefCounted
 ## harness_compat formulas (D12): the original's armor damage (bug B09, spec S16 "Damage", "Known
 ## bugs"), mine damage top-up (bug B04, spec S13), Cybertrons' packet bookkeeping (B44, B45, B46,
-## B48) and Macinti's scout cap and rich test (B51, B52; spec S22), so golden turns can match 2.6i
-## exactly. Test runs only.
+## B48), Macinti's scout cap and rich test (B51, B52) and the empty design slots' turns (B54; spec
+## S22), so golden turns can match 2.6i exactly. Test runs only.
 
 const SCALE := 500
 const POINTS_MAX := 499
@@ -19,6 +19,7 @@ func build(ruleset: Ruleset) -> void:
 	ruleset.replace(ClassicCybertrons.LONG_TARGET, cybertrons_long_target)
 	ruleset.replace(ClassicMacinti.SCOUT_CAP_DESIGN, macinti_scout_cap_design)
 	ruleset.replace(ClassicMacinti.ALL_RICH, macinti_all_rich)
+	ruleset.replace(ClassicWorld.EMPTY_SLOT_TURN, empty_slot_turn)
 
 
 ## B44: the fleet passes mark from the last loaded planet's B word on.
@@ -114,3 +115,9 @@ static func macinti_scout_cap_design(miner_slot: int) -> int:
 ## B52: two leading rich minerals count as all three.
 static func macinti_all_rich(count: int) -> bool:
 	return count == 2
+
+
+## B54: an empty ship slot holds the turn designed of whatever the computer players' shared
+## design buffer last held there.
+static func empty_slot_turn(held: int) -> int:
+	return held

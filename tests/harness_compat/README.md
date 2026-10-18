@@ -31,6 +31,7 @@ The runner has two modes:
 | B04 | Mine damage top-up applied to the first design stack only | formula `minefield.top_up` | S13 | done |
 | B51, B52 | Macinti's scout cap by the miner design, rich by two minerals | formulas `ai.macinti_*` | S22 | done |
 | B44, B45, B46, B48 | Cybertrons' packet and fleet marks as the original keeps them | formulas `ai.cybertrons_*` | S22 | done |
+| B54 | An empty design slot's turn designed as the last computer player's file left it | formula `ai.empty_slot_turn` | S22 | done |
 
 B08 (the 256-token battle limit) is not here: no fixture battle comes near it.
 

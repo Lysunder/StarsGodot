@@ -75,6 +75,7 @@ static func add_orders(
 	for s in given:
 		has_orders[s.player] = true
 	var rng := state.rng.get_stream(RngStreams.CLASSIC)
+	var shared := {}
 	for p in state.players:
 		if not plays(p) or has_orders.has(p.index):
 			continue
@@ -89,6 +90,7 @@ static func add_orders(
 		var ctx := AiContext.new(
 			PlayerView.new(state, content, p.index), content, rng, personality, p.ai_level
 		)
+		ctx.shared = shared
 		brain.play(ctx)
 		out.append(ctx.orders)
 		# the original then writes the player's log and history files, one salt draw each (S01)

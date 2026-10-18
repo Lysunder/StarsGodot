@@ -487,3 +487,20 @@ func test_stealing_with_a_theft_scanner() -> void:
 	_transport(f, {0: ["load", 5]})
 	_tasks(s).run_pass(4)
 	assert_array([f.cargo[0], planet.surface[0]]).is_equal([5, 25])
+
+
+func test_colonists_land_on_a_planet_emptied_since_the_pass_began() -> void:
+	var s := _game()
+	s.planets[0].owner = 1
+	var tasks := _tasks(s)
+	# the planet loses its owner in the battles after the pass began (its starbase lost)
+	s.planets[0].owner = -1
+	s.planets[0].population = 0
+	var f := _fleet(s, 0, 1)
+	f.cargo.assign([0, 0, 0, 20, 0])
+	_transport(f, {3: ["unload_all", 0]})
+	tasks.run_pass(3)
+	tasks.resolve()
+	assert_int(f.cargo[3]).is_equal(0)
+	assert_int(s.planets[0].owner).is_equal(0)
+	assert_int(s.planets[0].population).is_equal(20)

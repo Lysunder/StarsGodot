@@ -73,5 +73,15 @@ class FileDraws:
 			Retargeting.run(ctx.state, ctx.content, p, sight)
 			ctx.rng().random(DRAW)
 		ctx.rng().random(DRAW)
+		_drop_lone_colonists(ctx.state)
 		Scanning.finish(ctx.state)
 		PlanetHistory.note_all(ctx.state)
+
+	## The host file has no installations for an unowned planet without mines, factories or
+	## defenses, so the single colonists left there are gone when the turn is loaded (S08
+	## "Depopulation").
+	func _drop_lone_colonists(state: GameState) -> void:
+		for planet in state.planets:
+			if planet.owner < 0 and planet.mines == 0 and planet.factories == 0:
+				if planet.defenses == 0:
+					planet.extra_colonists = 0

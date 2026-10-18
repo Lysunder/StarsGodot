@@ -84,3 +84,59 @@ func test_depopulate_keeps_installations() -> void:
 	assert_bool(pl.has_scanner).is_false()
 	assert_object(pl.starbase).is_null()
 	assert_array(pl.environment).is_equal([40, 40, 40])
+
+
+func test_alternate_reality_miners_in_orbit_mine_the_planet() -> void:
+	var s := GameState.new()
+	var p := Player.new()
+	p.race.primary_trait = "trait.prt.AR"
+	var d := Design.new()
+	d.slot = 0
+	d.hull = "hull.mini_miner"
+	d.parts.assign(
+		[
+			DesignSlot.new("part.engine.long_hump_6", 1),
+			DesignSlot.new("part.mining_robot.robo_miner", 1)
+		]
+	)
+	p.set_design(d, false)
+	s.players.append(p)
+	var pl := _planet([50, 50, 50], 100)
+	pl.id = 0
+	pl.homeworld = true
+	pl.concentration.assign([50, 50, 20])
+	s.planets.append(pl)
+	var f := s.add_fleet(0, 512)
+	f.planet = 0
+	f.add_ships(0, 2)
+	var wp := Waypoint.new(0, 0)
+	wp.task = "remote_mine"
+	f.waypoints.append(wp)
+	f.did_not_move = true
+	var rate := WaypointTasks.mining_rate(f, p, _content)
+	assert_int(rate).is_greater(0)
+	PlanetEconomy.mine_orbit(s, pl, _content, null, true)
+	# raw output C x rate, the homeworld minimum of 30 for germanium
+	assert_array(pl.surface.slice(0, 3)).is_equal(
+		[50 * rate / 100, 50 * rate / 100, 30 * rate / 100]
+	)
+	assert_bool(f.did_not_move).is_false()
+	# a fleet with somewhere to go, or another race, mines nothing here
+	pl.surface.assign([0, 0, 0])
+	f.waypoints.append(Waypoint.new(10, 10))
+	PlanetEconomy.mine_orbit(s, pl, _content, null, true)
+	assert_array(pl.surface.slice(0, 3)).is_equal([0, 0, 0])
+
+
+func test_lone_colonists_on_an_empty_planet_are_lost_at_the_end_of_the_turn() -> void:
+	var s := GameState.new()
+	var bare := _planet([50, 50, 50], 0)
+	bare.owner = -1
+	bare.extra_colonists = 40
+	var mined := _planet([50, 50, 50], 0)
+	mined.owner = -1
+	mined.extra_colonists = 40
+	mined.mines = 3
+	s.planets.append_array([bare, mined])
+	TurnEndPhases.FileDraws.new()._drop_lone_colonists(s)
+	assert_array([bare.extra_colonists, mined.extra_colonists]).is_equal([0, 40])

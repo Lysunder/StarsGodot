@@ -15,7 +15,9 @@ class Mining:
 		var rng := ctx.rng()
 		for planet in ctx.state.planets:
 			if planet.owner >= 0 and planet.population > 0:
-				PlanetEconomy.mine(planet, ctx.player(planet.owner).race, ctx.content, rng)
+				var race := ctx.player(planet.owner).race
+				PlanetEconomy.mine(planet, race, ctx.content, rng)
+				PlanetEconomy.mine_orbit(ctx.state, planet, ctx.content, rng, true)
 
 
 ## 13b: per planet, resources go to research and the production queue (S09).

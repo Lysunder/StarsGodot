@@ -114,7 +114,12 @@ For each mineral, in the order ironium, boranium, germanium:
      C decreases by 1. Stop.
    - else: C decreases by 1, the fraction resets to 0, E decreases by k, and the loop continues.
 
-For Alternate Reality, mining a planet also includes the race's own remote-mining fleets in orbit (rules in S11).
+For Alternate Reality (trait parameter `planet.orbit_miners`), mining a planet also includes the race's own fleets in
+orbit there that have no waypoint beyond and the remote-mining task: right after the planet's own mining, in fleet
+order, each mines it at its mining rate as a remote miner does (raw output C × rate, a draw for the remainder), except
+that the homeworld minimum of 30 applies; the fleet then counts as having moved, so the waypoint task pass does not
+mine with it again (an Alternate Reality fleet's remote mining of its own planet does nothing there anyway, S11).
+(`Planet_Mine@1020:3a72`; mac1 turn 70.)
 
 ### 7. Turn steps and depopulation
 
@@ -128,6 +133,9 @@ During turn generation (S02 13a, 13c), in planet order:
   `planet.revert_terraform_on_loss`); the planet loses its owner, population, production queue, the "only leftover
   to research" setting, its starbase (and with it the mass driver setting), its defenses and its planetary scanner.
   Mines, factories and the single extra colonists stay. (`Planet_Depopulate@1040:553a`)
+  The single colonists last only while the planet has mines, factories or defenses: the host file stores an
+  unowned planet's installations only then, so at the end of the turn (S02 27) an unowned planet without any
+  loses them (`WritePlanetDataBlock@1068:4926`).
 
 ## Randomness
 

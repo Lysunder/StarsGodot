@@ -213,10 +213,15 @@ static func mine(planet: Planet, race: Race, content: ContentRegistry, rng: Star
 
 
 ## A remote miner mines an unowned planet at `rate` (S08 step 6, remote form; S11 "Remote
-## mining"): raw output C × rate, no mine-output factor and no homeworld minimum.
-static func mine_remote(planet: Planet, rate: int, rng: StarsRandom) -> void:
+## mining"): raw output C × rate, no mine-output factor and no homeworld minimum (with
+## `homeworld_min`, as for an Alternate Reality owner's miners in orbit, the minimum applies).
+static func mine_remote(
+	planet: Planet, rate: int, rng: StarsRandom, homeworld_min := false
+) -> void:
 	for m in 3:
 		var c := planet.concentration[m]
+		if homeworld_min and planet.homeworld:
+			c = maxi(c, HOMEWORLD_MIN_CONCENTRATION)
 		var raw := c * rate
 		var amount := raw / 100
 		var q := raw % 100
@@ -224,6 +229,29 @@ static func mine_remote(planet: Planet, rate: int, rng: StarsRandom) -> void:
 			amount += 1
 		planet.surface[m] += amount
 		_wear(planet, m, c * rate / 100)
+
+
+## `planet.orbit_miners` (Alternate Reality), after the planet's own mining: the owner's fleets
+## in orbit with no waypoint beyond and the remote-mining task mine the planet at their rate, in
+## fleet order, as remote miners do but with the homeworld minimum (`Planet_Mine@1020:3a72`).
+## With `mark` they count as having moved, so the task pass leaves them be.
+static func mine_orbit(
+	state: GameState, planet: Planet, content: ContentRegistry, rng: StarsRandom, mark: bool
+) -> void:
+	var owner := state.player(planet.owner)
+	if not RaceMath.trait_param(owner.race, content, "planet.orbit_miners", 0):
+		return
+	for fleet in state.fleets:
+		if fleet.planet != planet.id or fleet.owner != planet.owner or fleet.stacks.is_empty():
+			continue
+		if fleet.waypoints.size() >= 2 or fleet.waypoints[0].task != "remote_mine":
+			continue
+		var rate := WaypointTasks.mining_rate(fleet, owner, content)
+		if rate <= 0:
+			continue
+		mine_remote(planet, rate, rng, true)
+		if mark:
+			fleet.did_not_move = false
 
 
 ## Concentration wear from mining effort `effort` (S08 step 6.5).

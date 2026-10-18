@@ -102,6 +102,14 @@ func test_adding_opens_caps_and_commits() -> void:
 	# 5000 in 10 bits
 	assert_int(_home(w).queue[0].count).is_equal(5000 & 1023)
 	assert_str(_home(w).queue[0].item).is_equal(P.MINES)
+	# a queue committed unchanged gives no order (`LogPlanetChanges` logs differences only)
+	var s := _state()
+	s.planet(30).queue.clear()
+	var v := _world(s)
+	v.select_planet(30)
+	P.open(v)
+	P.commit(v, true)
+	assert_array(_types(v)).is_empty()
 
 
 func test_output_is_surface_plus_mining_less_research() -> void:

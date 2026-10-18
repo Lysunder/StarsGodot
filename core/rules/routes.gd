@@ -108,4 +108,7 @@ static func default_orders(
 				wp.target_id = other.number
 				return other
 	wp.task = "remote_mine"
+	# the original stores the task's five data words, all zero
+	if not wp.task_data.has("raw"):
+		wp.task_data = {"raw": [0, 0, 0, 0, 0]}
 	return null

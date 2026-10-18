@@ -308,7 +308,7 @@ action is cleared once carried out:
 |---|---|---|---|
 | The fleet owner's planet | to the surface | join the population | not transferred |
 | Another player's planet | to the surface | an invasion, recorded for ground combat (S17), unless the planet has a starbase or the fleet's race lives in space (Alternate Reality, trait parameter `transport.no_invasion`): then refused | not transferred |
-| An unowned planet | to the surface | refused (colonizing needs the colonize task) | not transferred |
+| An unowned planet | to the surface | refused (colonizing needs the colonize task), unless the planet had an owner when the pass began (before the waypoint 1 pass's battles and bombing, which can empty a planet): then recorded for ground combat as an invasion, where with no defender it is colonized (`DoWaypointTasks@10a8:0e92` marks the owned planets first) | not transferred |
 | One of the player's fleets | up to its free cargo space | up to its free cargo space | up to its free fuel space |
 | Another player's fleet | refused (fix B20; the original lets them vanish) | refused | up to its free fuel space, nothing if that player counts the giver as an enemy |
 | A packet or salvage pile (S14) | up to the rounding room of its recorded mass (`mass_tenths` × 10 − its minerals) | skipped | skipped |

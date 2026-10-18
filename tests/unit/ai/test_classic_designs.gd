@@ -2,6 +2,8 @@ extends GdUnitTestSuite
 ## S22 "Classic designs": designs from templates, names and pictures, retiring old designs, and
 ## the starbase designs every classic personality keeps.
 
+const CompatRuleset := preload("res://tests/harness_compat/ruleset.gd")
+
 var _content: ContentRegistry
 
 
@@ -156,11 +158,15 @@ func test_old_designs_are_retired() -> void:
 	obsolete.resize(16)
 	obsolete.fill(0)
 	var found := ClassicDesigns.newest_in_slots(w, 11, 13, 50, obsolete)
-	assert_int(found["slot"]).is_equal(13)
+	# slot 11, deleted, counts as designed this turn for the slots after it: it stays the best
+	assert_int(found["slot"]).is_equal(11)
 	assert_int(found["remaining"]).is_equal(6)
 	assert_object(w.me().ship_design(11)).is_null()
 	assert_object(w.me().ship_design(12)).is_not_null()
 	assert_array(obsolete.slice(11, 14)).is_equal([0, 1, 0])
+	# with slot 11 empty the newest is the latest turn designed
+	obsolete.fill(0)
+	assert_int(ClassicDesigns.newest_in_slots(w, 11, 13, 50, obsolete)["slot"]).is_equal(13)
 
 
 func test_starbase_designs_are_kept() -> void:
@@ -210,3 +216,39 @@ func test_memory_is_kept_between_turns() -> void:
 		assert_str(OrderRules.apply(host, _content, 1, {"type": "ai_memory", "words": [70000]}))
 		. is_not_empty()
 	)
+
+
+func test_a_replaced_design_keeps_the_worlds_queue() -> void:
+	var w := _world(10)
+	assert_bool(ClassicDesigns.outfit(w, 11, "ai_design_template.privateer_a")).is_true()
+	var planet: Planet = w.own_planets[0]
+	var q := QueueItem.new()
+	q.design = 11
+	q.count = 1
+	planet.queue.append(q)
+	w.orders.orders.clear()
+	assert_bool(ClassicDesigns.outfit(w, 11, "ai_design_template.privateer_a")).is_true()
+	# the host deletes the old design, then gets the new one; the world keeps the queue item
+	var types := _design_orders(w).map(func(o: Dictionary) -> String: return o["type"])
+	assert_array(types).is_equal(["design_delete", "design_change"])
+	assert_bool(planet.queue.any(func(i: QueueItem) -> bool: return i.design == 11)).is_true()
+	# a design deleted outright leaves the queue as well
+	ClassicDesigns.delete(w, 11, false)
+	assert_object(w.me().ship_design(11)).is_null()
+	assert_bool(planet.queue.any(func(i: QueueItem) -> bool: return i.design == 11)).is_true()
+
+
+func test_the_shared_design_buffer() -> void:
+	var shared := {}
+	var w := _world(10)
+	w.state.turn = 40
+	w.load_slot_turns(shared)
+	assert_bool(ClassicDesigns.outfit(w, 11, "ai_design_template.privateer_a")).is_true()
+	assert_int(shared[ClassicWorld.SLOT_TURNS_KEY][11]).is_equal(40)
+	# the next computer player sees it in its empty slot 11; the game's formula ignores it
+	var other := _world(10)
+	other.load_slot_turns(shared)
+	assert_object(other.me().ship_design(11)).is_null()
+	assert_int(other.slot_turns[11]).is_equal(40)
+	assert_int(other.empty_slot_turn(11)).is_equal(0)
+	assert_int(CompatRuleset.empty_slot_turn(40)).is_equal(40)

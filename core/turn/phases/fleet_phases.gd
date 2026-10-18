@@ -75,10 +75,13 @@ class Waypoint1Tasks:
 		super("wp1.tasks")
 
 	func run(ctx: TurnContext) -> void:
+		# the planets with an owner before the battles (S11 "Unloading")
+		var owned := WaypointTasks.owned_planets(ctx.state)
 		Battles.run_all(ctx.state, ctx.content, ctx.rng(), ctx.rng(RngStreams.FIXES))
 		Bombing.bomb_all(ctx.state, ctx.content, ctx.rng())
 		MysteryTrader.meet_all(ctx.state, ctx.content, ctx.rng())
 		var tasks := WaypointTasks.new(ctx.state, ctx.content, ctx.rng())
+		tasks.owned_at_start = owned
 		tasks.run_pass(3)
 		tasks.resolve()
 		ResearchRules.update(ctx.state, ctx.content, [])

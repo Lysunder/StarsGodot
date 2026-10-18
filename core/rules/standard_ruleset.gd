@@ -22,5 +22,6 @@ static func build() -> Ruleset:
 	ruleset.register(ClassicCybertrons.SECTOR_REACH, ClassicCybertrons.sector_reach)
 	ruleset.register(ClassicCybertrons.LONG_TARGET, ClassicCybertrons.long_target)
 	ruleset.register(ClassicMacinti.SCOUT_CAP_DESIGN, ClassicMacinti.scout_cap_design)
+	ruleset.register(ClassicWorld.EMPTY_SLOT_TURN, ClassicWorld.no_empty_slot_turn)
 	ruleset.register(ClassicMacinti.ALL_RICH, ClassicMacinti.all_rich)
 	return ruleset

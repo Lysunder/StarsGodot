@@ -14,6 +14,7 @@ func _init(p_personality: String) -> void:
 
 func play(ctx: AiContext) -> void:
 	var w := ClassicWorld.build(ctx.view.state, ctx.content, ctx.view.player, ctx.rng, personality)
+	w.load_slot_turns(ctx.shared)
 	match personality:
 		ClassicWorld.ROBOTOIDS:
 			ClassicRobotoids.play(w)

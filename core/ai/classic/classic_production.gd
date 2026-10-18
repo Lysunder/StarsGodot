@@ -208,7 +208,13 @@ static func commit(w: ClassicWorld, changed: bool) -> void:
 			if d == null:
 				continue
 		items.append(q.to_dict())
-	w.order({"type": "production_queue", "planet": e.planet_id, "items": items})
+	# the original logs the differences between the planet's old and new copies
+	# (`LogPlanetChanges`): an unchanged queue gives no order
+	var old := []
+	for q in w.state.planet(e.planet_id).queue:
+		old.append(q.to_dict())
+	if items != old:
+		w.order({"type": "production_queue", "planet": e.planet_id, "items": items})
 	w.reload_planet()
 
 
@@ -243,6 +249,7 @@ static func output(w: ClassicWorld, planet: Planet) -> Array[int]:
 	var race := w.state.player(planet.owner).race
 	var copy := planet.copy() as Planet
 	PlanetEconomy.mine(copy, race, w.content, null)
+	PlanetEconomy.mine_orbit(w.state, copy, w.content, null, false)
 	out.assign([copy.surface[0], copy.surface[1], copy.surface[2]])
 	var r := PlanetEconomy.resources(planet, race, w.content)
 	var leftover := w.cur_planet != null and w.cur_planet.leftover_to_research

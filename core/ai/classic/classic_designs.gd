@@ -106,38 +106,54 @@ static func _shrink(w: ClassicWorld, design: Design, size: int) -> void:
 			entry.part = ""
 
 
-## Stores a design in its slot (`AI_SaveDesign`): a design already there is deleted first; the
-## turn is stamped. False when the order is refused.
+## Stores a design in its slot (`AI_SaveDesign`); the turn is stamped. A design already there is
+## deleted first in the turn's orders, so the host takes it out of the queues and fleets, but in
+## this world it is only overwritten: queue items, ships and starbases of the slot stay and now
+## refer to the new design. False when the order is refused.
 static func save(w: ClassicWorld, design: Design, starbase: bool) -> bool:
-	if _design(w, design.slot, starbase) != null:
-		delete(w, design.slot, starbase)
 	design.turn_designed = w.state.turn
 	design.built = 0
 	design.remaining = 0
-	var reason := (
-		w
-		. order(
-			{
-				"type": "design_change",
-				"starbase": starbase,
-				"slot": design.slot,
-				"design": design.to_dict(),
-			}
-		)
-	)
+	var change := {
+		"type": "design_change",
+		"starbase": starbase,
+		"slot": design.slot,
+		"design": design.to_dict(),
+	}
+	var old := _design(w, design.slot, starbase)
+	var reason := ""
+	if old == null:
+		reason = w.order(change)
+	else:
+		w.me().remove_design(design.slot, starbase)
+		reason = OrderRules.apply(w.state, w.content, w.player, change)
+		if reason.is_empty():
+			w.orders.add({"type": "design_delete", "starbase": starbase, "slot": design.slot})
+			w.orders.add(change)
+		else:
+			w.me().set_design(old, starbase)
+			w.rejected.append(reason)
 	if not reason.is_empty():
 		return false
 	if not starbase:
+		if design.slot < w.slot_turns.size():
+			w.slot_turns[design.slot] = design.turn_designed
 		# a design made this turn has no rating until the turn is loaded again
 		w.ratings["%d/%d" % [w.player, design.slot]] = 0
 	return true
 
 
-## Empties a design slot.
+## Empties a design slot. The turn's orders delete it, so the host takes it out of the queues and
+## fleets; in this world, as in the original's (which only marks the slot empty), queue items and
+## ships of the slot stay.
 static func delete(w: ClassicWorld, slot: int, starbase: bool) -> void:
 	if _design(w, slot, starbase) == null:
 		return
-	w.order({"type": "design_delete", "starbase": starbase, "slot": slot})
+	w.me().remove_design(slot, starbase)
+	w.orders.add({"type": "design_delete", "starbase": starbase, "slot": slot})
+	# the deleted copy left in the design buffer carries this turn (`AI_SaveDesign`, S25 B54)
+	if not starbase and slot < w.slot_turns.size():
+		w.slot_turns[slot] = w.state.turn
 
 
 static func _design(w: ClassicWorld, slot: int, starbase: bool) -> Design:
@@ -207,6 +223,10 @@ static func newest_in_slots(
 		if w.state.turn - d.turn_designed > max_age:
 			if d.remaining == 0:
 				delete(w, slot, false)
+				# the original deletes through `AI_SaveDesign`, which stamps the deleted copy with
+				# this turn, and compares later slots with the best slot's stamp
+				if best == slot:
+					best_turn = w.state.turn
 			else:
 				obsolete[slot] = 1
 	return {"slot": best, "remaining": mini(remaining, 32000)}

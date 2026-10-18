@@ -14,6 +14,9 @@ var level: int
 ## The brain's declared settings by key (AiBrains.settings), for their defaults.
 var declared := {}
 var orders: OrderSet
+## State the computer players of one turn share, as the original's host run carries it from one
+## computer player to the next (ComputerPlayers.add_orders gives them all the same dictionary).
+var shared := {}
 
 
 func _init(

@@ -148,7 +148,8 @@
       "planet.starbase_population": 1,
       "planet.no_installations": 1,
       "planet.root_mines": 1,
-      "planet.root_resources": 1
+      "planet.root_resources": 1,
+      "planet.orbit_miners": 1
     }
   },
   {

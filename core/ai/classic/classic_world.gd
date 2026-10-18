@@ -27,6 +27,11 @@ const INFO_SIZE := 16
 const MEMORY_WORDS := 0x1000
 const MEMORY_FIRST := 2
 const MEMORY_KEY := OrderRules.AI_MEMORY_KEY
+## The shared design buffer's key and slot count, and the formula id for an empty slot's turn
+## designed (S25 B54).
+const SLOT_TURNS_KEY := "classic_slot_turns"
+const SHIP_SLOTS := 16
+const EMPTY_SLOT_TURN := "ai.empty_slot_turn"
 ## Light years the computer players add to a minefield's radius (`AI_InitScale`).
 const MINEFIELD_MARGIN := 10
 const BOMBER_CLASS := "ai_hull_class.bomber"
@@ -90,6 +95,10 @@ var cur_planet: Planet = null
 var editing: RefCounted = null
 ## Colony targets were rated this turn (personalities other than Robotoids and Macinti rate once).
 var colony_targets_rated := false
+## The turn designed the original's buffer of the player's ship designs holds in each slot
+## (shared by the computer players of one turn): a player's file sets its designs' slots, an
+## empty slot keeps what the last computer player loaded or saved there (S25 B54).
+var slot_turns: Array = []
 ## Macinti's starbase verdicts this turn (ClassicMacinti.review_designs), read by the production
 ## pass's starbase step.
 var macinti_verdicts := PackedByteArray()
@@ -126,6 +135,30 @@ static func build(
 
 func me() -> Player:
 	return state.player(player)
+
+
+## Joins the computer players' shared design buffer (`LoadGame` of the player's file): the
+## player's designs set their slots' turns.
+func load_slot_turns(shared: Dictionary) -> void:
+	if not shared.has(SLOT_TURNS_KEY):
+		var turns: Array = []
+		turns.resize(SHIP_SLOTS)
+		turns.fill(0)
+		shared[SLOT_TURNS_KEY] = turns
+	slot_turns = shared[SLOT_TURNS_KEY]
+	for d in me().ship_designs:
+		slot_turns[d.slot] = d.turn_designed
+
+
+## The turn designed the design buffer holds in an empty ship slot (S25 B54; fixed: 0).
+func empty_slot_turn(slot: int) -> int:
+	var held: int = slot_turns[slot] if slot < slot_turns.size() else 0
+	return content.ruleset.formula(EMPTY_SLOT_TURN).call(held)
+
+
+## B54 fixed: an empty slot has no turn designed.
+static func no_empty_slot_turn(_held: int) -> int:
+	return 0
 
 
 ## The content id of the personality being played.

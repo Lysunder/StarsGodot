@@ -307,8 +307,8 @@ static func designs(world: ClassicWorld) -> void:
 		if d.call(slot) != null:
 			continue
 		var before: Design = d.call(slot - 1)
-		var designed := before.turn_designed if before != null else 0
-		if slot == 2 or turn - designed > 20:
+		var designed := before.turn_designed if before != null else world.empty_slot_turn(slot - 1)
+		if slot == 2 or _older(turn, designed, 20):
 			_tries(world, slot, "cruiser_%d")
 	if turn < EARLY_TURN and d.call(EARLY_COLONY_SLOT) == null:
 		_outfit(world, EARLY_COLONY_SLOT, "colony_ship")
@@ -325,7 +325,7 @@ static func designs(world: ClassicWorld) -> void:
 		if d.call(slot) != null:
 			continue
 		var before: Design = d.call(slot - 1)
-		if slot != 5 and (before == null or turn - before.turn_designed <= 20):
+		if slot != 5 and (before == null or not _older(turn, before.turn_designed, 20)):
 			continue
 		var pool := "battleship_a%d" if slot == 5 else "battleship_b%d"
 		if slot == 7 and world.rng.random(2) != 0:
@@ -337,7 +337,7 @@ static func designs(world: ClassicWorld) -> void:
 		if d.call(slot) != null or wp < 14:
 			continue
 		var before: Design = d.call(slot - 1)
-		if slot != 8 and (before == null or turn - before.turn_designed <= 15):
+		if slot != 8 and (before == null or not _older(turn, before.turn_designed, 15)):
 			continue
 		if not _outfit(world, slot, "battleship_flag"):
 			_outfit(world, slot, "b52_%d" % (slot - 8))
@@ -355,6 +355,12 @@ static func designs(world: ClassicWorld) -> void:
 	):
 		ClassicDesigns.delete(world, SCOUT_SLOT, false)
 		_outfit(world, SCOUT_SLOT, "scout")
+
+
+## Whether a design of turn `designed` is more than `age` turns old; the original compares
+## unsigned, so one designed after this turn (the starting designs carry turn 1) counts too.
+static func _older(turn: int, designed: int, age: int) -> bool:
+	return turn - designed > age or turn < designed
 
 
 ## Up to five tries, each a draw of 4 picking pool template 0-3.
