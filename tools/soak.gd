@@ -5,9 +5,14 @@ extends SceneTree
 ##
 ## Usage: godot --headless --path . --script res://tools/soak.gd -- [turns] [game ...]
 ## Games: one per brain (robotoids, turindrones, automitrons, rototills, cybertrons, macinti,
-## baseline) and "mixed"; all of them when none is named. Exits 1 when any game had a problem.
+## baseline), "mixed" (all of them), and "allied" (the same, computer players forming alliances);
+## all of them when none is named. Exits 1 when any game had a problem.
 
 const SEED := 4242
+const ALL := [
+	"robotoids", "turindrones", "automitrons", "rototills", "cybertrons", "macinti", "baseline"
+]
+## Per game: [universe size, brains (the computer players cycle through them), game options].
 const GAMES := {
 	"robotoids": [1, ["robotoids"]],
 	"turindrones": [1, ["turindrones"]],
@@ -16,19 +21,8 @@ const GAMES := {
 	"cybertrons": [1, ["cybertrons"]],
 	"macinti": [1, ["macinti"]],
 	"baseline": [1, ["baseline"]],
-	"mixed":
-	[
-		2,
-		[
-			"robotoids",
-			"turindrones",
-			"automitrons",
-			"rototills",
-			"cybertrons",
-			"macinti",
-			"baseline"
-		]
-	],
+	"mixed": [2, ALL],
+	"allied": [2, ALL, ["computer_alliances"]],
 }
 ## Computer players per game, at levels Easy .. Expert in turn.
 const PLAYERS := 5
@@ -86,6 +80,8 @@ func _soak(content: ContentRegistry, name: String, turns: int) -> bool:
 	var options := NewGame.Options.new()
 	options.size = spec[0]
 	options.seed = SEED
+	if spec.size() > 2:
+		options.flags.assign(spec[2])
 	var brains: Array = spec[1]
 	var count := maxi(PLAYERS, brains.size())
 	for i in count:

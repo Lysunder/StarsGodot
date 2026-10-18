@@ -25,6 +25,7 @@ const SETTINGS := [
 	{"key": "warship_min_population", "group": "military", "min": 0, "max": 10000, "default": 300},
 	{"key": "attack_ships", "group": "military", "min": 1, "max": 100, "default": 5},
 	{"key": "defense_range", "group": "military", "min": 0, "max": 1000, "default": 60},
+	{"key": "attack_margin_pct", "group": "military", "min": 0, "max": 1000, "default": 150},
 ]
 const AUTO_FACTORIES := "production_item.auto_factories"
 const AUTO_MINES := "production_item.auto_mines"
@@ -61,6 +62,12 @@ const THREAT_HULLS := [
 const TROOP_MARGIN_PCT := 130
 ## A new warship design is saved when it is this many percent as strong as the best one.
 const WARSHIP_BETTER_PCT := 130
+## The working memory (S11 `ai_memory`): word 0 the bytes in use (itself included), word 1 the
+## players met in battle, one bit each.
+const MEMORY_BYTES := 4
+const HOSTILE_WORD := 1
+const FRIEND := "friend"
+const ENEMY := "enemy"
 ## Research fields in the order the brain raises them when levels are equal.
 const FIELD_PRIORITY := [
 	"tech_field.propulsion",
@@ -96,6 +103,8 @@ var _new_dock: Design = null
 var _owned_planets := 0
 ## Planets the player has never scanned.
 var _unknown_planets := 0
+## The relations the player keeps this turn (after `_update_relations`), one per player.
+var _relations: Array[String] = []
 ## Planet details from the view, by id, read once per turn.
 var _infos := {}
 
@@ -187,6 +196,74 @@ func _looks_armed(fleet: Fleet) -> bool:
 		if d != null and THREAT_HULLS.has(d.hull):
 			return true
 	return false
+
+
+## The player's relation to player `q` this turn ("neutral" when it has none).
+func _relation(q: int) -> String:
+	if q < _relations.size():
+		return _relations[q]
+	return _me.relations[q] if q < _me.relations.size() else "neutral"
+
+
+## Whether the player treats player `q` as an enemy (attacks its planets, invades them).
+func _is_enemy(q: int) -> bool:
+	return q >= 0 and q != _me.index and _relation(q) == ENEMY
+
+
+## What the player's view holds of another player's design: FULL when it knows it in full.
+func _design_level(owner: int, slot: int, starbase: bool) -> int:
+	if _me.index >= _state.views.size() or not _state.views[_me.index] is Dictionary:
+		return 0
+	var key := "starbase_designs" if starbase else "designs"
+	return int(_state.views[_me.index].get(key, {}).get("%d/%d" % [owner, slot], 0))
+
+
+## A fleet's strength: its ships' design strengths (the player's own designs in full).
+func _fleet_strength(fleet: Fleet) -> int:
+	var total := 0
+	for stack in fleet.stacks:
+		var d := _design_of(fleet, stack)
+		if d != null:
+			total += _designs.strength(d) * stack.count
+	return total
+
+
+## What the player can tell of the strength at a planet of another player: its starbase (as the
+## planet history knows it) and the owner's armed fleets seen this turn within `defense_range`,
+## each design estimated (`BaselineDesigns.estimate`).
+func _enemy_strength(planet: Planet) -> int:
+	var info := _info(planet.id)
+	var owner: int = info["owner"]
+	if owner < 0:
+		return 0
+	var total := 0
+	var base := int(info.get("starbase_design", -1))
+	if base >= 0:
+		var d := _state.player(owner).starbase_design(base)
+		total += _designs.estimate(d, _design_level(owner, base, true) >= Scanning.FULL)
+	if _me.index >= _state.views.size() or not _state.views[_me.index] is Dictionary:
+		return total
+	var reach := _ctx.param("defense_range")
+	for key: String in _state.views[_me.index].get("fleets", {}):
+		var parts := key.split("/")
+		var fleet := _state.fleet(int(parts[0]), int(parts[1]))
+		if fleet == null or fleet.owner != owner:
+			continue
+		if _d2(fleet.x, fleet.y, planet.x, planet.y) > reach * reach:
+			continue
+		for stack in fleet.stacks:
+			var d := _design_of(fleet, stack)
+			if d == null:
+				continue
+			var full := _design_level(owner, d.slot, false) >= Scanning.FULL
+			if full or THREAT_HULLS.has(d.hull):
+				total += _designs.estimate(d, full) * stack.count
+	return total
+
+
+## Whether a fleet of strength `ours` may attack where the enemy has `theirs`: by the margin.
+func _strong_enough(ours: int, theirs: int) -> bool:
+	return ours * 100 >= theirs * _ctx.param("attack_margin_pct")
 
 
 func _is_threatened(planet_id: int) -> bool:

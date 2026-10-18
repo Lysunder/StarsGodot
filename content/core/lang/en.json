@@ -426,6 +426,8 @@
   "ai_setting.attack_ships.description": "Ships gathered at home before a fleet sets out to attack.",
   "ai_setting.defense_range.name": "Defense range",
   "ai_setting.defense_range.description": "Light-years from its planets within which enemy warships are a threat.",
+  "ai_setting.attack_margin_pct.name": "Attack margin",
+  "ai_setting.attack_margin_pct.description": "How strong an attack fleet must be, in percent of what it can tell of the defenders' strength.",
   "ai_brain.baseline.name": "Baseline (our own)",
   "ai_brain.robotoids.name": "Robotoids",
   "ai_brain.turindrones.name": "Turindrones",

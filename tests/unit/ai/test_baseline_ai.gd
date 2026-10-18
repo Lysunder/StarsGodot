@@ -136,6 +136,80 @@ func test_troops_needed() -> void:
 	assert_int(defended).is_greater(bare)
 
 
+## The brain of player `index` with its turn's working state, ready for the helpers.
+func _brain(s: GameState, index: int) -> BaselineAi:
+	var brain := BaselineAi.new()
+	brain._ctx = AiContext.new(
+		PlayerView.new(s, _content, index),
+		_content,
+		StarsRandom.new(),
+		{"name": "Baseline", "brain": AiBrains.BASELINE},
+		1
+	)
+	brain._state = s
+	brain._me = s.player(index)
+	brain._designs = BaselineDesigns.new(brain._ctx.view, _content)
+	return brain
+
+
+func _orders(brain: BaselineAi, type: String) -> Array:
+	return brain._ctx.orders.orders.filter(func(o: Dictionary) -> bool: return o["type"] == type)
+
+
+## Relations (S22 "The baseline brain" step 1): with alliances the other computer player is a
+## friend; a battle between the two makes it an enemy for good, kept in the working memory.
+func test_relations() -> void:
+	var s := _state()
+	s.settings.computer_alliances = true
+	var brain := _brain(s, 1)
+	brain._update_relations()
+	assert_array(_orders(brain, "player_relations")[0]["relations"]).is_equal(
+		["enemy", "neutral", "friend"]
+	)
+	assert_array(_orders(brain, "ai_memory")).is_empty()
+	s.player(1).relations.assign(["enemy", "neutral", "friend"])
+	# nothing changes: no order
+	brain = _brain(s, 1)
+	brain._update_relations()
+	assert_array(brain._ctx.orders.orders).is_empty()
+	# the two fight: player 2 is an enemy, remembered
+	s.battles.append({"id": 0, "players": [1, 2], "planet": -1, "x": 0, "y": 0})
+	brain = _brain(s, 1)
+	brain._update_relations()
+	assert_array(_orders(brain, "player_relations")[0]["relations"]).is_equal(
+		["enemy", "neutral", "enemy"]
+	)
+	assert_array(_orders(brain, "ai_memory")[0]["words"]).is_equal([4, 1 << 2])
+	# a year later, with no battle, the memory keeps the enmity
+	s.battles.clear()
+	s.player(1).relations.assign(["enemy", "neutral", "enemy"])
+	s.player(1).knowledge[OrderRules.AI_MEMORY_KEY] = [4, 1 << 2]
+	brain = _brain(s, 1)
+	brain._update_relations()
+	assert_array(brain._ctx.orders.orders).is_empty()
+	assert_bool(brain._is_enemy(2)).is_true()
+
+
+## Enemy strength (step 7): a starbase seen only as a hull counts as armed with the player's own
+## best parts; a fleet attacks only by the margin.
+func test_enemy_strength() -> void:
+	var s := _state()
+	s.player(1).tech_levels.assign([6, 8, 6, 9, 6, 6])
+	var home := s.planet(s.player(0).homeworld)
+	var known: Dictionary = s.player(1).knowledge.get(PlanetHistory.KEY, {})
+	known[str(home.id)] = PlanetHistory._merged({}, home, PlanetHistory.SCANNED, s.turn)
+	s.player(1).knowledge[PlanetHistory.KEY] = known
+	var brain := _brain(s, 1)
+	var theirs := brain._enemy_strength(home)
+	var station := s.player(0).starbase_design(home.starbase.design)
+	assert_int(theirs).is_equal(brain._designs.estimate(station, false))
+	assert_int(theirs).is_greater(0)
+	# in full the starter starbase is weaker than our parts make it
+	assert_int(brain._designs.estimate(station, true)).is_less(theirs)
+	assert_bool(brain._strong_enough(theirs * 3 / 2, theirs)).is_true()
+	assert_bool(brain._strong_enough(theirs * 3 / 2 - 1, theirs)).is_false()
+
+
 func test_freighter_designs() -> void:
 	var s := _state()
 	s.player(1).tech_levels.assign([3, 3, 3, 9, 3, 3])

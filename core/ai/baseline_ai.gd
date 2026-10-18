@@ -1,9 +1,9 @@
 class_name BaselineAi
 extends BaselineBase
 ## Our own computer player (spec S22 "The baseline brain"): it grows an economy and spreads out.
-## Each turn, in this order: research settings, the default queue for new colonies, designs, the
-## threats to its planets, orders to its fleets (colony ships, scouts, war fleets, troop
-## transports, mineral haulers), then each planet's queue. It reads only its view (its own
+## Each turn, in this order: research settings, relations, the default queue for new colonies,
+## designs, the threats to its planets, orders to its fleets (colony ships, scouts, war fleets,
+## troop transports, mineral haulers), then each planet's queue. It reads only its view (its own
 ## things, and other planets as it knows them) and draws nothing.
 ##
 ## Its settings (personality `params`, per level in `levels`) and their defaults are declared
@@ -17,6 +17,7 @@ func play(ctx: AiContext) -> void:
 	_designs = BaselineDesigns.new(ctx.view, ctx.content)
 	_count_planets()
 	_research()
+	_update_relations()
 	if _state.turn == 0:
 		_defaults()
 	_update_designs()
@@ -69,6 +70,35 @@ func _research() -> void:
 	_ctx.order(
 		{"type": "research", "percent": percent, "field": best, "next": Player.NEXT_FIELD_LOWEST}
 	)
+
+
+## Relations: a player met in battle (a battle of just the two, or with a player not its friend)
+## is an enemy from then on, kept in the working memory; with alliances, the other computer
+## players are friends; everyone else keeps the relation the player has.
+func _update_relations() -> void:
+	var memory: Array = _me.knowledge.get(OrderRules.AI_MEMORY_KEY, [])
+	var hostile := int(memory[HOSTILE_WORD]) if memory.size() > HOSTILE_WORD else 0
+	_relations.clear()
+	for b: Dictionary in BattleReplay.battles(_ctx.view):
+		var players: Array = b.get("players", [])
+		for q: int in players:
+			if q != _me.index and (players.size() == 2 or _relation(q) != FRIEND):
+				hostile |= 1 << q
+	var wanted: Array[String] = []
+	for q in _state.players.size():
+		var r := _relation(q)
+		if q != _me.index:
+			if hostile & (1 << q):
+				r = ENEMY
+			elif _state.settings.computer_alliances and not _state.player(q).is_human():
+				r = FRIEND
+		wanted.append(r)
+	_relations = wanted
+	if Array(wanted) != Array(_me.relations):
+		_ctx.order({"type": "player_relations", "relations": wanted})
+	var words: Array = [] if hostile == 0 else [MEMORY_BYTES, hostile]
+	if words != memory:
+		_ctx.order({"type": "ai_memory", "words": words})
 
 
 ## New colonies build factories and mines.
@@ -208,8 +238,8 @@ func _send_scout(fleet: Fleet) -> void:
 
 
 ## Warships: away from home with nothing left to fight where they are, back to the homeworld; at
-## the homeworld, all the warships there join one fleet, which attacks the nearest planet known
-## to belong to another player once it has `attack_ships` ships.
+## the homeworld, all the warships there join one fleet, which attacks the nearest enemy planet it
+## is strong enough for once it has `attack_ships` ships.
 func _send_war_fleet(fleet: Fleet) -> void:
 	if _busy(fleet) or _merged.has(fleet.number):
 		return
@@ -227,11 +257,13 @@ func _send_war_fleet(fleet: Fleet) -> void:
 		return
 	var others: Array[int] = []
 	var ships := fleet.ship_count()
+	var strength := _fleet_strength(fleet)
 	for other in _state.fleets_of(_me.index):
 		if other != fleet and other.planet == home.id and _is_war_fleet(other) and not _busy(other):
 			others.append(other.number)
 			_merged[other.number] = true
 			ships += other.ship_count()
+			strength += _fleet_strength(other)
 	if not others.is_empty():
 		_ctx.order({"type": "fleet_merge", "fleet": fleet.number, "fleets": others})
 	for planet in _threatened:
@@ -242,7 +274,7 @@ func _send_war_fleet(fleet: Fleet) -> void:
 			return
 	if ships < _ctx.param("attack_ships"):
 		return
-	var target := _attack_target(home, fleet)
+	var target := _attack_target(home, fleet, strength)
 	if target >= 0:
 		_go(fleet, target, "none")
 
@@ -258,7 +290,7 @@ func _find_threats() -> void:
 	for key: String in seen:
 		var parts := key.split("/")
 		var enemy := _state.fleet(int(parts[0]), int(parts[1]))
-		if enemy == null or not _looks_armed(enemy):
+		if enemy == null or not _looks_armed(enemy) or _relation(enemy.owner) == FRIEND:
 			continue
 		# a fleet at a planet of its own (as the player knows it) is at home, not a threat
 		if enemy.planet >= 0 and _info(enemy.planet)["owner"] == enemy.owner:
@@ -283,7 +315,7 @@ func _find_threats() -> void:
 
 
 ## A troop transport: empty at one of the player's planets with people, it picks the nearest
-## planet known to be another player's, without a starbase, that it can reach and take with the
+## planet known to be an enemy's, without a starbase, that it can reach and take with the
 ## troops it can carry, loads them and unloads them there (an invasion, S17); empty elsewhere, it
 ## goes back to the nearest planet with people; still loaded at home with nowhere to go, it lands
 ## its colonists.
@@ -306,7 +338,7 @@ func _send_transport(fleet: Fleet) -> void:
 		if _invasion_targets.has(planet.id):
 			continue
 		var info := _info(planet.id)
-		if not info["known"] or info["owner"] < 0 or info["owner"] == _me.index:
+		if not info["known"] or not _is_enemy(info["owner"]):
 			continue
 		if int(info.get("starbase_design", -1)) >= 0:
 			continue
@@ -405,21 +437,23 @@ func _troops_needed(info: Dictionary) -> int:
 	return top * 100 * 100 * TROOP_MARGIN_PCT / 100 / (strength * maxi(troops_through, 1)) + 1
 
 
-## The planet nearest `from` the player knows to belong to another player and the fleet can
-## reach, -1 for none.
-func _attack_target(from: Planet, fleet: Fleet) -> int:
+## The planet nearest `from` the player knows to belong to an enemy, that the fleet can reach and
+## is strong enough for (`strength` against `_enemy_strength`), -1 for none.
+func _attack_target(from: Planet, fleet: Fleet, strength: int) -> int:
 	var best := -1
 	var best_d2 := 0
 	for planet in _state.planets:
 		if planet.owner == _me.index:
 			continue
 		var info := _info(planet.id)
-		if info["owner"] < 0 or info["owner"] == _me.index:
+		if not _is_enemy(info["owner"]):
 			continue
 		var d2 := _d2(from.x, from.y, planet.x, planet.y)
 		if best >= 0 and d2 >= best_d2:
 			continue
 		if _warp_for(fleet, planet) == 0:
+			continue
+		if not _strong_enough(strength, _enemy_strength(planet)):
 			continue
 		best = planet.id
 		best_d2 = d2

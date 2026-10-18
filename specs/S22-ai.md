@@ -160,6 +160,14 @@ nothing. Each turn, in this order:
 
 1. **Research:** budget `research_pct` (15); field: the lowest tech level, ties in the order propulsion,
    construction, biotech, energy, electronics, weapons; next field: the lowest. No order when nothing changes.
+   **Relations** (the original's personalities never change theirs; this is our own): a player met in one of this
+   year's battles the player took part in becomes an enemy for good, when the battle had just the two of them or
+   the other player was not the player's friend. The working memory (S11 `ai_memory`) keeps who: word 0 the bytes
+   in use (4), word 1 one bit per player; no memory while there is no one. Then, per other player: an enemy when
+   remembered; otherwise, with "computer players form alliances", a friend when it is a computer player; otherwise
+   the relation the player has (in a game with one human every player starts as every other's enemy, S07). The
+   relations and memory orders are sent only when they change. Friends' fleets are no threat (step 6), and only
+   enemies' planets are attacked or invaded (steps 7, 8).
 2. **Turn 0:** the default queue for new colonies: auto factories and auto mines (200 each).
 3. **Designs** (ship designs in the first free slots; a design's kind is recognised by its parts):
    - a scout (scout hull; the engine with the best merit; the longest-range scanner in the scanner-only slot; a
@@ -192,19 +200,24 @@ nothing. Each turn, in this order:
 5. **Scouts** (scout hulls without weapons), in fleet order, without orders: the nearest planet the player has
    never scanned that no other scout is heading for and that it can reach and come back from to one of the
    player's planets with a dock, at the fastest warp covering the round trip; otherwise the nearest such dock.
-6. **Threats:** the player's planets with, within `defense_range` (60) light-years, another player's fleet seen
-   this turn that has ships on a combat or bomber hull (what a sighting shows) and is not at a planet of its own
+6. **Threats:** the player's planets with, within `defense_range` (60) light-years, a fleet of a player not its
+   friend seen this turn that has ships on a combat or bomber hull (what a sighting shows) and is not at a planet of its own
    owner (as known); nearest the homeworld first.
 7. **War fleets** (only warships and bombers), in fleet order, without orders: away from home, at a threatened
    planet of the player, they stay; otherwise, when the planet where they are is not (as known) another player's,
    back to the homeworld (or the nearest planet with people). At home, every other idle war fleet there merges into
    it; then it goes to the first threatened planet it can reach (it stays when that is the homeworld); otherwise,
-   once it has `attack_ships` (5) ships, to the planet known to be another player's that is nearest home and within
-   its reach. Battles there follow the
+   once it has `attack_ships` (5) ships, to the planet known to be an enemy's that is nearest home, within its reach
+   and that it is strong enough for: its strength (the merged fleet's: each ship's design `strength`, step 3) times
+   100 is at least `attack_margin_pct` (150) times the strength it can tell there: the planet's starbase as its
+   history records it, and the planet owner's armed fleets seen this turn within `defense_range` (a design known in
+   full by its strength; one seen only as a hull, ship hulls of combat and bomber classes and any starbase hull, as
+   that hull with the player's own best weapon in every weapon slot, best armor and best shield, what the player's
+   designer would make of it). Otherwise it waits at home, gathering ships. Battles there follow the
    default battle plan, and its bombers bomb a planet left without a starbase (S17); a planet bombed out becomes
    unowned, a target for colony ships.
 8. **Troop transports**, without orders: away from the player's planets and empty, back to the nearest planet with
-   people; at one of its planets, the nearest planet known to be another player's, without a starbase (as known),
+   people; at one of its planets, the nearest planet known to be an enemy's, without a starbase (as known),
    that it can reach and take: the troops needed are the top of the population estimate (+1/8) over the share
    of troops its defenses let through (a defense class c lets about 101 − 6c percent of bombs through; troops
    get U + (1 − U)/4 through, S17) and the race's troop strength (`invasion.troops_pct`), times 130%, plus one;
@@ -230,8 +243,7 @@ nothing. Each turn, in this order:
    defenses (200) with `defense_min_population` (50) people. The order is sent only when the queue differs (items,
    designs, starbase flags and counts).
 
-Not yet: alliances and relations, minefields, packets, starbase weapons, judging an enemy's strength before
-attacking.
+Not yet: minefields, packets, starbase weapons.
 
 ### The classic world (the original's personalities)
 

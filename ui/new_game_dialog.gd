@@ -22,7 +22,7 @@ const FLAGS := [
 	["slow_tech", "Slower Tech Advances", true],
 	["accelerated_start", "Accelerated BBS Play", true],
 	["no_random_events", "No Random Events", true],
-	["computer_alliances", "Computer Players Form Alliances", false],
+	["computer_alliances", "Computer Players Form Alliances", true],
 	["public_scores", "Public Player Scores", false],
 	["galaxy_clumping", "Galaxy Clumping", true],
 ]
@@ -143,7 +143,7 @@ func _build_advanced() -> void:
 		c.text = spec[1]
 		c.disabled = not spec[2]
 		if not spec[2]:
-			c.tooltip_text = "Comes with computer players and scores."
+			c.tooltip_text = "Comes with public scores (later)."
 		right.add_child(c)
 		_flags.append(c)
 	var seed_row := HBoxContainer.new()

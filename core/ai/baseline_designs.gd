@@ -149,28 +149,14 @@ func _build_warship() -> Design:
 			hull = h
 	if hull.is_empty():
 		return null
-	var d := _view.designer.blank_design(hull)
+	var d := _armed(hull)
 	d.name = NAMES[WARSHIP]
-	var weapon := _best_weapon()
-	var armor := _best_by("armor", "armor")
-	var shield := _best_by("shield", "shield")
 	var slots: Array = _content.hull(hull)["slots"]
 	var engine_at := -1
 	for i in slots.size():
-		var accepts: Array = slots[i]["accepts"]
-		var part := ""
-		if accepts.has("engine"):
+		if (slots[i]["accepts"] as Array).has("engine"):
 			engine_at = i
-		elif accepts.has("beam") or accepts.has("torpedo"):
-			part = weapon
-		elif accepts.has("armor"):
-			part = armor
-		elif accepts.has("shield"):
-			part = shield
-		if not part.is_empty():
-			d.parts[i].part = part
-			d.parts[i].count = int(slots[i]["max"])
-	if engine_at < 0 or weapon.is_empty():
+	if engine_at < 0 or _best_weapon().is_empty():
 		return null
 	_fit_engine(d, engine_at, int(slots[engine_at]["max"]))
 	if not PartRules.design_problem(d, false, _view.me(), _content).is_empty():
@@ -317,6 +303,40 @@ func strength(d: Design) -> int:
 			attack += _weapon_score(slot.part) * slot.count
 		shields += int(_content.part(slot.part).get("stats", {}).get("shield", 0)) * slot.count
 	return attack * (PartRules.armor(d, _content, _view.me().race) + shields)
+
+
+## The hull with the player's best weapon in every slot that takes weapons, its best armor in the
+## armor slots and its best shield in the shield slots left (no engine).
+func _armed(hull: String) -> Design:
+	var d := _view.designer.blank_design(hull)
+	var weapon := _best_weapon()
+	var armor := _best_by("armor", "armor")
+	var shield := _best_by("shield", "shield")
+	var slots: Array = _content.hull(hull)["slots"]
+	for i in slots.size():
+		var accepts: Array = slots[i]["accepts"]
+		var part := ""
+		if accepts.has("engine"):
+			continue
+		if accepts.has("beam") or accepts.has("torpedo"):
+			part = weapon
+		elif accepts.has("armor"):
+			part = armor
+		elif accepts.has("shield"):
+			part = shield
+		if not part.is_empty():
+			d.parts[i].part = part
+			d.parts[i].count = int(slots[i]["max"])
+	return d
+
+
+## Another player's design as strong as the player can tell: its `strength` when the player knows
+## it in full, else (only the hull seen) the strength of that hull armed with the player's own best
+## parts (`_armed`).
+func estimate(d: Design, full: bool) -> int:
+	if d == null:
+		return 0
+	return strength(d) if full else strength(_armed(d.hull))
 
 
 ## Whether a ship design carries weapons (beams or torpedoes).
