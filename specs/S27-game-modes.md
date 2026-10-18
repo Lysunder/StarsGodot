@@ -6,8 +6,8 @@ the start), S20 (elimination and victory), S22 (the AI step).
 
 ## Summary
 
-How a game is played on one machine: a single human against computer players, or several humans taking turns at
-the same screen (hotseat). Play-by-email will be added here (M13).
+How a game is played: a single human against computer players, several humans taking turns at the same screen
+(hotseat), or several humans each on their own machine, sending files to a host (play by email).
 
 ## Data used
 
@@ -55,6 +55,52 @@ their first planet).
 The original tells an eliminated player nothing unless the game has a winner (S20). The player at the controls is
 told once that their race has been wiped out: on the year it happens, or when a game already lost is opened.
 
+### Play by email
+
+**The host's folder** holds `host.json` (the format, a game id, the game's name), the game itself (`game.json`, a
+save), a turn file for each human player and the order files they send back. The game id is the first 16 hex digits
+of the SHA-256 of the new game's save text. The host tool (`tools/host.gd`, headless) has three commands:
+
+1. `new <folder> <setup>`: makes the game from a setup file (universe options; the players in order, humans from
+   race files or presets, the first one human, computer players by personality and level) and writes every human
+   player's turn file, `<name>-p<N>.turn` (N counting from 1).
+2. `status <folder>`: the year, and for each human who gives orders (step 1 of "The year") whether their orders
+   are in.
+3. `generate <folder> [--force]`: when every such human's orders are in (with `--force`, the missing ones give
+   none), generates the year with them and the computer players' orders (S22), saves the game, moves the orders
+   used to `done/<turn>/` and writes every human player's new turn file (an eliminated one too). A game made with
+   other gameplay content than the host's is refused (S03).
+
+An order file is refused, and its player counted as waiting, when it is damaged (checksum), names another game id,
+another player than its name says, or another year.
+
+**A turn file** holds the game as its player knows it:
+
+- the player's own planets, fleets, designs, settings, messages, knowledge (planet history, S15) and view of the
+  year in full;
+- every other planet as the player's planet history records it (owner, homeworld, starbase, and when ever scanned,
+  environment, original environment, concentrations, population and defense estimates; this year's surface
+  minerals only when seen at that detail); a planet never seen has no owner and every value zero;
+- other players' fleets only when seen this year: position, planet and ships, with no cargo, name, battle plan,
+  repeat or waypoints beyond where they are;
+- other players' designs only as far as seen (in full, or the hull with its slots empty); a starbase design the
+  planet history records counts as seen (its hull);
+- minefields the player owns or knows, packets (its own and those seen), wormholes seen (a wormhole whose other end
+  is not seen leads nowhere known), traders seen;
+- of other players: their race's name, plural and logo, whether they are computer players, eliminated, rank, and
+  their score records only with public scores; nothing else (no traits, tech, research, relations, plans, queues,
+  knowledge);
+- the battles the player took part in; random streams set to a fixed start, so nothing in the file foretells the
+  year.
+
+**Integrity**: turn files and order files carry `checksum`, the SHA-256 of the canonical JSON (keys sorted, no
+whitespace) of every other field. A file whose checksum does not match is refused as damaged. This guards against
+accidents in transit, not against a player who edits a file and recomputes the checksum.
+
+**The player** opens the turn file (main menu, Open Turn File). The game is theirs alone (no hand-off). Ending the
+turn, or saving, writes their orders beside the turn file (`.orders` for `.turn`), to send to the host; opening the
+turn file again goes on with the orders written for it.
+
 ## Randomness
 
 None.
@@ -66,6 +112,9 @@ None.
 
 ## Worked examples
 
+- Play by email: three humans and a computer player through 20 years, nothing passing between players and host but
+  turn files and order files (`tests/unit/game/test_pbem.gd`).
+
 - Two humans and a computer player: the first gives orders and ends the turn (no year); the second does the same;
   the year is generated with both humans' orders and the computer player's, and the first human is up again
   (`tests/unit/ui/test_hotseat.gd`).
@@ -76,4 +125,4 @@ None.
 
 ## Open questions
 
-- Play-by-email (M13): turn files per player, order files, checksums.
+- A host that marks a player inactive (played by the computer, S22) or drops one: not offered yet.

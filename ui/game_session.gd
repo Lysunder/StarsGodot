@@ -6,6 +6,9 @@ extends Node
 ## Hotseat (S27): with several human players, `player` is the one at the controls. Ending a turn
 ## submits that player's orders and hands over to the next human who has not submitted; after the
 ## last one the year is generated (computer players adding theirs) and the first human is up.
+##
+## Play by email (S27): a turn file opened from the host holds the game as one player knows it;
+## ending the turn (or saving) writes that player's orders beside it, to send back to the host.
 
 signal changed
 ## Another human player is at the controls (hotseat), before the screen shows their game.
@@ -28,6 +31,9 @@ var game_version: String = "0.1.0"
 var player: int = 0
 ## The orders refused when the last year was generated, one "player P order I: reason" line each.
 var rejected := PackedStringArray()
+## The play-by-email turn file being played ("" otherwise) and its game's id.
+var turn_file := ""
+var game_id := ""
 ## Orders changed since the game was last saved or loaded (the Messages pane's "*").
 var dirty: bool = false
 ## This year's orders of the human players by index (the one at the controls included), and the
@@ -53,6 +59,50 @@ func has_game() -> bool:
 
 func new_game(options: NewGame.Options) -> void:
 	_start(NewGame.create(content, options))
+
+
+## Opens a play-by-email turn file (and the orders already written for it, to go on with them);
+## returns "" or the problems.
+func open_turn_file(path: String) -> String:
+	var loaded := TurnFile.read(path, content)
+	if not loaded.ok():
+		return "\n".join(loaded.errors)
+	if loaded.content_mismatch:
+		return "The turn file was made with other gameplay content or mods than this game has."
+	_start(loaded.state)
+	turn_file = path
+	game_id = loaded.game_id
+	player = loaded.player
+	var sent := OrderSubmission.read(submission_path())
+	if (
+		sent.ok()
+		and sent.game_id == game_id
+		and sent.order_set.player == player
+		and sent.order_set.turn == state.turn
+	):
+		_orders[player] = sent.order_set
+	orders = _orders_of(player)
+	_refresh()
+	return ""
+
+
+func is_pbem() -> bool:
+	return not turn_file.is_empty()
+
+
+## Where the orders for the turn file go: beside it, `.orders` for `.turn`.
+func submission_path() -> String:
+	return turn_file.get_basename() + "." + OrderSubmission.EXTENSION
+
+
+## Writes the player's orders for the turn file; returns "" or why it failed.
+func submit_orders() -> String:
+	var err := OrderSubmission.write(submission_path(), orders, game_id, game_version)
+	if err != OK:
+		return "The orders could not be written (%s)." % error_string(err)
+	dirty = false
+	changed.emit()
+	return ""
 
 
 ## Loads a save (and the human players' pending orders and the hotseat round, if saved with
@@ -109,9 +159,10 @@ func humans() -> Array[int]:
 	return out
 
 
-## Whether the game has more than one human player giving orders (hotseat).
+## Whether the game has more than one human player giving orders at this screen (hotseat; a
+## play-by-email turn file is one player's).
 func is_hotseat() -> bool:
-	return humans().size() > 1
+	return not is_pbem() and humans().size() > 1
 
 
 func _orders_of(p: int) -> OrderSet:
@@ -222,6 +273,8 @@ func _switch_to(p: int) -> void:
 func _start(s: GameState) -> void:
 	state = s
 	dirty = false
+	turn_file = ""
+	game_id = ""
 	_orders.clear()
 	_submitted.clear()
 	rejected = PackedStringArray()

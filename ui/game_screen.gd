@@ -295,6 +295,9 @@ func _on_hovered(x: int, y: int, hit: Dictionary) -> void:
 func _on_menu(menu_id: int) -> void:
 	match menu_id:
 		MENU_SAVE:
+			if GameSession.is_pbem():
+				_submit()
+				return
 			var err := GameSession.save_game(GameSession.default_save_path())
 			_messages.add("Game saved." if err == OK else "Saving failed (%s)." % error_string(err))
 		MENU_MAIN:
@@ -329,6 +332,9 @@ func _on_menu(menu_id: int) -> void:
 
 
 func _on_end_turn() -> void:
+	if GameSession.is_pbem():
+		_submit()
+		return
 	var was_eliminated := GameSession.view.me().eliminated
 	var hotseat := GameSession.is_hotseat()
 	if not GameSession.end_turn():
@@ -341,6 +347,15 @@ func _on_end_turn() -> void:
 	_new_year()
 	if not was_eliminated:
 		_tell_if_eliminated()
+
+
+## Play by email: the orders written beside the turn file, to send to the host.
+func _submit() -> void:
+	var problem := GameSession.submit_orders()
+	if not problem.is_empty():
+		_messages.add(problem)
+		return
+	_messages.add("Orders saved to %s. Send that file to the host." % GameSession.submission_path())
 
 
 ## The year's start for the player at the controls: the messages, the orders refused, the map
