@@ -101,13 +101,40 @@ func test_a_waypoint_where_the_fleet_is_is_reached() -> void:
 	assert_int(f.waypoints.size()).is_equal(1)
 	assert_int(f.waypoints[0].warp).is_equal(6)
 	assert_int(f.planet).is_equal(0)
-	# without fuel the fleet keeps its mark and its waypoint
+	# without fuel too: it has the fuel for the whole way (none)
 	var dry := _fleet(s)
 	dry.cargo[Fleet.CARGO_FUEL] = 0
 	_goto(dry, s.planets[0], 6)
 	Movement.move_all(s, _content, StarsRandom.new())
-	assert_bool(dry.did_not_move).is_true()
-	assert_int(dry.waypoints.size()).is_equal(2)
+	assert_bool(dry.did_not_move).is_false()
+	assert_int(dry.waypoints.size()).is_equal(1)
+	# a dry fleet with somewhere to go keeps its mark and its waypoint
+	var stuck := _fleet(s)
+	stuck.cargo[Fleet.CARGO_FUEL] = 0
+	_goto(stuck, s.planets[1], 6)
+	Movement.move_all(s, _content, StarsRandom.new())
+	assert_bool(stuck.did_not_move).is_true()
+	assert_int(stuck.waypoints.size()).is_equal(2)
+
+
+func test_fuel_for_the_whole_way_is_kept() -> void:
+	var s := _game()
+	var f := _fleet(s)
+	f.cargo[WaypointTasks.CARGO_COLONISTS] = 25
+	# 91.8 ly at warp 5 with exactly the fuel for 92 ly
+	s.planets[1].x = 1277 + 32
+	s.planets[1].y = 1233 + 86
+	_goto(f, s.planets[1], 5, "colonize")
+	var owner := s.players[0]
+	var start := Movement.fuel_needed(f, owner, 5, 92, _content)
+	f.cargo[Fleet.CARGO_FUEL] = start
+	Movement.move_all(s, _content, StarsRandom.new())
+	var rest := int(sqrt(float((1309 - f.x) ** 2 + (1319 - f.y) ** 2)) + 0.9999)
+	var need := Movement.fuel_needed(f, owner, 5, rest, _content)
+	# 25 ly cost more than their share: the tank is raised to what the rest of the way needs
+	var after_move := start - Movement.fuel_needed(f, owner, 5, 25, _content)
+	assert_int(after_move).is_less(need)
+	assert_int(f.cargo[Fleet.CARGO_FUEL]).is_equal(need)
 
 
 func test_out_of_fuel_stops_early() -> void:

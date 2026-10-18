@@ -29,14 +29,20 @@ const TURN_IGNORE := {
 	{
 		22: ["/fleets[0:2]/cargo/0", "/fleets[1:1]/cargo/0", "/messages/0/6*"],
 	},
-	# B38: the comet changes the axes its message names, not gravity first
+	# B38: the comet changes the axes its message names, not gravity first. B32: a damaged ship
+	# moved into a fleet's damaged stack of its design (a merge); the original spreads the stack's
+	# damage over all its ships, so the battle that follows starts the stack with less
 	"big1":
 	{
+		66: ["/battles/3", "/fleets[1:31]/stacks[14]/damage*", "/fleets[1:43]/stacks[14]/damage*"],
+		68: ["/battles/6", "/fleets[1:31]/stacks[14]/damage*"],
+		69: ["/battles/3", "/fleets[1:31]/stacks[14]/damage*"],
 		74: ["/planets/118/environment*"],
 	},
-	# B38 likewise
+	# B32 and B38 likewise
 	"turin1":
 	{
+		61: ["/battles/0", "/fleets[1:3]/stacks[10]/damage*"],
 		72: ["/planets/67/environment*"],
 	},
 }
@@ -549,9 +555,8 @@ func test_plan1(
 	_check_turn("plan1", turn)
 
 
-## Five Robotoids computer players and an idle human (S22 stage 4). Turns left out: B32 (66, 68:
-## merged damage), B12 (73, 75: a caught fleet that was itself chasing stops) and 69 (one draw short
-## somewhere between player 5's last fleet pass and the first engine roll; not found yet).
+## Five Robotoids computer players and an idle human (S22 stage 4). Turns left out: B12 (73, 75: a
+## caught fleet that was itself chasing stops).
 func test_big1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -562,7 +567,10 @@ func test_big1(
 		[63],
 		[64],
 		[65],
+		[66],
 		[67],
+		[68],
+		[69],
 		[70],
 		[71],
 		[72],
@@ -576,14 +584,15 @@ func test_big1(
 	_check_turn("big1", turn, true)
 
 
-## Five Turindrones computer players and an idle human (S22 stage 4). Turns left out: B32 (61:
-## merged damage), B12 (71: a caught fleet that was itself chasing stops) and 77 (mining one off on
-## several planets, battle token order and wormholes differ; not found yet).
+## Five Turindrones computer players and an idle human (S22 stage 4). Turn left out: B12 (71: a
+## caught fleet that was itself chasing stops). Turn 77: a fleet crossing two overlapping fields of
+## one type rolls once per light year of the joined stretch (S13).
 func test_turin1(
 	turn: int,
 	# gdlint: ignore=unused-argument
 	test_parameters := [
 		[60],
+		[61],
 		[62],
 		[63],
 		[64],
@@ -598,6 +607,7 @@ func test_turin1(
 		[74],
 		[75],
 		[76],
+		[77],
 		[78],
 		[79],
 	]

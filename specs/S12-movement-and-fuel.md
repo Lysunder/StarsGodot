@@ -185,7 +185,11 @@ form); when u is 0 the range is unlimited.
    move m = min(budget, trunc(distance to the target + 0.9999)), so the distance is rounded up (the constant is in
    the data segment at 1110:1fb8; seen in the harness: 9.2 ly cost fuel for 10, terra1 turn 40); the fuel use is
    computed for m.
-2. If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
+2. **The whole way:** before the move (before the year's losses in flight; for a chaser before each of its steps,
+   to the target's current position) the fleet has the fuel for the whole way when its fuel is at least the fuel
+   needed for trunc(distance to its waypoint + 0.9999). Such a fleet's range counts as at least w², so it can't run
+   short this step.
+   If the fleet has enough fuel for the move, subtract the fuel needed. Otherwise it moves only as far as its fuel
    allows and ends with 0 fuel. Either way, a fleet whose tank is empty after a move that used fuel, and that did
    not get within reach of its target (m + 0.99999 ≤ distance) or could not move at all, has **run out of fuel**
    (seen in long1 turn 31: exactly enough fuel for a 36 ly leg, still out of fuel): its next waypoint's warp is
@@ -199,7 +203,7 @@ form); when u is 0 the range is unlimited.
    ≤ m), so it can arrive although fuel was charged for the distance rounded up (seen in long1 turn 15: 36.7 ly at
    warp 6, and terra1 turn 33: 1.4 ly at warp 1); a fleet whose rounded position is its target's has also arrived.
 4. Minefields are checked along the path (S13) and may stop the fleet early.
-5. A fleet that moves loses its "didn't move" mark: any fleet with fuel range left does, even one whose waypoint is where it already is (distance 0, which counts as arriving, so the waypoint is reached; seen in big1 turn 63: a chaser whose prey came to the chaser's planet). A fleet with no fuel range keeps the mark (`MoveFleets` clears it after the fuel check unless the range is 0).
+5. A fleet that moves loses its "didn't move" mark: any fleet with fuel range left does, even one whose waypoint is where it already is (distance 0, which counts as arriving, so the waypoint is reached; seen in big1 turn 63: a chaser whose prey came to the chaser's planet). A fleet with no fuel range keeps the mark (`MoveFleets` clears it after the fuel check unless the range is 0), unless it has the fuel for the whole way (step 2: then its range counts as w²), as a dry fleet whose waypoint is where it is has.
 6. **Ram scoops:** a fleet moving at warp w ≤ 8 makes fuel for each design whose engine uses no fuel at w: with e the
    number of engines on the design, k = e; if warp w + 1 is also free, k = 3e; if w + 2 is too, k = 6e; if w ≤ 7 and
    w + 3 is free as well, k = 10e. Fuel made = Σ ships × k × s, where s = min(m, trunc(distance − 0.99999)) (the
@@ -219,7 +223,15 @@ form); when u is 0 the range is unlimited.
 9. **Orbit:** a fleet that ends its move on a planet's position orbits that planet, whatever its waypoint targets
    (`MoveFleets` looks for a planet there when the fleet has none): a fleet that caught up with a fleet orbiting a
    planet orbits it too, so its current waypoint becomes that planet (seen in mine1 turn 81).
-10. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
+10. **Fuel for the rest of the way:** at the end of its step (after the ram scoops, the Radiating Hydro-Ram Scoop
+   losses, a wormhole jump and finding the planet it orbits), a fleet that had the fuel for the whole way (step 2)
+   and has less fuel left than the rest of the way needs (trunc(distance to its waypoint + 0.9999), from where it
+   now is, with the cargo it now carries) gets its tank raised to that, at most to its fuel capacity
+   (`MoveFleets@10a8:1f18`, its last step for the fleet). So rounding a partial move never strands a fleet that
+   could reach its waypoint (seen in big1 turns 8 and 12: 140.8 ly at warp 9 with exactly the fuel for 141 ly, 85
+   mg left where 81 ly cost 86; turin1 turn 19). A fleet that arrived needs nothing more. A fleet stopped by a mine
+   hit (S13) gets the same.
+11. Fleet positions are kept inside the universe (1000 … width + 1000) by the retargeting step (S02 phase 4 and 21).
 
 ### Waypoints after movement
 

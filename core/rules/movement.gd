@@ -206,18 +206,28 @@ static func _move(
 			[fleet.owner * 512 + fleet.number]
 		)
 		return
-	# the fuel range is taken before the year's losses in flight (seen in rand1 turn 54)
+	# the fuel range is taken before the year's losses in flight (seen in rand1 turn 54), and so is
+	# whether the fleet has the fuel for the whole way
 	var fuel_reach := fuel_range(fleet, owner, next.warp, content)
+	var whole_way := _has_fuel_for_whole_way(fleet, owner, content)
 	if next.warp < Waypoint.WARP_STARGATE:
 		_transit_losses(state, content, fleet, owner)
 		if next.warp == WARP10 and not _warp10_damage(state, content, rng, fleet, owner):
 			return
 	if next.target == "fleet" and state.fleet(next.target_owner, next.target_id) != null:
+		# a chaser's whole way is taken again before each of its steps, to the target's position
 		chasers[fleet] = {
 			"budget": next.warp * next.warp, "moved": 0, "fuel": 0, "range": fuel_reach
 		}
 		return
-	_step(state, content, rng, fleet, next.warp * next.warp, {"range": fuel_reach})
+	_step(
+		state,
+		content,
+		rng,
+		fleet,
+		next.warp * next.warp,
+		{"range": fuel_reach, "whole_way": whole_way}
+	)
 
 
 ## S12 "Alternate Reality colonists in transit": colonists aboard a moving fleet of a race with
@@ -344,7 +354,14 @@ static func _step(
 	var warp := next.warp
 	var move := mini(budget, whole)
 	var moved: int = chase.get("moved", 0)
-	var reach := maxi(int(chase.get("range", fuel_range(fleet, owner, warp, content))) - moved, 0)
+	# with the fuel for the whole way (taken before the year's losses, or for a chaser before each
+	# of its steps) the fleet can't run dry this step
+	var whole_way: bool = chase.get("whole_way", _has_fuel_for_whole_way(fleet, owner, content))
+	chase.erase("whole_way")
+	var reach := int(chase.get("range", fuel_range(fleet, owner, warp, content)))
+	if whole_way:
+		reach = maxi(reach, warp * warp)
+	reach = maxi(reach - moved, 0)
 	var used := 0
 	if reach < move:
 		fleet.cargo[Fleet.CARGO_FUEL] = 0
@@ -379,7 +396,7 @@ static func _step(
 				[word, next.warp]
 			)
 	# any fuel range left takes the mark away, even with the target where the fleet is (distance
-	# 0, which counts as arriving)
+	# 0, which counts as arriving; a dry fleet there has the fuel for the whole way)
 	if reach <= 0:
 		return false
 	fleet.did_not_move = false
@@ -428,7 +445,38 @@ static func _step(
 					[fleet.owner * 512 + fleet.number, mini(made, SCOOP_MESSAGE_MAX)]
 				)
 	_engine_radiation(state, content, fleet, owner, int(chase.get("pass", 0)))
+	if whole_way:
+		_keep_fuel_for_rest_of_way(fleet, owner, content)
 	return chase.has("budget") and not arrived and not out_of_fuel and hit < 0
+
+
+## The fleet has the fuel to reach its next waypoint from where it is (S12 "Fuel use").
+static func _has_fuel_for_whole_way(fleet: Fleet, owner: Player, content: ContentRegistry) -> bool:
+	var next := fleet.waypoints[1]
+	var need := fuel_needed(fleet, owner, next.warp, _distance_to(fleet, next), content)
+	return need < CANNOT_MOVE and fleet.cargo[Fleet.CARGO_FUEL] >= need
+
+
+## S12 "Fuel use": a fleet that had the fuel for the whole way before its step still has it after:
+## when rounding left it short of what the rest of the way needs, its tank is raised to that
+## (at most to its capacity).
+static func _keep_fuel_for_rest_of_way(
+	fleet: Fleet, owner: Player, content: ContentRegistry
+) -> void:
+	if fleet.stacks.is_empty():
+		return
+	var next := fleet.waypoints[1]
+	var need := fuel_needed(fleet, owner, next.warp, _distance_to(fleet, next), content)
+	if need >= CANNOT_MOVE or fleet.cargo[Fleet.CARGO_FUEL] >= need:
+		return
+	fleet.cargo[Fleet.CARGO_FUEL] = mini(need, fuel_capacity(fleet, owner, content))
+
+
+## The distance from the fleet to the waypoint, rounded up (+ 0.9999, truncated).
+static func _distance_to(fleet: Fleet, wp: Waypoint) -> int:
+	var dx := wp.x - fleet.x
+	var dy := wp.y - fleet.y
+	return int(sqrt(float(dx * dx + dy * dy)) + DISTANCE_ROUND_UP)
 
 
 ## S12 step 7: a Radiating Hydro-Ram Scoop kills colonists aboard whose race isn't immune to

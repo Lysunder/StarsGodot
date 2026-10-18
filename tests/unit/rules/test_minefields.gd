@@ -126,8 +126,14 @@ func test_crossing_a_field_and_merging_stretches() -> void:
 	Minefields._add_stretch(list, 80, 90)
 	Minefields._add_stretch(list, 10, 40)
 	assert_array(list).is_equal([[10, 50], [80, 90]])
+	# a stretch starting inside another joins it, and takes in the ones it reaches
 	Minefields._add_stretch(list, 45, 85)
-	assert_array(list).is_equal([[10, 50], [45, 90]])
+	assert_array(list).is_equal([[10, 90]])
+	Minefields._add_stretch(list, 20, 90)
+	assert_array(list).is_equal([[10, 90]])
+	# one starting after the last one ends is added after it
+	Minefields._add_stretch(list, 91, 95)
+	assert_array(list).is_equal([[10, 90], [91, 95]])
 
 
 func test_a_speed_bump_stops_a_fast_fleet() -> void:

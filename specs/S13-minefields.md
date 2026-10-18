@@ -59,9 +59,11 @@ counts 26 ly, speed 5, and isn't checked against a speed-bump field, mine1 turn 
    distance) truncated; the stretch is enter = max(a − h, 0) to leave = min(a + h, d), kept when leave > 0 and
    enter < d. **B01:** for a vertical path the original takes the fleet's own position as P (fix: the proper
    projection).
-   Stretches of one type are kept sorted by enter (at most 8): a new stretch goes before the first one it doesn't
-   start after; if it ends more than 1 ly before that one starts it is inserted, otherwise the two join (the
-   earlier enter, the later leave) and the joined stretch takes in the following stretches it reaches.
+   Stretches of one type are kept sorted by enter (at most 8): a new stretch goes before the first one that doesn't
+   end before it starts (enter ≤ that one's leave; `Fleet_CheckMinefields@10a8:30b6`); if it ends more than 1 ly
+   before that one starts it is inserted, otherwise the two join (the earlier enter, the later leave) and the joined
+   stretch takes in the following stretches it reaches. So a stretch starting inside an earlier one joins it (seen
+   in turin1 turn 77: stretches 0–36 and 18–36 of two standard fields roll 36 times, not 54).
 3. **Rolling:** take the stretches in order of entry distance (on equal entries the lower type first). For a
    stretch of type t, if c > safe(t) + b: chance = (c − b − safe(t)) × rate(t) per 1000; for each light year inside
    the stretch draw `random(1000)`; the first draw below the chance is a hit at enter + that light year. No hit: go

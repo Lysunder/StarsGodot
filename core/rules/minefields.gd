@@ -200,11 +200,12 @@ static func _crossing(x1: int, y1: int, x2: int, y2: int, field: Minefield, leng
 	return []
 
 
-## Adds a stretch to one type's sorted list (at most MAX_STRETCHES): it joins the stretch it
-## overlaps, which then takes in the following stretches it reaches.
+## Adds a stretch to one type's sorted list (at most MAX_STRETCHES): it goes before the first
+## stretch that doesn't end before it starts, or joins that one, which then takes in the following
+## stretches it reaches.
 static func _add_stretch(list: Array, enter: int, leave: int) -> void:
 	var k := 0
-	while k < list.size() and enter > list[k][0]:
+	while k < list.size() and enter > list[k][1]:
 		k += 1
 	if k == list.size():
 		if k < MAX_STRETCHES:
