@@ -56,7 +56,7 @@ func test_a_turn_file_holds_only_what_its_player_knows() -> void:
 	assert_array(Array(StateValidator.validate(s, _content))).is_empty()
 	assert_int(loaded.player).is_equal(0)
 	# the player's own things are whole
-	assert_object(s.player(0).race).is_equal(host.player(0).race)
+	assert_bool(s.player(0).race.equals(host.player(0).race)).is_true()
 	assert_dict(s.player(0).knowledge).is_equal(host.player(0).knowledge)
 	# of the others only what anyone may know
 	var other := s.player(1)

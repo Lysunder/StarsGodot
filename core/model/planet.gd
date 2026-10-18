@@ -82,3 +82,39 @@ func _schema() -> Array:
 		["artifact", Kind.JSON],
 		["mod_data", Kind.JSON],
 	]
+
+
+## Field by field (the hot path of copying a game; test_model_copies checks it holds every
+## schema field).
+func _copy_into(out: ModelObject) -> void:
+	var o := out as Planet
+	o.id = id
+	o.name = name
+	o.x = x
+	o.y = y
+	o.owner = owner
+	o.environment.assign(environment)
+	o.environment_original.assign(environment_original)
+	o.concentration.assign(concentration)
+	o.concentration_fraction.assign(concentration_fraction)
+	o.surface.assign(surface)
+	o.population = population
+	o.extra_colonists = extra_colonists
+	o.mines = mines
+	o.factories = factories
+	o.defenses = defenses
+	o.population_estimate = population_estimate
+	o.defense_estimate = defense_estimate
+	o.homeworld = homeworld
+	o.has_scanner = has_scanner
+	o.starbase = null if starbase == null else starbase.copy() as Starbase
+	o.mass_driver_target = mass_driver_target
+	o.mass_driver_warp = mass_driver_warp
+	o.route = route
+	for q in queue:
+		o.queue.append(q.copy() as QueueItem)
+	o.leftover_to_research = leftover_to_research
+	o.artifact = (
+		artifact.duplicate(true) if artifact is Dictionary or artifact is Array else artifact
+	)
+	o.mod_data = mod_data.duplicate(true)

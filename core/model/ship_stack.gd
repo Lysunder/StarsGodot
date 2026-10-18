@@ -28,3 +28,14 @@ func _schema() -> Array:
 		["damage", Kind.INT],
 		["paid", Kind.INT_LIST],
 	]
+
+
+## Field by field (the hot path of copying a game; test_model_copies checks it holds every
+## schema field).
+func _copy_into(out: ModelObject) -> void:
+	var o := out as ShipStack
+	o.design = design
+	o.count = count
+	o.damaged_percent = damaged_percent
+	o.damage = damage
+	o.paid.assign(paid)

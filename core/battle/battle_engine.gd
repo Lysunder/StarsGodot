@@ -58,12 +58,13 @@ var losses := {}
 ## The armor damage formulas (S16 "Damage"): `battle.armor_damage`, `battle.starbase_damage`.
 var _ship_armor: Callable
 var _starbase_armor: Callable
-## Estimates of the move being weighed, by tokens, distance and range rule (`_estimate`).
+## The move being weighed: estimates, each foe's best over a range of distances, whether random
+## numbers were drawn (torpedo_hits), the foes and the mover's side by square (`_list_foes`).
 var _estimates := {}
-## What each enemy deals and takes over a range of distances, for the move being weighed.
 var _kept := {}
-## Whether random numbers were drawn since it was last cleared (torpedo_hits).
 var _drew := false
+var _foes: Array = []
+var _own_on := {}
 
 
 func _init(
@@ -294,9 +295,9 @@ func _move_token(idx: int, p: int) -> void:
 ## `Token_Move@10e8:3c7a`.
 func _token_move(idx: int, _p: int) -> void:
 	var t := tokens[idx]
-	# nothing changes while the token weighs its move: its estimates hold for every square
 	_estimates.clear()
 	_kept.clear()
+	_list_foes(t)
 	var cx: int = t.square & 15
 	var cy: int = t.square >> 4
 	if t.kind == KIND_STARBASE:
@@ -318,11 +319,9 @@ func _token_move(idx: int, _p: int) -> void:
 	for x in range(maxi(cx - radius, 0), mini(cx + radius, BOARD_MAX) + 1):
 		for y in range(maxi(cy - radius, 0), mini(cy + radius, BOARD_MAX) + 1):
 			var square := y << 4 | x
-			var score := _rate_position(t, square, primary, mask)
+			var score := _rate_position(t, square, primary)
 			if tactic == 0:
-				for o in tokens:
-					if o.square == square and o.owner == t.owner:
-						score += 2
+				score += 2 * _own_on.get(square, 0)
 				if t.square == square:
 					score -= 1
 			var d := distance(t.square, square)
@@ -464,26 +463,44 @@ func _choose_target(t: Dictionary, mask: int) -> Array[int]:
 	return [1, square]
 
 
+## The move's foes: [token, column, row, may step first, columns and rows around it]; and the
+## mover's side's tokens (any) per square.
+func _list_foes(t: Dictionary) -> void:
+	_foes.clear()
+	_own_on.clear()
+	var mask: int = attack[t.owner]
+	var my_moves: int = t.state >> MOVES_SHIFT
+	for o in tokens:
+		if o.owner == t.owner:
+			_own_on[o.square] = _own_on.get(o.square, 0) + 1
+		if not o.state & ALIVE or o.owner == t.owner or not mask & (1 << o.owner):
+			continue
+		var ox: int = o.square & 15
+		var oy: int = o.square >> 4
+		var cols := [clampi(ox - 1, 0, BOARD_MAX), clampi(ox + 1, 0, BOARD_MAX)]
+		var rows := [clampi(oy - 1, 0, BOARD_MAX), clampi(oy + 1, 0, BOARD_MAX)]
+		_foes.append([o, ox, oy, my_moves <= (o.state >> MOVES_SHIFT), cols, rows])
+
+
 ## `Token_RatePosition@10e8:3966`.
-func _rate_position(t: Dictionary, square: int, primary: bool, mask: int) -> int:
+func _rate_position(t: Dictionary, square: int, primary: bool) -> int:
 	var most_dealt := 0
 	var taken_sum := 0
 	var target_class: int = (t.targets & 15) if primary else (t.targets >> 4)
 	var tactic: int = t.tactic & 15
-	var my_moves: int = t.state >> MOVES_SHIFT
-	for o in tokens:
-		if not o.state & ALIVE or o.owner == t.owner or not mask & (1 << o.owner):
-			continue
-		var d := distance(o.square, square)
+	var sx := square & 15
+	var sy := square >> 4
+	for foe: Array in _foes:
+		var o: Dictionary = foe[0]
+		var d := maxi(absi(foe[1] - sx), absi(foe[2] - sy))
 		var low := d
 		var high := d
-		if my_moves <= (o.state >> MOVES_SHIFT):
+		if foe[3]:
+			# the foe may step first: anywhere around it
 			low = maxi(d - 1, 0)
-			for ex in [(o.square & 15) - 1, (o.square & 15) + 1]:
-				for ey in [(o.square >> 4) - 1, (o.square >> 4) + 1]:
-					var cell: int = clampi(ey, 0, BOARD_MAX) << 4 | clampi(ex, 0, BOARD_MAX)
-					high = maxi(high, distance(square, cell))
-		# the same for every square at these distances: remembered for the move being weighed
+			for ex: int in foe[4]:
+				for ey: int in foe[5]:
+					high = maxi(high, maxi(absi(ex - sx), absi(ey - sy)))
 		var key: int = ((o._i * 64 + low) * 64 + high) * 2 + (1 if primary else 0)
 		var kept: Array = _kept.get(key, [])
 		if kept.is_empty():
@@ -523,9 +540,7 @@ static func tactic_score(a: int, b: int, tactic: int) -> int:
 	return 0
 
 
-## estimate() remembered for the move being weighed (`_token_move` clears it), unless working it
-## out drew random numbers (small torpedo volleys): those draws are made every time, as the
-## original makes them.
+## estimate() kept for the move being weighed, unless it drew (torpedoes draw, as the original).
 func _estimate(a: Dictionary, d: int, t: Dictionary, ignore: bool) -> int:
 	var key: int = ((a._i * 1024 + t._i) * 64 + d) * 2 + (1 if ignore else 0)
 	if _estimates.has(key):
@@ -610,12 +625,8 @@ func torpedo_hits(n: int, t: Dictionary, accuracy: int, bonus: int) -> int:
 		return n
 	if n > 200:
 		return _div(a * n, 100)
-	var hits := 0
 	_drew = true
-	for i in n:
-		if rng.random(100) < a:
-			hits += 1
-	return hits
+	return rng.count_below(n, 100, a)
 
 
 # --- Firing ----------------------------------------------------------------------------------

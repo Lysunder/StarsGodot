@@ -20,6 +20,10 @@ const NO_NAME := "No Name"
 
 var name: String = ""
 var plural_name: String = ""
+## Turn-only: the merged parameters of the race's traits and what they were merged from
+## (RaceMath.trait_params). Not saved or copied.
+var trait_params := {}
+var trait_params_key: Array = []
 ## Primary trait content id, e.g. "trait.prt.JoaT".
 var primary_trait: String = "trait.prt.JoaT"
 ## Lesser trait content ids, sorted.

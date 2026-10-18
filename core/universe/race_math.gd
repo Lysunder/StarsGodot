@@ -93,21 +93,27 @@ static func hab_points(race: Race, content: ContentRegistry) -> int:
 ## The value of a named trait parameter for this race: the primary trait's, else the first lesser
 ## trait (in id order) that has it, else `default`.
 static func trait_param(race: Race, content: ContentRegistry, name: String, default: int) -> int:
-	var v: Variant = _trait_value(race.primary_trait, content, name)
-	if v != null:
-		return v
-	for id in race.lesser_traits:
-		v = _trait_value(id, content, name)
-		if v != null:
-			return v
-	return default
+	return trait_params(race, content).get(name, default)
 
 
-## Trait `id`'s parameter `name`, or null when it has none.
-static func _trait_value(id: String, content: ContentRegistry, name: String) -> Variant:
-	if not content.has_def(id):
-		return null
-	return content.trait_def(id).get("params", {}).get(name)
+## Every parameter of the race's traits, the primary trait's first, then each lesser trait's in
+## order (the first to set a parameter decides it). Kept on the race until its traits or the
+## content change.
+static func trait_params(race: Race, content: ContentRegistry) -> Dictionary:
+	var key := [content, race.primary_trait, race.lesser_traits]
+	if race.trait_params_key == key:
+		return race.trait_params
+	var merged := {}
+	for id: String in [race.primary_trait] + Array(race.lesser_traits):
+		if not content.has_def(id):
+			continue
+		var params: Dictionary = content.trait_def(id).get("params", {})
+		for k: String in params:
+			if not merged.has(k):
+				merged[k] = params[k]
+	race.trait_params = merged
+	race.trait_params_key = [content, race.primary_trait, race.lesser_traits.duplicate()]
+	return merged
 
 
 static func _hab_pass(race: Race, reach: int, weight: int, terraform: bool) -> float:

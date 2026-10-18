@@ -131,3 +131,14 @@ func test_valid_state() -> void:
 	assert_bool(StarsRandom.is_valid_state(0, 5)).is_false()
 	assert_bool(StarsRandom.is_valid_state(5, 2147483399)).is_false()
 	assert_bool(StarsRandom.is_valid_state(2147483563, 5)).is_false()
+
+
+func test_count_below_makes_the_same_draws() -> void:
+	var a := StarsRandom.new(1234, 5678)
+	var b := StarsRandom.new(1234, 5678)
+	var hits := 0
+	for i in 150:
+		if a.random(100) < 37:
+			hits += 1
+	assert_int(b.count_below(150, 100, 37)).is_equal(hits)
+	assert_int(b.random(1000)).is_equal(a.random(1000))

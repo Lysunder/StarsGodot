@@ -51,3 +51,17 @@ func _schema() -> Array:
 		["task", Kind.ENUM, TASKS],
 		["task_data", Kind.JSON],
 	]
+
+
+## Field by field (the hot path of copying a game; test_model_copies checks it holds every
+## schema field).
+func _copy_into(out: ModelObject) -> void:
+	var o := out as Waypoint
+	o.x = x
+	o.y = y
+	o.target = target
+	o.target_owner = target_owner
+	o.target_id = target_id
+	o.warp = warp
+	o.task = task
+	o.task_data = task_data.duplicate(true)

@@ -64,6 +64,26 @@ func _schema() -> Array:
 	]
 
 
+## Field by field (the hot path of copying a game; test_model_copies checks it holds every
+## schema field).
+func _copy_into(out: ModelObject) -> void:
+	var o := out as Fleet
+	o.owner = owner
+	o.number = number
+	o.name = name
+	o.x = x
+	o.y = y
+	o.planet = planet
+	for s in stacks:
+		o.stacks.append(s.copy() as ShipStack)
+	o.cargo.assign(cargo)
+	o.battle_plan = battle_plan
+	for w in waypoints:
+		o.waypoints.append(w.copy() as Waypoint)
+	o.repeat = repeat
+	o.mod_data = mod_data.duplicate(true)
+
+
 func ship_count() -> int:
 	var total := 0
 	for stack in stacks:

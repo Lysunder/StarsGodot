@@ -118,3 +118,27 @@ func duplicate_stream() -> StarsRandom:
 
 func to_dict() -> Dictionary:
 	return {"s1": s1, "s2": s2}
+
+
+## `n` draws of random(bound) in a row, counting those below `below` (the same draws as n calls,
+## made in one loop for the battle engine's torpedo estimates).
+func count_below(n: int, bound: int, below: int) -> int:
+	assert(
+		max_range == 0 or bound <= max_range, "StarsRandom: bound %d above %d" % [bound, max_range]
+	)
+	var a := s1
+	var b := s2
+	var hits := 0
+	for i in n:
+		a = (A1 * a) % M1
+		b = (A2 * b) % M2
+		var z := a - b
+		if z < 1:
+			z += M1 - 1
+		if bound >= 1 and z % bound < below:
+			hits += 1
+		elif bound < 1 and 0 < below:
+			hits += 1
+	s1 = a
+	s2 = b
+	return hits
