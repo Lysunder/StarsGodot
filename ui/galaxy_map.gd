@@ -20,6 +20,8 @@ enum View { NORMAL, SURFACE_MINERALS, CONCENTRATION, VALUE, POPULATION }
 
 const UNIVERSE_MARGIN := 1000
 const ZOOM_STEP := 1.15
+## Pixels beyond the map's edges within which objects are still drawn (labels, rings).
+const CULL_MARGIN := 80.0
 const ZOOM_MIN := 0.2
 const ZOOM_MAX := 8.0
 const PLANET_RADIUS := 3.0
@@ -188,12 +190,16 @@ func _draw() -> void:
 		Color(1, 1, 1, 0.08),
 		false
 	)
+	# only what is on screen (with room for labels and rings) is drawn
+	var visible := Rect2(Vector2.ZERO, size).grow(CULL_MARGIN)
 	for pl in view.planets():
+		var at := to_screen(pl["x"], pl["y"])
+		if not visible.has_point(at):
+			continue
 		var colour := COLOR_UNOWNED
 		if pl["owner"] >= 0:
 			colour = Palette.color(Palette.MINE if pl["mine"] else Palette.OTHER)
 		var radius := PLANET_RADIUS + (2.0 if pl["population"] > 0 else 0.0)
-		var at := to_screen(pl["x"], pl["y"])
 		if view_mode == View.NORMAL:
 			draw_circle(at, radius, colour)
 		else:
@@ -214,11 +220,14 @@ func _draw() -> void:
 			)
 	for f in view.fleets():
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
+		var selected := selection_kind == "fleet" and selection_id == f.number
+		if not selected and not visible.has_point(at):
+			continue
 		var tri := PackedVector2Array(
 			[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
 		)
 		draw_colored_polygon(tri, Palette.color(Palette.FLEET))
-		if selection_kind == "fleet" and selection_id == f.number:
+		if selected:
 			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
 

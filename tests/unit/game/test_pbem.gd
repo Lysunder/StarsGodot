@@ -153,3 +153,45 @@ func test_three_players_twenty_years_by_files() -> void:
 	var game := SaveStore.read(DIR.path_join(PbemHost.GAME_FILE), _content).state
 	assert_int(game.turn).is_equal(20)
 	assert_int(game.player(2).research_percent).is_equal(20 + 19 % 3)
+
+
+## A player gone quiet: inactive, the host stops waiting for them and the computer keeps house;
+## active again, they are waited for. Handed over, a computer personality plays them for good.
+func test_inactive_and_handed_over_players() -> void:
+	assert_bool(PbemHost.create(DIR, NAME, _options(3), _content, "t").ok()).is_true()
+	var r := PbemHost.set_active(DIR, 2, false, _content, "t")
+	assert_bool(r.ok()).override_failure_message("\n".join(r.errors)).is_true()
+	assert_array(PbemHost.status(DIR, _content).waiting).is_equal([0, 1])
+	for p in 2:
+		OrderSubmission.write(
+			DIR.path_join("duel-p%d.orders" % (p + 1)), OrderSet.new(p, 0), _game_id(), "t"
+		)
+	r = PbemHost.generate(DIR, _content, "t")
+	assert_bool(r.generated).override_failure_message("\n".join(r.lines + r.errors)).is_true()
+	# still a human, still given a turn file
+	assert_int(TurnFile.read(DIR.path_join("duel-p3.turn"), _content).state.turn).is_equal(1)
+	assert_bool(PbemHost.set_active(DIR, 2, true, _content, "t").ok()).is_true()
+	assert_array(PbemHost.status(DIR, _content).waiting).is_equal([0, 1, 2])
+	r = PbemHost.hand_over(DIR, 1, "macinti", 3, _content, "t")
+	assert_bool(r.ok()).override_failure_message("\n".join(r.errors)).is_true()
+	var game := SaveStore.read(DIR.path_join(PbemHost.GAME_FILE), _content).state
+	assert_str(game.player(1).ai).is_equal("macinti")
+	assert_str(game.player(1).ai_personality["brain"]).is_equal(AiBrains.MACINTI)
+	assert_array(PbemHost.status(DIR, _content).waiting).is_equal([0, 2])
+	assert_bool(PbemHost.hand_over(DIR, 3, "macinti", 0, _content, "t").ok()).is_false()
+	assert_bool(PbemHost.hand_over(DIR, 0, "nobody", 0, _content, "t").ok()).is_false()
+	for p in [0, 2]:
+		OrderSubmission.write(
+			DIR.path_join("duel-p%d.orders" % (p + 1)), OrderSet.new(p, 1), _game_id(), "t"
+		)
+	r = PbemHost.generate(DIR, _content, "t")
+	assert_bool(r.generated).override_failure_message("\n".join(r.lines + r.errors)).is_true()
+	(
+		assert_array(Array(r.lines).filter(func(l: String) -> bool: return l.begins_with("AI")))
+		. is_empty()
+	)
+
+
+func _game_id() -> String:
+	var text := FileAccess.get_file_as_string(DIR.path_join(PbemHost.HOST_FILE))
+	return str((JSON.parse_string(text) as Dictionary)["game_id"])

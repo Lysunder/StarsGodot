@@ -71,6 +71,17 @@ of the SHA-256 of the new game's save text. The host tool (`tools/host.gd`, head
    used to `done/<turn>/` and writes every human player's new turn file (an eliminated one too). A game made with
    other gameplay content than the host's is refused (S03).
 
+Between years the host may also:
+
+4. `inactive <folder> <N>` / `active <folder> <N>`: mark human player N inactive, or active again. An inactive
+   human gives no orders (step 1 of "The year"), so nobody waits for them; the inactive personality keeps their
+   things ticking over (S22). They still get turn files.
+5. `hand-over <folder> <N> <personality> [level]`: give human player N to a computer player for good: one of the
+   six original personalities at the level (Easy to Expert; standard when left out), keeping the race. Orders they
+   had sent are dropped.
+
+Each saves the game and writes the turn files afresh.
+
 An order file is refused, and its player counted as waiting, when it is damaged (checksum), names another game id,
 another player than its name says, or another year.
 
@@ -125,4 +136,4 @@ None.
 
 ## Open questions
 
-- A host that marks a player inactive (played by the computer, S22) or drops one: not offered yet.
+- Handing a player to one of the player's own personalities (a personality file at the host): not offered.

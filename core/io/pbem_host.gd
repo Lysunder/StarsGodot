@@ -125,6 +125,77 @@ static func generate(
 	return r
 
 
+## Marks human player `p` (an index) inactive or active again. An inactive human gives no orders;
+## the inactive personality keeps their things ticking over (S22) until they come back.
+static func set_active(
+	dir: String, p: int, active: bool, content: ContentRegistry, game_version: String
+) -> Result:
+	var r := Result.new()
+	var host := _read_host(dir, r)
+	var state := _read_game(dir, content, r)
+	if not r.ok():
+		return r
+	if p < 0 or p >= state.players.size() or not state.player(p).is_human():
+		r.errors.append("player %d is not a human player" % (p + 1))
+		return r
+	state.player(p).active = active
+	_save(dir, host, state, game_version, r)
+	r.lines.append(
+		(
+			"Player %d is %s."
+			% [p + 1, "active again" if active else "inactive (the computer keeps house)"]
+		)
+	)
+	return r
+
+
+## Hands human player `p` to a computer player for good: personality key `ai` at `level` (an index
+## into ComputerPlayers.LEVELS), keeping the race (S22).
+static func hand_over(
+	dir: String, p: int, ai: String, level: int, content: ContentRegistry, game_version: String
+) -> Result:
+	var r := Result.new()
+	var host := _read_host(dir, r)
+	var state := _read_game(dir, content, r)
+	if not r.ok():
+		return r
+	if p < 0 or p >= state.players.size() or not state.player(p).is_human():
+		r.errors.append("player %d is not a human player" % (p + 1))
+		return r
+	if not ComputerPlayers.RACES.has(ai):
+		r.errors.append("no computer personality %s (one of %s)" % [ai, ComputerPlayers.RACES])
+		return r
+	var player := state.player(p)
+	player.ai = ai
+	player.ai_level = clampi(level, 0, ComputerPlayers.LEVELS.size() - 1)
+	player.active = true
+	ComputerPlayers.adopt_personalities(state, content)
+	_save(dir, host, state, game_version, r)
+	r.lines.append(
+		(
+			"Player %d is now played by the computer (%s, %s)."
+			% [p + 1, ai, ComputerPlayers.LEVELS[player.ai_level]]
+		)
+	)
+	return r
+
+
+## Saves the game after a change made between years, with fresh turn files, and puts away orders
+## a player handed over no longer needs.
+static func _save(
+	dir: String, host: Dictionary, state: GameState, game_version: String, r: Result
+) -> void:
+	var err := SaveStore.write(dir.path_join(GAME_FILE), state, game_version)
+	if err != OK:
+		r.errors.append("cannot save the game (%s)" % error_string(err))
+		return
+	for p in state.players:
+		var path := dir.path_join(_orders_name(host, p.index))
+		if not p.is_human() and FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)
+	_write_turn_files(dir, host, state, game_version, r)
+
+
 ## The human players who give orders: active and not eliminated (S27).
 static func _givers(state: GameState) -> Array[int]:
 	var out: Array[int] = []

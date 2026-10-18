@@ -4,11 +4,16 @@ extends SceneTree
 ##   godot --headless --path <project> --script res://tools/host.gd -- new <dir> <setup.json>
 ##   godot --headless --path <project> --script res://tools/host.gd -- status <dir>
 ##   godot --headless --path <project> --script res://tools/host.gd -- generate <dir> [--force]
+##   ... -- inactive <dir> <N>
+##   ... -- active <dir> <N>
+##   ... -- hand-over <dir> <N> <ai> [level]
 ##
 ## `new` makes a game in <dir> from a setup file and writes the human players' turn files; send
 ## each player theirs (<name>-p<N>.turn). Players open it in the game, give their orders and send
 ## back <name>-p<N>.orders; put those in <dir>. `status` shows who has sent theirs; `generate`
 ## turns the year when all are in (`--force`: without the missing ones) and writes new turn files.
+## `inactive` stops waiting for player N (the computer keeps their things ticking over) until
+## `active`; `hand-over` gives player N to a computer personality for good (level as below).
 ##
 ## Setup file (JSON): {"name": "mygame", "seed": 1234, "size": "small", "density": "normal",
 ## "positions": "moderate", "flags": ["slow_tech", ...], "players": [...]}, where each player is
@@ -45,6 +50,22 @@ func _init() -> void:
 				result = PbemHost.generate(
 					args[1], content, loader.game_version, args.has("--force")
 				)
+		"inactive", "active":
+			if args.size() < 3:
+				result = _usage()
+			else:
+				var active := command == "active"
+				result = PbemHost.set_active(
+					args[1], int(args[2]) - 1, active, content, loader.game_version
+				)
+		"hand-over":
+			if args.size() < 4:
+				result = _usage()
+			else:
+				var level := LEVELS.find(args[4]) if args.size() > 4 else 1
+				result = PbemHost.hand_over(
+					args[1], int(args[2]) - 1, args[3], maxi(level, 0), content, loader.game_version
+				)
 		_:
 			result = _usage()
 	for line in result.lines:
@@ -56,7 +77,12 @@ func _init() -> void:
 
 func _usage() -> PbemHost.Result:
 	var r := PbemHost.Result.new()
-	r.errors.append("usage: new <dir> <setup.json> | status <dir> | generate <dir> [--force]")
+	r.errors.append(
+		(
+			"usage: new <dir> <setup.json> | status <dir> | generate <dir> [--force]"
+			+ " | inactive <dir> <N> | active <dir> <N> | hand-over <dir> <N> <ai> [level]"
+		)
+	)
 	return r
 
 
