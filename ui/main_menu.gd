@@ -1,7 +1,8 @@
 class_name MainMenu
 extends CenterContainer
-## The start screen (D15): the game's name over New Game, Open Game, Settings and Exit. New Game
-## opens the New Game window; Open Game loads the saved game; Settings opens the interface settings.
+## The start screen (D15): the game's name over New Game, Open Game, Personalities, Settings and
+## Exit. New Game opens the New Game window; Open Game loads the saved game; Personalities opens the
+## computer player personality editor; Settings opens the interface settings.
 
 signal start_game
 
@@ -10,6 +11,7 @@ const BUTTON_WIDTH := 200
 var _status: Label
 var _new_game: NewGameDialog
 var _settings: SettingsDialog
+var _personalities: PersonalityEditor
 
 
 func _ready() -> void:
@@ -29,6 +31,7 @@ func _ready() -> void:
 	for spec: Array in [
 		["New Game...", _on_new],
 		["Open Game", _on_load],
+		["Personalities...", func() -> void: _personalities.open()],
 		["Settings...", func() -> void: _settings.open()],
 		["Exit", _on_quit],
 	]:
@@ -45,6 +48,8 @@ func _ready() -> void:
 		_status.text = GameSession.load_errors
 	_settings = SettingsDialog.new()
 	add_child(_settings)
+	_personalities = PersonalityEditor.new()
+	add_child(_personalities)
 	_new_game = NewGameDialog.new()
 	_new_game.game_chosen.connect(_on_game_chosen)
 	add_child(_new_game)

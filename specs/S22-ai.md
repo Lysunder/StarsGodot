@@ -90,6 +90,25 @@ no orders.
 Difficulty levels, easiest first: easy, standard, harder, expert (`ai_level` 0-3). Besides the AI's own play, the
 level matters in the starting setup (S07) and in Mystery Trader dealings (S18).
 
+### The personality editor
+
+Not in the original. The player keeps personalities of their own, each a file in `user://personalities` (one per
+personality, named after it): JSON with `format` "stars_personality", `format_version` 1, and the same fields a
+game keeps for a computer player (`name`, `brain`, `params`, `levels`, one map per difficulty level). A file loads
+when its name is 1 to 32 characters, its brain is one a personality can name (any but the idle brain), and its
+settings pass the brain's declarations (S22 "Personality settings"). A setting's value at a level is that level's
+value when it sets one, else the personality's, else the brain's default.
+
+The editor (main menu, Personalities) lists the game's own personalities, which can't be changed (Copy makes a
+personality of the player's from one), and the player's. For the chosen one it shows the name, the brain and the
+brain's settings by group (research, expansion, economy, military), each with its name, its description as a tip,
+and its range. Settings for "All levels" edit the personality's own values; with a difficulty chosen, a box per
+setting makes it that level's override (unticked, the level takes the personality's value). New starts a
+personality for the baseline brain at its defaults. Choosing another brain starts its settings afresh. Save keeps
+the personality under its name (two personalities can't share one; renaming moves the file); Delete removes it.
+The brains of the original's personalities have no settings. Offering the player's personalities when a game is
+set up comes with the computer players in the New Game window.
+
 ### The baseline brain (our own)
 
 Not a port of the original: a computer player of our own, so games have opponents before the ports exist and as
