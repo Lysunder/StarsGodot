@@ -1487,5 +1487,596 @@
       "ai_part_class.deflector_or_capacitor",
       "ai_part_class.jammer_or_computer"
     ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_a0",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_a1",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.capacitor_or_tank",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_a2",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_a3",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_short",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_b0",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_b1",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_b2",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_destroyer_b3",
+    "hull": "hull.destroyer",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.thruster_or_tank",
+      "ai_part_class.battle_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_b52_0",
+    "hull": "hull.b_52_bomber",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.bomb_any",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_b52_1",
+    "hull": "hull.b_52_bomber",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.bomb",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.bomb_smart",
+      "ai_part_class.combat_support",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_scout",
+    "hull": "hull.frigate",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.scanner_long",
+      "ai_part_class.mine_dispenser",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_a0",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor",
+      "ai_part_class.battle_computer",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_a1",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.battle_computer",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_a2",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.battle_computer",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_a3",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.beam_medium",
+      "ai_part_class.armor",
+      "ai_part_class.battle_computer",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_b0",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_b1",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_b2",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.beam_medium",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_b3",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.shield",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_short",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_battleship_flag",
+    "hull": "hull.battleship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.capacitor_or_tank",
+      "ai_part_class.shield",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.jammer_or_computer"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_colony_ship",
+    "hull": "hull.colony_ship",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.orbital_construction"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_maxi_miner",
+    "hull": "hull.maxi_miner",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.armor_or_support",
+      "ai_part_class.mining_robot_large",
+      "ai_part_class.mining_robot_large",
+      "ai_part_class.mining_robot_large",
+      "ai_part_class.mining_robot_large"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_ultra_miner",
+    "hull": "hull.ultra_miner",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.armor_or_support",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_miner",
+    "hull": "hull.miner",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.armor_or_support",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien",
+      "ai_part_class.mining_robot_alien"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_mini_miner",
+    "hull": "hull.mini_miner",
+    "slots": [
+      "ai_part_class.engine_ramscoop",
+      "ai_part_class.armor_or_support",
+      "ai_part_class.mining_robot_large",
+      "ai_part_class.mining_robot_large"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_freighter_large",
+    "hull": "hull.large_freighter",
+    "slots": [
+      "ai_part_class.engine_fuel",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.starbase_shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_freighter_medium",
+    "hull": "hull.medium_freighter",
+    "slots": [
+      "ai_part_class.engine_fuel",
+      "ai_part_class.cargo_pod",
+      "ai_part_class.starbase_shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_cruiser_0",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.combat_support",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_cruiser_1",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.combat_support",
+      "ai_part_class.missile",
+      "ai_part_class.missile",
+      "ai_part_class.battle_computer",
+      "ai_part_class.armor"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_cruiser_2",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.stealth_support",
+      "ai_part_class.combat_support",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.shield"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_cruiser_3",
+    "hull": "hull.cruiser",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.battle_computer",
+      "ai_part_class.combat_support",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_nubian_0",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.armor",
+      "ai_part_class.armor",
+      "ai_part_class.beam_medium",
+      "ai_part_class.beam_medium",
+      "ai_part_class.munition",
+      "ai_part_class.munition",
+      "ai_part_class.shield",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.shield",
+      "ai_part_class.beam_gatling",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.capacitor_or_cloak"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_nubian_1",
+    "hull": "hull.nubian",
+    "slots": [
+      "ai_part_class.engine_scoop",
+      "ai_part_class.shield",
+      "ai_part_class.shield",
+      "ai_part_class.beam_sapper",
+      "ai_part_class.beam_short",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_light",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_light",
+      "ai_part_class.beam_heavy",
+      "ai_part_class.beam_medium"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_dock",
+    "hull": "hull.space_dock",
+    "slots": [
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor",
+      "ai_part_class.beam_light",
+      "ai_part_class.shield",
+      "ai_part_class.battle_computer",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_beam_heavy"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_ultra_station",
+    "hull": "hull.ultra_station",
+    "slots": [
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_torpedo",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.shield",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_beam_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.starbase_beam",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.starbase_beam",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_medium"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_death_star",
+    "hull": "hull.death_star",
+    "slots": [
+      "ai_part_class.starbase_utility",
+      "ai_part_class.starbase_torpedo",
+      "ai_part_class.battle_computer",
+      "ai_part_class.battle_computer",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.shield",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.starbase_beam_heavy",
+      "ai_part_class.starbase_utility",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.armor",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.starbase_beam"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_station",
+    "hull": "hull.space_station",
+    "slots": [
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_torpedo",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.torpedo",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.shield",
+      "ai_part_class.battle_computer",
+      "ai_part_class.starbase_beam_heavy",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_beam",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.armor"
+    ]
+  },
+  {
+    "type": "ai_design_template",
+    "id": "ai_design_template.macinti_ultra_station_b",
+    "hull": "hull.ultra_station",
+    "slots": [
+      "ai_part_class.starbase_utility",
+      "ai_part_class.starbase_torpedo",
+      "ai_part_class.battle_computer",
+      "ai_part_class.torpedo",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.shield",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.starbase_beam_heavy",
+      "ai_part_class.capacitor_or_cloak",
+      "ai_part_class.starbase_beam",
+      "ai_part_class.starbase_utility",
+      "ai_part_class.armor_heavy",
+      "ai_part_class.starbase_beam",
+      "ai_part_class.starbase_shield",
+      "ai_part_class.jammer_or_computer",
+      "ai_part_class.beam_medium"
+    ]
   }
 ]

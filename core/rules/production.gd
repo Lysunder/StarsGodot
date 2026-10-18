@@ -158,7 +158,7 @@ func _maximum(planet: Planet, race: Race, effect: String) -> int:
 			return PlanetEconomy.max_mines(planet, race, _content)
 		"factories":
 			return PlanetEconomy.max_factories(planet, race, _content)
-	return PlanetEconomy.max_defenses(planet, race)
+	return PlanetEconomy.max_defenses(planet, race, _content)
 
 
 static func _built(planet: Planet, effect: String) -> int:
@@ -288,7 +288,7 @@ func _auto_room(planet: Planet, player: Player, def: Dictionary) -> int:
 		"factories":
 			return PlanetEconomy.operable_factories(planet, race, _content, next) - planet.factories
 		"defenses":
-			return PlanetEconomy.operable_defenses(planet, race, next) - planet.defenses
+			return PlanetEconomy.operable_defenses(planet, race, next, _content) - planet.defenses
 		"packet":
 			return AUTO_UNLIMITED if Packets.can_build(_state, _content, planet) else 0
 	return AUTO_UNLIMITED

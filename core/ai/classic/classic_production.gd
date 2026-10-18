@@ -123,7 +123,7 @@ static func buildable(w: ClassicWorld, planet: Planet) -> Array[QueueItem]:
 	room = PlanetEconomy.max_mines(planet, race, content) - planet.mines
 	if room > 0:
 		out.append(standard(MINES, mini(room, INSTALLATION_CAP)))
-	room = PlanetEconomy.max_defenses(planet, race) - planet.defenses
+	room = PlanetEconomy.max_defenses(planet, race, w.content) - planet.defenses
 	if room > 0:
 		out.append(standard(DEFENSES, room))
 	out.append(standard(ALCHEMY, UNLIMITED))

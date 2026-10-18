@@ -33,7 +33,7 @@
     "type": "ai_personality",
     "id": "ai_personality.macinti",
     "order": 5,
-    "brain": "baseline"
+    "brain": "macinti"
   },
   {
     "type": "ai_personality",

@@ -27,7 +27,7 @@ static func uncovered(
 	if best.is_empty():
 		return 1.0
 	var value: int = content.part(best).get("stats", {}).get("defense", 0)
-	var n := mini(planet.defenses, PlanetEconomy.operable_defenses(planet, owner.race))
+	var n := mini(planet.defenses, PlanetEconomy.operable_defenses(planet, owner.race, -1, content))
 	var scale := SMART_SCALE if smart else SCALE
 	return PackedFloat32Array([pow(1.0 - value * scale, n)])[0]
 

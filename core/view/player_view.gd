@@ -140,7 +140,7 @@ func planet_info(id: int) -> Dictionary:
 				"operable_factories":
 				mini(pl.factories, PlanetEconomy.operable_factories(pl, owner_race, content)),
 				"defenses": pl.defenses,
-				"max_defenses": PlanetEconomy.max_defenses(pl, owner_race),
+				"max_defenses": PlanetEconomy.max_defenses(pl, owner_race, content),
 				"starbase": design_name(pl.owner, pl.starbase.design, true) if pl.starbase else "",
 				"leftover_to_research": pl.leftover_to_research,
 				"route": pl.route,

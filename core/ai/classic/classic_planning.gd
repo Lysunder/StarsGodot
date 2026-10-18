@@ -173,7 +173,7 @@ static func queue_ship(w: ClassicWorld, planet: Planet, station: int) -> bool:
 		return false
 	var pid := w.personality_id()
 	if pid == ClassicWorld.MACINTI:
-		return false
+		return _queue_macinti_starbase(w, planet)
 	if pid == ClassicWorld.CYBERTRONS and w.state.turn < CYBERTRONS_SHIP_TURN:
 		return false
 	if planet.starbase == null:
@@ -209,6 +209,46 @@ static func queue_ship(w: ClassicWorld, planet: Planet, station: int) -> bool:
 		item = current + 2
 	P.add(w, P.starbase(item), 1, P.Mode.APPEND)
 	return true
+
+
+## Macinti's starbase step (`AI_QueueShip`): by the verdict of the planet's starbase slot (0 with
+## none): replaced (3, or 2 on a draw of 10 in 100) by the next slot whose verdict is 0 (slots 0-3,
+## at most 9), or across generations (slots 4-9, three on, else three back); otherwise slots 0-3
+## grow the same way on a draw of (crowding - 15) x 6 in 100 from crowding 16 on, and slots 4, 5,
+## 7, 8 grow to the next slot on a draw of 8 in 100.
+static func _queue_macinti_starbase(w: ClassicWorld, planet: Planet) -> bool:
+	var v: PackedByteArray = w.macinti_verdicts
+	if v.size() < 10:
+		return false
+	var s := planet.starbase.design if planet.starbase != null else 0
+	var t := -1
+	if v[s] == 3 or (v[s] == 2 and w.rng.random(100) < 10):
+		t = _macinti_next(v, s)
+	elif s < 4 or s == 6 or s == 9 or w.rng.random(100) > 7:
+		if s > 3:
+			return false
+		var most := PlanetEconomy.max_pop(planet, w.me().race, w.content)
+		var crowding := 0
+		if most > 0:
+			crowding = mini((most / 2 + planet.population * 100) / most, 999)
+		if crowding < 16:
+			return false
+		if w.rng.random(100) >= (crowding - 15) * 6:
+			return false
+		t = _macinti_next(v, s)
+	else:
+		t = s + 1
+	P.add(w, P.starbase(t), 1, P.Mode.APPEND)
+	return true
+
+
+static func _macinti_next(v: PackedByteArray, s: int) -> int:
+	if s < 4:
+		var t := s + 1
+		while t < 9 and v[t] != 0:
+			t += 1
+		return t
+	return s + 3 if s + 3 <= 9 else s - 3
 
 
 ## `AI_QueuePackets`: from level PACKET_MIN_LEVEL, with PACKET_MIN_MINERALS of output and a

@@ -184,8 +184,11 @@ a **classic world**, built afresh each turn:
    that design, no damage), and, when it was ever scanned, environment, original environment, concentrations
    (with fractions), population estimate and defense class. Everything else is zero: no population, installations,
    queue, scanner, route or mass driver, and no surface minerals unless this turn's view saw it at level 4. A
-   planet with no record has no owner and every value zero. Each planet's detail level is kept beside it (0 never
-   seen, 1 or 3 from the history, 7 the player's own).
+   planet with no record has no owner and every value zero. A record naming the player as owner (a planet it lost)
+   loads as unowned at detail 3: loading clears the player's ownership of history planets before the turn file's
+   own planets come in (`LoadGame`, 1068:0539, 1068:1264; mac1 turn 15: a Robotoids colony ship heads for a planet
+   it lost the turn before). Each planet's detail level is kept beside it (0 never seen, 1 or 3 from the history,
+   7 the player's own).
 4. Other players' fleets only when the player's view has them this turn, in the host's fleet order (the order the
    turn file lists them): their position, planet and ships, with no cargo, no name and no waypoints beyond where
    they are.

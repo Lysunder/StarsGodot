@@ -530,5 +530,43 @@
         "level": 26
       }
     ]
+  },
+  {
+    "type": "ai_research_plan",
+    "id": "ai_research_plan.macinti",
+    "steps": [
+      {
+        "field": "tech_field.energy",
+        "level": 3
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 2
+      },
+      {
+        "field": "tech_field.energy",
+        "level": 20
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 17
+      },
+      {
+        "field": "tech_field.propulsion",
+        "level": 20
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 20
+      },
+      {
+        "field": "tech_field.construction",
+        "level": 23
+      },
+      {
+        "field": "tech_field.weapons",
+        "level": 23
+      }
+    ]
   }
 ]

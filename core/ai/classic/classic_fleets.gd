@@ -39,6 +39,11 @@ const INFO_TARGET := 10
 const HEADED := 0x80
 ## `AI_ChooseColonyTarget` looks for a wormhole on a draw of this many in 100.
 const WORMHOLE_PCT := 5
+## AI_HasNearbyUnclaimedPlanet's turn and distances (light years).
+const UNCLAIMED_TURN := 60
+const UNCLAIMED_NEAR := 250
+const UNCLAIMED_MID := 300
+const UNCLAIMED_FAR := 350
 ## Engines that make a stranded colony ship not worth bringing home (Turindrones).
 const STARTER_ENGINE := "ai_starter_engine"
 const WARSHIP_START := 1000000
@@ -276,6 +281,28 @@ static func nearest_planet(w: ClassicWorld, from_id: int, accept: Callable) -> P
 			best = p
 			best_d = d
 	return best
+
+
+## `AI_HasNearbyUnclaimedPlanet`: before turn UNCLAIMED_TURN always; later by the distance from
+## `planet` to the nearest planet planet_info byte 13 leaves clear: within UNCLAIMED_NEAR light
+## years yes, beyond UNCLAIMED_FAR no, between on draws of 1 in 2 (one past UNCLAIMED_MID, another
+## past UNCLAIMED_NEAR).
+static func has_nearby_unclaimed(w: ClassicWorld, planet: Planet) -> bool:
+	if w.state.turn < UNCLAIMED_TURN:
+		return true
+	var best := 10000000
+	for p in w.state.planets:
+		if (w.planet_info[p.id] as PackedByteArray)[13] == 0:
+			var d := d2(planet.x, planet.y, p.x, p.y)
+			if d < best:
+				best = d
+	if best > UNCLAIMED_FAR * UNCLAIMED_FAR:
+		return false
+	if best > UNCLAIMED_MID * UNCLAIMED_MID and w.rng.random(2) != 0:
+		return false
+	if best > UNCLAIMED_NEAR * UNCLAIMED_NEAR and w.rng.random(2) != 0:
+		return false
+	return true
 
 
 ## `AI_FindNearestPlanet2`: the planet `score` rates highest (every planet is rated, in order;

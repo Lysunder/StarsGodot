@@ -46,6 +46,18 @@ var cheap_factories: bool = false
 var random: bool = false
 var mod_data: Dictionary = {}
 
+## Turn-only link to the player whose race this is (weak; none for a race outside a game). Planet
+## economy reads the owner's tech and starbase designs through it (Alternate Reality, S08).
+var _owner: WeakRef = null
+
+
+func set_owner(player: RefCounted) -> void:
+	_owner = weakref(player) if player != null else null
+
+
+func owner_player() -> RefCounted:
+	return _owner.get_ref() if _owner != null else null
+
 
 func _schema() -> Array:
 	return [

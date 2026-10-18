@@ -1,7 +1,8 @@
 extends RefCounted
 ## harness_compat formulas (D12): the original's armor damage (bug B09, spec S16 "Damage", "Known
-## bugs"), mine damage top-up (bug B04, spec S13) and Cybertrons' packet bookkeeping (B44, B45,
-## B46, B48, spec S22 "Cybertrons"), so golden turns can match 2.6i exactly. Test runs only.
+## bugs"), mine damage top-up (bug B04, spec S13), Cybertrons' packet bookkeeping (B44, B45, B46,
+## B48) and Macinti's scout cap and rich test (B51, B52; spec S22), so golden turns can match 2.6i
+## exactly. Test runs only.
 
 const SCALE := 500
 const POINTS_MAX := 499
@@ -16,6 +17,8 @@ func build(ruleset: Ruleset) -> void:
 	ruleset.replace(ClassicCybertrons.PACKET_RECORD, cybertrons_packet_record)
 	ruleset.replace(ClassicCybertrons.SECTOR_REACH, cybertrons_sector_reach)
 	ruleset.replace(ClassicCybertrons.LONG_TARGET, cybertrons_long_target)
+	ruleset.replace(ClassicMacinti.SCOUT_CAP_DESIGN, macinti_scout_cap_design)
+	ruleset.replace(ClassicMacinti.ALL_RICH, macinti_all_rich)
 
 
 ## B44: the fleet passes mark from the last loaded planet's B word on.
@@ -101,3 +104,13 @@ static func starbase(o: Dictionary, x: int) -> int:
 	var planet: Planet = o._planet
 	var v := x * SCALE / armor
 	return planet.starbase.damage + 1 if planet.starbase.damage == v else v
+
+
+## B51: Macinti's scout building is capped by the miner design's ships.
+static func macinti_scout_cap_design(miner_slot: int) -> int:
+	return miner_slot
+
+
+## B52: two leading rich minerals count as all three.
+static func macinti_all_rich(count: int) -> bool:
+	return count == 2

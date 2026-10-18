@@ -90,6 +90,9 @@ var cur_planet: Planet = null
 var editing: RefCounted = null
 ## Colony targets were rated this turn (personalities other than Robotoids and Macinti rate once).
 var colony_targets_rated := false
+## Macinti's starbase verdicts this turn (ClassicMacinti.review_designs), read by the production
+## pass's starbase step.
+var macinti_verdicts := PackedByteArray()
 
 
 ## The world of player `p` of `host`, playing personality `p_personality` (by default the one
@@ -254,6 +257,11 @@ func _mask_planets() -> void:
 			planet.population_estimate = UNKNOWN_ESTIMATE
 			continue
 		planet.owner = int(r["owner"])
+		if planet.owner == player:
+			# a planet the history says is the player's but the turn file doesn't: loading
+			# makes it unowned, scanned (the player lost it)
+			planet.owner = -1
+			detail[planet.id] = SCANNED
 		planet.homeworld = bool(r["homeworld"])
 		if int(r["starbase_design"]) >= 0:
 			planet.starbase = Starbase.new()

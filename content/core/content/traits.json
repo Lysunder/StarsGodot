@@ -144,7 +144,11 @@
       "scanner.population_range": 1,
       "estimate.hides_population": 1,
       "production.no_planetary_scanner": 1,
-      "ai.no_colonist_drops": 1
+      "ai.no_colonist_drops": 1,
+      "planet.starbase_population": 1,
+      "planet.no_installations": 1,
+      "planet.root_mines": 1,
+      "planet.root_resources": 1
     }
   },
   {

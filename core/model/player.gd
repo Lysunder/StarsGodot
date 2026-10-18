@@ -9,7 +9,11 @@ const AI_NONE := ""
 const RELATIONS := ["neutral", "friend", "enemy"]
 
 var index: int = 0
-var race: Race = Race.new()
+var race: Race = Race.new():
+	set(value):
+		race = value
+		if value != null:
+			value.set_owner(self)
 ## AI personality id, or "" for a human player (S22).
 var ai: String = AI_NONE
 var ai_level: int = 0
@@ -65,6 +69,10 @@ var tech_bonus_taken: bool = false
 ## Turn-only: the tech levels when the turn started. The original keeps each design's cost as
 ## computed when the turn was loaded, and battles use it (S16); empty outside turn generation.
 var tech_levels_at_start: Array[int] = []
+
+
+func _init() -> void:
+	race.set_owner(self)
 
 
 func _schema() -> Array:

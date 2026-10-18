@@ -4,9 +4,12 @@ extends RefCounted
 ## resources and mining.
 ##
 ## Trait parameters: `planet.max_pop_pct` (HE 50, JoaT 120), `planet.max_pop_extra_pct` (OBRM 110,
-## applied last), `race.growth_rate_pct` (HE 200), `planet.revert_terraform_on_loss` (CA 1).
-##
-## Not yet: Alternate Reality (starbase population, square-root resources and mines).
+## applied last), `race.growth_rate_pct` (HE 200), `planet.revert_terraform_on_loss` (CA 1),
+## and Alternate Reality's `planet.starbase_population`, `planet.no_installations`,
+## `planet.root_mines` and `planet.root_resources` (AR 1): the maximum population by the
+## starbase's hull (constants `constant.planet.starbase_population.<hull>`), no factories, mines
+## or defenses, effective mines the square root of the people, and resources
+## sqrt(W / pe x energy) x max(h, 25) / 10, rounded up from 0.999.
 
 const COLONISTS_PER_UNIT := 100
 const MIN_MAX_POP := 500
@@ -20,6 +23,8 @@ const STEADY_BAND := 10
 const MAX_DEATH := -300
 const BIG_GROWTH := 10000000
 const HOMEWORLD_MIN_CONCENTRATION := 30
+## Alternate Reality's resources count habitability as at least this.
+const AR_MIN_HAB := 25
 const WEAR_UNIT := 12500
 const FRACTION_STEPS := 256
 
@@ -30,11 +35,32 @@ static func hab_value(planet: Planet, race: Race) -> int:
 
 ## Maximum population M, in units of 100 colonists (S08 step 2).
 static func max_pop(planet: Planet, race: Race, content: ContentRegistry) -> int:
-	var h := hab_value(planet, race)
-	var m := MIN_MAX_POP if h < LOW_HAB else COLONISTS_PER_UNIT * h
-	m += m * (RaceMath.trait_param(race, content, "planet.max_pop_pct", 100) - 100) / 100
+	var m := 0
+	if RaceMath.trait_param(race, content, "planet.starbase_population", 0):
+		m = _starbase_population(planet, race, content)
+	else:
+		var h := hab_value(planet, race)
+		m = MIN_MAX_POP if h < LOW_HAB else COLONISTS_PER_UNIT * h
+		m += m * (RaceMath.trait_param(race, content, "planet.max_pop_pct", 100) - 100) / 100
 	m += m * (RaceMath.trait_param(race, content, "planet.max_pop_extra_pct", 100) - 100) / 100
 	return m
+
+
+## Alternate Reality's maximum population: by the hull of the starbase the race's owner has here
+## (0 without one).
+static func _starbase_population(planet: Planet, race: Race, content: ContentRegistry) -> int:
+	var owner := race.owner_player() as Player
+	if owner == null or planet.owner != owner.index or planet.starbase == null:
+		return 0
+	var d := owner.starbase_design(planet.starbase.design)
+	if d == null:
+		return 0
+	var id := "constant.planet.starbase_population." + d.hull.trim_prefix("hull.")
+	return content.constant(id) if content.has_def(id) else 0
+
+
+static func _no_installations(race: Race, content: ContentRegistry) -> bool:
+	return RaceMath.trait_param(race, content, "planet.no_installations", 0) != 0
 
 
 ## The population change this year in colonists (S08 step 3); `apply` adds it to the planet.
@@ -48,7 +74,10 @@ static func grow(planet: Planet, race: Race, content: ContentRegistry, apply: bo
 		var m := max_pop(planet, race, content)
 		var pct := RaceMath.trait_param(race, content, "race.growth_rate_pct", 100)
 		var r := race.growth_rate * pct / 100 * h
-		if p > m / 4:
+		if m <= 0:
+			# no room at all (Alternate Reality without a starbase): the most crowded deaths
+			r = 4 * MAX_DEATH
+		elif p > m / 4:
 			var c := p * 1000 / m
 			if p < m:
 				r = (1000 - c) * (1000 - c) * r / CROWD_DIVISOR
@@ -76,6 +105,8 @@ static func add_colonists(planet: Planet, colonists: int) -> void:
 
 
 static func max_factories(planet: Planet, race: Race, content: ContentRegistry) -> int:
+	if _no_installations(race, content):
+		return 0
 	return maxi(max_pop(planet, race, content) * race.factories_operated / 100, MIN_INSTALLATIONS)
 
 
@@ -83,31 +114,41 @@ static func max_factories(planet: Planet, race: Race, content: ContentRegistry) 
 static func operable_factories(
 	planet: Planet, race: Race, content: ContentRegistry, population := -1
 ) -> int:
+	if _no_installations(race, content):
+		return 0
 	var p := planet.population if population < 0 else population
 	var n := p * race.factories_operated / 100
 	return maxi(mini(n, max_factories(planet, race, content)), 1)
 
 
 static func max_mines(planet: Planet, race: Race, content: ContentRegistry) -> int:
+	if _no_installations(race, content):
+		return 0
 	return maxi(max_pop(planet, race, content) * race.mines_operated / 100, MIN_INSTALLATIONS)
 
 
 static func operable_mines(
 	planet: Planet, race: Race, content: ContentRegistry, population := -1
 ) -> int:
+	if _no_installations(race, content):
+		return 0
 	var p := planet.population if population < 0 else population
 	var n := p * race.mines_operated / 100
 	return maxi(mini(n, max_mines(planet, race, content)), 1)
 
 
 ## Maximum defenses: habitability x 4, kept within 10..100.
-static func max_defenses(planet: Planet, race: Race) -> int:
+static func max_defenses(planet: Planet, race: Race, content: ContentRegistry = null) -> int:
+	if content != null and _no_installations(race, content):
+		return 0
 	return clampi(hab_value(planet, race) * 4, MIN_DEFENSES, MAX_DEFENSES)
 
 
-static func operable_defenses(planet: Planet, race: Race, population := -1) -> int:
+static func operable_defenses(
+	planet: Planet, race: Race, population := -1, content: ContentRegistry = null
+) -> int:
 	var p := planet.population if population < 0 else population
-	return mini(mini((p + 24) / 25, DEFENSE_POPULATION_CAP), max_defenses(planet, race))
+	return mini(mini((p + 24) / 25, DEFENSE_POPULATION_CAP), max_defenses(planet, race, content))
 
 
 ## The population after this year's growth (S08 "next year" values), in units of 100.
@@ -118,6 +159,8 @@ static func next_population(planet: Planet, race: Race, content: ContentRegistry
 
 
 static func effective_mines(planet: Planet, race: Race, content: ContentRegistry) -> int:
+	if RaceMath.trait_param(race, content, "planet.root_mines", 0):
+		return int(sqrt(float(planet.population)))
 	return mini(planet.mines, operable_mines(planet, race, content))
 
 
@@ -130,9 +173,26 @@ static func resources(planet: Planet, race: Race, content: ContentRegistry) -> i
 	var w := p
 	if p > m:
 		w = mini((p - m) / 2 + m, 2 * m)
-	var used := mini(planet.factories, operable_factories(planet, race, content))
-	var r := w / race.resources_per_colonist + (race.factory_output * used + 9) / 10
+	var r := 0
+	if RaceMath.trait_param(race, content, "planet.root_resources", 0):
+		r = _root_resources(planet, race, content, w)
+	else:
+		var used := mini(planet.factories, operable_factories(planet, race, content))
+		r = w / race.resources_per_colonist + (race.factory_output * used + 9) / 10
 	return maxi(r, 1)
+
+
+## Alternate Reality's resources from the working population `w`, in floating point as the
+## original computes them.
+static func _root_resources(planet: Planet, race: Race, content: ContentRegistry, w: int) -> int:
+	var owner := race.owner_player() as Player
+	var energy := 0
+	if owner != null:
+		energy = owner.tech_levels[PartRules.tech_order(content)["tech_field.energy"]]
+	energy = maxi(energy, 1)
+	var h := maxi(hab_value(planet, race), AR_MIN_HAB)
+	var root := sqrt(float(w) / race.resources_per_colonist * energy)
+	return int(root * h * 0.1 + 0.999)
 
 
 ## The owner mines its planet (S08 step 6). `rng` rounds fractions at random during turn

@@ -1,4 +1,9 @@
 [
+  { "type": "constant", "id": "constant.planet.starbase_population.orbital_fort", "value": 2500 },
+  { "type": "constant", "id": "constant.planet.starbase_population.space_dock", "value": 5000 },
+  { "type": "constant", "id": "constant.planet.starbase_population.space_station", "value": 10000 },
+  { "type": "constant", "id": "constant.planet.starbase_population.ultra_station", "value": 20000 },
+  { "type": "constant", "id": "constant.planet.starbase_population.death_star", "value": 30000 },
   { "type": "constant", "id": "constant.battle.max_rounds", "value": 16 },
   { "type": "constant", "id": "constant.research.max_level", "value": 26 },
   { "type": "constant", "id": "constant.research.cost_per_level_sum", "value": 10 },

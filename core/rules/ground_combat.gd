@@ -237,6 +237,9 @@ func _found_colony(planet: Planet, player: int, population: int) -> void:
 		planet.queue.append(copy)
 	if RaceMath.trait_param(owner.race, _content, "colony.starbase", 0):
 		planet.starbase = Starbase.new()
+		# the new starbase's driver setting is cleared, which reads as its lowest speed
+		planet.mass_driver_target = -1
+		planet.mass_driver_warp = Production.DRIVER_WARP_CLEARED
 		var base := owner.starbase_design(0)
 		if base != null:
 			base.built += 1
