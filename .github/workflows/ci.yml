@@ -9,9 +9,39 @@ env:
 
 jobs:
   test:
-    name: Tests (headless Godot)
+    # The suite in four shards of about the same length, run side by side. "rest" takes every
+    # suite the others don't name, so new suites land there.
+    name: Tests (${{ matrix.shard }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: golden-ai-a
+            tests: -a res://tests/unit/turn/test_golden_ai_a.gd
+            check: "0"
+          - shard: golden
+            tests: >-
+              -a res://tests/unit/turn/test_golden_ai_b.gd
+              -a res://tests/unit/turn/test_golden_turns.gd
+            check: "0"
+          - shard: classic-ai
+            tests: >-
+              -a res://tests/unit/ai/test_classic_turindrones.gd
+              -a res://tests/unit/ai/test_classic_robotoids.gd
+              -a res://tests/unit/ai/test_classic_automitrons.gd
+            check: "0"
+          - shard: rest
+            tests: >-
+              -a res://tests
+              -i res://tests/unit/turn/test_golden_ai_a.gd
+              -i res://tests/unit/turn/test_golden_ai_b.gd
+              -i res://tests/unit/turn/test_golden_turns.gd
+              -i res://tests/unit/ai/test_classic_turindrones.gd
+              -i res://tests/unit/ai/test_classic_robotoids.gd
+              -i res://tests/unit/ai/test_classic_automitrons.gd
+            check: "1"
     steps:
       - uses: actions/checkout@v7
 
@@ -34,13 +64,13 @@ jobs:
         run: |
           export GODOT_BIN="$HOME/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
           chmod +x "$GODOT_BIN"
-          bash tools/run_tests.sh
+          TESTS="${{ matrix.tests }}" CHECK_SCRIPTS="${{ matrix.check }}" bash tools/run_tests.sh
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: test-reports
+          name: test-reports-${{ matrix.shard }}
           path: reports/
           if-no-files-found: ignore
 
@@ -59,10 +89,10 @@ jobs:
         run: pip install gdtoolkit==4.5.0
 
       - name: gdlint
-        run: gdlint core tests tools
+        run: gdlint core tests tools ui
 
       - name: gdformat --check
-        run: gdformat --check core tests tools
+        run: gdformat --check core tests tools ui
 
       - name: Harness tests (Python)
         run: python -m unittest discover -s tools/harness -p "test_*.py" -v
