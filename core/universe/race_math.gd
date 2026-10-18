@@ -93,14 +93,21 @@ static func hab_points(race: Race, content: ContentRegistry) -> int:
 ## The value of a named trait parameter for this race: the primary trait's, else the first lesser
 ## trait (in id order) that has it, else `default`.
 static func trait_param(race: Race, content: ContentRegistry, name: String, default: int) -> int:
-	var ids: Array[String] = [race.primary_trait]
-	ids.append_array(race.lesser_traits)
-	for id in ids:
-		if content.has_def(id):
-			var params: Dictionary = content.trait_def(id).get("params", {})
-			if params.has(name):
-				return params[name]
+	var v: Variant = _trait_value(race.primary_trait, content, name)
+	if v != null:
+		return v
+	for id in race.lesser_traits:
+		v = _trait_value(id, content, name)
+		if v != null:
+			return v
 	return default
+
+
+## Trait `id`'s parameter `name`, or null when it has none.
+static func _trait_value(id: String, content: ContentRegistry, name: String) -> Variant:
+	if not content.has_def(id):
+		return null
+	return content.trait_def(id).get("params", {}).get(name)
 
 
 static func _hab_pass(race: Race, reach: int, weight: int, terraform: bool) -> float:

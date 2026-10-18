@@ -61,13 +61,34 @@ func load_dict(data: Variant, path: String, errors: PackedStringArray) -> void:
 			errors.append("%s/%s: unknown field" % [path, key])
 
 
-## A new object of this object's class with the same saved fields (deep copy).
+## A new object of this object's class with the same saved fields (deep copy). Field by field
+## from the schema, as a save and load would give but without the saved form in between.
 func copy() -> ModelObject:
 	var out: ModelObject = get_script().new()
-	var errors := PackedStringArray()
-	out.load_dict(to_dict(), "", errors)
-	assert(errors.is_empty(), "copy: %s" % ", ".join(errors))
+	_copy_into(out)
 	return out
+
+
+func _copy_into(out: ModelObject) -> void:
+	for field: Array in _schema():
+		var name: String = field[0]
+		var value: Variant = get(name)
+		match field[1]:
+			Kind.INT_LIST, Kind.STRING_LIST:
+				(out.get(name) as Array).assign(value)
+			Kind.OBJECT, Kind.OBJECT_OR_NULL:
+				out.set(name, null if value == null else (value as ModelObject).copy())
+			Kind.OBJECT_LIST:
+				var items := []
+				for item: ModelObject in value:
+					items.append(item.copy())
+				(out.get(name) as Array).assign(items)
+			Kind.JSON:
+				out.set(
+					name, value.duplicate(true) if value is Array or value is Dictionary else value
+				)
+			_:
+				out.set(name, value)
 
 
 ## Equal when the saved forms are equal. Turn-only marks are ignored.

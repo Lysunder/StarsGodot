@@ -284,6 +284,7 @@ static func completion(w: ClassicWorld, planet: Planet, index: int) -> Array[int
 	var owner := w.state.player(copy.owner)
 	var race := owner.race
 	var production := Production.new(w.state, w.content, StarsRandom.new(1))
+	production.remember_costs = true
 	var queue := copy.queue
 	var first := 0
 	var carry: QueueItem = null

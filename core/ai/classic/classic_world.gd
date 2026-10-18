@@ -117,7 +117,13 @@ static func build(
 	w.content = p_content
 	w.player = p
 	w.rng = p_rng
-	w.state = host.copy() as GameState
+	# the fleets the world keeps (_mask_fleets): the player's own and those it sees this year
+	var seen: Dictionary = {}
+	if p < host.views.size() and host.views[p] is Dictionary:
+		seen = host.views[p].get("fleets", {})
+	w.state = host.copy_keeping_fleets(
+		func(f: Fleet) -> bool: return f.owner == p or seen.has("%d/%d" % [f.owner, f.number])
+	)
 	w.personality = p_personality
 	if w.personality.is_empty():
 		w.personality = ComputerPlayers.personality_id(ComputerPlayers.personality_of(w.me()))

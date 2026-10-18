@@ -72,6 +72,22 @@ func to_dict() -> Dictionary:
 	return out
 
 
+## A deep copy holding only the fleets `keep` accepts (in fleet order).
+func copy_keeping_fleets(keep: Callable) -> GameState:
+	var all := fleets
+	var kept: Array[Fleet] = []
+	kept.assign(all.filter(keep))
+	fleets = kept
+	var out := copy() as GameState
+	fleets = all
+	return out
+
+
+func _copy_into(out: ModelObject) -> void:
+	super._copy_into(out)
+	(out as GameState).rng = RngStreams.from_dict(rng.to_dict())
+
+
 func load_dict(data: Variant, path: String, errors: PackedStringArray) -> void:
 	if not data is Dictionary:
 		errors.append("%s: expected an object" % path)

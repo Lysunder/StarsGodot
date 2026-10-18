@@ -161,6 +161,9 @@ static func _distance2(x1: int, y1: int, x2: int, y2: int) -> int:
 
 ## One player's scanning pass (`ComputeVisibility@1068:5872`).
 class Sight:
+	## The grid's cell size in light years.
+	const GRID := 64
+
 	var state: GameState
 	var content: ContentRegistry
 	var p: int
@@ -179,6 +182,11 @@ class Sight:
 	var packets := {}
 	## Wormholes tracked in this pass.
 	var tracked := {}
+	## Fleets and planets by grid cell (GRID light years square): indices into state.fleets and
+	## planet ids, so a scanner looks only at what is near it. Lookups return them in state order,
+	## so everything is seen in the order a full pass would see it.
+	var _fleet_cells := {}
+	var _planet_cells := {}
 
 	func _init(
 		p_state: GameState, p_content: ContentRegistry, p_player: int, p_rng: StarsRandom
@@ -190,6 +198,7 @@ class Sight:
 		rng = p_rng
 
 	func run() -> void:
+		_build_grid()
 		_start()
 		_fleet_scanners()
 		_planet_scanners()
@@ -249,6 +258,39 @@ class Sight:
 			for packet in state.packets:
 				_see_packet(packet)
 
+	func _build_grid() -> void:
+		for i in state.fleets.size():
+			var f := state.fleets[i]
+			_add_cell(_fleet_cells, Vector2i(f.x / GRID, f.y / GRID), i)
+		for planet in state.planets:
+			_add_cell(_planet_cells, Vector2i(planet.x / GRID, planet.y / GRID), planet.id)
+
+	static func _add_cell(cells: Dictionary, key: Vector2i, value: int) -> void:
+		if not cells.has(key):
+			cells[key] = PackedInt32Array()
+		var list: PackedInt32Array = cells[key]
+		list.append(value)
+		cells[key] = list
+
+	## The indices in `cells` within the square of half-side `r` around (x, y), ascending.
+	static func _near(cells: Dictionary, x: int, y: int, r: int) -> PackedInt32Array:
+		var out := PackedInt32Array()
+		var r0 := maxi(r, 0)
+		for cx in range((x - r0) / GRID, (x + r0) / GRID + 1):
+			for cy in range((y - r0) / GRID, (y + r0) / GRID + 1):
+				var key := Vector2i(cx, cy)
+				if cells.has(key):
+					out.append_array(cells[key])
+		out.sort()
+		return out
+
+	## The fleets within the square of half-side `r` around (x, y), in fleet order.
+	func _fleets_near(x: int, y: int, r: int) -> Array[Fleet]:
+		var out: Array[Fleet] = []
+		for i in _near(_fleet_cells, x, y, r):
+			out.append(state.fleets[i])
+		return out
+
 	## A fleet that stayed put and mines an unowned planet sees its minerals.
 	func _remote_mining(fleet: Fleet) -> bool:
 		if not fleet.did_not_move or state.planet(fleet.planet).owner >= 0:
@@ -272,7 +314,7 @@ class Sight:
 				_see_planet(state.planet(fleet.planet), SCANNED)
 			var s := Scanning.fleet_scanner(fleet, me, content)
 			var normal := maxi(s.range, 0)
-			for other in state.fleets:
+			for other in _fleets_near(fleet.x, fleet.y, normal):
 				if other.ship_count() == 0:
 					continue
 				if s.cargo and other.x == fleet.x and other.y == fleet.y:
@@ -292,7 +334,7 @@ class Sight:
 			if planet.owner != p:
 				continue
 			var r := Scanning.planet_ranges(state, content, planet)
-			for other in state.fleets:
+			for other in _fleets_near(planet.x, planet.y, r[0]):
 				if other.ship_count() > 0:
 					_scan_fleet(other, planet.x, planet.y, r[0], r[1], PCT, true)
 			_scan_objects(planet.x, planet.y, r[0], r[1], Scanner.PLANET)
@@ -310,7 +352,7 @@ class Sight:
 				continue
 			_see_packet(packet)
 			var range := packet.warp * packet.warp
-			for other in state.fleets:
+			for other in _fleets_near(packet.x, packet.y, range):
 				if other.ship_count() > 0:
 					_scan_fleet(other, packet.x, packet.y, range, 0, PCT, false)
 			_scan_objects(packet.x, packet.y, range, 0, Scanner.PACKET)
@@ -381,7 +423,8 @@ class Sight:
 	## Planets not seen at level 3 or more within penetrating range `pen` of (x, y).
 	func _scan_planets(x: int, y: int, pen: int) -> void:
 		var pen2 := pen * pen
-		for planet in state.planets:
+		for id in _near(_planet_cells, x, y, pen):
+			var planet := state.planets[id]
 			if planets.get(planet.id, 0) >= SCANNED:
 				continue
 			if absi(planet.x - x) > pen or absi(planet.y - y) > pen:

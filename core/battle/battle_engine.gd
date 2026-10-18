@@ -58,6 +58,12 @@ var losses := {}
 ## The armor damage formulas (S16 "Damage"): `battle.armor_damage`, `battle.starbase_damage`.
 var _ship_armor: Callable
 var _starbase_armor: Callable
+## Estimates of the move being weighed, by tokens, distance and range rule (`_estimate`).
+var _estimates := {}
+## What each enemy deals and takes over a range of distances, for the move being weighed.
+var _kept := {}
+## Whether random numbers were drawn since it was last cleared (torpedo_hits).
+var _drew := false
 
 
 func _init(
@@ -74,8 +80,9 @@ func _init(
 	tokens = p_tokens
 	_ship_armor = content.ruleset.formula(StandardRuleset.ARMOR_DAMAGE)
 	_starbase_armor = content.ruleset.formula(StandardRuleset.STARBASE_DAMAGE)
-	for t in tokens:
-		_link(t)
+	for i in tokens.size():
+		tokens[i]["_i"] = i
+		_link(tokens[i])
 
 
 ## Fights the battle; returns the recorded events.
@@ -287,6 +294,9 @@ func _move_token(idx: int, p: int) -> void:
 ## `Token_Move@10e8:3c7a`.
 func _token_move(idx: int, _p: int) -> void:
 	var t := tokens[idx]
+	# nothing changes while the token weighs its move: its estimates hold for every square
+	_estimates.clear()
+	_kept.clear()
 	var cx: int = t.square & 15
 	var cy: int = t.square >> 4
 	if t.kind == KIND_STARBASE:
@@ -448,7 +458,7 @@ func _choose_target(t: Dictionary, mask: int) -> Array[int]:
 		if d <= reach:
 			if o.shields != 0 or far_range == beam_range or (moves + beam_range) >= d:
 				return [moves, NONE]
-		if d < best and estimate(t, 0, o, false) > 0:
+		if d < best and _estimate(t, 0, o, false) > 0:
 			best = d
 			square = o.square
 	return [1, square]
@@ -473,21 +483,28 @@ func _rate_position(t: Dictionary, square: int, primary: bool, mask: int) -> int
 				for ey in [(o.square >> 4) - 1, (o.square >> 4) + 1]:
 					var cell: int = clampi(ey, 0, BOARD_MAX) << 4 | clampi(ex, 0, BOARD_MAX)
 					high = maxi(high, distance(square, cell))
-		var is_target := is_target_class(o, target_class & 15)
-		var best := FAR
-		var kept_dealt := 0
-		var kept_taken := 0
-		for dist in range(low, high + 1):
-			var dealt := estimate(t, dist, o, false) if is_target else 0
-			var taken := estimate(o, dist, t, tactic == 0)
-			# the enemy picks the distance: its own tactic, from its side (taken and dealt swapped)
-			var score := tactic_score(taken, dealt, o.tactic & 15)
-			if score <= best:
-				best = score
-				kept_dealt = dealt
-				kept_taken = taken
-		most_dealt = maxi(most_dealt, kept_dealt)
-		taken_sum += kept_taken
+		# the same for every square at these distances: remembered for the move being weighed
+		var key: int = ((o._i * 64 + low) * 64 + high) * 2 + (1 if primary else 0)
+		var kept: Array = _kept.get(key, [])
+		if kept.is_empty():
+			var drew := _drew
+			_drew = false
+			var is_target := is_target_class(o, target_class & 15)
+			var best := FAR
+			kept = [0, 0]
+			for dist in range(low, high + 1):
+				var dealt := _estimate(t, dist, o, false) if is_target else 0
+				var taken := _estimate(o, dist, t, tactic == 0)
+				# the enemy picks the distance: its own tactic, from its side (taken, dealt swapped)
+				var score := tactic_score(taken, dealt, o.tactic & 15)
+				if score <= best:
+					best = score
+					kept = [dealt, taken]
+			if not _drew:
+				_kept[key] = kept
+			_drew = _drew or drew
+		most_dealt = maxi(most_dealt, kept[0])
+		taken_sum += kept[1]
 	return tactic_score(most_dealt, taken_sum, tactic)
 
 
@@ -504,6 +521,22 @@ static func tactic_score(a: int, b: int, tactic: int) -> int:
 			var r := _div(-a * 100, b + 1)
 			return -1 if r >= 0 else r
 	return 0
+
+
+## estimate() remembered for the move being weighed (`_token_move` clears it), unless working it
+## out drew random numbers (small torpedo volleys): those draws are made every time, as the
+## original makes them.
+func _estimate(a: Dictionary, d: int, t: Dictionary, ignore: bool) -> int:
+	var key: int = ((a._i * 1024 + t._i) * 64 + d) * 2 + (1 if ignore else 0)
+	if _estimates.has(key):
+		return _estimates[key]
+	var drew := _drew
+	_drew = false
+	var value := estimate(a, d, t, ignore)
+	if not _drew:
+		_estimates[key] = value
+	_drew = _drew or drew
+	return value
 
 
 ## `Token_EstimateDamage@10e8:315a`: what token `a` would do to token `t` at distance `d`;
@@ -578,6 +611,7 @@ func torpedo_hits(n: int, t: Dictionary, accuracy: int, bonus: int) -> int:
 	if n > 200:
 		return _div(a * n, 100)
 	var hits := 0
+	_drew = true
 	for i in n:
 		if rng.random(100) < a:
 			hits += 1

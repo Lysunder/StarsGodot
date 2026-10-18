@@ -35,9 +35,12 @@ class SpendResult:
 	var carry: QueueItem = null
 
 
+## Whether spend() remembers unit costs (only for estimates of one planet over many years).
+var remember_costs := false
 var _state: GameState
 var _content: ContentRegistry
 var _rng: StarsRandom
+var _costs := {}
 
 
 func _init(state: GameState, content: ContentRegistry, rng: StarsRandom) -> void:
@@ -174,13 +177,25 @@ static func _built(planet: Planet, effect: String) -> int:
 
 
 ## Spends on one queue item (S09 step 5); also the classic AI's completion estimate (S22).
+## An item's unit cost; remembered by kind when `remember_costs` is on (an estimate's repeated
+## years, where neither tech nor the planet's starbase change).
+func _unit_cost(planet: Planet, player: Player, item: QueueItem) -> Array[int]:
+	var key := "%s/%d/%s" % [item.item, item.design, item.starbase]
+	if remember_costs and _costs.has(key):
+		return _costs[key]
+	var tech: Array[int] = []
+	tech.assign(_state.turn_start_tech.get(player.index, []))
+	var cost := ProductionCosts.unit_cost(planet, item, player, _content, tech)
+	if remember_costs:
+		_costs[key] = cost
+	return cost
+
+
 func spend(
 	planet: Planet, player: Player, item: QueueItem, avail: Array[int], alchemy_above: bool
 ) -> SpendResult:
 	var out := SpendResult.new()
-	var tech: Array[int] = []
-	tech.assign(_state.turn_start_tech.get(player.index, []))
-	var cost := ProductionCosts.unit_cost(planet, item, player, _content, tech)
+	var cost := _unit_cost(planet, player, item)
 	var def := {} if item.is_design() else _content.get_def("production_item", item.item)
 	var auto: bool = def.get("auto", false)
 	var count := item.count
