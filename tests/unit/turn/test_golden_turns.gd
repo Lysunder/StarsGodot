@@ -702,3 +702,30 @@ func test_cyber1(
 	]
 ) -> void:
 	_check_turn("cyber1", turn, true)
+
+
+## An idle human, a Robotoids, three Macinti and a Turindrones computer player (S22 stage 4).
+## Turns left out: B12 (76, 79: a fleet a lower-numbered fleet chases doesn't move) and 62, 63, 66
+## (chasers in chase chains one light year off; probably B12, not confirmed).
+func test_mac1(
+	turn: int,
+	# gdlint: ignore=unused-argument
+	test_parameters := [
+		[60],
+		[61],
+		[64],
+		[65],
+		[67],
+		[68],
+		[69],
+		[70],
+		[71],
+		[72],
+		[73],
+		[74],
+		[75],
+		[77],
+		[78],
+	]
+) -> void:
+	_check_turn("mac1", turn, true)

@@ -33,6 +33,7 @@ material from the original. Golden-turn tests compare our engine's turn N → N+
 | `auto1/` | made the same way as `big1/` (seed 781): five Automitrons computer players and an idle human, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
 | `roto1/` | made the same way as `big1/` (seed 783): five Rototills computer players and an idle human, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
 | `cyber1/` | made the same way as `big1/` (seed 872): an idle human, a Robotoids computer player, three Cybertrons and a Rototills, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
+| `mac1/` | made the same way as `big1/` (seed 809): an idle human, a Robotoids computer player, three Macinti (Alternate Reality races) and a Turindrones, turns 60-80 kept, names and `knowledge` as in `big1/` | `t060` … `t080` |
 
 **Orders:** `tNNN.pP.orders.json` holds player P's orders given in turn NNN (our order file format, S11), converted
 from the original's `.x` file with `tools/harness/stars_orders.py`. The golden-turn test applies them before
