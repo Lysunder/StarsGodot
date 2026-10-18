@@ -94,9 +94,11 @@ level matters in the starting setup (S07) and in Mystery Trader dealings (S18).
 
 Not in the original. The player keeps personalities of their own, each a file in `user://personalities` (one per
 personality, named after it): JSON with `format` "stars_personality", `format_version` 1, and the same fields a
-game keeps for a computer player (`name`, `brain`, `params`, `levels`, one map per difficulty level). A file loads
-when its name is 1 to 32 characters, its brain is one a personality can name (any but the idle brain), and its
-settings pass the brain's declarations (S22 "Personality settings"). A setting's value at a level is that level's
+game keeps for a computer player (`name`, `brain`, `params`, `levels`, one map per difficulty level), plus
+`races_of`, the original personality whose built-in races it plays (see "Computer players in a new game"; by default
+the brain's own, Robotoids for the baseline brain). A file loads when its name is 1 to 32 characters, its brain is
+one a personality can name (any but the idle brain), `races_of` names one of the six, and its settings pass the
+brain's declarations (S22 "Personality settings"). A setting's value at a level is that level's
 value when it sets one, else the personality's, else the brain's default.
 
 The editor (main menu, Personalities) lists the game's own personalities, which can't be changed (Copy makes a
@@ -106,8 +108,49 @@ and its range. Settings for "All levels" edit the personality's own values; with
 setting makes it that level's override (unticked, the level takes the personality's value). New starts a
 personality for the baseline brain at its defaults. Choosing another brain starts its settings afresh. Save keeps
 the personality under its name (two personalities can't share one; renaming moves the file); Delete removes it.
-The brains of the original's personalities have no settings. Offering the player's personalities when a game is
-set up comes with the computer players in the New Game window.
+The brains of the original's personalities have no settings. A Races choice sets `races_of`.
+
+### Computer players in a new game
+
+References: `NewGame_PickPlayerCount@1070:73a8`, `DoNewGame@1070:6ab2`, `SIMPLENEWGAMEDLG@1070:4928`.
+
+**Built-in races.** Each of the six original personalities has a race per difficulty level (content: the
+personality's `races`, Easy first; taken from the original's table). A computer player plays the race of its
+personality (for a personality of the player's, the one `races_of` names) at its level, with no name and logo 0, so
+the setup draws name it and give it a logo (S07 step 0). A random personality or level is drawn first (level, then
+personality), then the race is taken.
+
+**The simple New Game.** With universe size s (0 tiny .. 4 huge) and difficulty d (0 Easy .. 3 Expert), the number
+of players n, the human included, is drawn (each draw made only when its test is reached; "expert" means d = 3):
+
+| Size | Players |
+|---|---|
+| Tiny | 3 on an expert draw of 1 in 3, else 2 |
+| Small | 5 on an expert draw of 1 in 4; else 4 when d ≥ 2 and a draw of 1 in 6 − d hits; else 3 |
+| Medium | 9 on an expert draw of 1 in 10; else 5 on another; else T(7 − d; 8, 6, 7) |
+| Large | 14 + random(2) on an expert draw of 1 in 10; else 10 − random(2) on another; else T(7 − d; 13, 11, 12) |
+| Huge | 13 − random(3) on an expert draw of 1 in 10; else T(9 − d; 14, 15, 16) |
+
+T(k; a, b, c): when d ≥ 2, a draw of 1 in k gives a, then a draw of 1 in 7 − d gives b; otherwise c. Below Harder
+the counts are fixed: 2, 3, 7, 12 and 16.
+
+Computer players fill slots 1 .. n − 1 by shares; slot i takes the first entry whose bound exceeds i (integer
+division; "R" is a random personality, "?" a random level):
+
+| Level | Entries, with the bound each ends at |
+|---|---|
+| Easy | Automitrons Easy (n+1)/3+1; Rototills Easy 2(n+1)/3+1; Turindrones Easy 5(n+1)/6+1; R Easy |
+| Standard | Turindrones 2(n+5)/7+1; Robotoids 3(n+1)/7+1; Automitrons (4n+2)/7+1; Rototills (5n+1)/7+1; Cybertrons 6n/7+1 (all Standard); R ? |
+| Harder | Cybertrons 2(n+5)/7+1; Turindrones 3(n+1)/7+1; Robotoids (4n+2)/7+1; Macinti (5n+1)/7+1; R 6n/7+1 (all Harder); R ? |
+| Expert | Robotoids (n+1)/3+1; Macinti (6n+5)/12+1; Cybertrons 5n/6+1; R (all Expert) |
+
+Then for i = 1 .. n − 2 slot i swaps with slot i + 1 + random(n − i − 1). The original draws all of this from the
+game's random stream at setup time; we draw it from a stream seeded with the universe seed (the game-seed method,
+S01), separate from the game's, so the same seed gives the same opponents and the same universe.
+
+**Advanced Game** can instead list the computer players: up to 15, each a personality (the game's own, the
+player's, or Random) and a level (or Random). A personality of the player's is copied into the game and plays under
+the key `own_` + its name.
 
 ### The baseline brain (our own)
 

@@ -11,6 +11,11 @@ const PERSONALITY := "ai_personality"
 const INACTIVE := "inactive"
 ## The difficulty levels, easiest first (Player.ai_level).
 const LEVELS := ["easy", "standard", "harder", "expert"]
+## The original's personalities, whose built-in races (one per level, content `races`) every
+## personality plays: a built-in one its own, one of the player's those it names.
+const RACES := UniverseGenerator.AI_PERSONALITIES
+## The races a personality plays when its brain has none of its own (the baseline brain).
+const DEFAULT_RACES := "robotoids"
 ## Files the original writes for each computer player after it plays (log, history), each
 ## drawing a cipher salt (S01 "Draws outside the rules").
 const FILES_WRITTEN := 2
@@ -42,6 +47,28 @@ static func personality_for(p: Player, content: ContentRegistry) -> Dictionary:
 	if not content.ids(PERSONALITY).has(id):
 		return {}
 	return content.get_def(PERSONALITY, id)
+
+
+## The races a new personality for `brain` plays: the brain's own, else DEFAULT_RACES.
+static func default_races(brain: String) -> String:
+	return brain if RACES.has(brain) else DEFAULT_RACES
+
+
+## The built-in race personality `p` plays at difficulty `level` (S07 step 0, S22): a new copy,
+## without a name and with logo 0; a default race when the content has none.
+static func race_for(p: Dictionary, level: int, content: ContentRegistry) -> Race:
+	var key := str(p.get("races_of", default_races(str(p.get("brain", "")))))
+	var id := personality_id(key)
+	var races: Array = []
+	if content.ids(PERSONALITY).has(id):
+		races = content.get_def(PERSONALITY, id).get("races", [])
+	if races.is_empty():
+		return Race.new()
+	var race := RacePresets.from_def(races[clampi(level, 0, races.size() - 1)])
+	race.name = ""
+	race.plural_name = ""
+	race.logo = 0
+	return race
 
 
 ## Gives every computer player of a new game a copy of its personality's definition (S22), so

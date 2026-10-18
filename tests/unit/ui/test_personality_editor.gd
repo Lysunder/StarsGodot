@@ -20,6 +20,8 @@ func test_personality_editor_saves_a_personality() -> void:
 	editor._name.text = "Cautious"
 	editor._name.text_changed.emit("Cautious")
 	(editor._rows["research_pct"]["spin"] as SpinBox).value = 25
+	editor._races.select(4)
+	editor._races.item_selected.emit(4)
 	# the expert level overrides the warships
 	editor._level.select(4)
 	editor._fill_settings()
@@ -32,6 +34,7 @@ func test_personality_editor_saves_a_personality() -> void:
 	var saved := PersonalityStore.personalities()
 	assert_int(saved.size()).is_equal(1)
 	assert_int(saved[0]["params"]["research_pct"]).is_equal(25)
+	assert_str(saved[0]["races_of"]).is_equal("cybertrons")
 	assert_int(saved[0]["levels"][3]["warships"]).is_equal(9)
 	assert_bool(saved[0]["levels"][0].has("warships")).is_false()
 	# a second personality may not take the same name

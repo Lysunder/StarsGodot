@@ -5,7 +5,9 @@ extends RefCounted
 ##
 ## Input: settings (size from universe_width, density, positions, options) and one Player per
 ## slot, with its race filled in. Computer players set `ai` to a personality id, or to AI_RANDOM
-## (and ai_level -1 for a random level); built-in computer races have no name and logo 0.
+## (and ai_level -1 for a random level); built-in computer races have no name and logo 0. A
+## computer player without a race gets its personality's built-in race for its level once both
+## are drawn (ComputerPlayers.race_for).
 ## Human races whose advantage points are negative are replaced by `default_race`. Races with
 ## the random setting are rolled after their shuffle draw (S06); an empty name is drawn then.
 ##
@@ -136,6 +138,10 @@ func _setup_draws() -> void:
 			p.ai_level = _rng.random(4)
 		if p.ai == AI_RANDOM:
 			p.ai = AI_PERSONALITIES[_rng.random(AI_PERSONALITIES.size())]
+		if p.race == null:
+			p.race = ComputerPlayers.race_for(
+				ComputerPlayers.personality_for(p, content), p.ai_level, content
+			)
 	var race_names := content.name_list(RACE_NAMES)
 	for p in players:
 		if p.ai.is_empty() and default_race != null:

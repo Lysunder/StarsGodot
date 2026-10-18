@@ -2,7 +2,8 @@ class_name PersonalityEditor
 extends AcceptDialog
 ## Computer player personalities (S22 "The personality editor"; the original has none): the list
 ## on the left holds the game's own personalities (read only) and the player's (PersonalityStore);
-## the right side shows the chosen one's name, brain and settings by group. Settings are edited
+## the right side shows the chosen one's name, brain, the original personality whose races it
+## plays, and settings by group. Settings are edited
 ## for the personality as a whole, or with a difficulty chosen, as that level's overrides (a box
 ## per setting: unticked, the level takes the personality's value). New makes a personality for
 ## the baseline brain, Copy one from the chosen personality; Save and Delete work on the player's
@@ -26,6 +27,7 @@ var _own := false
 var _saved_name := ""
 var _name: LineEdit
 var _brain: OptionButton
+var _races: OptionButton
 var _level: OptionButton
 var _settings: VBoxContainer
 var _status: Label
@@ -70,6 +72,17 @@ func _ready() -> void:
 		_brain.add_item(_brain_name(id))
 	_brain.item_selected.connect(_on_brain)
 	grid.add_child(_brain)
+	grid.add_child(_label("Races:"))
+	_races = OptionButton.new()
+	_races.tooltip_text = "The original personality whose race it plays at each level."
+	for key: String in ComputerPlayers.RACES:
+		_races.add_item(_content().display_name(ComputerPlayers.personality_id(key)))
+	_races.item_selected.connect(
+		func(i: int) -> void:
+			if not _filling:
+				_current["races_of"] = ComputerPlayers.RACES[i]
+	)
+	grid.add_child(_races)
 	grid.add_child(_label("Settings for:"))
 	_level = OptionButton.new()
 	_level.add_item(ALL_LEVELS)
@@ -156,6 +169,8 @@ func _show(p: Dictionary, own: bool) -> void:
 	_name.editable = own
 	_brain.select(maxi(PersonalityFile.brains().find(_current["brain"]), 0))
 	_brain.disabled = not own
+	_select_races()
+	_races.disabled = not own
 	_filling = false
 	_save.disabled = not own
 	_delete.disabled = not own
@@ -169,7 +184,17 @@ func _on_brain(index: int) -> void:
 	# another brain has other settings: start from its defaults
 	var name := str(_current.get("name", ""))
 	_current = PersonalityFile.make(name, PersonalityFile.brains()[index])
+	_filling = true
+	_select_races()
+	_filling = false
 	_fill_settings()
+
+
+func _select_races() -> void:
+	var key := str(
+		_current.get("races_of", ComputerPlayers.default_races(str(_current.get("brain", ""))))
+	)
+	_races.select(maxi(ComputerPlayers.RACES.find(key), 0))
 
 
 ## The settings of the current brain, by group, for the level chosen (or all levels).

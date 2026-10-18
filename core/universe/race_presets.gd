@@ -39,7 +39,11 @@ static func ids(content: ContentRegistry) -> Array[String]:
 ## A new race from a preset, without a name (the player names it). Fields the preset leaves out
 ## keep a new Race's values (the default preset's).
 static func make(content: ContentRegistry, id: String) -> Race:
-	var def := content.get_def("race_preset", id)
+	return from_def(content.get_def("race_preset", id))
+
+
+## A new race from race data in the preset format (presets, the built-in computer races).
+static func from_def(def: Dictionary) -> Race:
 	var race := Race.new()
 	for field: String in FIELDS:
 		if not def.has(field):

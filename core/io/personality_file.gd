@@ -2,8 +2,9 @@ class_name PersonalityFile
 extends RefCounted
 ## A computer player's personality as the player keeps it (spec S22 "The personality editor"):
 ## a name, the brain that plays it, the brain's settings, and per difficulty level the settings
-## that level changes, in the same shape a game keeps (`Player.ai_personality`). Files are JSON:
-## {format, format_version, name, brain, params, levels}.
+## that level changes, and whose built-in races it plays (one of the original's personalities,
+## ComputerPlayers.race_for), in the same shape a game keeps (`Player.ai_personality`). Files are
+## JSON: {format, format_version, name, brain, params, levels, races_of}.
 
 const FORMAT := "stars_personality"
 const FORMAT_VERSION := 1
@@ -21,12 +22,18 @@ class Result:
 
 
 ## A new personality for `brain` with no settings of its own (every setting at its default) and
-## one empty map per difficulty level.
+## one empty map per difficulty level, playing the races of the brain's own personality.
 static func make(name: String, brain: String) -> Dictionary:
 	var levels: Array = []
 	for i in ComputerPlayers.LEVELS.size():
 		levels.append({})
-	return {"name": name, "brain": brain, "params": {}, "levels": levels}
+	return {
+		"name": name,
+		"brain": brain,
+		"params": {},
+		"levels": levels,
+		"races_of": ComputerPlayers.default_races(brain),
+	}
 
 
 ## The content personality `id` as a personality of the player's (its display name, a deep copy
@@ -61,6 +68,8 @@ static func check(p: Dictionary) -> PackedStringArray:
 		return out
 	if not p.get("params") is Dictionary:
 		out.append("params must be a map")
+	if not ComputerPlayers.RACES.has(p.get("races_of")):
+		out.append("unknown races %s" % str(p.get("races_of")))
 	var levels: Variant = p.get("levels")
 	if not levels is Array or (levels as Array).size() > ComputerPlayers.LEVELS.size():
 		out.append("levels must be a list of up to %d maps" % ComputerPlayers.LEVELS.size())
@@ -118,6 +127,7 @@ static func read(path: String) -> Result:
 		"brain": data.get("brain"),
 		"params": _ints(data.get("params", {})) if data.get("params", {}) is Dictionary else null,
 		"levels": [],
+		"races_of": data.get("races_of", ComputerPlayers.default_races(str(data.get("brain", "")))),
 	}
 	var levels: Variant = data.get("levels", [])
 	if levels is Array:
@@ -142,6 +152,7 @@ static func write(path: String, p: Dictionary) -> Error:
 		"brain": p["brain"],
 		"params": p.get("params", {}),
 		"levels": p.get("levels", []),
+		"races_of": p.get("races_of", ComputerPlayers.default_races(str(p["brain"]))),
 	}
 	f.store_string(JSON.stringify(data, "  ", false) + "\n")
 	return OK

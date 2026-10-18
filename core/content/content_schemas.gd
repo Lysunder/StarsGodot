@@ -133,6 +133,30 @@ const _UPGRADE_CANDIDATE := {
 const _HAB_AXES := {"t": "list", "of": {"t": "int", "min": -1, "max": 100}, "min": 3, "max": 3}
 
 ## Fields every definition has, merged into each type's own fields.
+## A race's fields (race presets, the built-in computer races of S22).
+const _RACE_FIELDS := {
+	"primary_trait": {"t": "ref", "to": "trait"},
+	"lesser_traits": _TRAIT_LIST,
+	"hab_low": _HAB_AXES,
+	"hab_center": _HAB_AXES,
+	"hab_high": _HAB_AXES,
+	"growth_rate": _INT0,
+	"resources_per_colonist": _INT0,
+	"factory_output": _INT0,
+	"factory_cost": _INT0,
+	"factories_operated": _INT0,
+	"mine_output": _INT0,
+	"mine_cost": _INT0,
+	"mines_operated": _INT0,
+	"research_costs": {"t": "list", "of": {"t": "int", "min": 0, "max": 2}, "min": 1},
+	"leftover_points": {"t": "enum", "values": Race.LEFTOVER},
+	"techs_start_at_3": {"t": "bool"},
+	"cheap_factories": {"t": "bool"},
+	"random": {"t": "bool"},
+}
+## A race as data: a race preset without its order.
+const _RACE := {"t": "object", "fields": _RACE_FIELDS, "required": ["primary_trait"]}
+
 const _COMMON := {"type": {"t": "string"}, "id": {"t": "id"}, "tags": _TAGS}
 
 const TYPES := {
@@ -329,28 +353,8 @@ const TYPES := {
 	},
 	"race_preset":
 	{
-		"fields":
-		{
-			"order": _INT0,
-			"primary_trait": {"t": "ref", "to": "trait"},
-			"lesser_traits": _TRAIT_LIST,
-			"hab_low": _HAB_AXES,
-			"hab_center": _HAB_AXES,
-			"hab_high": _HAB_AXES,
-			"growth_rate": _INT0,
-			"resources_per_colonist": _INT0,
-			"factory_output": _INT0,
-			"factory_cost": _INT0,
-			"factories_operated": _INT0,
-			"mine_output": _INT0,
-			"mine_cost": _INT0,
-			"mines_operated": _INT0,
-			"research_costs": {"t": "list", "of": {"t": "int", "min": 0, "max": 2}, "min": 1},
-			"leftover_points": {"t": "enum", "values": Race.LEFTOVER},
-			"techs_start_at_3": {"t": "bool"},
-			"cheap_factories": {"t": "bool"},
-			"random": {"t": "bool"},
-		},
+		"fields": _RACE_FIELDS,
+		"more_fields": {"order": _INT0},
 		"required": ["order", "primary_trait"],
 	},
 	# a class of hulls the classic personalities tell apart (S22 "The classic world"), where the
@@ -419,8 +423,8 @@ const TYPES := {
 		},
 		"required": ["steps"],
 	},
-	# a computer player's personality (S22): the brain it runs, its parameters, and per difficulty
-	# level (ComputerPlayers.LEVELS) the parameters that level changes
+	# a computer player's personality (S22): the brain it runs, its parameters, per difficulty level
+	# (ComputerPlayers.LEVELS) the parameters that level changes, and the race it plays per level
 	"ai_personality":
 	{
 		"fields":
@@ -429,6 +433,8 @@ const TYPES := {
 			"brain": {"t": "enum", "values": AiBrains.IDS},
 			"params": _INT_MAP,
 			"levels": {"t": "list", "of": _INT_MAP, "max": 4},
+			# the race it plays at each level (built-in personalities)
+			"races": {"t": "list", "of": _RACE, "max": 4},
 		},
 		"required": ["order", "brain"],
 	},
@@ -452,6 +458,7 @@ static func def_spec(type_name: String) -> Dictionary:
 	var own: Dictionary = TYPES[type_name]
 	var fields: Dictionary = _COMMON.duplicate()
 	fields.merge(own["fields"])
+	fields.merge(own.get("more_fields", {}))
 	var required: Array = ["type", "id"]
 	required.append_array(own["required"])
 	return {"t": "object", "fields": fields, "required": required}

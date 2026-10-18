@@ -3,10 +3,12 @@ extends AcceptDialog
 ## New Game (D15, the original's arrangement): Difficulty Level and Universe Size as radio groups on
 ## the left, the race on the right with Customize Race and Advanced Game under it, and Begin
 ## Tutorial, OK and Cancel along the bottom. Advanced Game sets the density, the player positions,
-## the game options and the seed. The race list holds the presets and the player's own races
-## (RaceStore); Customize Race opens the race wizard on the chosen one, and the finished race is
-## saved and chosen. Difficulty and the tutorial wait for the AI and the tutorial (M12, M11 step
-## 11).
+## the game options, the seed and the computer players. The race list holds the presets and the
+## player's own races (RaceStore); Customize Race opens the race wizard on the chosen one, and the
+## finished race is saved and chosen. The difficulty level picks the computer players with the
+## universe size (NewGame.pick_opponents) unless Advanced Game chooses them: each a personality
+## (the game's own, the player's from the personality editor, or Random) and a level (or Random).
+## The tutorial waits for M11 step 11.
 
 signal game_chosen(options: NewGame.Options)
 
@@ -25,7 +27,12 @@ const FLAGS := [
 	["galaxy_clumping", "Galaxy Clumping", true],
 ]
 
+## Advanced Game's computer player list: the personality and level choices, and the rows.
+const RANDOM_LEVEL := "Random"
+const OPPONENT_LIST_SIZE := Vector2(300, 140)
+
 var _size_group := ButtonGroup.new()
+var _difficulty_group := ButtonGroup.new()
 var _race: OptionButton
 ## The races the list offers, in its order: the presets, then the player's own.
 var _races: Array[Race] = []
@@ -35,6 +42,15 @@ var _density_group := ButtonGroup.new()
 var _positions_group := ButtonGroup.new()
 var _flags: Array[CheckBox] = []
 var _seed: SpinBox
+var _choose: CheckBox
+var _opponent_list: ItemList
+var _opponent_kind: OptionButton
+var _opponent_level: OptionButton
+var _opponent_buttons: Array[Button] = []
+## What the personality choice offers, in its order: {ai, personality, name}.
+var _kinds: Array[Dictionary] = []
+## The chosen computer players, in the list's order: NewGame.Options.opponents entries.
+var _opponents: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -48,11 +64,8 @@ func _ready() -> void:
 	var left := VBoxContainer.new()
 	row.add_child(left)
 	var difficulty := _group_box(left, "Difficulty Level")
-	var difficulty_group := ButtonGroup.new()
 	for i in DIFFICULTIES.size():
-		var r := _radio(difficulty, DIFFICULTIES[i], difficulty_group, i == 1)
-		r.disabled = true
-		r.tooltip_text = "Computer players come with the AI."
+		_radio(difficulty, DIFFICULTIES[i], _difficulty_group, i == 1)
 	var size_box := _group_box(left, "Universe Size")
 	for i in SIZES.size():
 		_radio(size_box, SIZES[i], _size_group, i == 1)
@@ -65,7 +78,7 @@ func _ready() -> void:
 	_wizard = RaceWizard.new()
 	_wizard.race_finished.connect(_on_race_finished)
 	add_child(_wizard)
-	_button(right, "Advanced Game...", func() -> void: _advanced.popup_centered())
+	_button(right, "Advanced Game...", _open_advanced)
 	var bottom := HBoxContainer.new()
 	box.add_child(bottom)
 	var tutorial := _button(bottom, "Begin Tutorial", func() -> void: pass)
@@ -142,6 +155,109 @@ func _build_advanced() -> void:
 	_seed.max_value = 1 << 30
 	_seed.value = randi() % 100000
 	seed_row.add_child(_seed)
+	_build_opponents(left)
+
+
+func _build_opponents(parent: Control) -> void:
+	_choose = CheckBox.new()
+	_choose.text = "Choose the computer players"
+	_choose.tooltip_text = "Otherwise the difficulty level and universe size choose them."
+	_choose.toggled.connect(func(_on: bool) -> void: _update_opponents())
+	parent.add_child(_choose)
+	var box := _group_box(parent, "Computer Players")
+	_opponent_list = ItemList.new()
+	_opponent_list.custom_minimum_size = OPPONENT_LIST_SIZE
+	box.add_child(_opponent_list)
+	var row := HBoxContainer.new()
+	box.add_child(row)
+	_opponent_kind = OptionButton.new()
+	_opponent_kind.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(_opponent_kind)
+	_opponent_level = OptionButton.new()
+	for n: String in DIFFICULTIES:
+		_opponent_level.add_item(n)
+	_opponent_level.add_item(RANDOM_LEVEL)
+	_opponent_level.select(1)
+	row.add_child(_opponent_level)
+	var buttons := HBoxContainer.new()
+	box.add_child(buttons)
+	_opponent_buttons.append(_button(buttons, "Add", _on_add_opponent))
+	_opponent_buttons.append(_button(buttons, "Remove", _on_remove_opponent))
+	_update_opponents()
+
+
+## Advanced Game, with the personality choice filled afresh (the player may have saved more).
+func _open_advanced() -> void:
+	_fill_kinds()
+	_update_opponents()
+	_advanced.popup_centered()
+
+
+## The game's own personalities (not the inactive one), the player's, then Random.
+func _fill_kinds() -> void:
+	var content := GameSession.content
+	_kinds.clear()
+	_opponent_kind.clear()
+	var ids: Array = content.ids(ComputerPlayers.PERSONALITY)
+	ids.sort_custom(
+		func(a: String, b: String) -> bool:
+			return (
+				int(content.get_def(ComputerPlayers.PERSONALITY, a).get("order", 0))
+				< int(content.get_def(ComputerPlayers.PERSONALITY, b).get("order", 0))
+			)
+	)
+	for id: String in ids:
+		var key := id.get_slice(".", 1)
+		if key == ComputerPlayers.INACTIVE:
+			continue
+		_kinds.append({"ai": key, "personality": {}, "name": content.display_name(id)})
+	for p: Dictionary in PersonalityStore.personalities():
+		_kinds.append({"ai": NewGame.personality_key(p), "personality": p, "name": str(p["name"])})
+	_kinds.append({"ai": NewGame.RANDOM, "personality": {}, "name": "Random"})
+	for k: Dictionary in _kinds:
+		_opponent_kind.add_item(k["name"])
+
+
+func _on_add_opponent() -> void:
+	if _opponents.size() >= NewGame.MAX_PLAYERS - 1 or _kinds.is_empty():
+		return
+	var kind: Dictionary = _kinds[maxi(_opponent_kind.selected, 0)]
+	var level := _opponent_level.selected
+	(
+		_opponents
+		. append(
+			{
+				"ai": kind["ai"],
+				"level": -1 if level >= DIFFICULTIES.size() else level,
+				"personality": (kind["personality"] as Dictionary).duplicate(true),
+				"name": kind["name"],
+			}
+		)
+	)
+	_update_opponents()
+
+
+func _on_remove_opponent() -> void:
+	var picked := _opponent_list.get_selected_items()
+	if picked.is_empty():
+		return
+	_opponents.remove_at(picked[0])
+	_update_opponents()
+
+
+func _update_opponents() -> void:
+	_opponent_list.clear()
+	for o: Dictionary in _opponents:
+		var level := int(o["level"])
+		_opponent_list.add_item(
+			"%s, %s" % [o["name"], RANDOM_LEVEL if level < 0 else DIFFICULTIES[level]]
+		)
+	var on := _choose.button_pressed
+	for c: Control in [_opponent_kind, _opponent_level]:
+		(c as OptionButton).disabled = not on
+	for b in _opponent_buttons:
+		b.disabled = not on
+	_opponent_buttons[0].disabled = not on or _opponents.size() >= NewGame.MAX_PLAYERS - 1
 
 
 func _group_box(parent: Control, heading: String) -> VBoxContainer:
@@ -189,5 +305,14 @@ func _on_ok() -> void:
 	for i in FLAGS.size():
 		if _flags[i].button_pressed:
 			options.flags.append(FLAGS[i][0])
+	if _choose.button_pressed:
+		for o: Dictionary in _opponents:
+			options.opponents.append(
+				{"ai": o["ai"], "level": o["level"], "personality": o["personality"]}
+			)
+	else:
+		# the same seed fields the same computer players
+		var rng := StarsRandom.from_game_seed(options.seed)
+		options.opponents = NewGame.pick_opponents(options.size, _picked(_difficulty_group), rng)
 	hide()
 	game_chosen.emit(options)
