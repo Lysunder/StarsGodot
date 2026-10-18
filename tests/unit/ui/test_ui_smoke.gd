@@ -249,7 +249,7 @@ func test_rename_dialog_renames_the_fleet() -> void:
 	assert_str(dialog._field.get_selected_text()).is_equal(current)
 	dialog._field.text = "Scouts"
 	dialog.get_ok_button().pressed.emit()
-	var renamed := GameSession.view.state.fleet(GameSession.PLAYER, fleet.number)
+	var renamed := GameSession.view.state.fleet(GameSession.player, fleet.number)
 	assert_str(GameSession.view.fleet_name(renamed)).is_equal("Scouts")
 	screen.queue_free()
 	await get_tree().process_frame

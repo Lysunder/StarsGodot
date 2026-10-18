@@ -4,7 +4,10 @@ extends VBoxContainer
 ## order), then four resizable panes: Command (top left), Scanner (top right, with its toolbar
 ## above and status bar below), Messages (bottom left; it shows the year), Selection Summary
 ## (bottom right). Clicking an object selects it for the summary; the player's own planets and
-## fleets also come under command. F9 generates the turn.
+## fleets also come under command. F9 generates the turn. A player whose race has been wiped out
+## is told so once (the original says nothing unless the game has a winner, S20) and may keep
+## generating turns to watch the game play out. In a hotseat game (S27) a cover hides the game
+## between players until the next one begins their turn.
 
 signal quit_requested
 
@@ -39,6 +42,12 @@ var _battle_viewer: BattleViewer
 var _score: ScoreWindow
 var _about: AcceptDialog
 var _settings: SettingsDialog
+var _eliminated: AcceptDialog
+## The hotseat hand-off cover, its text, and the human players already wiped out when the year
+## was generated (to name those lost since).
+var _handoff: Control
+var _handoff_text: Label
+var _lost := {}
 ## The menu items with a key binding: [menu, item id, KeyBindings action].
 var _keyed: Array[Array] = []
 
@@ -119,9 +128,52 @@ func _ready() -> void:
 	add_child(_about)
 	_settings = SettingsDialog.new()
 	add_child(_settings)
+	_eliminated = AcceptDialog.new()
+	_eliminated.title = "Defeat"
+	_eliminated.dialog_text = (
+		"Your race has been wiped out: no planets and no ships are left.\n"
+		+ "You can keep generating turns to watch the rest of the game."
+	)
+	add_child(_eliminated)
 	var home := GameSession.view.me().homeworld
 	if home >= 0:
 		_map.select("planet", home)
+	_build_handoff()
+	GameSession.player_changed.connect(_on_player_changed)
+	_lost = _lost_players()
+	if GameSession.is_hotseat():
+		_show_handoff()
+	else:
+		_tell_if_eliminated.call_deferred()
+
+
+## A cover over the whole screen naming the player whose turn it is, with a button to begin.
+func _build_handoff() -> void:
+	_handoff = PanelContainer.new()
+	# top level: out of the screen's layout, over everything (the theme still applies)
+	_handoff.top_level = true
+	_handoff.z_index = 100
+	_handoff.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_handoff.mouse_filter = Control.MOUSE_FILTER_STOP
+	# solid whatever the theme: nothing of the last player's game shows through
+	var face := StyleBoxFlat.new()
+	face.bg_color = ClassicTheme.FACE
+	_handoff.add_theme_stylebox_override("panel", face)
+	add_child(_handoff)
+	var center := CenterContainer.new()
+	_handoff.add_child(center)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 12)
+	center.add_child(box)
+	_handoff_text = Label.new()
+	_handoff_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	box.add_child(_handoff_text)
+	var begin := Button.new()
+	begin.text = "Begin Turn"
+	begin.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	begin.pressed.connect(_begin_turn)
+	box.add_child(begin)
+	_handoff.hide()
 
 
 func _build_menu() -> void:
@@ -220,8 +272,8 @@ func _on_message_goto(goto: Dictionary) -> void:
 		_battle_viewer.open(goto["battle"])
 	elif goto.has("planet"):
 		_map.select("planet", goto["planet"])
-	elif goto.has("fleet") and goto.get("owner", -1) == GameSession.PLAYER:
-		if GameSession.view.state.fleet(GameSession.PLAYER, goto["fleet"]) != null:
+	elif goto.has("fleet") and goto.get("owner", -1) == GameSession.player:
+		if GameSession.view.state.fleet(GameSession.player, goto["fleet"]) != null:
 			_map.select("fleet", goto["fleet"])
 	elif goto.has("research"):
 		_research.open()
@@ -277,8 +329,78 @@ func _on_menu(menu_id: int) -> void:
 
 
 func _on_end_turn() -> void:
-	var rejected := GameSession.end_turn()
+	var was_eliminated := GameSession.view.me().eliminated
+	var hotseat := GameSession.is_hotseat()
+	if not GameSession.end_turn():
+		return
+	if hotseat:
+		# the next player's hand-off (player_changed) or, the same player first again, this one
+		if not _handoff.visible:
+			_show_handoff()
+		return
+	_new_year()
+	if not was_eliminated:
+		_tell_if_eliminated()
+
+
+## The year's start for the player at the controls: the messages, the orders refused, the map
+## selection kept.
+func _new_year() -> void:
 	_messages.new_year()
-	for line in rejected:
+	for line in GameSession.my_rejections():
 		_messages.add("Order rejected: " + line)
 	_map.select(_map.selection_kind, _map.selection_id)
+
+
+func _on_player_changed() -> void:
+	_show_handoff()
+
+
+func _show_handoff() -> void:
+	var me := GameSession.view.me()
+	var lines := PackedStringArray()
+	lines.append("Year %d" % GameSession.view.year())
+	for p: int in _lost_players():
+		if not _lost.has(p):
+			lines.append(
+				"The %s have been wiped out." % GameSession.state.player(p).race.display_plural()
+			)
+	_lost = _lost_players()
+	lines.append("")
+	lines.append("%s (player %d): your turn." % [me.race.display_plural(), me.index + 1])
+	lines.append("Everyone else, look away.")
+	_handoff_text.text = "\n".join(lines)
+	_handoff.show()
+
+
+## The game of the player now at the controls, from their homeworld (or first planet).
+func _begin_turn() -> void:
+	_handoff.hide()
+	var home := GameSession.view.me().homeworld
+	if home < 0 or not GameSession.view.planet_info(home)["mine"]:
+		home = -1
+		for pl in GameSession.state.planets:
+			if pl.owner == GameSession.player:
+				home = pl.id
+				break
+	if home >= 0:
+		_map.select("planet", home)
+	_new_year()
+
+
+## The human players wiped out so far.
+func _lost_players() -> Dictionary:
+	var out := {}
+	if GameSession.state == null:
+		return out
+	for p in GameSession.state.players:
+		if p.is_human() and p.eliminated:
+			out[p.index] = true
+	return out
+
+
+## The one-time notice that the player's race is gone (on the turn it happens, or when a game
+## already lost is opened).
+func _tell_if_eliminated() -> void:
+	if GameSession.view.me().eliminated:
+		_eliminated.popup_centered()

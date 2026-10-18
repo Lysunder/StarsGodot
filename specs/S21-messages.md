@@ -67,6 +67,14 @@ In the original's files every parameter is a byte or a word, a 32-bit amount tak
 item takes two (category mask, item number); the harness importer (`tools/harness/stars_messages.py`,
 `stars_import.py`) turns them into the kinds above.
 
+### Player names
+
+A `player` is shown by its race's plural name (`FormatPlayerName@1030:0b84`). When the race has no plural name (a
+built-in computer race, or a nameless preset, whose name the new game draws, S07), the name is used with an "s"
+added unless it already ends in "s" (so also after "es"). Trailing spaces are dropped, and an empty result reads
+"No Name". Everywhere else the game shows a player (score, relations, battle plans, the hand-off of S27) follows
+the same rule.
+
 ## Algorithm
 
 `TurnMessages.add(player, type, goto, params)` appends a message to the player's list. Computer players get only

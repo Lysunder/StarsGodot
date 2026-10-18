@@ -2,11 +2,20 @@ extends Node
 ## The running game for the UI (autoload `GameSession`): content, the current state, the
 ## player's pending orders and their preview (OrderPreview), and new game / load / save /
 ## end turn. Scenes read `view` and call these methods; they never change the state themselves.
+##
+## Hotseat (S27): with several human players, `player` is the one at the controls. Ending a turn
+## submits that player's orders and hands over to the next human who has not submitted; after the
+## last one the year is generated (computer players adding theirs) and the first human is up.
 
 signal changed
+## Another human player is at the controls (hotseat), before the screen shows their game.
+signal player_changed
 
 const SAVE_DIR := "user://saves"
-const PLAYER := 0
+## The save's companion files: each human's pending orders, and the hotseat round.
+const ORDERS_SUFFIX := ".orders"
+const PLAYER_ORDERS_SUFFIX := ".p%d.orders"
+const ROUND_SUFFIX := ".round"
 
 var content: ContentRegistry
 var load_errors: String = ""
@@ -15,8 +24,16 @@ var orders: OrderSet = null
 var preview: OrderPreview = null
 var view: PlayerView = null
 var game_version: String = "0.1.0"
+## The human player at the controls.
+var player: int = 0
+## The orders refused when the last year was generated, one "player P order I: reason" line each.
+var rejected := PackedStringArray()
 ## Orders changed since the game was last saved or loaded (the Messages pane's "*").
 var dirty: bool = false
+## This year's orders of the human players by index (the one at the controls included), and the
+## players who have ended their turn.
+var _orders := {}
+var _submitted := {}
 
 
 func _ready() -> void:
@@ -38,30 +55,73 @@ func new_game(options: NewGame.Options) -> void:
 	_start(NewGame.create(content, options))
 
 
-## Loads a save (and its pending orders, if saved with them); returns "" or the problems.
+## Loads a save (and the human players' pending orders and the hotseat round, if saved with
+## them); returns "" or the problems.
 func load_game(path: String) -> String:
 	var result := SaveStore.read(path, content)
 	if not result.ok():
 		return "\n".join(result.errors)
 	_start(result.state)
-	var orders_path := path + ".orders"
-	if FileAccess.file_exists(orders_path):
+	for p in humans():
+		var orders_path := _orders_path(path, p)
+		if not FileAccess.file_exists(orders_path):
+			continue
 		var o := OrderFile.read(orders_path)
-		if o.ok() and o.order_set.turn == state.turn:
-			orders = o.order_set
-			_refresh()
+		if o.ok() and o.order_set.turn == state.turn and o.order_set.player == p:
+			_orders[p] = o.order_set
+	var round_text := FileAccess.get_file_as_string(path + ROUND_SUFFIX)
+	var round: Variant = JSON.parse_string(round_text) if not round_text.is_empty() else null
+	if round is Dictionary and int(round.get("turn", -1)) == state.turn:
+		for p: Variant in round.get("submitted", []):
+			if humans().has(int(p)):
+				_submitted[int(p)] = true
+		if humans().has(int(round.get("player", -1))):
+			player = int(round["player"])
+	orders = _orders_of(player)
+	_refresh()
 	return ""
 
 
 func save_game(path: String) -> Error:
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var err := SaveStore.write(path, state, game_version)
+	_orders[player] = orders
+	for p in humans():
+		if err == OK:
+			err = OrderFile.write(_orders_path(path, p), _orders_of(p), game_version)
 	if err == OK:
-		err = OrderFile.write(path + ".orders", orders, game_version)
+		var round := {"turn": state.turn, "player": player, "submitted": _submitted.keys()}
+		err = SaveStore.write_text(path + ROUND_SUFFIX, JSON.stringify(round))
 	if err == OK:
 		dirty = false
 		changed.emit()
 	return err
+
+
+## The human players who give orders this year, in player order: active and not eliminated.
+func humans() -> Array[int]:
+	var out: Array[int] = []
+	if state == null:
+		return out
+	for p in state.players:
+		if p.is_human() and p.active and not p.eliminated:
+			out.append(p.index)
+	return out
+
+
+## Whether the game has more than one human player giving orders (hotseat).
+func is_hotseat() -> bool:
+	return humans().size() > 1
+
+
+func _orders_of(p: int) -> OrderSet:
+	if not _orders.has(p):
+		_orders[p] = OrderSet.new(p, state.turn)
+	return _orders[p]
+
+
+static func _orders_path(path: String, p: int) -> String:
+	return path + (ORDERS_SUFFIX if p == 0 else PLAYER_ORDERS_SUFFIX % p)
 
 
 func default_save_path() -> String:
@@ -109,36 +169,76 @@ func set_order(order: Dictionary) -> String:
 	return add_order(order)
 
 
-## Generates the turn with the pending orders and the computer players' (S22); returns the
-## rejected orders' reasons.
-func end_turn() -> PackedStringArray:
-	var given: Array[OrderSet] = [orders]
+## Ends the turn of the player at the controls. While another human player has not ended theirs,
+## hands over to the next one (S27) and returns false; otherwise generates the year with every
+## human's orders and the computer players' (S22), puts the first human at the controls and returns
+## true (the refused orders in `rejected`). An eliminated player at the controls, alone, still
+## generates years to watch.
+func end_turn() -> bool:
+	_orders[player] = orders
+	_submitted[player] = true
+	for p in humans():
+		if not _submitted.has(p):
+			_switch_to(p)
+			return false
+	var given: Array[OrderSet] = []
+	for p: int in _orders:
+		if _submitted.has(p):
+			given.append(_orders[p])
 	var problems := PackedStringArray()
 	var sets := ComputerPlayers.add_orders(state, content, given, problems)
 	for problem in problems:
 		push_warning(problem)
-	var rejected := StandardTurn.generate(state, content, sets)
-	orders = OrderSet.new(PLAYER, state.turn)
+	rejected = StandardTurn.generate(state, content, sets)
+	_orders.clear()
+	_submitted.clear()
 	dirty = true
+	var first := humans()
+	if first.is_empty() or first[0] == player:
+		orders = _orders_of(player)
+		_refresh()
+	else:
+		_switch_to(first[0])
+	return true
+
+
+## The refused orders of the last year that were the player at the controls'.
+func my_rejections() -> PackedStringArray:
+	var out := PackedStringArray()
+	var prefix := "player %d " % player
+	for line in rejected:
+		if line.begins_with(prefix):
+			out.append(line)
+	return out
+
+
+func _switch_to(p: int) -> void:
+	player = p
+	orders = _orders_of(p)
 	_refresh()
-	return rejected
+	player_changed.emit()
 
 
 func _start(s: GameState) -> void:
 	state = s
 	dirty = false
-	orders = OrderSet.new(PLAYER, state.turn)
+	_orders.clear()
+	_submitted.clear()
+	rejected = PackedStringArray()
+	var first := humans()
+	player = first[0] if not first.is_empty() else 0
+	orders = _orders_of(player)
 	_refresh()
 
 
 func _refresh() -> void:
 	preview = OrderPreview.build(state, content, orders)
-	view = PlayerView.new(preview.state, content, PLAYER)
+	view = PlayerView.new(preview.state, content, player)
 	changed.emit()
 
 
 func _rejection_of(index: int) -> String:
-	var prefix := "player %d order %d: " % [PLAYER, index]
+	var prefix := "player %d order %d: " % [player, index]
 	for line in preview.rejected:
 		if line.begins_with(prefix):
 			return line.substr(prefix.length())

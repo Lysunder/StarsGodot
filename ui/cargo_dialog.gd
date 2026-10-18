@@ -122,7 +122,7 @@ func open_with_planet(p_fleet: int, planet_id: int) -> void:
 
 ## Opens the window between two of the player's fleets at the same place.
 func open_with_fleet(p_fleet: int, other_fleet: int) -> void:
-	_open(p_fleet, {"fleet": other_fleet, "owner": GameSession.PLAYER})
+	_open(p_fleet, {"fleet": other_fleet, "owner": GameSession.player})
 
 
 func _open(p_fleet: int, p_other: Dictionary) -> void:
@@ -286,7 +286,7 @@ func _on_ok() -> void:
 		. add_order(
 			{
 				"type": "cargo_transfer",
-				"owner": GameSession.PLAYER,
+				"owner": GameSession.player,
 				"fleet": fleet_number,
 				"other": other,
 				"amounts": amounts,

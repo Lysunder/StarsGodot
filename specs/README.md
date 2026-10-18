@@ -54,5 +54,6 @@ these specs. See [CONTRIBUTING.md](../CONTRIBUTING.md) for the clean-room rules.
 | [S22](S22-ai.md) | Computer players (AI) | draft (the AI step, personalities as data, the baseline brain) |
 | [S23](S23-file-formats.md) | File formats (harness import only) | draft |
 | [S24](S24-tech-trading.md) | Tech trading (tech gain) | draft (scrapping only) |
+| [S27](S27-game-modes.md) | Game modes (single player, hotseat) | draft |
 
 New specs start from [TEMPLATE.md](TEMPLATE.md).

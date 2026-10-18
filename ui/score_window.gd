@@ -157,7 +157,7 @@ func _fill_victory() -> void:
 	if not winners.is_empty():
 		var names: Array[String] = []
 		for p in winners:
-			names.append(view.state.player(p).race.plural_name)
+			names.append(view.state.player(p).race.display_plural())
 		lines.append("Won by: " + ", ".join(names) + ".")
 	_victory_note.text = "\n".join(lines)
 
@@ -189,6 +189,6 @@ func _fill_graph() -> void:
 	_graph.me = view.player
 	_graph.names.clear()
 	for player in view.state.players:
-		_graph.names.append(player.race.plural_name)
+		_graph.names.append(player.race.display_plural())
 	_graph.lines = ScoreView.series(view, _graph.field)
 	_graph.queue_redraw()

@@ -6,8 +6,9 @@ extends AcceptDialog
 ## the game options, the seed and the computer players. The race list holds the presets and the
 ## player's own races (RaceStore); Customize Race opens the race wizard on the chosen one, and the
 ## finished race is saved and chosen. The difficulty level picks the computer players with the
-## universe size (NewGame.pick_opponents) unless Advanced Game chooses them: each a personality
-## (the game's own, the player's from the personality editor, or Random) and a level (or Random).
+## universe size (NewGame.pick_opponents) unless Advanced Game chooses the other players: computer
+## players, each a personality (the game's own, the player's from the personality editor, or
+## Random) and a level (or Random), and more human players for hotseat (S27), each with a race.
 ## The tutorial waits for M11 step 11.
 
 signal game_chosen(options: NewGame.Options)
@@ -160,11 +161,11 @@ func _build_advanced() -> void:
 
 func _build_opponents(parent: Control) -> void:
 	_choose = CheckBox.new()
-	_choose.text = "Choose the computer players"
-	_choose.tooltip_text = "Otherwise the difficulty level and universe size choose them."
+	_choose.text = "Choose the other players"
+	_choose.tooltip_text = "Otherwise the difficulty level and universe size pick computer players."
 	_choose.toggled.connect(func(_on: bool) -> void: _update_opponents())
 	parent.add_child(_choose)
-	var box := _group_box(parent, "Computer Players")
+	var box := _group_box(parent, "Other Players")
 	_opponent_list = ItemList.new()
 	_opponent_list.custom_minimum_size = OPPONENT_LIST_SIZE
 	box.add_child(_opponent_list)
@@ -193,7 +194,8 @@ func _open_advanced() -> void:
 	_advanced.popup_centered()
 
 
-## The game's own personalities (not the inactive one), the player's, then Random.
+## The game's own personalities (not the inactive one), the player's, Random, then a human player
+## (hotseat) for each race of the race list.
 func _fill_kinds() -> void:
 	var content := GameSession.content
 	_kinds.clear()
@@ -214,6 +216,10 @@ func _fill_kinds() -> void:
 	for p: Dictionary in PersonalityStore.personalities():
 		_kinds.append({"ai": NewGame.personality_key(p), "personality": p, "name": str(p["name"])})
 	_kinds.append({"ai": NewGame.RANDOM, "personality": {}, "name": "Random"})
+	for i in _races.size():
+		_kinds.append(
+			{"human": true, "race": _races[i], "name": "Human: " + _race.get_item_text(i)}
+		)
 	for k: Dictionary in _kinds:
 		_opponent_kind.add_item(k["name"])
 
@@ -222,6 +228,11 @@ func _on_add_opponent() -> void:
 	if _opponents.size() >= NewGame.MAX_PLAYERS - 1 or _kinds.is_empty():
 		return
 	var kind: Dictionary = _kinds[maxi(_opponent_kind.selected, 0)]
+	if kind.get("human", false):
+		var race := (kind["race"] as Race).copy() as Race
+		_opponents.append({"human": true, "race": race, "name": kind["name"]})
+		_update_opponents()
+		return
 	var level := _opponent_level.selected
 	(
 		_opponents
@@ -248,6 +259,9 @@ func _on_remove_opponent() -> void:
 func _update_opponents() -> void:
 	_opponent_list.clear()
 	for o: Dictionary in _opponents:
+		if o.get("human", false):
+			_opponent_list.add_item(o["name"])
+			continue
 		var level := int(o["level"])
 		_opponent_list.add_item(
 			"%s, %s" % [o["name"], RANDOM_LEVEL if level < 0 else DIFFICULTIES[level]]
@@ -307,6 +321,9 @@ func _on_ok() -> void:
 			options.flags.append(FLAGS[i][0])
 	if _choose.button_pressed:
 		for o: Dictionary in _opponents:
+			if o.get("human", false):
+				options.opponents.append({"human": true, "race": o["race"]})
+				continue
 			options.opponents.append(
 				{"ai": o["ai"], "level": o["level"], "personality": o["personality"]}
 			)

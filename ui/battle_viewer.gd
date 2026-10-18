@@ -228,7 +228,7 @@ func _token_name(i: int, owner: bool) -> String:
 
 
 func _player(p: int) -> String:
-	return GameSession.view.state.player(p).race.plural_name
+	return GameSession.view.state.player(p).race.display_plural()
 
 
 static func _square_text(square: int) -> String:

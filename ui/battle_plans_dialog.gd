@@ -124,8 +124,8 @@ func _fill(select: int) -> void:
 		_attack.add_item(a)
 	var players := GameSession.view.state.players
 	for i in players.size():
-		if i != GameSession.PLAYER:
-			_attack.add_item(players[i].race.plural_name, BattlePlans.ATTACK_PLAYER + i)
+		if i != GameSession.player:
+			_attack.add_item(players[i].race.display_plural(), BattlePlans.ATTACK_PLAYER + i)
 	_loading = false
 	_show()
 

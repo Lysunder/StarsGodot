@@ -223,6 +223,10 @@ func _order(order: Dictionary, replace := false) -> void:
 func _planet_tiles() -> void:
 	var view := GameSession.view
 	var info := view.planet_info(id)
+	if not info.get("mine", false):
+		# lost since it came under command
+		_tile(info["name"], "planet").line("This planet is no longer yours.")
+		return
 	var t := _tile(info["name"], "planet")
 	_picture_row(
 		t,
@@ -255,7 +259,7 @@ func _planet_tiles() -> void:
 			numbers.append(f.number)
 	var here := OptionButton.new()
 	for n in numbers:
-		here.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
+		here.add_item(view.fleet_name(view.state.fleet(GameSession.player, n)))
 	t.body.add_child(here)
 	var fuel := t.gauge("Fuel")
 	var cargo := t.gauge("Cargo")
@@ -468,7 +472,7 @@ func _fleet_tiles() -> void:
 			_order(
 				{
 					"type": "fleet_battle_plan",
-					"owner": GameSession.PLAYER,
+					"owner": GameSession.player,
 					"fleet": id,
 					"plan": i,
 				},
@@ -499,7 +503,7 @@ func _fleet_tiles() -> void:
 			numbers.append(f.number)
 	var others := OptionButton.new()
 	for n in numbers:
-		others.add_item(view.fleet_name(view.state.fleet(GameSession.PLAYER, n)))
+		others.add_item(view.fleet_name(view.state.fleet(GameSession.player, n)))
 	others.disabled = numbers.is_empty()
 	t.body.add_child(others)
 	var other_fuel := t.gauge("Fuel")
@@ -577,7 +581,7 @@ func _waypoint_tiles(info: Dictionary) -> void:
 	repeat.toggled.connect(
 		func(on: bool) -> void:
 			_order(
-				{"type": "fleet_repeat", "owner": GameSession.PLAYER, "fleet": id, "repeat": on},
+				{"type": "fleet_repeat", "owner": GameSession.player, "fleet": id, "repeat": on},
 				true
 			)
 	)
@@ -692,7 +696,7 @@ func _transport_task(t: Tile, wp: Dictionary) -> void:
 func _transfer_choice(t: Tile, wp: Dictionary) -> void:
 	var others: Array[int] = []
 	for p in GameSession.view.state.players.size():
-		if p != GameSession.PLAYER:
+		if p != GameSession.player:
 			others.append(p)
 	if others.is_empty():
 		t.line("There is no other player to give the fleet to.")
@@ -737,7 +741,7 @@ func _change_waypoint_at(
 		. amend_order(
 			{
 				"type": "waypoint_change",
-				"owner": GameSession.PLAYER,
+				"owner": GameSession.player,
 				"fleet": id,
 				"index": index,
 				"waypoint": waypoint_order(wp, {"warp": warp, "task": task, "task_data": data}),
@@ -771,7 +775,7 @@ func _delete_waypoint() -> void:
 	_order(
 		{
 			"type": "waypoint_delete",
-			"owner": GameSession.PLAYER,
+			"owner": GameSession.player,
 			"fleet": id,
 			"index": _waypoint,
 			"count": 1,
@@ -788,7 +792,7 @@ func _rename(text: String) -> void:
 	_order(
 		{
 			"type": "fleet_rename",
-			"owner": GameSession.PLAYER,
+			"owner": GameSession.player,
 			"fleet": id,
 			"name": text.strip_edges()
 		},
@@ -836,7 +840,7 @@ func _open_merge(info: Dictionary) -> void:
 
 
 func _merge_with(fleets: Array[int]) -> void:
-	_order({"type": "fleet_merge", "owner": GameSession.PLAYER, "fleet": id, "fleets": fleets})
+	_order({"type": "fleet_merge", "owner": GameSession.player, "fleet": id, "fleets": fleets})
 
 
 func _open_split(info: Dictionary) -> void:
@@ -858,12 +862,12 @@ func _split_off(ships: Array) -> void:
 	var free := 0
 	while used.has(free):
 		free += 1
-	_order({"type": "fleet_split", "owner": GameSession.PLAYER, "fleet": id})
+	_order({"type": "fleet_split", "owner": GameSession.player, "fleet": id})
 	if status_text.is_empty():
 		_order(
 			{
 				"type": "fleet_move_ships",
-				"owner": GameSession.PLAYER,
+				"owner": GameSession.player,
 				"fleet": free,
 				"other": id,
 				"ships": ships,

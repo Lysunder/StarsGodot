@@ -1,7 +1,8 @@
 class_name NewGame
 extends RefCounted
-## Creates a single-player game for the UI (spec S07 through UniverseGenerator): one human
-## player with the given race and the computer players chosen, in a universe of the given size,
+## Creates a game for the UI (spec S07 through UniverseGenerator): the human player with the given
+## race, then the other players chosen (computer players, and more humans for hotseat, S27), in a
+## universe of the given size,
 ## density and player spacing. pick_opponents chooses the computer players from the universe size
 ## and difficulty level the way the original's simple New Game does (S22 "Computer players in a
 ## new game").
@@ -46,9 +47,10 @@ class Options:
 	## GameSettings flags to turn on (max_minerals, slow_tech, accelerated_start,
 	## no_random_events, galaxy_clumping, ...).
 	var flags: Array[String] = []
-	## The computer players, in player order after the human: {ai (a personality key, or RANDOM),
-	## level (an index into ComputerPlayers.LEVELS, -1 random), personality (the player's own
-	## personality, else {} for the content one)}.
+	## The other players, in player order after the first human: a computer player {ai (a
+	## personality key, or RANDOM), level (an index into ComputerPlayers.LEVELS, -1 random),
+	## personality (the player's own personality, else {} for the content one)}, or another human
+	## {human: true, race}.
 	var opponents: Array[Dictionary] = []
 
 
@@ -71,6 +73,10 @@ static func create(content: ContentRegistry, options: Options) -> GameState:
 			break
 		var p := Player.new()
 		p.index = players.size()
+		if o.get("human", false):
+			p.race = (o["race"] as Race).copy() as Race
+			players.append(p)
+			continue
 		p.ai = str(o.get("ai", RANDOM))
 		p.ai_level = int(o.get("level", -1))
 		p.ai_personality = (o.get("personality", {}) as Dictionary).duplicate(true)

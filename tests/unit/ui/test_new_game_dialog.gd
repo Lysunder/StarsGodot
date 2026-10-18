@@ -33,8 +33,10 @@ func test_advanced_game_chooses_the_computer_players() -> void:
 	dialog._open_advanced()
 	assert_bool(dialog._opponent_kind.disabled).is_true()
 	dialog._choose.button_pressed = true
-	# the game's six, the player's own, then Random
-	assert_int(dialog._kinds.size()).is_equal(8)
+	# the game's six, the player's own, Random, then a human player for each race
+	assert_int(dialog._kinds.size()).is_equal(8 + dialog._races.size())
+	assert_str(dialog._kinds[7]["name"]).is_equal("Random")
+	assert_bool(dialog._kinds[8].get("human", false)).is_true()
 	assert_str(dialog._kinds[6]["name"]).is_equal("Settler")
 	dialog._opponent_kind.select(5)
 	dialog._opponent_level.select(3)

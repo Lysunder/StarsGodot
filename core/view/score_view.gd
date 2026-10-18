@@ -45,7 +45,7 @@ static func table(view: PlayerView) -> Dictionary:
 			. append(
 				{
 					"index": p,
-					"name": player.race.plural_name,
+					"name": player.race.display_plural(),
 					"known": can_see(view, p, view.state.turn) and not player.score.is_empty(),
 					"eliminated": player.eliminated,
 				}

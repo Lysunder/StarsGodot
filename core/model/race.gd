@@ -16,6 +16,8 @@ const ECONOMY := [
 	"mines_operated",
 ]
 
+const NO_NAME := "No Name"
+
 var name: String = ""
 var plural_name: String = ""
 ## Primary trait content id, e.g. "trait.prt.JoaT".
@@ -84,6 +86,21 @@ func _schema() -> Array:
 		["random", Kind.BOOL],
 		["mod_data", Kind.JSON],
 	]
+
+
+## The race's name as shown (S21 "Player names"): trailing spaces dropped, "No Name" when empty.
+func display_name() -> String:
+	var n := name.strip_edges(false, true)
+	return n if not n.is_empty() else NO_NAME
+
+
+## The plural as shown: the plural name, else the name with an "s" added (not after "s" or "es").
+func display_plural() -> String:
+	var n := plural_name.strip_edges(false, true)
+	if not n.is_empty():
+		return n
+	n = display_name()
+	return n if n.ends_with("s") else n + "s"
 
 
 func is_immune(axis: int) -> bool:

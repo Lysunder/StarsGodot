@@ -88,7 +88,7 @@ func _ready() -> void:
 func open(queue: Array, leftover: bool) -> void:
 	_source_queue = queue
 	_source_leftover = leftover
-	var me := GameSession.preview.state.player(GameSession.PLAYER)
+	var me := GameSession.preview.state.player(GameSession.player)
 	_templates.clear()
 	var default_queue: Array = []
 	for q in me.default_queue:
@@ -116,7 +116,7 @@ func open(queue: Array, leftover: bool) -> void:
 ## Every template in use, for the production window's menu: [{index, name, leftover_to_research,
 ## queue}], the default first.
 static func in_use() -> Array[Dictionary]:
-	var me := GameSession.preview.state.player(GameSession.PLAYER)
+	var me := GameSession.preview.state.player(GameSession.player)
 	var default_queue: Array = []
 	for q in me.default_queue:
 		default_queue.append(q.to_dict())
@@ -216,7 +216,7 @@ func _on_delete() -> void:
 ## OK: the default as `player_defaults` when it changed, the own templates (used ones, in order)
 ## as `production_templates` when they changed.
 func _save() -> void:
-	var me := GameSession.preview.state.player(GameSession.PLAYER)
+	var me := GameSession.preview.state.player(GameSession.player)
 	var current := in_use()
 	var reason := ""
 	var d := _templates[0]

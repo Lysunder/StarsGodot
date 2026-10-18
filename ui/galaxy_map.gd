@@ -418,7 +418,7 @@ func _release(at: Vector2) -> void:
 		. add_order(
 			{
 				"type": "waypoint_change",
-				"owner": GameSession.PLAYER,
+				"owner": GameSession.player,
 				"fleet": selection_id,
 				"index": index,
 				"waypoint": CommandPane.waypoint_order(info["waypoints"][index], _target_at(at)),
@@ -434,7 +434,7 @@ func _release(at: Vector2) -> void:
 func _waypoint_at(at: Vector2) -> int:
 	if selection_kind != "fleet":
 		return -1
-	var f := GameSession.view.state.fleet(GameSession.PLAYER, selection_id)
+	var f := GameSession.view.state.fleet(GameSession.player, selection_id)
 	if f == null:
 		return -1
 	for i in range(f.waypoints.size() - 1, 0, -1):
@@ -459,7 +459,7 @@ func _target_at(at: Vector2) -> Dictionary:
 			out.merge({"x": pl["x"], "y": pl["y"], "target": "planet", "target_id": pl["id"]}, true)
 			break
 		if hit["kind"] == "fleet" and hit["id"] != selection_id:
-			var f := GameSession.view.state.fleet(GameSession.PLAYER, hit["id"])
+			var f := GameSession.view.state.fleet(GameSession.player, hit["id"])
 			(
 				out
 				. merge(
@@ -467,7 +467,7 @@ func _target_at(at: Vector2) -> Dictionary:
 						"x": f.x,
 						"y": f.y,
 						"target": "fleet",
-						"target_owner": GameSession.PLAYER,
+						"target_owner": GameSession.player,
 						"target_id": f.number,
 					},
 					true
@@ -498,7 +498,7 @@ func _add_waypoint(at: Vector2) -> void:
 		. add_order(
 			{
 				"type": "waypoint_add",
-				"owner": GameSession.PLAYER,
+				"owner": GameSession.player,
 				"fleet": selection_id,
 				"index": index,
 				"waypoint": wp,

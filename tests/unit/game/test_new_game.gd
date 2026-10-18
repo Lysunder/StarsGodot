@@ -100,3 +100,16 @@ func test_a_game_with_computer_players() -> void:
 		var sets := ComputerPlayers.add_orders(s, _content, [], errors)
 		assert_array(Array(errors)).is_empty()
 		assert_array(Array(StandardTurn.generate(s, _content, sets))).is_empty()
+
+
+## S21 "Player names": a race without a plural name shows its name with an "s".
+func test_player_names() -> void:
+	var race := Race.new()
+	assert_str(race.display_plural()).is_equal("No Names")
+	race.name = "Aldrani"
+	assert_str(race.display_plural()).is_equal("Aldranis")
+	race.name = "Rototills  "
+	assert_str(race.display_name()).is_equal("Rototills")
+	assert_str(race.display_plural()).is_equal("Rototills")
+	race.plural_name = "Rototillae"
+	assert_str(race.display_plural()).is_equal("Rototillae")

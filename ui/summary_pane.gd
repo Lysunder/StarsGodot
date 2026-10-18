@@ -175,7 +175,7 @@ func _ships_view() -> Control:
 
 func _design_view() -> Control:
 	var view := GameSession.view
-	var fleet := view.state.fleet(GameSession.PLAYER, id)
+	var fleet := view.state.fleet(GameSession.player, id)
 	if fleet == null:
 		return null
 	var slot: int = FleetOrders.main_design(fleet, view.me(), GameSession.content)[0]

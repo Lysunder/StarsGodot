@@ -47,8 +47,8 @@ func open() -> void:
 	_list.clear()
 	var players := GameSession.view.state.players
 	for i in players.size():
-		if i != GameSession.PLAYER:
-			_list.add_item(players[i].race.plural_name)
+		if i != GameSession.player:
+			_list.add_item(players[i].race.display_plural())
 			_list.set_item_metadata(_list.item_count - 1, i)
 	if _list.item_count > 0:
 		_list.select(0)
