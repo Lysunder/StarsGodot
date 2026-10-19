@@ -1,0 +1,12 @@
+{
+  "id": "fast_growth",
+  "name": "Fast Growth",
+  "version": "1.0.0",
+  "game_version": ">=0.1 <1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "authors": ["StarsGodot contributors"],
+  "depends": { "core": ">=0.1.0" },
+  "entry": "fast_growth.gd",
+  "description": "Populations grow twice as fast. Losses (hostile planets, overcrowding) stay as they are."
+}

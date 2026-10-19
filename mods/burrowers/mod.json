@@ -1,0 +1,12 @@
+{
+  "id": "burrowers",
+  "name": "Burrowers",
+  "version": "1.0.0",
+  "game_version": ">=0.1 <1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "authors": ["StarsGodot contributors"],
+  "depends": { "core": ">=0.1.0" },
+  "entry": "burrowers.gd",
+  "description": "A new primary racial trait: Burrowers live underground, so their planets hold more people who grow slowly, and their tunnels turn up minerals every year."
+}

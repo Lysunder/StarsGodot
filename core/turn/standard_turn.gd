@@ -39,7 +39,9 @@ const PHASE_IDS := [
 ]
 
 
-static func pipeline() -> TurnPipeline:
+## The turn's phases: the Standard ones (S02), then the script mods' changes from `content`
+## (ModApi), in load order.
+static func pipeline(content: ContentRegistry = null) -> TurnPipeline:
 	var built := {}
 	for p: Phase in [
 		OrderPhases.Apply.new(),
@@ -73,6 +75,17 @@ static func pipeline() -> TurnPipeline:
 	var out := TurnPipeline.new()
 	for id: String in PHASE_IDS:
 		out.add(built.get(id, Phase.new(id)))
+	if content != null:
+		for edit: Array in content.phase_edits:
+			match edit[0]:
+				"insert_after":
+					out.insert_after(edit[1], edit[2])
+				"insert_before":
+					out.insert_before(edit[1], edit[2])
+				"replace":
+					out.replace(edit[1], edit[2])
+				"disable":
+					out.disable(edit[1])
 	return out
 
 
@@ -88,5 +101,5 @@ static func generate(
 	state.recycled.clear()
 	state.dropped_colonists.clear()
 	var ctx := TurnContext.new(state, content, orders)
-	pipeline().run(ctx)
+	pipeline(content).run(ctx)
 	return ctx.rejected_orders

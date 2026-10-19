@@ -1,0 +1,9 @@
+{
+  "id": "bad_script",
+  "name": "Bad Script (test fixture)",
+  "version": "1.0.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "entry": "bad.gd",
+  "description": "Breaks the determinism rules and changes a phase that doesn't exist. Used by the validator tests."
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "type": "hull",
+    "id": "extra_hulls.hull.bulk_freighter",
+    "tech": { "tech_field.construction": 10 },
+    "mass": 180,
+    "cost": { "ironium": 40, "boranium": 0, "germanium": 30, "resources": 110 },
+    "armor": 300,
+    "cargo": 1600,
+    "fuel": 1800,
+    "class": 1,
+    "slots": [
+      { "accepts": ["engine"], "max": 3, "required": true, "at": [0, 3] },
+      { "accepts": ["shield", "armor"], "max": 2, "at": [6, 1] },
+      { "accepts": ["scanner", "electrical", "mechanical"], "max": 2, "at": [6, 5] }
+    ],
+    "cargo_area": [2, 2, 6, 6]
+  },
+  {
+    "type": "hull",
+    "id": "extra_hulls.hull.picket",
+    "tech": { "tech_field.construction": 2 },
+    "mass": 12,
+    "cost": { "ironium": 6, "boranium": 1, "germanium": 2, "resources": 16 },
+    "armor": 60,
+    "fuel": 150,
+    "initiative": 2,
+    "class": 2,
+    "slots": [
+      { "accepts": ["engine"], "max": 1, "required": true, "at": [0, 3] },
+      { "accepts": ["beam", "torpedo"], "max": 1, "at": [4, 3] },
+      { "accepts": ["scanner", "electrical"], "max": 1, "at": [6, 3] }
+    ]
+  }
+]

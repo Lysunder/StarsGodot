@@ -32,7 +32,8 @@ Next: universe generation and the race wizard, then the turn engine (economy, or
 - CI runs all of these on every push.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the clean-room rules, layout and code style, [specs/](specs/) for the
-rule specifications, [content/README.md](content/README.md) for the content and mod format, and
+rule specifications, [content/README.md](content/README.md) for the content and mod format,
+[modding/](modding/README.md) for the modding guide and API reference, and
 [tools/harness/README.md](tools/harness/README.md) for the verification harness.
 
 ## Legal

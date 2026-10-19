@@ -1,0 +1,12 @@
+{
+  "id": "supernova",
+  "name": "Supernovae",
+  "version": "1.0.0",
+  "game_version": ">=0.1 <1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "authors": ["StarsGodot contributors"],
+  "depends": { "core": ">=0.1.0" },
+  "entry": "supernova.gd",
+  "description": "Now and then a star flares: its planet's radiation jumps and half its people die. A new turn phase with its own random stream."
+}

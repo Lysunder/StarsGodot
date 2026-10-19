@@ -1,0 +1,10 @@
+{
+  "id": "retro_text",
+  "name": "Retro Text",
+  "version": "1.0.0",
+  "game_version": ">=0.1 <1.0",
+  "api_version": 1,
+  "kind": "cosmetic",
+  "authors": ["StarsGodot contributors"],
+  "description": "Rewrites some of the game's wording in the voice of an old ship's computer. Cosmetic: games with and without it play the same."
+}

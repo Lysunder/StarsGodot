@@ -30,7 +30,7 @@ func read_text(path: String) -> String:
 
 
 func list_files(dir: String, extension: String) -> PackedStringArray:
-	var prefix := dir.trim_suffix("/") + "/"
+	var prefix := "" if dir.is_empty() else dir.trim_suffix("/") + "/"
 	var result: PackedStringArray = []
 	for path: String in files:
 		if path.begins_with(prefix) and path.get_extension() == extension:

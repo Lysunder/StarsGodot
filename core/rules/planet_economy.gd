@@ -11,6 +11,8 @@ extends RefCounted
 ## or defenses, effective mines the square root of the people, and resources
 ## sqrt(W / pe x energy) x max(h, 25) / 10, rounded up from 0.999.
 
+## The growth formula's id (Ruleset).
+const POP_GROWTH := "economy.pop_growth"
 const COLONISTS_PER_UNIT := 100
 const MIN_MAX_POP := 500
 const LOW_HAB := 5
@@ -65,6 +67,15 @@ static func _no_installations(race: Race, content: ContentRegistry) -> bool:
 
 ## The population change this year in colonists (S08 step 3); `apply` adds it to the planet.
 static func grow(planet: Planet, race: Race, content: ContentRegistry, apply: bool) -> int:
+	var change: int = content.ruleset.formula(POP_GROWTH).call(planet, race, content)
+	if apply:
+		add_colonists(planet, change)
+	return change
+
+
+## The Standard growth (S08 step 4): the colonists a year adds to (or takes from) the planet.
+## Formula `economy.pop_growth` (Ruleset), which mods may replace.
+static func standard_growth(planet: Planet, race: Race, content: ContentRegistry) -> int:
 	var p := planet.population
 	var h := hab_value(planet, race)
 	var change := 0
@@ -90,8 +101,6 @@ static func grow(planet: Planet, race: Race, content: ContentRegistry, apply: bo
 			change = r / 100 * p
 		if change == 0:
 			change = 1
-	if apply:
-		add_colonists(planet, change)
 	return change
 
 

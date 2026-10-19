@@ -1,0 +1,122 @@
+# Minefields
+
+`core/rules/minefields.gd`, extends `RefCounted`
+
+Minefields (spec S13, laying S11): laying mines, the yearly decay and the start-of-turn reset.
+A field's radius is the square root of its mine count: a point is inside when its squared
+distance from the center is at most the mine count.
+
+Not yet: the salvage a destroyed ship leaves (S14).
+
+## Constants
+
+- `const TYPES := ["standard", "heavy", "speed_bump"]`
+- `const FIELD_MAX := 999999`: A field holding more than this takes no more mines: a new field is started instead.
+- `const DECAY_BASE := 2`: Decay (S13): percent per planet inside (the trait parameter; Space Demolition 1), plus this, at most DECAY_MAX, plus DETONATE_DECAY for a detonating field; at least MIN_DECAY mines a year (not for speed bumps).
+- `const DECAY_MAX := 50`
+- `const DETONATE_DECAY := 25`
+- `const MIN_DECAY := 10`
+- `const LAY_FOREVER := 5`: Lay-mines task data word 0: years left; this value lays for ever.
+- `const MINE_LAYER_TAG := "mine_layer"`
+- `const SAFE_WARP := [4, 6, 5]`: Per type (standard, heavy, speed bump): the fastest safe warp, the hit chance per light year and per warp over it (per 1000), and per damage column (S13 "Damage"): damage per engine and the minimum fleet damage. The second column is for fleets with an engine that burns nothing at warp 4.
+- `const HIT_RATE := [3, 10, 35]`
+- `const DAMAGE_PER_ENGINE := [[100, 125], [500, 600], [0, 0]]`
+- `const MIN_DAMAGE := [[500, 600], [2000, 2500], [0, 0]]`
+- `const SLOWEST := 3`: The slowest "speed" the hit check counts with, and the fastest.
+- `const FASTEST := 10`
+- `const MAX_STRETCHES := 8`: Stretches of one type kept along a path.
+- `const SMALL_FLEET := 4`: The minimum top-up applies to fleets of at most this many ships.
+- `const DAMAGE_SCALE := 500`
+- `const MESSAGE_DAMAGE_MAX := 0x7FF8`
+- `const HIT_LOSS := [20, 10, 51, 100, 50]`: A field hit loses mines div 20 (at least 10), or from 51 on mines div 100 (at least 50).
+- `const FREE_WARP := 4`
+- `const SPEED_BUMP_SWEEP := 3`: Sweeping a speed-bump field takes this fraction of the rate; a sweep takes at least SWEEP_MIN.
+- `const SWEEP_MIN := 2`
+
+## Functions
+
+### `lay_rate()`
+
+```gdscript
+static func lay_rate(fleet: Fleet, owner: Player, type: String, content: ContentRegistry) -> int
+```
+
+Mines a year the fleet lays of one type (`Fleet_MineLayRate@1078:1aea`): Σ ships × the design's
+dispenser rates of that type, doubled on the mine layer hulls.
+
+### `lay()`
+
+```gdscript
+static func lay(state: GameState, content: ContentRegistry, fleet: Fleet, task: Waypoint, moving: bool) -> void
+```
+
+The lay-mines task (S11 "Lay mines", task pass 3). `moving` for a Space Demolition fleet laying
+on its way (half the mines). `task` is the waypoint with the task, whose years count down.
+
+### `check_path()`
+
+```gdscript
+static func check_path(state: GameState, content: ContentRegistry, rng: StarsRandom, fleet: Fleet, distance: int) -> int
+```
+
+S13 "Hits during movement": checks the fleet's path toward its next waypoint over `distance`
+light years. Returns -1 (no hit) or how far it got: then it has been damaged and stops there.
+
+### `top_up_share()`
+
+```gdscript
+static func top_up_share(top_up: int, n: int, ships: int, _first: bool) -> int
+```
+
+Formula `minefield.top_up` (S13 "Damage from one hit", fix B04): a stack's share of the
+minimum-damage top-up, in proportion to its ships. (`first`: the first stack hit; the original
+gives it the whole top-up.)
+
+### `sweep_all()`
+
+```gdscript
+static func sweep_all(state: GameState, content: ContentRegistry) -> void
+```
+
+S02 phase 17 (S13 "Sweeping", `SweepMinefields@10b0:45c4`): every fleet with a sweep rate, in
+fleet order, sweeps each field (in field order) of another player that it is inside and that
+its battle plan attacks; then every starbase with a sweep rate does the same from its planet,
+for the fields of players its owner doesn't count as friends.
+
+### `fleet_sweep_rate()`
+
+```gdscript
+static func fleet_sweep_rate(fleet: Fleet, owner: Player, content: ContentRegistry) -> int
+```
+
+A fleet's sweep rate (`Fleet_SweepRate@1078:1ca2`): Σ ships × the design's sweep rate (S04).
+
+### `reset_all()`
+
+```gdscript
+static func reset_all(state: GameState) -> void
+```
+
+S02 phase 7: each field's "seen this turn" record starts empty (scanning sets it, S15).
+
+### `decay_all()`
+
+```gdscript
+static func decay_all(state: GameState, content: ContentRegistry) -> void
+```
+
+S02 phase 11 (minefields), in field order: a field ordered to detonate damages the fleets inside
+it (`_detonate`); then it loses a share of its mines, more with planets inside and when it
+detonated; a field that would lose all its mines disappears. Fleets left without ships go.
+
+### `planets_inside()`
+
+```gdscript
+static func planets_inside(state: GameState, field: Minefield) -> int
+```
+
+Planets inside the field (`Minefield_Radius@1100:01a0`, which counts them).
+
+---
+
+*Generated by `tools/gen_api_docs.py` from the doc comments in `core/rules/minefields.gd`.*

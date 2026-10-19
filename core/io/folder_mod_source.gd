@@ -57,8 +57,9 @@ func _collect(rel_dir: String, extension: String, out: PackedStringArray) -> voi
 	var access := DirAccess.open(_root + "/" + rel_dir)
 	if access == null:
 		return
+	var prefix := "" if rel_dir.is_empty() else rel_dir + "/"
 	for sub in access.get_directories():
-		_collect(rel_dir + "/" + sub, extension, out)
+		_collect(prefix + sub, extension, out)
 	for file in access.get_files():
 		if file.get_extension() == extension:
-			out.append(rel_dir + "/" + file)
+			out.append(prefix + file)

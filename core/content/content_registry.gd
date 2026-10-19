@@ -23,6 +23,9 @@ var frozen: bool = false
 var ruleset_hash: String = ""
 ## The game's formulas: Standard, with whatever the mods' ruleset scripts replaced (MODDING.md §6).
 var ruleset: Ruleset = StandardRuleset.build()
+## The script mods' changes to the turn's phases, in load order: [op, target id, Phase or null,
+## mod id] (ModApi; applied by StandardTurn.pipeline).
+var phase_edits: Array = []
 
 var _defs: Dictionary = {}  # type -> {id -> Dictionary}
 var _type_of: Dictionary = {}  # id -> type

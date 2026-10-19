@@ -1,0 +1,3 @@
+[
+  { "type": "message", "id": "supernova.message.flare", "params": ["planet"], "reveals_planet": true }
+]

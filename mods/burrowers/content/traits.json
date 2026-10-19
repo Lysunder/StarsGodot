@@ -1,0 +1,13 @@
+[
+  {
+    "type": "trait",
+    "id": "burrowers.trait.burrowers",
+    "kind": "primary",
+    "order": 100,
+    "cost": 25,
+    "params": {
+      "planet.max_pop_pct": 150,
+      "race.growth_rate_pct": 75
+    }
+  }
+]

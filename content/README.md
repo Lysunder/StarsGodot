@@ -3,6 +3,7 @@
 The base game is itself a mod: `content/core/`. Every other mod uses the same layout and rules. This page is the
 reference for the file formats. The design behind them is described in `CONTRIBUTING.md` and the code docs
 (`core/mod/mod_loader.gd`, `core/content/content_registry.gd`, `core/content/content_schemas.gd`).
+The full guide for mod makers, with a quickstart and the API reference, is in `modding/`.
 
 ## Layout
 

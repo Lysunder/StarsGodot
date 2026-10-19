@@ -162,7 +162,7 @@ func test_gameplay_mod_changes_hash() -> void:
 
 func test_ruleset_script_refused_outside_test_mods() -> void:
 	var r := _load([_core(), _mod("a", {}, {"ruleset.gd": "extends RefCounted"})], ["a"])
-	assert_str(r.error_text()).contains("script mods are not supported yet")
+	assert_str(r.error_text()).contains("ruleset.gd is for test mods")
 
 
 func test_standard_formulas_and_frozen_ruleset() -> void:

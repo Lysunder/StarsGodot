@@ -8,7 +8,9 @@ extends RefCounted
 ## mismatches and conflicts are errors, and no content is loaded when any are found.
 ##
 ## Within a mod: content/**/*.json, then patches/**/*.json, then lang/<locale>.json, each in sorted
-## path order.
+## path order; then a script mod's entry script (`entry` in mod.json): `_mod_init(api)` with a
+## ModApi. Script mods are trusted code (MODDING.md §12): one loads only when `trusted` holds its
+## id with the hash of its scripts (script_hash), which the player confirms once per version.
 
 const API_VERSION := 1
 const CORE_ID := ContentRegistry.CORE_MOD_ID
@@ -41,6 +43,8 @@ class LoadResult:
 var game_version: String = "0.1.0"
 ## Only test runs set this; it allows mods that live under res://tests/ (D12).
 var allow_test_mods: bool = false
+## Script mods the player trusts: mod id -> the hash of its scripts (script_hash).
+var trusted: Dictionary = {}
 
 
 ## Loads `core` plus the `enabled` mods (in the user's order) from the given sources.
@@ -212,15 +216,58 @@ func _load_one(result: LoadResult, m: ModManifest, source: ModSource) -> void:
 		registry.add_strings_file(
 			m.id, path, path.get_file().get_basename(), source.read_text(path)
 		)
+	if not m.entry.is_empty():
+		_run_entry(result, m, source)
 	if source.has_file(RULESET_SCRIPT):
 		if not source.is_test_mod():
-			_err(result, m.id, "script mods are not supported yet")
+			_err(result, m.id, "%s is for test mods; a script mod uses `entry`" % RULESET_SCRIPT)
 			return
 		var script := source.load_script(RULESET_SCRIPT)
 		if script == null:
 			_err(result, m.id, "cannot load %s" % RULESET_SCRIPT)
 			return
 		script.new().build(registry.ruleset)
+
+
+## A script mod's entry script, when the player trusts this version of it.
+func _run_entry(result: LoadResult, m: ModManifest, source: ModSource) -> void:
+	if m.kind != "gameplay":
+		_err(result, m.id, "only a gameplay mod can have scripts")
+		return
+	var hash := script_hash(source)
+	if trusted.get(m.id, "") != hash:
+		_err(
+			result, m.id, "contains scripts: trust this version first (scripts %s)" % hash.left(12)
+		)
+		return
+	var script := source.load_script(m.entry)
+	if script == null or not script.can_instantiate():
+		_err(result, m.id, "cannot load its entry script %s" % m.entry)
+		return
+	var instance: Object = script.new()
+	if not instance.has_method("_mod_init"):
+		_err(result, m.id, "its entry script %s has no _mod_init(api)" % m.entry)
+		return
+	var before := result.registry.phase_edits.size()
+	instance.call("_mod_init", ModApi.new(m.id, result.registry))
+	var known := StandardTurn.PHASE_IDS.duplicate()
+	for i in result.registry.phase_edits.size():
+		var edit: Array = result.registry.phase_edits[i]
+		if i >= before and not known.has(edit[1]):
+			_err(result, m.id, "no phase '%s' to change" % edit[1])
+		if edit[2] != null:
+			known.append((edit[2] as Phase).id)
+
+
+## The SHA-256 of a mod's scripts (every .gd file, path and text, in path order): what the player
+## trusts.
+static func script_hash(source: ModSource) -> String:
+	var ctx := HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA256)
+	for listed in source.list_files("", "gd"):
+		var path := listed.trim_prefix("/")
+		ctx.update((path + "\n" + source.read_text(path) + "\n").to_utf8_buffer())
+	return ctx.finish().hex_encode()
 
 
 func _err(result: LoadResult, mod_id: String, message: String) -> void:

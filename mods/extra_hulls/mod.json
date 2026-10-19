@@ -1,0 +1,11 @@
+{
+  "id": "extra_hulls",
+  "name": "Extra Hulls",
+  "version": "1.0.0",
+  "game_version": ">=0.1 <1.0",
+  "api_version": 1,
+  "kind": "gameplay",
+  "authors": ["StarsGodot contributors"],
+  "depends": { "core": ">=0.1.0" },
+  "description": "Two new hulls, a bulk freighter and a picket ship, and a roomier small freighter. Data only."
+}

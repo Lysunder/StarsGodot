@@ -64,7 +64,7 @@ func _init() -> void:
 			% [NewGame.SIZES[size], players, state.planets.size(), Time.get_ticks_msec() - t0]
 		)
 	)
-	var pipeline := StandardTurn.pipeline()
+	var pipeline := StandardTurn.pipeline(content)
 	for id in pipeline.ids():
 		pipeline.replace(id, TimedPhase.new(pipeline.phase(id), _phase_ms))
 	var ai_total := 0.0

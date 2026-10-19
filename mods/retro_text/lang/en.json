@@ -1,0 +1,9 @@
+{
+  "message.game.won.text": "VICTORY CONDITION MET. YOU RULE THE GALAXY. CONTINUE PLAY? Y/N",
+  "message.game.dead.text": "ALL PLANETS LOST. ALL SHIPS LOST. END OF LINE.",
+  "message.game.player_eliminated.text": "SIGNAL LOST: THE {0} ARE NO MORE.",
+  "message.game.last_standing.text": "NO RIVALS DETECTED ON ANY SCANNER. THE GALAXY IS YOURS.",
+  "hull.scout.name": "Probe",
+  "hull.small_freighter.name": "Cargo Pod Mk I",
+  "hull.destroyer.name": "Interceptor"
+}
