@@ -271,7 +271,7 @@ func _count_fleets() -> void:
 ## `AI_Macinti_Designs`: designs by tech level and turn (spec S22 "Macinti", step 3).
 static func designs(world: ClassicWorld) -> void:
 	var me := world.me()
-	var turn := world.state.turn
+	var year := world.state.turn
 	var order := PartRules.tech_order(world.content)
 	var lv := func(field: String) -> int: return me.tech_levels[order["tech_field." + field]]
 	var en: int = lv.call("energy")
@@ -301,16 +301,16 @@ static func designs(world: ClassicWorld) -> void:
 	if d.call(11) == null:
 		_outfit(world, 11, "freighter_large")
 	var two: Design = d.call(2)
-	if turn < 20 and two != null and two.remaining == 0:
+	if year < 20 and two != null and two.remaining == 0:
 		ClassicDesigns.delete(world, 2, false)
 	for slot in [2, 3, 4]:
 		if d.call(slot) != null:
 			continue
 		var before: Design = d.call(slot - 1)
 		var designed := before.turn_designed if before != null else world.empty_slot_turn(slot - 1)
-		if slot == 2 or _older(turn, designed, 20):
+		if slot == 2 or _older(year, designed, 20):
 			_tries(world, slot, "cruiser_%d")
-	if turn < EARLY_TURN and d.call(EARLY_COLONY_SLOT) == null:
+	if year < EARLY_TURN and d.call(EARLY_COLONY_SLOT) == null:
 		_outfit(world, EARLY_COLONY_SLOT, "colony_ship")
 	var one: Design = d.call(COLONY_SLOT)
 	if (
@@ -325,7 +325,7 @@ static func designs(world: ClassicWorld) -> void:
 		if d.call(slot) != null:
 			continue
 		var before: Design = d.call(slot - 1)
-		if slot != 5 and (before == null or not _older(turn, before.turn_designed, 20)):
+		if slot != 5 and (before == null or not _older(year, before.turn_designed, 20)):
 			continue
 		var pool := "battleship_a%d" if slot == 5 else "battleship_b%d"
 		if slot == 7 and world.rng.random(2) != 0:
@@ -337,7 +337,7 @@ static func designs(world: ClassicWorld) -> void:
 		if d.call(slot) != null or wp < 14:
 			continue
 		var before: Design = d.call(slot - 1)
-		if slot != 8 and (before == null or not _older(turn, before.turn_designed, 15)):
+		if slot != 8 and (before == null or not _older(year, before.turn_designed, 15)):
 			continue
 		if not _outfit(world, slot, "battleship_flag"):
 			_outfit(world, slot, "b52_%d" % (slot - 8))
@@ -359,8 +359,8 @@ static func designs(world: ClassicWorld) -> void:
 
 ## Whether a design of turn `designed` is more than `age` turns old; the original compares
 ## unsigned, so one designed after this turn (the starting designs carry turn 1) counts too.
-static func _older(turn: int, designed: int, age: int) -> bool:
-	return turn - designed > age or turn < designed
+static func _older(year: int, designed: int, age: int) -> bool:
+	return year - designed > age or year < designed
 
 
 ## Up to five tries, each a draw of 4 picking pool template 0-3.
@@ -379,7 +379,7 @@ static func _outfit(world: ClassicWorld, slot: int, template: String) -> bool:
 ## 3 replace) that the production pass upgrades by (ClassicPlanning).
 static func review_designs(world: ClassicWorld) -> PackedByteArray:
 	var me := world.me()
-	var turn := world.state.turn
+	var year := world.state.turn
 	var v := PackedByteArray()
 	v.resize(10)
 	v.fill(0)
@@ -387,11 +387,11 @@ static func review_designs(world: ClassicWorld) -> PackedByteArray:
 	for slot in [1, 2, 3]:
 		var d := me.starbase_design(slot)
 		if d != null and d.remaining != 0:
-			var age := turn - d.turn_designed
+			var age := year - d.turn_designed
 			if age < 35:
 				var dock := me.starbase_design(1)
 				var docked := dock != null and dock.parts.size() == 8
-				if turn < 26 or slot != 1 or docked:
+				if year < 26 or slot != 1 or docked:
 					v[slot] = 0
 				else:
 					v[slot] = 3
@@ -450,7 +450,7 @@ static func review_designs(world: ClassicWorld) -> PackedByteArray:
 		newer = 7
 		older = 4
 	var od := me.starbase_design(older)
-	var mark := 2 if turn - (od.turn_designed if od else 0) < 30 else 3
+	var mark := 2 if year - (od.turn_designed if od else 0) < 30 else 3
 	for k in 3:
 		v[older + k] = mark
 	var nd := me.starbase_design(newer)

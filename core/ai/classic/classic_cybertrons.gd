@@ -260,7 +260,7 @@ static func _count_up(value: int, mask: int, step: int) -> int:
 ## step 2).
 static func designs(world: ClassicWorld) -> void:
 	var me := world.me()
-	var turn := world.state.turn
+	var year := world.state.turn
 	var d := func(slot: int) -> Design: return me.ship_design(slot)
 	var scout: Design = d.call(SCOUT_SLOT)
 	var frigate: String = world.content.get_def("ai_design_template", TEMPLATE + "scout")["hull"]
@@ -269,27 +269,27 @@ static func designs(world: ClassicWorld) -> void:
 		and scout.hull != frigate
 		and me.ai_level >= 2
 		and scout.remaining == 0
-		and turn > 5
+		and year > 5
 	):
 		ClassicDesigns.delete(world, SCOUT_SLOT, false)
 	if d.call(SCOUT_SLOT) == null:
 		_outfit(world, SCOUT_SLOT, "scout")
-	if d.call(4) == null and turn > 30:
-		if turn > 75 or not _outfit(world, 4, "destroyer_0"):
+	if d.call(4) == null and year > 30:
+		if year > 75 or not _outfit(world, 4, "destroyer_0"):
 			_shrinking(world, 4, "destroyer_%d", 0, 5)
-	if d.call(5) == null and d.call(4) != null and d.call(4).turn_designed + 20 < turn:
-		if turn > 75 or not _outfit(world, 5, "destroyer_5"):
+	if d.call(5) == null and d.call(4) != null and d.call(4).turn_designed + 20 < year:
+		if year > 75 or not _outfit(world, 5, "destroyer_5"):
 			_shrinking(world, 5, "destroyer_%d", 5, 5)
-	if d.call(2) == null and turn > 20:
+	if d.call(2) == null and year > 20:
 		_outfit(world, 2, "privateer_0")
-	if d.call(3) == null and d.call(2) != null and d.call(2).turn_designed + 20 < turn:
+	if d.call(3) == null and d.call(2) != null and d.call(2).turn_designed + 20 < year:
 		_outfit(world, 3, "privateer_1")
 	for g in 2:
 		var first: int = GROUP_FIRST[g]
 		if d.call(first) != null:
 			continue
 		var six: Design = d.call(6)
-		var due := turn > 40 if g == 0 else six != null and six.turn_designed + 30 < turn
+		var due := year > 40 if g == 0 else six != null and six.turn_designed + 30 < year
 		if not due:
 			continue
 		var slot := first + 2
@@ -319,7 +319,7 @@ static func designs(world: ClassicWorld) -> void:
 			continue
 		var fourteen: Design = d.call(14)
 		var due := (
-			turn > 30 if slot == 14 else (fourteen != null and fourteen.turn_designed + 20 < turn)
+			year > 30 if slot == 14 else (fourteen != null and fourteen.turn_designed + 20 < year)
 		)
 		if not due:
 			continue
@@ -929,7 +929,7 @@ func economy(planet: Planet, dest: int, grp: int, guard: int) -> int:
 
 
 ## B44 fixed: the fleet passes mark the planets' own B words.
-static func marks_base(planets: int, _last_loaded: int) -> int:
+static func marks_base(planets: int, _loaded: int) -> int:
 	return planets + 1
 
 

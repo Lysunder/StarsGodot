@@ -414,12 +414,12 @@ func _last(fleet: Fleet) -> void:
 func invade(fleet: Fleet) -> void:
 	var out := [0]
 	if not strong(m, fleet, out):
-		var s := 0
+		var weight := 0
 		for slot in [2, 3, 4]:
-			s += M.ships(fleet, slot)
+			weight += M.ships(fleet, slot)
 		for slot in [5, 6, 7]:
-			s += 2 * M.ships(fleet, slot)
-		out[0] = s
+			weight += 2 * M.ships(fleet, slot)
+		out[0] = weight
 	var s: int = out[0]
 	var t := M.ships(fleet, 8) + M.ships(fleet, 9)
 	var escort := m.escort

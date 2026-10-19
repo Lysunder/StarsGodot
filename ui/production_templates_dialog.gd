@@ -145,8 +145,8 @@ static func in_use() -> Array[Dictionary]:
 
 
 func _label_of(i: int) -> String:
-	var name: String = _templates[i]["name"]
-	return name if name != "" else "(empty %d)" % i
+	var label_text: String = _templates[i]["name"]
+	return label_text if label_text != "" else "(empty %d)" % i
 
 
 func _choose(i: int) -> void:
@@ -179,10 +179,10 @@ func _on_import() -> void:
 		_import(DEFAULT_NAME)
 		return
 	_importing = true
-	var name: String = _templates[_chosen]["name"]
+	var label_text: String = _templates[_chosen]["name"]
 	_rename.open(
 		"Name the Template",
-		name if name != "" else "Template %d" % _chosen,
+		label_text if label_text != "" else "Template %d" % _chosen,
 		ProductionTemplates.NAME_MAX
 	)
 
@@ -197,9 +197,9 @@ func _on_named(text: String) -> void:
 		_choose(_chosen)
 
 
-func _import(name: String) -> void:
+func _import(label_text: String) -> void:
 	_templates[_chosen] = {
-		"name": name,
+		"name": label_text,
 		"leftover_to_research": _source_leftover,
 		"queue": ProductionTemplates.import_queue(_source_queue, GameSession.content),
 	}

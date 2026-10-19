@@ -115,9 +115,9 @@ func test_production_estimate() -> void:
 	home.queue.append(QueueItem.new("production_item.factories", 2))
 	home.queue.append(QueueItem.new("production_item.factories", 20))
 	home.queue.append(QueueItem.new("production_item.auto_mines", 5))
-	var before := s.copy() as GameState
+	var earlier := s.copy() as GameState
 	var e := ProductionEstimate.estimate(s, _content, home.id)
-	assert_bool(s.equals(before)).is_true()
+	assert_bool(s.equals(earlier)).is_true()
 	var when: Array = e["items"]
 	assert_int(when.size()).is_equal(3)
 	assert_int(when[0]).is_equal(ProductionEstimate.When.THIS_YEAR_ALL)

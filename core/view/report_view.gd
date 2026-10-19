@@ -105,13 +105,13 @@ static func rows(view: PlayerView, report: String) -> Array[Dictionary]:
 	return []
 
 
-## `rows` sorted by `primary`, then `secondary` (either {} for none), then natural order.
+## `row_list` sorted by `primary`, then `secondary` (either {} for none), then natural order.
 static func sorted(
-	rows: Array[Dictionary], report: String, primary: Dictionary, secondary: Dictionary
+	row_list: Array[Dictionary], report: String, primary: Dictionary, secondary: Dictionary
 ) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
-	for i in rows.size():
-		var r := rows[i].duplicate()
+	for i in row_list.size():
+		var r := row_list[i].duplicate()
 		r["_order"] = i
 		out.append(r)
 	out.sort_custom(
@@ -132,9 +132,9 @@ static func order(
 	view: PlayerView, report: String, primary: Dictionary, secondary: Dictionary
 ) -> Array[int]:
 	var out: Array[int] = []
-	var key := "id" if report == PLANETS else "number"
+	var sort_key := "id" if report == PLANETS else "number"
 	for r in sorted(rows(view, report), report, primary, secondary):
-		out.append(r[key])
+		out.append(r[sort_key])
 	return out
 
 

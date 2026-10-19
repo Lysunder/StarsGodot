@@ -390,9 +390,9 @@ func _draw_cell(
 		for i in parts.size():
 			var text: String = parts[i][0]
 			var tw := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
-			var x := rect.position.x + PAD + slot * (i + 1) - tw
+			var tx := rect.position.x + PAD + slot * (i + 1) - tw
 			draw_string(
-				font, Vector2(x, base), text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsize, parts[i][1]
+				font, Vector2(tx, base), text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsize, parts[i][1]
 			)
 		return
 	var x := rect.position.x + PAD

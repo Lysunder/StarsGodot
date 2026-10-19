@@ -164,7 +164,9 @@ static func _encode(value: Variant, kind: Kind) -> Variant:
 		Kind.OBJECT:
 			return (value as ModelObject).to_dict()
 		Kind.OBJECT_OR_NULL:
-			return null if value == null else (value as ModelObject).to_dict()
+			if value == null:
+				return null
+			return (value as ModelObject).to_dict()
 		Kind.OBJECT_LIST:
 			var out := []
 			for item: ModelObject in value:

@@ -87,7 +87,9 @@ var _ctx: AiContext
 var _state: GameState
 var _me: Player
 ## Planet ids the player's colony ships are already heading for, and the scouts' destinations.
+@warning_ignore("unused_private_class_variable")
 var _colony_targets := {}
+@warning_ignore("unused_private_class_variable")
 var _scout_targets := {}
 var _designs: BaselineDesigns
 ## This turn's new design slots by kind, and ships of each kind added to queues this turn.
@@ -98,15 +100,18 @@ var _planned := {}
 ## Planets given a dock this turn.
 var _planned_docks: Array[Planet] = []
 ## Fleets merged into another this turn.
+@warning_ignore("unused_private_class_variable")
 var _merged := {}
 ## The player's planets with another player's war fleet within `defense_range`, nearest home first.
 var _threatened: Array[Planet] = []
 ## Planets troop transports are heading for.
+@warning_ignore("unused_private_class_variable")
 var _invasion_targets := {}
 ## This turn's new dock design, or null.
 var _new_dock: Design = null
 var _owned_planets := 0
 ## Planets the player has never scanned.
+@warning_ignore("unused_private_class_variable")
 var _unknown_planets := 0
 ## The relations the player keeps this turn (after `_update_relations`), one per player.
 var _relations: Array[String] = []

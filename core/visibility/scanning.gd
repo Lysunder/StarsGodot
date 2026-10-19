@@ -58,11 +58,13 @@ static func design_ranges(design: Design, owner: Player, content: ContentRegistr
 			has_scanner = true
 		normal += slot.count * pow(float(stats.get("scan_range", 0)), 4)
 		penetrating += slot.count * pow(float(stats.get("pen_range", 0)), 4)
-	var range := NO_SCANNER
+	var scan_range := NO_SCANNER
 	if normal > 0.0 or has_scanner:
-		range = int(sqrt(sqrt(normal)))
-		range = range * RaceMath.trait_param(owner.race, content, "scanner.range_pct", PCT) / PCT
-	return [range, int(sqrt(sqrt(penetrating)))]
+		scan_range = int(sqrt(sqrt(normal)))
+		scan_range = (
+			scan_range * RaceMath.trait_param(owner.race, content, "scanner.range_pct", PCT) / PCT
+		)
+	return [scan_range, int(sqrt(sqrt(penetrating)))]
 
 
 ## A fleet's [normal, penetrating] range: the largest among the designs it has ships of.
@@ -96,10 +98,10 @@ static func planet_ranges(state: GameState, content: ContentRegistry, planet: Pl
 	var owner := state.player(planet.owner)
 	var race := owner.race
 	if RaceMath.trait_param(race, content, "scanner.population_range", 0):
-		var range := int(sqrt(float(POPULATION_RANGE_FACTOR * planet.population)))
+		var scan_range := int(sqrt(float(POPULATION_RANGE_FACTOR * planet.population)))
 		var nas := RaceMath.trait_param(race, content, "scanner.population_range_pmille", 0)
 		if nas > 0:
-			return [range * nas / PMILLE, 0]
+			return [scan_range * nas / PMILLE, 0]
 		var penetrating := 0
 		if planet.starbase != null:
 			var base := owner.starbase_design(planet.starbase.design)
@@ -107,8 +109,8 @@ static func planet_ranges(state: GameState, content: ContentRegistry, planet: Pl
 				base != null
 				and int(content.hull(base.hull).get("rank", 0)) >= PENETRATING_STARBASE_RANK
 			):
-				penetrating = range / 2
-		return [range, penetrating]
+				penetrating = scan_range / 2
+		return [scan_range, penetrating]
 	if not planet.has_scanner:
 		return [0, 0]
 	var best := PartRules.best_part("planetary", "scan_range", owner, content)
@@ -351,12 +353,12 @@ class Sight:
 			if packet.owner != p or packet.salvage:
 				continue
 			_see_packet(packet)
-			var range := packet.warp * packet.warp
-			for other in _fleets_near(packet.x, packet.y, range):
+			var scan_range := packet.warp * packet.warp
+			for other in _fleets_near(packet.x, packet.y, scan_range):
 				if other.ship_count() > 0:
-					_scan_fleet(other, packet.x, packet.y, range, 0, PCT, false)
-			_scan_objects(packet.x, packet.y, range, 0, Scanner.PACKET)
-			_scan_planets(packet.x, packet.y, range)
+					_scan_fleet(other, packet.x, packet.y, scan_range, 0, PCT, false)
+			_scan_objects(packet.x, packet.y, scan_range, 0, Scanner.PACKET)
+			_scan_planets(packet.x, packet.y, scan_range)
 
 	## `Visibility_PacketScanners@1068:6bc0`, Space Demolition: a fleet in deep space inside one
 	## of the player's minefields is seen unless its cloak beats random(100).
@@ -442,24 +444,24 @@ class Sight:
 	## range, cloak permitting.
 	func _scan_gates(planet: Planet) -> void:
 		var own_gate := Stargates.gate(state, content, planet)
-		var range: int = own_gate.get("gate_range", 0)
-		if own_gate.is_empty() or range == 0:
+		var scan_range: int = own_gate.get("gate_range", 0)
+		if own_gate.is_empty() or scan_range == 0:
 			return
 		for other in state.planets:
 			if planets.get(other.id, 0) >= SCANNED:
 				continue
 			if Stargates.gate(state, content, other).is_empty():
 				continue
-			if range > 0:
-				if absi(other.x - planet.x) > range or absi(other.y - planet.y) > range:
+			if scan_range > 0:
+				if absi(other.x - planet.x) > scan_range or absi(other.y - planet.y) > scan_range:
 					continue
 				var d2 := Scanning._distance2(other.x, other.y, planet.x, planet.y)
 				var k := Cloaking.starbase_factor(state, content, other)
-				if d2 > range * range:
+				if d2 > scan_range * scan_range:
 					continue
 				if (
 					k < Cloaking.NO_CLOAK_FACTOR
-					and d2 > k * range * range / Cloaking.NO_CLOAK_FACTOR
+					and d2 > k * scan_range * scan_range / Cloaking.NO_CLOAK_FACTOR
 				):
 					continue
 			_see_planet(other, SCANNED)

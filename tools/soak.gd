@@ -58,7 +58,9 @@ class ErrorLog:
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
 	var turns := int(args[0]) if args.size() > 0 else 200
-	var names: Array = args.slice(1) if args.size() > 1 else GAMES.keys()
+	var names: Array = GAMES.keys()
+	if args.size() > 1:
+		names = args.slice(1)
 	var r := ModLoader.new().load_mods(FolderModSource.discover("res://content"), [])
 	if not r.ok():
 		printerr(r.error_text())

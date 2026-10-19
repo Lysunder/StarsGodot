@@ -225,13 +225,13 @@ func _draw() -> void:
 		false
 	)
 	# only what is on screen (with room for labels and rings) is drawn
-	var visible := Rect2(Vector2.ZERO, size).grow(CULL_MARGIN)
+	var on_screen := Rect2(Vector2.ZERO, size).grow(CULL_MARGIN)
 	if show_scanners:
 		_draw_scanners(view)
 	_draw_minefields(view)
 	for pl in view.planets():
 		var at := to_screen(pl["x"], pl["y"])
-		if not visible.has_point(at):
+		if not on_screen.has_point(at):
 			continue
 		var colour := COLOR_UNOWNED
 		if pl["owner"] >= 0:
@@ -255,10 +255,10 @@ func _draw() -> void:
 				10,
 				Color(1, 1, 1, 0.6)
 			)
-	_draw_objects(view, visible)
+	_draw_objects(view, on_screen)
 	for f in MapObjects.seen_fleets(view):
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
-		if visible.has_point(at):
+		if on_screen.has_point(at):
 			var tri := PackedVector2Array(
 				[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
 			)
@@ -267,14 +267,14 @@ func _draw() -> void:
 				draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 	for f in view.fleets():
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
-		var selected := selection_kind == "fleet" and selection_id == f.number
-		if not selected and not visible.has_point(at):
+		var is_selected := selection_kind == "fleet" and selection_id == f.number
+		if not is_selected and not on_screen.has_point(at):
 			continue
 		var tri := PackedVector2Array(
 			[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
 		)
 		draw_colored_polygon(tri, Palette.color(Palette.FLEET))
-		if selected:
+		if is_selected:
 			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
 
@@ -317,20 +317,20 @@ func _draw_minefields(view: PlayerView) -> void:
 
 ## Wormholes, packets and salvage, and Mystery Traders the player sees: their pictures when a mod
 ## supplies them (ArtRegistry `art.object.*`), else small symbols of our own.
-func _draw_objects(view: PlayerView, visible: Rect2) -> void:
+func _draw_objects(view: PlayerView, on_screen: Rect2) -> void:
 	for w in MapObjects.wormholes(view):
-		_draw_object(to_screen(w.x, w.y), "art.object.wormhole", visible, COLOR_WORMHOLE, 0)
+		_draw_object(to_screen(w.x, w.y), "art.object.wormhole", on_screen, COLOR_WORMHOLE, 0)
 	for k in MapObjects.packets(view):
 		var id := "art.object.salvage" if k.salvage else "art.object.packet"
 		var colour := COLOR_SALVAGE if k.salvage else Palette.cargo(0)
-		_draw_object(to_screen(k.x, k.y), id, visible, colour, 1)
+		_draw_object(to_screen(k.x, k.y), id, on_screen, colour, 1)
 	for t in MapObjects.traders(view):
-		_draw_object(to_screen(t.x, t.y), "art.object.mystery_trader", visible, COLOR_TRADER, 2)
+		_draw_object(to_screen(t.x, t.y), "art.object.mystery_trader", on_screen, COLOR_TRADER, 2)
 
 
 ## One object at `at`: its picture, or our symbol (0 ring, 1 square, 2 diamond).
-func _draw_object(at: Vector2, art_id: String, visible: Rect2, colour: Color, shape: int) -> void:
-	if not visible.has_point(at):
+func _draw_object(at: Vector2, art_id: String, on_screen: Rect2, colour: Color, shape: int) -> void:
+	if not on_screen.has_point(at):
 		return
 	var art := ArtRegistry.texture(art_id)
 	if art != null:

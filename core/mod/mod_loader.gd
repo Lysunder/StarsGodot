@@ -234,10 +234,12 @@ func _run_entry(result: LoadResult, m: ModManifest, source: ModSource) -> void:
 	if m.kind != "gameplay":
 		_err(result, m.id, "only a gameplay mod can have scripts")
 		return
-	var hash := script_hash(source)
-	if trusted.get(m.id, "") != hash:
+	var digest := script_hash(source)
+	if trusted.get(m.id, "") != digest:
 		_err(
-			result, m.id, "contains scripts: trust this version first (scripts %s)" % hash.left(12)
+			result,
+			m.id,
+			"contains scripts: trust this version first (scripts %s)" % digest.left(12)
 		)
 		return
 	var script := source.load_script(m.entry)

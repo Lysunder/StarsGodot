@@ -84,9 +84,9 @@ func _build_display() -> Control:
 		# the sample is drawn in that font, so each choice shows itself
 		var sample := Label.new()
 		sample.text = "    " + SAMPLE
-		var theme := ClassicTheme.build(i)
-		sample.add_theme_font_override("font", theme.default_font)
-		sample.add_theme_font_size_override("font_size", theme.default_font_size)
+		var theme_id := ClassicTheme.build(i)
+		sample.add_theme_font_override("font", theme_id.default_font)
+		sample.add_theme_font_size_override("font_size", theme_id.default_font_size)
 		fonts.add_child(sample)
 	var grid := GridContainer.new()
 	grid.columns = 2
@@ -104,8 +104,8 @@ func _build_display() -> Control:
 	grid.add_child(_scale)
 	grid.add_child(_heading("Colours"))
 	_palette = OptionButton.new()
-	for name: String in Palette.MODE_NAMES:
-		_palette.add_item(name)
+	for label_text: String in Palette.MODE_NAMES:
+		_palette.add_item(label_text)
 	_palette.item_selected.connect(
 		func(i: int) -> void:
 			if not _loading:

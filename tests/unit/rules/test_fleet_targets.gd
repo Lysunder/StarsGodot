@@ -171,12 +171,12 @@ func test_a_waypoint_on_a_fleet_lost_there_this_turn_stays() -> void:
 	var other := _fleet(s, 1250, 1250)
 	FleetOrders.delete_fleet(s, prey, 0, true)
 	var rng := StarsRandom.new()
-	var before := [rng.s1, rng.s2]
+	var earlier := [rng.s1, rng.s2]
 	FleetTargets.update(s, _content, rng)
 	# the lost fleet is still there, empty, so nothing is retargeted and nothing drawn
 	assert_int(wp.target_id).is_equal(prey.number)
 	assert_bool(other.claimed).is_false()
-	assert_array([rng.s1, rng.s2]).is_equal(before)
+	assert_array([rng.s1, rng.s2]).is_equal(earlier)
 
 
 func test_other_players_pick_again_a_fleet_a_ship_move_named() -> void:
@@ -196,49 +196,55 @@ func test_other_players_pick_again_a_fleet_a_ship_move_named() -> void:
 	var wp := _to(chaser, 1250, 1250, 5)
 	_target(wp, a)
 	var rng := StarsRandom.new()
-	var before := [rng.s1, rng.s2]
+	var earlier := [rng.s1, rng.s2]
 	FleetTargets.update(s, _content, rng)
 	assert_bool(a.claimed).is_true()
-	assert_array([rng.s1, rng.s2]).is_equal(before)
+	assert_array([rng.s1, rng.s2]).is_equal(earlier)
 	# named in a ship move this turn: picked again among the fleets there, with draws
 	a.claimed = false
 	a.reorganized = true
 	FleetTargets.update(s, _content, rng)
-	assert_array([rng.s1, rng.s2]).is_not_equal(before)
+	assert_array([rng.s1, rng.s2]).is_not_equal(earlier)
 	assert_array([a.number, b.number]).contains([wp.target_id])
 	# the player's own marked fleet is kept as it is
 	var own := _fleet(s, 1300, 1300)
 	own.reorganized = true
 	var follower := _fleet(s, 1100, 1100)
 	_target(_to(follower, 1300, 1300, 5), own)
-	before = [rng.s1, rng.s2]
+	earlier = [rng.s1, rng.s2]
 	chaser.waypoints.resize(1)
 	FleetTargets.update(s, _content, rng)
 	assert_bool(own.claimed).is_true()
-	assert_array([rng.s1, rng.s2]).is_equal(before)
+	assert_array([rng.s1, rng.s2]).is_equal(earlier)
 
 
 func test_hull_classes_for_battle_plan_targets() -> void:
 	var s := _game()
 	var colony := _fleet(s)
-	var owner := s.players[0]
+	var owner_player := s.players[0]
 	(
-		assert_bool(FleetTargets.has_class(colony, owner, FleetTargets.TARGET_UNARMED, _content))
+		assert_bool(
+			FleetTargets.has_class(colony, owner_player, FleetTargets.TARGET_UNARMED, _content)
+		)
 		. is_true()
 	)
 	(
-		assert_bool(FleetTargets.has_class(colony, owner, FleetTargets.TARGET_ARMED, _content))
+		assert_bool(
+			FleetTargets.has_class(colony, owner_player, FleetTargets.TARGET_ARMED, _content)
+		)
 		. is_false()
 	)
 	var warship := _design("hull.destroyer")
 	warship.slot = 1
-	owner.set_design(warship, false)
+	owner_player.set_design(warship, false)
 	colony.add_ships(1, 1)
 	(
-		assert_bool(FleetTargets.has_class(colony, owner, FleetTargets.TARGET_ARMED, _content))
+		assert_bool(
+			FleetTargets.has_class(colony, owner_player, FleetTargets.TARGET_ARMED, _content)
+		)
 		. is_true()
 	)
-	assert_bool(FleetTargets.has_class(colony, owner, 1, _content)).is_false()
+	assert_bool(FleetTargets.has_class(colony, owner_player, 1, _content)).is_false()
 
 
 func _wormholes(s: GameState) -> Array[Wormhole]:

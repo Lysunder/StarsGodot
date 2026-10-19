@@ -48,15 +48,15 @@ func _init(title: String, p_key: String = "") -> void:
 	bar.mouse_filter = Control.MOUSE_FILTER_STOP
 	bar.theme_type_variation = "TileBar"
 	add_child(bar)
-	var row := HBoxContainer.new()
-	bar.add_child(row)
+	var row_box := HBoxContainer.new()
+	bar.add_child(row_box)
 	_caption = Label.new()
 	_caption.text = title
 	_caption.theme_type_variation = "BoldLabel"
 	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_caption.clip_text = true
-	row.add_child(_caption)
+	row_box.add_child(_caption)
 	_toggle = Button.new()
 	_toggle.custom_minimum_size = TOGGLE_SIZE
 	_toggle.icon = ClassicTheme.collapse_icon(false)
@@ -67,7 +67,7 @@ func _init(title: String, p_key: String = "") -> void:
 			set_collapsed(not collapsed)
 			collapse_toggled.emit(key, collapsed)
 	)
-	row.add_child(_toggle)
+	row_box.add_child(_toggle)
 	var frame := PanelContainer.new()
 	frame.theme_type_variation = "TileBody"
 	add_child(frame)

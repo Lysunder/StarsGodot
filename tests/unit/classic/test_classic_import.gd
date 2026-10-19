@@ -51,8 +51,8 @@ static func _exe(bitmaps: Dictionary) -> PackedByteArray:
 	var entries := ids.size() + 1
 	var table := 0x80
 	var names_at := 2 + 8 + entries * 12 + 2
-	var name := "TESTBMP"
-	var data_at := table + names_at + 1 + name.length()
+	var entry_name := "TESTBMP"
+	var data_at := table + names_at + 1 + entry_name.length()
 	data_at = (data_at + (1 << SHIFT) - 1) >> SHIFT << SHIFT
 	var b := PackedByteArray()
 	b.resize(data_at)
@@ -80,9 +80,9 @@ static func _exe(bitmaps: Dictionary) -> PackedByteArray:
 		var start := b.size()
 		b.append_array(bytes)
 		b.resize(start + padded)
-	b[table + names_at] = name.length()
-	for i in name.length():
-		b[table + names_at + 1 + i] = name.unicode_at(i)
+	b[table + names_at] = entry_name.length()
+	for i in entry_name.length():
+		b[table + names_at + 1 + i] = entry_name.unicode_at(i)
 	return b
 
 

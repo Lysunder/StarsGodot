@@ -122,10 +122,13 @@ static func read(path: String) -> Result:
 	if int(data.get("format_version", 0)) > FORMAT_VERSION:
 		r.errors.append("%s comes from a newer version" % path)
 		return r
+	var params: Variant = null
+	if data.get("params", {}) is Dictionary:
+		params = _ints(data.get("params", {}))
 	var p := {
 		"name": data.get("name"),
 		"brain": data.get("brain"),
-		"params": _ints(data.get("params", {})) if data.get("params", {}) is Dictionary else null,
+		"params": params,
 		"levels": [],
 		"races_of": data.get("races_of", ComputerPlayers.default_races(str(data.get("brain", "")))),
 	}

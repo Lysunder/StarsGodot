@@ -233,9 +233,9 @@ static func ships_view(info: Dictionary) -> Control:
 	grid.add_theme_constant_override("h_separation", 16)
 	box.add_child(grid)
 	for s: Dictionary in info["ships"]:
-		var name := Label.new()
-		name.text = s["name"]
-		grid.add_child(name)
+		var label_text := Label.new()
+		label_text.text = s["name"]
+		grid.add_child(label_text)
 		var count := Label.new()
 		count.text = str(s["count"])
 		count.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -279,12 +279,12 @@ static func design_view(design: Design, starbase: bool) -> Control:
 		["Cargo", "%skT" % CommandPane.thousands(stats["cargo"]), Color()],
 	]
 	for entry: Array in rows:
-		var name := Label.new()
-		name.text = entry[0]
-		name.theme_type_variation = "BoldLabel"
+		var label_text := Label.new()
+		label_text.text = entry[0]
+		label_text.theme_type_variation = "BoldLabel"
 		if entry[2] != Color():
-			name.add_theme_color_override("font_color", entry[2])
-		grid.add_child(name)
+			label_text.add_theme_color_override("font_color", entry[2])
+		grid.add_child(label_text)
 		var value := Label.new()
 		value.text = entry[1]
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT

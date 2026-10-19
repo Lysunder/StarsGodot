@@ -35,8 +35,8 @@ func _game() -> GameState:
 	return s
 
 
-func _fleet(s: GameState, owner := 0, ships := 2, task := "none") -> Fleet:
-	var f := s.add_fleet(owner, 512)
+func _fleet(s: GameState, owner_index := 0, ships := 2, task := "none") -> Fleet:
+	var f := s.add_fleet(owner_index, 512)
 	f.x = 100
 	f.y = 100
 	f.planet = 0
@@ -405,11 +405,11 @@ func test_tech_bonus_learns_a_trader_part_seen() -> void:
 	# a Multi Contained Munition (bit 7) seen 25 times: 25% chance once the bonus roll passes
 	need[TechGain.PARTS_SEEN + 7] = 25
 	var learned := false
-	for seed in 400:
+	for seed_value in 400:
 		var copy := Player.new()
 		copy.race = p.race
 		var gained := TechGain.try_bonus(
-			copy, need, _content, StarsRandom.new(seed + 1, 673 + seed)
+			copy, need, _content, StarsRandom.new(seed_value + 1, 673 + seed_value)
 		)
 		if gained == -8:
 			learned = true
@@ -422,7 +422,7 @@ func test_ultimate_recycling_banks_resources_for_production() -> void:
 	var s := _game()
 	var race := s.players[0].race
 	race.lesser_traits.assign(["trait.lrt.UR"])
-	var f := _fleet(s, 0, 2, "scrap")
+	_fleet(s, 0, 2, "scrap")
 	var cost := _cost(s)
 	var pl := s.planets[0]
 	var r := PlanetEconomy.resources(pl, race, _content)

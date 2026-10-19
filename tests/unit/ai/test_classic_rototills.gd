@@ -48,12 +48,12 @@ func _hull(w: ClassicWorld, slot: int) -> String:
 func test_no_designs_of_their_own() -> void:
 	var w := _world()
 	_set_tech(w, 26)
-	var before := []
+	var earlier := []
 	for slot in 16:
-		before.append(_hull(w, slot))
+		earlier.append(_hull(w, slot))
 	ClassicRototills.play(w)
 	for slot in 16:
-		assert_str(_hull(w, slot)).is_equal(before[slot])
+		assert_str(_hull(w, slot)).is_equal(earlier[slot])
 
 
 func test_research_the_lowest_field() -> void:

@@ -44,8 +44,8 @@ func _game() -> GameState:
 	return s
 
 
-func _fleet(s: GameState, owner := 0, ships := 3) -> Fleet:
-	var f := s.add_fleet(owner, 512)
+func _fleet(s: GameState, owner_index := 0, ships := 3) -> Fleet:
+	var f := s.add_fleet(owner_index, 512)
 	f.x = 100
 	f.y = 100
 	f.planet = 0

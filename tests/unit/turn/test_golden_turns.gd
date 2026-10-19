@@ -1,8 +1,8 @@
 extends "res://tests/unit/turn/golden_base.gd"
 ## Golden turns of the games played in the original client (golden_base.gd).
 
-
 ## Two human players without orders, no random events: mining, research, growth.
+@warning_ignore("unused_parameter")
 # gdlint: ignore=unused-argument
 func test_tiny2(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void:
 	_check_turn("tiny2", turn)
@@ -10,6 +10,7 @@ func test_tiny2(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void
 
 ## A human player's production orders, given in the original client: factories with partial
 ## progress, a ship, auto items and their carry-over, "only leftover to research" (S09, S11).
+@warning_ignore("unused_parameter")
 # gdlint: ignore=unused-argument
 func test_prod1(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void:
 	_check_turn("prod1", turn)
@@ -18,6 +19,7 @@ func test_prod1(turn: int, test_parameters := [[0], [1], [2], [3], [4]]) -> void
 ## Turns 0-1: both players load colonists and send colony ships, which move, colonize and found
 ## colonies (S11, S12). Then a Total Terraforming race's terraform items on its colony and a Claim
 ## Adjuster colony terraforming itself (S10); research level gains. Turns 0-3 and 13-28.
+@warning_ignore("unused_parameter")
 func test_terra1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -64,6 +66,7 @@ func test_terra1(
 
 
 ## long1 (the M6 long game): one player playing normally, checked in batches.
+@warning_ignore("unused_parameter")
 func test_long1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -112,6 +115,7 @@ func test_long1(
 ## follow orders on waypoint 0 (a chain of two, and one whose fleet isn't going anywhere); turn 1
 ## chasing a moving fleet; turn 2 a fleet chasing a chaser, in steps; turn 3 a chased fleet merged;
 ## turns 4-5 plain moves; turn 13 a jump through a wormhole.
+@warning_ignore("unused_parameter")
 # gdlint: ignore=unused-argument
 func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3], [4], [5], [13]]) -> void:
 	_check_turn("follow1", turn)
@@ -121,6 +125,7 @@ func test_follow1(turn: int, test_parameters := [[0], [1], [2], [3], [4], [5], [
 ## planet), orders given in the original client: turn 0 a jump within the limits, two ships over
 ## the gates' mass limit (damage), and a jump to a planet without a gate; turn 1 the damaged ships
 ## jump back (damage adds up, one is destroyed).
+@warning_ignore("unused_parameter")
 # gdlint: ignore=unused-argument
 func test_gate1(turn: int, test_parameters := [[0], [1]]) -> void:
 	_check_turn("gate1", turn)
@@ -129,6 +134,7 @@ func test_gate1(turn: int, test_parameters := [[0], [1]]) -> void:
 ## M7: minefields (S13), two players (a Space Demolition race and the long1 race), orders given in
 ## the original client (other turns generated without orders): mine laying in place and while
 ## moving, merging into fields, decay, fleets crossing fields, speed-bump hits in turns 30 and 31.
+@warning_ignore("unused_parameter")
 func test_mine1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -272,6 +278,7 @@ func test_mine1(
 
 ## M10: random events and the Mystery Trader (S18), score and victory (S20): a tiny universe with
 ## random events on, the long1 race played in the client against an idle Space Demolition race.
+@warning_ignore("unused_parameter")
 func test_rand1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -385,6 +392,7 @@ func test_rand1(
 	_check_turn("rand1", turn)
 
 
+@warning_ignore("unused_parameter")
 func test_steal1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -417,6 +425,7 @@ func test_steal1(
 	_check_turn("steal1", turn)
 
 
+@warning_ignore("unused_parameter")
 func test_plan1(
 	turn: int,
 	# gdlint: ignore=unused-argument

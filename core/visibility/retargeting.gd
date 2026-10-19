@@ -93,10 +93,10 @@ static func _patrol(
 			unpicked = true
 	if unpicked:
 		picked[best] = true
-	var range := (_words(wp0)[1] + 1) * RANGE_STEP
-	if range == ANY_RANGE:
-		range = ANY_DISTANCE
-	if best == null or best_d2 == 0 or best_d2 > range * range:
+	var scan_range := (_words(wp0)[1] + 1) * RANGE_STEP
+	if scan_range == ANY_RANGE:
+		scan_range = ANY_DISTANCE
+	if best == null or best_d2 == 0 or best_d2 > scan_range * scan_range:
 		return
 	var added: Waypoint
 	if fleet.waypoints.size() == 1:
@@ -219,10 +219,10 @@ static func _words(wp: Waypoint) -> Array[int]:
 
 
 ## The fleet's default warp (`Fleet_CalcWarp@1048:678c`): the fastest speed every engine runs
-## below 121 per mille fuel use, eased down to a nearby free speed unless `ease` is false; 0 when
-## a design has no engine.
+## below 121 per mille fuel use, eased down to a nearby free speed unless `ease_down` is false;
+## 0 when a design has no engine.
 static func default_warp(
-	fleet: Fleet, owner: Player, content: ContentRegistry, ease: bool = true
+	fleet: Fleet, owner: Player, content: ContentRegistry, ease_down: bool = true
 ) -> int:
 	var warp := WARP_MAX
 	for stack in fleet.stacks:
@@ -236,7 +236,7 @@ static func default_warp(
 		var tags: Array = part.get("tags", [])
 		while warp > 0:
 			if int(table[warp]) < FUEL_LIMIT:
-				if ease and int(table[warp]) > 0 and not tags.has(FULL_TAG):
+				if ease_down and int(table[warp]) > 0 and not tags.has(FULL_TAG):
 					if warp >= 5 and int(table[warp - 1]) == 0:
 						warp -= 1
 					elif warp >= 6 and int(table[warp - 2]) == 0:

@@ -182,8 +182,8 @@ func _on_brain(index: int) -> void:
 	if _filling:
 		return
 	# another brain has other settings: start from its defaults
-	var name := str(_current.get("name", ""))
-	_current = PersonalityFile.make(name, PersonalityFile.brains()[index])
+	var label_text := str(_current.get("name", ""))
+	_current = PersonalityFile.make(label_text, PersonalityFile.brains()[index])
 	_filling = true
 	_select_races()
 	_filling = false
@@ -238,11 +238,11 @@ func _add_row(grid: GridContainer, s: Dictionary, level: int) -> void:
 		override.button_pressed = _level_map(level).has(key)
 		override.disabled = not _own
 		grid.add_child(override)
-	var name := _label(_content().string_for("ai_setting.%s.name" % key))
-	name.tooltip_text = _content().string_for("ai_setting.%s.description" % key)
-	name.mouse_filter = Control.MOUSE_FILTER_PASS
-	name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	grid.add_child(name)
+	var label_text := _label(_content().string_for("ai_setting.%s.name" % key))
+	label_text.tooltip_text = _content().string_for("ai_setting.%s.description" % key)
+	label_text.mouse_filter = Control.MOUSE_FILTER_PASS
+	label_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_child(label_text)
 	var spin := SpinBox.new()
 	spin.min_value = s["min"]
 	spin.max_value = s["max"]
@@ -286,13 +286,13 @@ func _unique_name(base: String) -> String:
 	var taken := {}
 	for e: Dictionary in _entries:
 		taken[str(e["personality"]["name"])] = true
-	var name := base.left(PersonalityFile.NAME_MAX)
+	var label_text := base.left(PersonalityFile.NAME_MAX)
 	var n := 2
-	while taken.has(name):
+	while taken.has(label_text):
 		var tail := " %d" % n
-		name = base.left(PersonalityFile.NAME_MAX - tail.length()) + tail
+		label_text = base.left(PersonalityFile.NAME_MAX - tail.length()) + tail
 		n += 1
-	return name
+	return label_text
 
 
 func _on_new() -> void:
@@ -314,18 +314,21 @@ func _on_save() -> void:
 	if not problems.is_empty():
 		_status.text = problems[0]
 		return
-	var name := str(_current["name"]).strip_edges()
-	_current["name"] = name
+	var label_text := str(_current["name"]).strip_edges()
+	_current["name"] = label_text
 	for e: Dictionary in _entries:
-		if str(e["personality"]["name"]) == name and (not e["own"] or name != _saved_name):
-			_status.text = "Another personality is called %s." % name
+		if (
+			str(e["personality"]["name"]) == label_text
+			and (not e["own"] or label_text != _saved_name)
+		):
+			_status.text = "Another personality is called %s." % label_text
 			return
 	if PersonalityStore.save(_current).is_empty():
 		_status.text = "The personality could not be saved."
 		return
-	if _saved_name != "" and _saved_name != name:
+	if _saved_name != "" and _saved_name != label_text:
 		PersonalityStore.delete(_saved_name)
-	_refill(name)
+	_refill(label_text)
 	_status.text = "Saved."
 	personalities_changed.emit()
 

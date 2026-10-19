@@ -41,10 +41,10 @@ func _world(players := 2) -> GameState:
 
 ## A generator whose first `random(n)` is 0 (so the event fires).
 func _firing(n: int) -> StarsRandom:
-	for seed in range(1, 5000):
-		var probe := StarsRandom.new(seed, 673)
+	for seed_value in range(1, 5000):
+		var probe := StarsRandom.new(seed_value, 673)
 		if probe.random(n) == 0:
-			return StarsRandom.new(seed, 673)
+			return StarsRandom.new(seed_value, 673)
 	return null
 
 
@@ -188,8 +188,8 @@ func _rolling(n: int, zero: bool) -> StarsRandom:
 	return null
 
 
-func _fleet(s: GameState, owner: int, minerals: int) -> Fleet:
-	var f := s.add_fleet(owner, 512)
+func _fleet(s: GameState, owner_index: int, minerals: int) -> Fleet:
+	var f := s.add_fleet(owner_index, 512)
 	f.x = 1100
 	f.y = 1100
 	f.add_ships(0, 1)

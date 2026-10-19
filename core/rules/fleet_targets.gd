@@ -27,10 +27,10 @@ static func resolve(state: GameState, content: ContentRegistry, rng: StarsRandom
 	if not any:
 		return
 	var changed := true
-	var round := 0
-	while changed and round < FOLLOW_ROUNDS:
+	var battle_round := 0
+	while changed and battle_round < FOLLOW_ROUNDS:
 		changed = false
-		round += 1
+		battle_round += 1
 		for fleet in state.fleets:
 			if not fleet.following or fleet.waypoints.size() != 1:
 				continue
@@ -171,7 +171,9 @@ static func _follow_trader(state: GameState, wp: Waypoint) -> void:
 ## A waypoint's packet, salvage or minefield: it takes the object's position; deep space when the
 ## object is gone.
 static func _follow_object(state: GameState, wp: Waypoint) -> void:
-	var objects: Array = state.packets if wp.target == "packet" else state.minefields
+	var objects: Array = state.minefields
+	if wp.target == "packet":
+		objects = state.packets
 	for o: Variant in objects:
 		if o.owner == wp.target_owner and o.number == wp.target_id:
 			wp.x = o.x

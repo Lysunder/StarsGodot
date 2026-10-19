@@ -28,11 +28,11 @@ func _init() -> void:
 	for axis in 3:
 		var row := HBoxContainer.new()
 		add_child(row)
-		var name := Label.new()
-		name.text = LABELS[axis]
-		name.theme_type_variation = "BoldLabel"
-		name.custom_minimum_size = Vector2(LABEL_WIDTH, 0)
-		row.add_child(name)
+		var label_text := Label.new()
+		label_text.text = LABELS[axis]
+		label_text.theme_type_variation = "BoldLabel"
+		label_text.custom_minimum_size = Vector2(LABEL_WIDTH, 0)
+		row.add_child(label_text)
 		row.add_child(_arrow("◄", func() -> void: _adjust(axis, -1, 0)))
 		var bar := HabBar.new(axis)
 		bar.custom_minimum_size = BAR_SIZE

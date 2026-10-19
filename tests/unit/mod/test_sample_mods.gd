@@ -84,11 +84,11 @@ func test_burrowers_dig_minerals() -> void:
 	options.race = race
 	var s := NewGame.create(content, options)
 	var home := s.planet(s.player(0).homeworld)
-	var before := home.surface.duplicate()
+	var earlier := home.surface.duplicate()
 	var ctx := TurnContext.new(s, content, [])
 	StandardTurn.pipeline(content).phase("burrowers.tunnels").run(ctx)
 	for m in 3:
-		assert_int(home.surface[m]).is_equal(before[m] + home.population / 100)
+		assert_int(home.surface[m]).is_equal(earlier[m] + home.population / 100)
 
 
 func test_supernova_flares_draw_from_their_own_stream() -> void:

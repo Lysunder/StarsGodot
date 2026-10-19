@@ -146,13 +146,13 @@ func load_game(path: String) -> String:
 		if o.ok() and o.order_set.turn == state.turn and o.order_set.player == p:
 			_orders[p] = o.order_set
 	var round_text := FileAccess.get_file_as_string(path + ROUND_SUFFIX)
-	var round: Variant = JSON.parse_string(round_text) if not round_text.is_empty() else null
-	if round is Dictionary and int(round.get("turn", -1)) == state.turn:
-		for p: Variant in round.get("submitted", []):
+	var round_info: Variant = JSON.parse_string(round_text) if not round_text.is_empty() else null
+	if round_info is Dictionary and int(round_info.get("turn", -1)) == state.turn:
+		for p: Variant in round_info.get("submitted", []):
 			if humans().has(int(p)):
 				_submitted[int(p)] = true
-		if humans().has(int(round.get("player", -1))):
-			player = int(round["player"])
+		if humans().has(int(round_info.get("player", -1))):
+			player = int(round_info["player"])
 	orders = _orders_of(player)
 	_refresh()
 	return ""
@@ -166,8 +166,8 @@ func save_game(path: String) -> Error:
 		if err == OK:
 			err = OrderFile.write(_orders_path(path, p), _orders_of(p), game_version)
 	if err == OK:
-		var round := {"turn": state.turn, "player": player, "submitted": _submitted.keys()}
-		err = SaveStore.write_text(path + ROUND_SUFFIX, JSON.stringify(round))
+		var round_info := {"turn": state.turn, "player": player, "submitted": _submitted.keys()}
+		err = SaveStore.write_text(path + ROUND_SUFFIX, JSON.stringify(round_info))
 	if err == OK:
 		dirty = false
 		changed.emit()

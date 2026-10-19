@@ -197,7 +197,13 @@ func _draw() -> void:
 		var p: int = lines[i]["player"]
 		var at := Vector2(MARGIN + column * (i % 4), base + LEGEND_ROW + 4 + LEGEND_ROW * (i / 4))
 		draw_rect(Rect2(at + Vector2(0, -10), Vector2(12, 4)), color(p))
-		var name := names[p] if p < names.size() else str(p)
+		var label_text := names[p] if p < names.size() else str(p)
 		draw_string(
-			font, at + Vector2(16, 0), name, HORIZONTAL_ALIGNMENT_LEFT, column - 20, fsize, color(p)
+			font,
+			at + Vector2(16, 0),
+			label_text,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			column - 20,
+			fsize,
+			color(p)
 		)

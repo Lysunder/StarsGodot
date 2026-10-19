@@ -516,21 +516,21 @@ static func _cargo_transfer(
 				short[1].append(_short(fleet, c, given, moved, fleet_gives, pile, false))
 			if moved <= 0:
 				continue
-			var sign := 1 if loading else -1
-			fleet.cargo[c] += sign * moved
+			var direction := 1 if loading else -1
+			fleet.cargo[c] += direction * moved
 			if jettison:
 				continue
 			if pile != null:
-				pile.minerals[c] -= sign * moved
+				pile.minerals[c] -= direction * moved
 			elif partner != null:
-				partner.cargo[c] -= sign * moved
+				partner.cargo[c] -= direction * moved
 			elif c == Fleet.CARGO_COLONISTS and planet.owner != player:
 				# dropped on another player's or an unowned planet: ground combat (S17)
 				_drop_colonists(state, fleet, planet, moved)
 			elif c == Fleet.CARGO_COLONISTS:
-				planet.population -= sign * moved
+				planet.population -= direction * moved
 			else:
-				planet.surface[c] -= sign * moved
+				planet.surface[c] -= direction * moved
 	for messages: Array in short:
 		for m: Array in messages:
 			TurnMessages.add(
@@ -544,7 +544,7 @@ static func _cargo_transfer(
 static func _short(
 	fleet: Fleet, c: int, asked: int, done: int, fleet_gives: bool, pile: Packet, giving: bool
 ) -> Array:
-	var sign := -1 if giving else 1
+	var direction := -1 if giving else 1
 	var word := fleet.owner * 512 + fleet.number
 	var packet_side := pile != null and fleet_gives != giving
 	if packet_side:
@@ -552,7 +552,7 @@ static func _short(
 		return [type, [word, c, done if giving else -done, c]]
 	return [
 		"message.fleet.transfer_short",
-		[WaypointTasks.FLEET_OBJECT + word, sign * (asked - done), c, sign * asked]
+		[WaypointTasks.FLEET_OBJECT + word, direction * (asked - done), c, direction * asked]
 	]
 
 

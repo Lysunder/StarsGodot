@@ -1,10 +1,10 @@
 extends "res://tests/unit/turn/golden_base.gd"
 ## Golden turns of computer player games (S22; golden_base.gd): turin1, cyber1.
 
-
 ## Five Turindrones computer players and an idle human (S22 stage 4). Turn left out: B12 (71: a
 ## caught fleet that was itself chasing stops). Turn 77: a fleet crossing two overlapping fields of
 ## one type rolls once per light year of the joined stretch (S13).
+@warning_ignore("unused_parameter")
 func test_turin1(
 	turn: int,
 	# gdlint: ignore=unused-argument
@@ -35,6 +35,7 @@ func test_turin1(
 
 ## An idle human, a Robotoids, three Cybertrons and a Rototills computer player (S22 stage 4).
 ## Turns left out: B32 (70, 71: damage on ship moves).
+@warning_ignore("unused_parameter")
 func test_cyber1(
 	turn: int,
 	# gdlint: ignore=unused-argument

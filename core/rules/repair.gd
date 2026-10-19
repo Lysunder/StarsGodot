@@ -36,9 +36,11 @@ static func repair_all(state: GameState, content: ContentRegistry) -> void:
 		if fought or planet.starbase.damage == 0 or planet.owner < 0:
 			continue
 		var race := state.player(planet.owner).race
-		var rate := STARBASE * RaceMath.trait_param(race, content, "repair.starbase_pct", PCT) / PCT
+		var rate_pct := (
+			STARBASE * RaceMath.trait_param(race, content, "repair.starbase_pct", PCT) / PCT
+		)
 		planet.starbase.damage = (
-			0 if planet.starbase.damage < rate else planet.starbase.damage - rate
+			0 if planet.starbase.damage < rate_pct else planet.starbase.damage - rate_pct
 		)
 
 

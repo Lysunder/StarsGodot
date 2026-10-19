@@ -123,25 +123,25 @@ func _world(prts: Array) -> GameState:
 	return s
 
 
-func _planet(s: GameState, x: int, y: int, owner := -1) -> Planet:
+func _planet(s: GameState, x: int, y: int, owner_index := -1) -> Planet:
 	var pl := Planet.new()
 	pl.id = s.planets.size()
 	pl.x = x
 	pl.y = y
-	pl.owner = owner
+	pl.owner = owner_index
 	s.planets.append(pl)
 	return pl
 
 
 func _fleet(
-	s: GameState, owner: int, slot: int, parts: Array, x: int, y: int, planet := -1
+	s: GameState, owner_index: int, slot: int, parts: Array, x: int, y: int, planet := -1
 ) -> Fleet:
-	var p := s.player(owner)
+	var p := s.player(owner_index)
 	if p.ship_design(slot) == null:
 		var d := _design("hull.scout", parts)
 		d.slot = slot
 		p.set_design(d, false)
-	var f := s.add_fleet(owner, 512)
+	var f := s.add_fleet(owner_index, 512)
 	f.x = x
 	f.y = y
 	f.planet = planet

@@ -43,7 +43,7 @@ class Options:
 	var density: String = "normal"
 	var positions: String = "moderate"
 	var race: Race = null
-	var seed: int = 1
+	@warning_ignore("shadowed_global_identifier") var seed: int = 1
 	## GameSettings flags to turn on (max_minerals, slow_tech, accelerated_start,
 	## no_random_events, galaxy_clumping, ...).
 	var flags: Array[String] = []

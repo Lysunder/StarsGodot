@@ -31,11 +31,11 @@ func test_every_palette_has_every_colour() -> void:
 	var roles: Array = Palette.COLORS[Palette.STANDARD].keys()
 	for mode: String in Palette.MODES:
 		assert_array(Palette.COLORS[mode].keys()).contains_exactly_in_any_order(roles)
-	var before := Palette.mode
+	var earlier := Palette.mode
 	Palette.mode = Palette.RED_GREEN
 	assert_that(Palette.cargo(1)).is_equal(Palette.COLORS[Palette.RED_GREEN][Palette.BORANIUM])
 	assert_that(Palette.axis(2)).is_equal(Palette.COLORS[Palette.RED_GREEN][Palette.RADIATION])
-	Palette.mode = before
+	Palette.mode = earlier
 
 
 func test_key_bindings_default_change_and_steal() -> void:

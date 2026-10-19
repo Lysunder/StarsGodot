@@ -43,8 +43,8 @@ func _game(players := 1) -> GameState:
 	return s
 
 
-func _fleet(s: GameState, owner := 0, at := 0) -> Fleet:
-	var f := s.add_fleet(owner, 512)
+func _fleet(s: GameState, owner_index := 0, at := 0) -> Fleet:
+	var f := s.add_fleet(owner_index, 512)
 	var pl := s.planets[at]
 	f.x = pl.x
 	f.y = pl.y
@@ -125,14 +125,14 @@ func test_fuel_for_the_whole_way_is_kept() -> void:
 	s.planets[1].x = 1277 + 32
 	s.planets[1].y = 1233 + 86
 	_goto(f, s.planets[1], 5, "colonize")
-	var owner := s.players[0]
-	var start := Movement.fuel_needed(f, owner, 5, 92, _content)
+	var owner_player := s.players[0]
+	var start := Movement.fuel_needed(f, owner_player, 5, 92, _content)
 	f.cargo[Fleet.CARGO_FUEL] = start
 	Movement.move_all(s, _content, StarsRandom.new())
 	var rest := int(sqrt(float((1309 - f.x) ** 2 + (1319 - f.y) ** 2)) + 0.9999)
-	var need := Movement.fuel_needed(f, owner, 5, rest, _content)
+	var need := Movement.fuel_needed(f, owner_player, 5, rest, _content)
 	# 25 ly cost more than their share: the tank is raised to what the rest of the way needs
-	var after_move := start - Movement.fuel_needed(f, owner, 5, 25, _content)
+	var after_move := start - Movement.fuel_needed(f, owner_player, 5, 25, _content)
 	assert_int(after_move).is_less(need)
 	assert_int(f.cargo[Fleet.CARGO_FUEL]).is_equal(need)
 

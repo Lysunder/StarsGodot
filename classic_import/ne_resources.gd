@@ -81,7 +81,7 @@ func _parse(b: PackedByteArray) -> void:
 			return
 		var count := b.decode_u16(at + 2)
 		at += 8
-		var key: Variant = type & ~NUMERIC if type & NUMERIC else _name(b, table + type)
+		var key: Variant = _id_of(b, table, type)
 		var of_type: Dictionary = resources.get(key, {})
 		for i in count:
 			if at + ENTRY_SIZE > b.size():
@@ -90,12 +90,19 @@ func _parse(b: PackedByteArray) -> void:
 			var offset := b.decode_u16(at) << shift
 			var length := b.decode_u16(at + 2) << shift
 			var id := b.decode_u16(at + 6)
-			var res_id: Variant = id & ~NUMERIC if id & NUMERIC else _name(b, table + id)
+			var res_id: Variant = _id_of(b, table, id)
 			if offset + length <= b.size():
 				of_type[res_id] = b.slice(offset, offset + length)
 			at += ENTRY_SIZE
 		resources[key] = of_type
 	error = "the resource table has no end"
+
+
+## A resource type or id: a number when its top bit is set, else the name it points to.
+static func _id_of(b: PackedByteArray, table: int, raw: int) -> Variant:
+	if raw & NUMERIC:
+		return raw & ~NUMERIC
+	return _name(b, table + raw)
 
 
 static func _name(b: PackedByteArray, at: int) -> String:

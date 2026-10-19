@@ -7,21 +7,21 @@ var _phases: Array[Phase] = []
 var _disabled := {}
 
 
-func add(phase: Phase) -> void:
-	assert(index_of(phase.id) < 0, "duplicate phase id %s" % phase.id)
-	_phases.append(phase)
+func add(new_phase: Phase) -> void:
+	assert(index_of(new_phase.id) < 0, "duplicate phase id %s" % new_phase.id)
+	_phases.append(new_phase)
 
 
-func insert_before(target_id: String, phase: Phase) -> void:
-	_phases.insert(_require(target_id), phase)
+func insert_before(target_id: String, new_phase: Phase) -> void:
+	_phases.insert(_require(target_id), new_phase)
 
 
-func insert_after(target_id: String, phase: Phase) -> void:
-	_phases.insert(_require(target_id) + 1, phase)
+func insert_after(target_id: String, new_phase: Phase) -> void:
+	_phases.insert(_require(target_id) + 1, new_phase)
 
 
-func replace(target_id: String, phase: Phase) -> void:
-	_phases[_require(target_id)] = phase
+func replace(target_id: String, new_phase: Phase) -> void:
+	_phases[_require(target_id)] = new_phase
 
 
 func disable(target_id: String) -> void:

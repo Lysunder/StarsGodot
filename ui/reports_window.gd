@@ -125,29 +125,29 @@ func _on_window_input(event: InputEvent) -> void:
 func _on_header_clicked(column: String, at: Vector2) -> void:
 	_menu.clear()
 	_menu_actions.clear()
-	var name := ReportTable.label(report, column)
+	var label_text := ReportTable.label(report, column)
 	if ReportView.PARTS.has(column):
 		for i in ReportView.PARTS[column]:
 			var part: String = ReportTable.PART_NAMES[i]
 			_add(
-				"Sort by %s (%s)" % [name, part],
+				"Sort by %s (%s)" % [label_text, part],
 				{"kind": "sort", "column": column, "sub": i, "forward": true}
 			)
 			_add(
-				"Reverse Sort by %s (%s)" % [name, part],
+				"Reverse Sort by %s (%s)" % [label_text, part],
 				{"kind": "sort", "column": column, "sub": i, "forward": false}
 			)
 	else:
-		_add("Sort by " + name, {"kind": "sort", "column": column, "sub": 0, "forward": true})
+		_add("Sort by " + label_text, {"kind": "sort", "column": column, "sub": 0, "forward": true})
 		_add(
-			"Reverse Sort by " + name,
+			"Reverse Sort by " + label_text,
 			{"kind": "sort", "column": column, "sub": 0, "forward": false}
 		)
 	var s := ReportSettings.of(report)
 	var hidden: Array = s["hidden"]
 	if table.columns.size() > 1:
 		_menu.add_separator()
-		_add("Hide the %s column" % name, {"kind": "hide", "column": column})
+		_add("Hide the %s column" % label_text, {"kind": "hide", "column": column})
 	if not hidden.is_empty():
 		_menu.add_separator()
 		for c: String in ReportView.COLUMNS[report]:

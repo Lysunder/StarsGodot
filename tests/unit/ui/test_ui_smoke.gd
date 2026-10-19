@@ -75,9 +75,9 @@ func test_save_and_load_keep_pending_orders() -> void:
 	)
 	var path := "user://test_saves/smoke.json"
 	assert_int(GameSession.save_game(path)).is_equal(OK)
-	var before := GameSession.state.copy() as GameState
+	var earlier := GameSession.state.copy() as GameState
 	assert_str(GameSession.load_game(path)).is_empty()
-	assert_bool(GameSession.state.equals(before)).is_true()
+	assert_bool(GameSession.state.equals(earlier)).is_true()
 	assert_int(GameSession.view.me().research_percent).is_equal(33)
 	DirAccess.remove_absolute(path)
 	DirAccess.remove_absolute(path + ".orders")
@@ -90,7 +90,7 @@ func test_designer_saves_a_new_design() -> void:
 	await get_tree().process_frame
 	var designer := screen._designer
 	designer.open()
-	var before := GameSession.view.designer.designs(false).size()
+	var earlier := GameSession.view.designer.designs(false).size()
 	designer._set_mode(ShipDesigner.MODE_HULLS)
 	assert_object(designer.design).is_not_null()
 	designer._on_copy()
@@ -112,7 +112,7 @@ func test_designer_saves_a_new_design() -> void:
 	assert_str(designer._status.text).is_empty()
 	assert_bool(designer.editing).is_false()
 	var designs := GameSession.view.designer.designs(false)
-	assert_int(designs.size()).is_equal(before + 1)
+	assert_int(designs.size()).is_equal(earlier + 1)
 	assert_bool(designs.any(func(d: Design) -> bool: return d.name == "Probe")).is_true()
 	# the new design can be queued straight away
 	var home := GameSession.view.me().homeworld
@@ -188,12 +188,12 @@ func test_waypoint_editing() -> void:
 	for i in range(1, 4):
 		assert_bool(waypoints[i].has("short_of_fuel")).is_true()
 	# adjusting the same waypoint step by step stays one order
-	var before := GameSession.orders.orders.size()
+	var earlier := GameSession.orders.orders.size()
 	var pane := screen._command
 	pane._waypoint = 3
 	for warp in [5, 4, 3]:
 		pane._change_waypoint(waypoints[3], warp, "none", {})
-	assert_int(GameSession.orders.orders.size()).is_equal(before + 1)
+	assert_int(GameSession.orders.orders.size()).is_equal(earlier + 1)
 	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][3]["warp"]).is_equal(3)
 	# dragging waypoint 2 onto a planet retargets it
 	map._drag_waypoint = 2
@@ -220,7 +220,7 @@ func test_warp_gauge_updates_the_leg_while_dragging() -> void:
 	await get_tree().process_frame
 	var pane := screen._command
 	var gauge: WarpGauge = pane._tiles.find_children("*", "WarpGauge", true, false)[0]
-	var before := GameSession.orders.orders.size()
+	var earlier := GameSession.orders.orders.size()
 	var times := []
 	for warp in [2, 5, 9]:
 		gauge.set_value(warp)
@@ -229,7 +229,7 @@ func test_warp_gauge_updates_the_leg_while_dragging() -> void:
 		times.append((pane._leg_fields["time"] as Label).text)
 	assert_str(times[0]).is_not_equal(times[2])
 	gauge.value_set.emit(9)
-	assert_int(GameSession.orders.orders.size()).is_equal(before + 1)
+	assert_int(GameSession.orders.orders.size()).is_equal(earlier + 1)
 	assert_int(GameSession.view.fleet_info(fleet.number)["waypoints"][1]["warp"]).is_equal(9)
 	screen.queue_free()
 	await get_tree().process_frame
@@ -249,8 +249,8 @@ func test_rename_dialog_renames_the_fleet() -> void:
 	assert_str(dialog._field.get_selected_text()).is_equal(current)
 	dialog._field.text = "Scouts"
 	dialog.get_ok_button().pressed.emit()
-	var renamed := GameSession.view.state.fleet(GameSession.player, fleet.number)
-	assert_str(GameSession.view.fleet_name(renamed)).is_equal("Scouts")
+	var renamed_to := GameSession.view.state.fleet(GameSession.player, fleet.number)
+	assert_str(GameSession.view.fleet_name(renamed_to)).is_equal("Scouts")
 	screen.queue_free()
 	await get_tree().process_frame
 
@@ -268,16 +268,16 @@ func test_tiles_keep_their_order_and_collapse() -> void:
 			if child is Tile and not child.is_queued_for_deletion():
 				out.append(child.key)
 		return out
-	var before: Array = keys.call()
-	assert_str(before[0]).is_equal("planet")
+	var earlier: Array = keys.call()
+	assert_str(earlier[0]).is_equal("planet")
 	# drop the Status tile on the first tile, collapse Minerals on Hand
 	var first: Tile = pane._tiles.get_child(0)
 	first.tile_dropped.emit("Status", "planet")
 	pane._collapsed["Minerals on Hand"] = true
 	pane._rebuild()
-	var after: Array = keys.call()
-	assert_str(after[0]).is_equal("Status")
-	assert_str(after[1]).is_equal("planet")
+	var later: Array = keys.call()
+	assert_str(later[0]).is_equal("Status")
+	assert_str(later[1]).is_equal("planet")
 	for child in pane._tiles.get_children():
 		if child is Tile and child.key == "Minerals on Hand" and not child.is_queued_for_deletion():
 			assert_bool(child.collapsed).is_true()
@@ -315,12 +315,12 @@ func test_production_window_applies_on_ok() -> void:
 	var home := GameSession.view.me().homeworld
 	var dialog := screen._command._production
 	dialog.open(home)
-	var before := GameSession.orders.orders.size()
+	var earlier := GameSession.orders.orders.size()
 	dialog._inventory.select(0)
 	dialog._on_add()
 	dialog._on_add()
 	assert_int(dialog._items.size()).is_equal(1)
-	assert_int(GameSession.orders.orders.size()).is_equal(before)
+	assert_int(GameSession.orders.orders.size()).is_equal(earlier)
 	dialog._on_cancel_like()
 	assert_int(GameSession.view.planet_info(home)["queue"].size()).is_equal(0)
 	dialog.open(home)
@@ -408,9 +408,9 @@ func test_cargo_window_moves_cargo() -> void:
 	var capacity: int = GameSession.view.fleet_info(hauler)["cargo_capacity"]
 	assert_int(dialog._fleet[0] + dialog._fleet[1]).is_equal(capacity)
 	dialog._on_ok()
-	var after := GameSession.view.fleet_info(hauler)
-	assert_int(after["cargo"][0]).is_equal(50)
-	assert_int(after["cargo"][1]).is_equal(capacity - 50)
+	var later := GameSession.view.fleet_info(hauler)
+	assert_int(later["cargo"][0]).is_equal(50)
+	assert_int(later["cargo"][1]).is_equal(capacity - 50)
 	assert_int(GameSession.view.planet_info(home)["surface"][0]).is_equal(surface - 50)
 	screen.queue_free()
 	await get_tree().process_frame

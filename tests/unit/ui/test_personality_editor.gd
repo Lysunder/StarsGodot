@@ -6,8 +6,9 @@ extends GdUnitTestSuite
 func test_personality_editor_saves_a_personality() -> void:
 	var folder := "user://test_personalities"
 	PersonalityStore.dir = folder
-	for f in DirAccess.get_files_at(folder) if DirAccess.dir_exists_absolute(folder) else []:
-		DirAccess.remove_absolute(folder.path_join(f))
+	if DirAccess.dir_exists_absolute(folder):
+		for f in DirAccess.get_files_at(folder):
+			DirAccess.remove_absolute(folder.path_join(f))
 	var editor := PersonalityEditor.new()
 	add_child(editor)
 	editor.open()

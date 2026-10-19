@@ -146,8 +146,8 @@ func _send_colony_ship(fleet: Fleet) -> void:
 				_go(fleet, home, "none")
 			return
 		var share := here.population * _ctx.param("colonists_share_pct") / 100
-		var load := mini(_cargo_room(fleet), share)
-		if load <= 0:
+		var cargo_load := mini(_cargo_room(fleet), share)
+		if cargo_load <= 0:
 			return
 		(
 			_ctx
@@ -156,7 +156,7 @@ func _send_colony_ship(fleet: Fleet) -> void:
 					"type": "cargo_transfer",
 					"fleet": fleet.number,
 					"other": {"planet": here.id},
-					"amounts": [0, 0, 0, load, 0],
+					"amounts": [0, 0, 0, cargo_load, 0],
 				}
 			)
 		)
@@ -417,14 +417,14 @@ func _send_hauler(fleet: Fleet) -> void:
 			most = total
 	if source == null or most * 2 < _cargo_room(fleet):
 		return
-	var load := []
+	var cargo_load := []
 	var unload := []
 	for c in Fleet.CARGO_FUEL + 1:
 		var mineral := c < Fleet.CARGO_COLONISTS
-		load.append({"action": "load_all" if mineral else "none", "amount": 0})
+		cargo_load.append({"action": "load_all" if mineral else "none", "amount": 0})
 		unload.append({"action": "unload_all" if mineral else "none", "amount": 0})
 	var there := _waypoint_to(source, "transport", maxi(_warp_for(fleet, source), 1))
-	there["task_data"] = {"cargo": load}
+	there["task_data"] = {"cargo": cargo_load}
 	var back := _waypoint_to(shipyard, "transport", there["warp"])
 	back["task_data"] = {"cargo": unload}
 	_ctx.order({"type": "waypoint_add", "fleet": fleet.number, "index": 1, "waypoint": there})

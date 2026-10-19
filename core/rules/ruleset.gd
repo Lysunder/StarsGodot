@@ -13,17 +13,17 @@ var _owners: Array[Object] = []
 
 
 ## Adds a new formula id.
-func register(id: String, formula: Callable) -> void:
+func register(id: String, formula_id: Callable) -> void:
 	assert(not frozen, "Ruleset: frozen")
 	assert(not _formulas.has(id), "Ruleset: '%s' is already registered" % id)
-	_put(id, formula)
+	_put(id, formula_id)
 
 
 ## Replaces a registered formula (a mod's own version of a rule).
-func replace(id: String, formula: Callable) -> void:
+func replace(id: String, formula_id: Callable) -> void:
 	assert(not frozen, "Ruleset: frozen")
 	assert(_formulas.has(id), "Ruleset: no formula '%s' to replace" % id)
-	_put(id, formula)
+	_put(id, formula_id)
 
 
 func has(id: String) -> bool:
@@ -41,8 +41,8 @@ func ids() -> PackedStringArray:
 	return out
 
 
-func _put(id: String, formula: Callable) -> void:
-	_formulas[id] = formula
-	var owner := formula.get_object()
+func _put(id: String, formula_id: Callable) -> void:
+	_formulas[id] = formula_id
+	var owner := formula_id.get_object()
 	if owner is RefCounted and not _owners.has(owner):
 		_owners.append(owner)

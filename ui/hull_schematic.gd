@@ -171,7 +171,13 @@ func _text_lines(r: Rect2, lines: Array, font: Font, font_size: int) -> void:
 	var top := r.position.y + (r.size.y - h * lines.size()) / 2.0 + font.get_ascent(font_size)
 	for k in lines.size():
 		var text: String = lines[k]
-		while text.length() > 1 and font.get_string_size(text, 0, -1, font_size).x > r.size.x - 4:
+		while (
+			text.length() > 1
+			and (
+				font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+				> r.size.x - 4
+			)
+		):
 			text = text.left(-1)
 		var w := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		draw_string(

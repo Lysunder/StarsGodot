@@ -100,10 +100,10 @@ static func count_ships(p_view: PlayerView, b: Dictionary, mask: int) -> int:
 ## The report column a ship token's hull class falls in: classes 2 (scout), 3 (warship),
 ## 5 (bomber), 4 (utility), every other class unarmed.
 static func class_bit(p_view: PlayerView, t: Dictionary) -> int:
-	var design := p_view.state.player(int(t["owner"])).ship_design(int(t["design"]))
-	if design == null:
+	var token_design := p_view.state.player(int(t["owner"])).ship_design(int(t["design"]))
+	if token_design == null:
 		return UNARMED
-	match int(p_view.content.hull(design.hull).get("class", 0)):
+	match int(p_view.content.hull(token_design.hull).get("class", 0)):
 		2:
 			return SCOUT
 		3:
@@ -117,11 +117,11 @@ static func class_bit(p_view: PlayerView, t: Dictionary) -> int:
 
 ## Ships the player (`ours`) or everyone else lost in the battle.
 static func losses(p_view: PlayerView, b: Dictionary, ours: bool) -> int:
-	var tokens_at: Array = b.get("tokens", [])
+	var board: Array = b.get("tokens", [])
 	var n := 0
 	for e: Dictionary in b.get("events", []):
 		for h: Dictionary in e["hits"]:
-			var mine := int(tokens_at[int(h["target"])]["owner"]) == p_view.player
+			var mine := int(board[int(h["target"])]["owner"]) == p_view.player
 			if mine == ours:
 				n += int(h["killed"])
 	return n

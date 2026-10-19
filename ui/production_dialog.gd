@@ -159,10 +159,10 @@ func _cost_grid(values: Array[Label]) -> GridContainer:
 	var grid := GridContainer.new()
 	grid.columns = 2
 	for i in 4:
-		var name := _label(MINERALS[i] if i < 3 else "Resources", true)
+		var label_text := _label(MINERALS[i] if i < 3 else "Resources", true)
 		if i < 3:
-			name.add_theme_color_override("font_color", Palette.cargo(i))
-		grid.add_child(name)
+			label_text.add_theme_color_override("font_color", Palette.cargo(i))
+		grid.add_child(label_text)
 		var value := _label("", false)
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value.custom_minimum_size = Vector2(70, 0)
@@ -248,8 +248,8 @@ func _show_queue_cost() -> void:
 	var count := int(item["count"])
 	var view := GameSession.view
 	var q := ModelObject.object_from(QueueItem, item, "", PackedStringArray()) as QueueItem
-	var name := view.queue_item_name(view.player, q)
-	_queue_title.text = "Cost of %d × %s" % [count, name]
+	var label_text := view.queue_item_name(view.player, q)
+	_queue_title.text = "Cost of %d × %s" % [count, label_text]
 	var cost := view.unit_cost(planet_id, item)
 	for m in 4:
 		var total := cost[m] * count

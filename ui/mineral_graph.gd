@@ -48,11 +48,11 @@ func _draw() -> void:
 	var biggest := MIN_SCALE
 	for m in 3:
 		biggest = maxi(biggest, info["surface"][m] + mined[m])
-	var scale := ceili(float(biggest) / STEP) * STEP
+	var units := ceili(float(biggest) / STEP) * STEP
 	var area := Rect2(left, 1, width, ROW * 3 - 2)
 	draw_rect(area, BAR)
-	for kt in range(STEP, scale, STEP):
-		var gx := left + width * kt / scale
+	for kt in range(STEP, units, STEP):
+		var gx := left + width * kt / units
 		draw_line(Vector2(gx, area.position.y), Vector2(gx, area.end.y), GRID, 1.0)
 	for m in 3:
 		var top := m * ROW + 1.0
@@ -69,10 +69,10 @@ func _draw() -> void:
 		)
 		# another player's planet seen without its surface this turn: concentrations only
 		var surface: int = info["surface"][m] if info.get("surface_known", true) else 0
-		var w_surface := width * float(surface) / scale
+		var w_surface := width * float(surface) / units
 		var colour := Palette.cargo(m)
 		draw_rect(Rect2(left, top + 2, w_surface, ROW - 6), colour)
-		var w_mined := width * float(mined[m]) / scale
+		var w_mined := width * float(mined[m]) / units
 		if w_mined > 0.0:
 			draw_rect(
 				Rect2(left + w_surface, top + 2, w_mined, ROW - 6), colour.lightened(MINED_LIGHTEN)
@@ -104,11 +104,11 @@ func _draw() -> void:
 		font_size,
 		ClassicTheme.TEXT
 	)
-	var widest := plain.get_string_size(str(scale), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	for kt in range(0, scale + 1, STEP * label_steps(width * STEP / scale, widest + LABEL_GAP)):
+	var widest := plain.get_string_size(str(units), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	for kt in range(0, units + 1, STEP * label_steps(width * STEP / units, widest + LABEL_GAP)):
 		var text := str(kt)
 		var tw := plain.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-		var gx := left + width * kt / scale - tw / 2.0
+		var gx := left + width * kt / units - tw / 2.0
 		draw_string(
 			plain,
 			Vector2(gx, scale_y),

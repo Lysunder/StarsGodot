@@ -120,10 +120,10 @@ func _remote_game(friendly: bool, starbase: bool) -> GameState:
 
 func test_remote_terraforming() -> void:
 	var race := Race.new()
-	var before := Habitability.value([40, 60, 50], race)
+	var earlier := Habitability.value([40, 60, 50], race)
 	var hostile := _remote_game(false, false)
 	Terraforming.remote(hostile, _content)
-	assert_int(Habitability.value(hostile.planets[0].environment, race)).is_less(before)
+	assert_int(Habitability.value(hostile.planets[0].environment, race)).is_less(earlier)
 	var friend := _remote_game(true, false)
 	Terraforming.remote(friend, _content)
 	assert_array(friend.planets[0].environment).is_equal([41, 59, 50])

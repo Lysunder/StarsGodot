@@ -195,6 +195,7 @@ func _check_whole_game(game: String) -> void:
 
 ## Every fixture game: the whole turn-0 state must match the original's. (gdUnit4 reads
 ## `test_parameters` itself.)
+@warning_ignore("unused_parameter")
 func test_whole_game(
 	game: String,
 	# gdlint: ignore=unused-argument

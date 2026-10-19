@@ -373,7 +373,9 @@ func _roll_planets() -> void:
 
 func _roll_environment(pl: Planet) -> void:
 	if not settings.no_random_events:
-		pl.artifact = true if _rng.random(3) == 0 else null
+		pl.artifact = null
+		if _rng.random(3) == 0:
+			pl.artifact = true
 	var gravity := _rng.random(90) + 1
 	gravity += _rng.random(10)
 	var temperature := _rng.random(90) + 1

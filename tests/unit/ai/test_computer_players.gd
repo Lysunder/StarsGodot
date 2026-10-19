@@ -35,7 +35,7 @@ func test_computer_players_add_their_orders() -> void:
 	# played by the idle brain, which draws nothing
 	for i in [1, 2]:
 		s.player(i).ai_personality = {"name": "Idle", "brain": AiBrains.IDLE}
-	var before := s.copy() as GameState
+	var earlier := s.copy() as GameState
 	var given: Array[OrderSet] = [OrderSet.new(0, s.turn)]
 	var errors := PackedStringArray()
 	var sets := ComputerPlayers.add_orders(s, _content, given, errors)
@@ -47,8 +47,8 @@ func test_computer_players_add_their_orders() -> void:
 		assert_int(sets[i].turn).is_equal(s.turn)
 	# the idle brain gives no orders and changes nothing; the classic stream advances by the two
 	# file salts the original draws for each computer player (S01)
-	assert_array(StateDiff.compare(before, s, PackedStringArray(["/rng"]))).is_empty()
-	var rng := before.rng.get_stream(RngStreams.CLASSIC)
+	assert_array(StateDiff.compare(earlier, s, PackedStringArray(["/rng"]))).is_empty()
+	var rng := earlier.rng.get_stream(RngStreams.CLASSIC)
 	for i in 4:
 		rng.random(ComputerPlayers.FILE_SALT_RANGE)
 	assert_dict(s.rng.get_stream(RngStreams.CLASSIC).to_dict()).is_equal(rng.to_dict())

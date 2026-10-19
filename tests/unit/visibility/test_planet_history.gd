@@ -90,11 +90,11 @@ func test_hidden_starbase_and_unowned_estimates() -> void:
 	assert_int(r["detail"]).is_equal(PlanetHistory.SCANNED)
 	assert_int(r["starbase_design"]).is_equal(-1)
 	# the planet empties: an unowned sighting keeps the last estimates
-	var before: int = r["population_estimate"]
+	var earlier: int = r["population_estimate"]
 	other.owner = -1
 	other.starbase = null
 	other.population_estimate = 0
 	_seen(s, 0, other.id, 3)
 	r = _record(s, 0, other.id)
 	assert_int(r["owner"]).is_equal(-1)
-	assert_int(r["population_estimate"]).is_equal(before)
+	assert_int(r["population_estimate"]).is_equal(earlier)

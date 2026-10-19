@@ -99,9 +99,9 @@ static func launch(
 	if speed < SPEED_SETTING_MIN or speed > drv[0] + OVERDRIVE_MAX:
 		speed = drv[0] + drv[1]
 	var overdrive := maxi(speed - drv[0] - drv[1], 0)
-	var decay := overdrive
+	var decayed := overdrive
 	if overdrive < OVERDRIVE_MAX:
-		decay += RaceMath.trait_param(owner.race, content, "packet.decay_class_bonus", 0)
+		decayed += RaceMath.trait_param(owner.race, content, "packet.decay_class_bonus", 0)
 	for p in state.packets:
 		if (
 			p.owner == planet.owner
@@ -110,7 +110,7 @@ static func launch(
 			and p.y == planet.y
 			and p.warp == speed
 			and p.destination == target
-			and p.decay == decay
+			and p.decay == decayed
 			and p.mass_tenths < MERGE_TENTHS_LIMIT
 		):
 			p.mass_tenths = 0
@@ -133,7 +133,7 @@ static func launch(
 	for m in 3:
 		created.mass_tenths += (minerals[m] + 9) / 10
 	created.warp = speed
-	created.decay = decay
+	created.decay = decayed
 	created.destination = target
 	_planet_message(state, content, planet, "production.packet_launched", [planet.id, target])
 
@@ -239,9 +239,11 @@ static func _impact(
 			base.revealed_to[packet.owner] = true
 	var caught := catch * catch
 	if planet.owner >= 0:
-		var race := state.player(planet.owner).race
+		var owner_race := state.player(planet.owner).race
 		caught = (
-			caught * RaceMath.trait_param(race, content, "packet.catch_pct", YEAR_PCT) / YEAR_PCT
+			caught
+			* RaceMath.trait_param(owner_race, content, "packet.catch_pct", YEAR_PCT)
+			/ YEAR_PCT
 		)
 	var speed := packet.warp * packet.warp
 	var share := 0

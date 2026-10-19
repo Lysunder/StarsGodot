@@ -215,14 +215,14 @@ func _on_selection_input(event: InputEvent) -> void:
 
 
 ## "Design" or "Design × n", with the owner first when `owner` is set.
-func _token_name(i: int, owner: bool) -> String:
+func _token_name(i: int, owner_index: bool) -> String:
 	var rec: Dictionary = replay.battle["tokens"][i]
 	var d := replay.design(i)
 	var text := d.name if d != null else "?"
 	var count := int(replay.tokens[i]["count"])
 	if count > 1:
 		text += " × %d" % count
-	if owner:
+	if owner_index:
 		text = "%s: %s" % [_player(int(rec["owner"])), text]
 	return text
 
@@ -265,8 +265,14 @@ func _action_text() -> String:
 		return "\n".join(lines)
 	var target: int = a["target"]
 	lines.append("fires on " + _player(int(replay.battle["tokens"][target]["owner"])))
-	var name := _token_name(target, false)
-	lines.append("[color=#%s]%s[/color]" % [LOST.to_html(false), name] if a["killed"] > 0 else name)
+	var label_text := _token_name(target, false)
+	lines.append(
+		(
+			"[color=#%s]%s[/color]" % [LOST.to_html(false), label_text]
+			if a["killed"] > 0
+			else label_text
+		)
+	)
 	lines.append("at %s:" % _square_text(a["target_square"]))
 	if a["shield_damage"] > 0:
 		lines.append("%d damage to shields" % a["shield_damage"])
@@ -287,7 +293,7 @@ func _selection_text() -> String:
 		return "\n".join(lines)
 	var s := replay.status(selected)
 	lines.append(_player(s["owner"]))
-	var name: String = _token_name(selected, false)
+	var label_text: String = _token_name(selected, false)
 	var e := replay.event()
 	var lost := 0
 	if not e.is_empty():
@@ -295,8 +301,8 @@ func _selection_text() -> String:
 			if int(h["target"]) == selected:
 				lost += int(h["killed"])
 	if lost > 0:
-		name += " (−%d)" % lost
-	lines.append("[b]%s[/b]" % name)
+		label_text += " (−%d)" % lost
+	lines.append("[b]%s[/b]" % label_text)
 	if not s["alive"]:
 		lines.append("Destroyed")
 		return "\n".join(lines)

@@ -136,8 +136,8 @@ func _show() -> void:
 		var years := ceili(float(needed) / budget)
 		_time.text = "Estimated time: %d year%s" % [years, "" if years == 1 else "s"]
 	var rows: Array[Dictionary] = []
-	for name in field["benefits"]:
-		rows.append({"left": name})
+	for label_text in field["benefits"]:
+		rows.append({"left": label_text})
 	if rows.is_empty():
 		rows.append({"left": "(nothing new)", "colour": ClassicTheme.TEXT_DISABLED})
 	_benefits.set_rows(rows, -1)

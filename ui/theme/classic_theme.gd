@@ -95,7 +95,7 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	var field := _bevel(false, FIELD)
 	var flat := _flat(FACE)
 	var navy := _flat(NAVY)
-	var none := StyleBoxEmpty.new()
+	var none: StyleBox = StyleBoxEmpty.new()
 	for type in ["Button", "OptionButton", "MenuButton"]:
 		t.set_stylebox("normal", type, raised)
 		t.set_stylebox("hover", type, raised)
@@ -301,16 +301,16 @@ static func collapse_icon(collapsed: bool) -> ImageTexture:
 ## sunken white circle, with a black dot when on).
 static func _check_image(on: bool, radio: bool) -> Image:
 	if not radio:
-		var img := _bevel_image(CHECK_SIZE, CHECK_SIZE, false, FIELD)
+		var box := _bevel_image(CHECK_SIZE, CHECK_SIZE, false, FIELD)
 		if on:
 			# a tick: down-right from (3, 5) to (5, 7), then up-right to (9, 3), three pixels thick
 			for i in 3:
 				for k in 3:
-					img.set_pixel(3 + i, 5 + i + k - 1, DARK)
+					box.set_pixel(3 + i, 5 + i + k - 1, DARK)
 			for i in 5:
 				for k in 3:
-					img.set_pixel(5 + i, 7 - i + k - 1, DARK)
-		return img
+					box.set_pixel(5 + i, 7 - i + k - 1, DARK)
+		return box
 	var img := Image.create(CHECK_SIZE, CHECK_SIZE, false, Image.FORMAT_RGBA8)
 	img.fill(Color(0, 0, 0, 0))
 	var c := (CHECK_SIZE - 1) / 2.0

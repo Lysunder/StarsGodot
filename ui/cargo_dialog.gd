@@ -76,13 +76,13 @@ func _ready() -> void:
 			b.button_up.connect(_release)
 			grid.add_child(b)
 			_arrows.append(b)
-		var name := Label.new()
-		name.text = NAMES[c]
-		name.theme_type_variation = "BoldLabel"
-		name.add_theme_color_override("font_color", Palette.cargo(c))
-		name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		name.custom_minimum_size = Vector2(90, 0)
-		grid.add_child(name)
+		var label_text := Label.new()
+		label_text.text = NAMES[c]
+		label_text.theme_type_variation = "BoldLabel"
+		label_text.add_theme_color_override("font_color", Palette.cargo(c))
+		label_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label_text.custom_minimum_size = Vector2(90, 0)
+		grid.add_child(label_text)
 		var right_slot := VBoxContainer.new()
 		grid.add_child(right_slot)
 		_right.append(right_slot)

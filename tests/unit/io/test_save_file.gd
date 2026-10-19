@@ -16,8 +16,8 @@ func before() -> void:
 
 
 func after() -> void:
-	for name in DirAccess.get_files_at(SAVE_DIR):
-		DirAccess.remove_absolute(SAVE_DIR + "/" + name)
+	for entry_name in DirAccess.get_files_at(SAVE_DIR):
+		DirAccess.remove_absolute(SAVE_DIR + "/" + entry_name)
 	DirAccess.remove_absolute(SAVE_DIR)
 
 

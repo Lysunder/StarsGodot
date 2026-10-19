@@ -76,15 +76,15 @@ func test_top_level_drops_new_points() -> void:
 
 
 func test_spying_shares_half_the_average() -> void:
-	var spy := _player([0, 0, 0, 0, 0, 0])
-	spy.race.primary_trait = "trait.prt.SS"
-	spy.research_field = 1
+	var spied := _player([0, 0, 0, 0, 0, 0])
+	spied.race.primary_trait = "trait.prt.SS"
+	spied.research_field = 1
 	var other := _player([0, 0, 0, 0, 0, 0])
 	other.research_field = 1
 	var third := _player([0, 0, 0, 0, 0, 0])
 	third.research_field = 1
-	for p in [spy, other, third]:
+	for p in [spied, other, third]:
 		p.tech_levels.assign([10, 10, 10, 10, 10, 10])
 	var spent: Array[int] = [300, 0, 600]
-	ResearchRules.update(_state([spy, other, third]), _content, spent)
-	assert_int(spy.research_points[1]).is_equal(300 + 150)
+	ResearchRules.update(_state([spied, other, third]), _content, spent)
+	assert_int(spied.research_points[1]).is_equal(300 + 150)

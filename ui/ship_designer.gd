@@ -188,9 +188,9 @@ func _build_stats(right: Control) -> void:
 	cost_grid.columns = 2
 	cost_box.add_child(cost_grid)
 	for i in 4:
-		var name := _bold(cost_grid, MINERALS[i] if i < 3 else "Resources")
+		var label_text := _bold(cost_grid, MINERALS[i] if i < 3 else "Resources")
 		if i < 3:
-			name.add_theme_color_override("font_color", Palette.cargo(i))
+			label_text.add_theme_color_override("font_color", Palette.cargo(i))
 		var value := Label.new()
 		value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value.custom_minimum_size = Vector2(70, 0)

@@ -165,15 +165,15 @@ static func token_record(t: Dictionary) -> Dictionary:
 
 
 ## `GetMovesThisRound@10e8:5872`.
-static func moves_this_round(rating: int, round: int) -> int:
+static func moves_this_round(rating: int, battle_round: int) -> int:
 	var base := (rating + 2) >> 2
 	match rating & 3:
 		0:
-			return base + (1 if round & 1 == 0 else 0)
+			return base + (1 if battle_round & 1 == 0 else 0)
 		1:
-			return base + (0 if round & 3 == 2 else 1)
+			return base + (0 if battle_round & 3 == 2 else 1)
 		3:
-			return base + (1 if round & 3 == 0 else 0)
+			return base + (1 if battle_round & 3 == 0 else 0)
 	return base
 
 

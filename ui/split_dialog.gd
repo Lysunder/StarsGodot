@@ -37,9 +37,9 @@ func open(fleet_name: String, ships: Array) -> void:
 		_grid.add_child(l)
 	for s: Dictionary in ships:
 		var row := {"design": s["design"], "total": s["count"], "moved": 0}
-		var name := Label.new()
-		name.text = s["name"]
-		_grid.add_child(name)
+		var label_text := Label.new()
+		label_text.text = s["name"]
+		_grid.add_child(label_text)
 		var keep := Label.new()
 		keep.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_grid.add_child(keep)

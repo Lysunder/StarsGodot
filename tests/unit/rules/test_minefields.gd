@@ -102,8 +102,10 @@ func test_decay_grows_with_planets_inside_and_removes_empty_fields() -> void:
 	assert_bool(s.minefields.has(small)).is_false()
 
 
-func _field(s: GameState, owner: int, x: int, y: int, mines: int, type := "standard") -> Minefield:
-	var f := s.add_minefield(owner, 512)
+func _field(
+	s: GameState, owner_index: int, x: int, y: int, mines: int, type := "standard"
+) -> Minefield:
+	var f := s.add_minefield(owner_index, 512)
 	f.x = x
 	f.y = y
 	f.mines = mines

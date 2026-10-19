@@ -20,9 +20,9 @@ static func discover(dir: String) -> Array[ModSource]:
 	var names := access.get_directories()
 	names.sort()
 	for folder_name in names:
-		var root := dir.trim_suffix("/") + "/" + folder_name
-		if FileAccess.file_exists(root + "/mod.json"):
-			result.append(FolderModSource.new(root))
+		var root_dir := dir.trim_suffix("/") + "/" + folder_name
+		if FileAccess.file_exists(root_dir + "/mod.json"):
+			result.append(FolderModSource.new(root_dir))
 	return result
 
 

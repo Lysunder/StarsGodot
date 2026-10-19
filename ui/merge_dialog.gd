@@ -49,8 +49,8 @@ func _ready() -> void:
 func open(numbers: Array[int], names: PackedStringArray) -> void:
 	_numbers = numbers
 	_list.clear()
-	for name in names:
-		_list.add_item(name)
+	for label_text in names:
+		_list.add_item(label_text)
 	popup_centered()
 
 

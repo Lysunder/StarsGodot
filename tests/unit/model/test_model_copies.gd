@@ -42,33 +42,33 @@ func _fill(o: ModelObject, depth: int) -> void:
 	var fields: Array = o._schema()
 	for i in fields.size():
 		var field: Array = fields[i]
-		var name: String = field[0]
+		var field_name: String = field[0]
 		match field[1]:
 			ModelObject.Kind.INT:
-				o.set(name, 11 + i + depth * 100)
+				o.set(field_name, 11 + i + depth * 100)
 			ModelObject.Kind.BOOL:
-				o.set(name, not o.get(name))
+				o.set(field_name, not o.get(field_name))
 			ModelObject.Kind.STRING:
-				o.set(name, "v%d_%d" % [depth, i])
+				o.set(field_name, "v%d_%d" % [depth, i])
 			ModelObject.Kind.ENUM:
-				o.set(name, (field[2] as Array)[-1])
+				o.set(field_name, (field[2] as Array)[-1])
 			ModelObject.Kind.INT_LIST:
-				var n := maxi((o.get(name) as Array).size(), 3)
+				var n := maxi((o.get(field_name) as Array).size(), 3)
 				var values := []
 				for k in n:
 					values.append(i + k + 1)
-				(o.get(name) as Array).assign(values)
+				(o.get(field_name) as Array).assign(values)
 			ModelObject.Kind.STRING_LIST:
-				(o.get(name) as Array).assign(["a%d" % i, "b%d" % i])
+				(o.get(field_name) as Array).assign(["a%d" % i, "b%d" % i])
 			ModelObject.Kind.OBJECT, ModelObject.Kind.OBJECT_OR_NULL:
 				if depth < 3:
 					var child: ModelObject = (field[2] as GDScript).new()
 					_fill(child, depth + 1)
-					o.set(name, child)
+					o.set(field_name, child)
 			ModelObject.Kind.OBJECT_LIST:
 				if depth < 3:
 					var child: ModelObject = (field[2] as GDScript).new()
 					_fill(child, depth + 1)
-					(o.get(name) as Array).assign([child])
+					(o.get(field_name) as Array).assign([child])
 			ModelObject.Kind.JSON:
-				o.set(name, {"k": [i, "x%d" % depth]})
+				o.set(field_name, {"k": [i, "x%d" % depth]})

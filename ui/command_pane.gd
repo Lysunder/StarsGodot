@@ -282,10 +282,10 @@ func _planet_tiles() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	r.add_child(spacer)
-	var load := t.button(
+	var cargo_load := t.button(
 		"Cargo", func() -> void: _cargo.open_with_planet(numbers[here.selected], id), r
 	)
-	load.disabled = numbers.is_empty()
+	cargo_load.disabled = numbers.is_empty()
 	_starbase_tile(info)
 	_production_tile(info)
 
@@ -614,13 +614,13 @@ func _waypoint_tiles(info: Dictionary) -> void:
 	task.select(_index_of(TASKS, wp_here["task"]))
 	task.item_selected.connect(
 		func(i: int) -> void:
-			var name: String = TASKS[i][0]
+			var label_text: String = TASKS[i][0]
 			var data := {}
-			if name == "transport":
+			if label_text == "transport":
 				data = {"cargo": _empty_cargo()}
-			elif name != "none":
+			elif label_text != "none":
 				data = {"raw": [0, 0, 0, 0, 0]}
-			_change_waypoint(wp_here, wp_here["warp"], name, data)
+			_change_waypoint(wp_here, wp_here["warp"], label_text, data)
 	)
 	t.body.add_child(task)
 	match wp_here["task"]:

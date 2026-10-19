@@ -36,11 +36,11 @@ func _design(slot: int, parts: Array) -> Design:
 	return d
 
 
-func _fleet(s: GameState, owner: int, parts: Array, x: int, y: int, planet := -1) -> Fleet:
-	var p := s.player(owner)
+func _fleet(s: GameState, owner_index: int, parts: Array, x: int, y: int, planet := -1) -> Fleet:
+	var p := s.player(owner_index)
 	var slot := p.ship_designs.size()
 	p.set_design(_design(slot, parts), false)
-	var f := s.add_fleet(owner, 512)
+	var f := s.add_fleet(owner_index, 512)
 	f.x = x
 	f.y = y
 	f.planet = planet

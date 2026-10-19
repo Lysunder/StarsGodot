@@ -96,11 +96,11 @@ func test_cargo_is_left_behind_unless_inter_stellar_traveler() -> void:
 	var f := _fleet(s, 1)
 	f.cargo[Fleet.CARGO_IRONIUM] = 20
 	f.cargo[Fleet.CARGO_COLONISTS] = 5
-	var before := s.planets[0].surface[0]
+	var earlier := s.planets[0].surface[0]
 	TurnMessages.clear(s)
 	Movement.move_all(s, _content, StarsRandom.new())
 	assert_int(f.cargo[Fleet.CARGO_IRONIUM]).is_equal(0)
-	assert_int(s.planets[0].surface[0]).is_equal(before + 20)
+	assert_int(s.planets[0].surface[0]).is_equal(earlier + 20)
 	assert_int(s.planets[0].population).is_equal(105)
 	assert_array(_types(s)).contains(["message.fleet.gate_unloaded_both"])
 	assert_array(s.messages[0][0]["params"]).is_equal([f.number, 5, 20, 0])

@@ -12,8 +12,8 @@ const ROOTS: PackedStringArray = [
 func _initialize() -> void:
 	var checked := 0
 	var failed: PackedStringArray = []
-	for root in ROOTS:
-		for path in _list_scripts(root):
+	for root_dir in ROOTS:
+		for path in _list_scripts(root_dir):
 			checked += 1
 			var script := load(path) as GDScript
 			if script == null or not script.can_instantiate():

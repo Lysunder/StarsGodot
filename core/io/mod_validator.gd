@@ -72,9 +72,9 @@ static func _lint(source: ModSource, path: String, r: Result) -> void:
 	var lines := source.read_text(path).split("\n")
 	for i in lines.size():
 		var code := lines[i]
-		var hash := code.find("#")
-		if hash >= 0:
-			code = code.substr(0, hash)
+		var digest := code.find("#")
+		if digest >= 0:
+			code = code.substr(0, digest)
 		for rule: Array in RULES:
 			if RegEx.create_from_string(rule[0]).search(code) != null:
 				r.problems.append("%s:%d: uses %s (MODDING.md §8)" % [path, i + 1, rule[1]])

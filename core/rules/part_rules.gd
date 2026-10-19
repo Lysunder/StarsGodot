@@ -13,10 +13,10 @@ const PICTURES_PER_HULL := 4
 ## (race_may_use: `required_traits` at least one, `forbidden_traits` none, a Mystery Trader item
 ## only once the player has it). `tech_order` maps tech field ids to
 ## their index in the player's tech levels.
-static func available(item: Dictionary, player: Player, tech_order: Dictionary) -> bool:
+static func available(item: Dictionary, player: Player, order: Dictionary) -> bool:
 	var tech: Dictionary = item.get("tech", {})
 	for field: String in tech:
-		if player.tech_levels[tech_order[field]] < int(tech[field]):
+		if player.tech_levels[order[field]] < int(tech[field]):
 			return false
 	return race_may_use(item, player)
 
