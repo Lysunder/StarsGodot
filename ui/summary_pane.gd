@@ -88,6 +88,8 @@ func refresh() -> void:
 		return
 	if kind == "planet":
 		_show_planet()
+	elif kind == "seen_fleet":
+		_show_seen_fleet()
 	else:
 		_show_fleet()
 
@@ -158,10 +160,35 @@ func _show_fleet() -> void:
 		_field("Task:", _task_name(waypoints[0]["task"]) if not waypoints.is_empty() else "None")
 
 
+## Another player's fleet the player sees: its picture, owner, ship count and mass (S15: what
+## scanners show; no cargo, fuel or orders).
+func _show_seen_fleet() -> void:
+	var view := GameSession.view
+	var info := MapObjects.seen_fleet_info(view, id)
+	if info.is_empty():
+		_title.text = ""
+		return
+	_title.text = "%s Summary" % info["name"]
+	_fleet_box.visible = true
+	var fleet := MapObjects.seen_fleet(view, id)
+	var design: Design = null
+	if not fleet.stacks.is_empty():
+		design = view.state.player(fleet.owner).ship_design(fleet.stacks[0].design)
+	_icon.art_id = ArtRegistry.ship_id(design, GameSession.content)
+	for child in _fleet_fields.get_children():
+		child.queue_free()
+	var count := 0
+	for s: Dictionary in info["ships"]:
+		count += s["count"]
+	_field("Owner:", info["race"])
+	_field("Ship Count:", str(count))
+	_field("Mass:", "%skT" % CommandPane.thousands(info["mass"]))
+
+
 ## While a button is held on the fleet's picture: the left shows the ships in the fleet, the right
 ## the fleet's main design (as the original's summary does); letting go closes it.
 func _on_icon_input(event: InputEvent) -> void:
-	if not event is InputEventMouseButton or kind != "fleet":
+	if not event is InputEventMouseButton or (kind != "fleet" and kind != "seen_fleet"):
 		return
 	var button: int = event.button_index
 	if button != MOUSE_BUTTON_LEFT and button != MOUSE_BUTTON_RIGHT:
@@ -176,11 +203,15 @@ func _on_icon_input(event: InputEvent) -> void:
 
 
 func _ships_view() -> Control:
+	if kind == "seen_fleet":
+		return ships_view(MapObjects.seen_fleet_info(GameSession.view, id))
 	return ships_view(GameSession.view.fleet_info(id))
 
 
 func _design_view() -> Control:
 	var view := GameSession.view
+	if kind == "seen_fleet":
+		return null
 	var fleet := view.state.fleet(GameSession.player, id)
 	if fleet == null:
 		return null

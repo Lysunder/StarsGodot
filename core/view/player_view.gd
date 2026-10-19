@@ -483,7 +483,8 @@ func _waypoint_label(wp: Waypoint) -> String:
 	return "Space (%d, %d)" % [wp.x, wp.y]
 
 
-## Planets and own fleets within PICK_RADIUS of a point, nearest first: {kind, id}.
+## Planets, own fleets and other players' fleets seen (kind "seen_fleet", id MapObjects.fleet_key)
+## within `radius` of a point, nearest first: {kind, id}.
 func objects_at(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictionary]:
 	var hits := []
 	for pl in state.planets:
@@ -494,6 +495,10 @@ func objects_at(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictio
 		var d := Vector2(f.x - x, f.y - y).length()
 		if d <= radius:
 			hits.append([d, 1, {"kind": "fleet", "id": f.number}])
+	for f in MapObjects.seen_fleets(self):
+		var d := Vector2(f.x - x, f.y - y).length()
+		if d <= radius:
+			hits.append([d, 2, {"kind": "seen_fleet", "id": MapObjects.fleet_key(f)}])
 	hits.sort()
 	var out: Array[Dictionary] = []
 	for h: Array in hits:
@@ -502,7 +507,8 @@ func objects_at(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictio
 
 
 ## The map's right-click menu (as the original's scanner): what sits exactly where the object
-## nearest the point is, the planet first and then the player's fleets there in fleet order:
+## nearest the point is, the planet first, then the player's fleets there in fleet order, then
+## other players' fleets seen there:
 ## [{kind, id, name}]; empty when nothing is within `radius`.
 func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
@@ -514,7 +520,11 @@ func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dict
 		var pl := state.planet(hits[0]["id"])
 		spot = Vector2i(pl.x, pl.y)
 	else:
-		var f := state.fleet(player, hits[0]["id"])
+		var f := (
+			state.fleet(player, hits[0]["id"])
+			if hits[0]["kind"] == "fleet"
+			else MapObjects.seen_fleet(self, hits[0]["id"])
+		)
 		spot = Vector2i(f.x, f.y)
 	for pl in state.planets:
 		if pl.x == spot.x and pl.y == spot.y:
@@ -522,6 +532,10 @@ func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dict
 	for f in fleets():
 		if f.x == spot.x and f.y == spot.y:
 			out.append({"kind": "fleet", "id": f.number, "name": fleet_name(f)})
+	for f in MapObjects.seen_fleets(self):
+		if f.x == spot.x and f.y == spot.y:
+			var key := MapObjects.fleet_key(f)
+			out.append({"kind": "seen_fleet", "id": key, "name": fleet_name(f)})
 	return out
 
 

@@ -290,6 +290,8 @@ func _on_hovered(x: int, y: int, hit: Dictionary) -> void:
 		from = GameSession.view.planet_info(_map.selection_id)
 	elif _map.selection_kind == "fleet":
 		from = GameSession.view.fleet_info(_map.selection_id)
+	elif _map.selection_kind == "seen_fleet":
+		from = MapObjects.seen_fleet_info(GameSession.view, _map.selection_id)
 	_status.show_at(x, y, hit, from)
 
 

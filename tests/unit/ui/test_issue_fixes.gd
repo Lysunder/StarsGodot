@@ -110,3 +110,49 @@ func test_scanner_coverage_overlay() -> void:
 	await get_tree().process_frame
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+## #7 other players' fleets seen on the map can be picked: clicked, in the right-click menu, in
+## the summary pane (owner, ships, mass), and as a waypoint target; they are never commanded.
+func test_rival_fleets_can_be_selected() -> void:
+	var path := "res://tests/fixtures/golden/mine1/t040.json"
+	GameSession._start(
+		SaveFile.decode(FileAccess.get_file_as_string(path), GameSession.content).state
+	)
+	var view := GameSession.view
+	var seen := MapObjects.seen_fleets(view)
+	assert_bool(seen.is_empty()).is_false()
+	var rival: Fleet = seen[0]
+	var key := MapObjects.fleet_key(rival)
+	var hits := view.objects_at(rival.x, rival.y, 1.0)
+	assert_bool(hits.has({"kind": "seen_fleet", "id": key})).is_true()
+	var menu := view.objects_here(rival.x, rival.y, 1.0).map(
+		func(o: Dictionary) -> int: return o["id"] if o["kind"] == "seen_fleet" else -1
+	)
+	assert_bool(menu.has(key)).is_true()
+	var info := MapObjects.seen_fleet_info(view, key)
+	assert_int(info["owner"]).is_equal(rival.owner)
+	assert_int((info["ships"] as Array).size()).is_equal(rival.stacks.size())
+	# a fleet the player doesn't see isn't offered
+	for f in view.state.fleets:
+		if f.owner != view.player and not seen.has(f):
+			assert_object(MapObjects.seen_fleet(view, MapObjects.fleet_key(f))).is_null()
+			break
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	screen._map.select("seen_fleet", key)
+	assert_str(screen._summary._title.text).is_equal("%s Summary" % info["name"])
+	assert_bool(screen._summary._fleet_box.visible).is_true()
+	var ships := screen._summary._ships_view()
+	assert_object(ships).is_not_null()
+	ships.free()
+	assert_str(screen._command.kind).is_not_equal("seen_fleet")
+	screen._map.queue_redraw()
+	await get_tree().process_frame
+	# a rival fleet under the mouse is a fleet waypoint target with its owner
+	var target := screen._map._target_at(screen._map.to_screen(rival.x, rival.y))
+	if target["target"] == "fleet":
+		assert_int(target["target_owner"]).is_equal(rival.owner)
+	screen.queue_free()
+	await get_tree().process_frame

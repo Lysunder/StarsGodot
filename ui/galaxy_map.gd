@@ -263,6 +263,8 @@ func _draw() -> void:
 				[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
 			)
 			draw_colored_polygon(tri, Palette.color(Palette.OTHER))
+			if selection_kind == "seen_fleet" and selection_id == MapObjects.fleet_key(f):
+				draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 	for f in view.fleets():
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
 		var selected := selection_kind == "fleet" and selection_id == f.number
@@ -489,8 +491,8 @@ func _pick(at: Vector2) -> void:
 	select(hit["kind"], hit["id"])
 
 
-## The right-click menu: the planet and the player's fleets where the nearest object is (a
-## separator between the planet and the fleets), the current selection checked.
+## The right-click menu: the planet, the player's fleets and other players' fleets seen where the
+## nearest object is (separators between them), the current selection checked.
 func _show_object_menu(at: Vector2) -> void:
 	var u := to_universe(at)
 	_menu_objects = GameSession.view.objects_here(u.x, u.y, PICK_PIXELS / zoom)
@@ -574,7 +576,8 @@ func _waypoint_at(at: Vector2) -> int:
 	return -1
 
 
-## The waypoint target under the mouse: a planet, another of the player's fleets, or deep space.
+## The waypoint target under the mouse: a planet, another of the player's fleets, another player's
+## fleet seen (to follow or chase it, S12), or deep space.
 func _target_at(at: Vector2) -> Dictionary:
 	var u := to_universe(at)
 	var out := {
@@ -600,6 +603,22 @@ func _target_at(at: Vector2) -> Dictionary:
 						"target": "fleet",
 						"target_owner": GameSession.player,
 						"target_id": f.number,
+					},
+					true
+				)
+			)
+			break
+		if hit["kind"] == "seen_fleet":
+			var other := MapObjects.seen_fleet(GameSession.view, hit["id"])
+			(
+				out
+				. merge(
+					{
+						"x": other.x,
+						"y": other.y,
+						"target": "fleet",
+						"target_owner": other.owner,
+						"target_id": other.number,
 					},
 					true
 				)
