@@ -102,7 +102,20 @@ func _header(grid: GridContainer, players: Array) -> void:
 			colour = OFF
 		var l := _label(info["name"], colour, true)
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		grid.add_child(l)
+		var race: Race = GameSession.view.state.player(info["index"]).race
+		var logo := ArtRegistry.texture(ArtRegistry.logo_id(race))
+		if logo == null:
+			grid.add_child(l)
+			continue
+		# the race's logo before its name (a mod's art)
+		var cell := HBoxContainer.new()
+		cell.alignment = BoxContainer.ALIGNMENT_END
+		var picture := TextureRect.new()
+		picture.texture = logo
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		cell.add_child(picture)
+		cell.add_child(l)
+		grid.add_child(cell)
 
 
 func _fill_table() -> void:

@@ -26,6 +26,8 @@ const SETTINGS := [
 	{"key": "attack_ships", "group": "military", "min": 1, "max": 100, "default": 5},
 	{"key": "defense_range", "group": "military", "min": 0, "max": 1000, "default": 60},
 	{"key": "attack_margin_pct", "group": "military", "min": 0, "max": 1000, "default": 150},
+	{"key": "invasion_report_age", "group": "military", "min": 0, "max": 100, "default": 1},
+	{"key": "invasion_max_years", "group": "military", "min": 1, "max": 100, "default": 10},
 ]
 const AUTO_FACTORIES := "production_item.auto_factories"
 const AUTO_MINES := "production_item.auto_mines"
@@ -60,6 +62,9 @@ const THREAT_HULLS := [
 ]
 ## Troops sent: enough for the estimate's upper end (+1/8) times this margin, in percent.
 const TROOP_MARGIN_PCT := 130
+## Troops added per year the transport needs to get there, compounded, in percent (the planet
+## grows meanwhile).
+const GROWTH_PER_YEAR_PCT := 12
 ## A new warship design is saved when it is this many percent as strong as the best one.
 const WARSHIP_BETTER_PCT := 130
 ## The working memory (S11 `ai_memory`): word 0 the bytes in use (itself included), word 1 the

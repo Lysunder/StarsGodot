@@ -48,7 +48,8 @@ func open() -> void:
 	var players := GameSession.view.state.players
 	for i in players.size():
 		if i != GameSession.player:
-			_list.add_item(players[i].race.display_plural())
+			var logo := ArtRegistry.texture(ArtRegistry.logo_id(players[i].race))
+			_list.add_item(players[i].race.display_plural(), logo)
 			_list.set_item_metadata(_list.item_count - 1, i)
 	if _list.item_count > 0:
 		_list.select(0)

@@ -48,6 +48,11 @@ static func ship_id(design: Design, content: ContentRegistry, small := false) ->
 	return "art.%s.%d%s" % [design.hull, k, ".small" if small else ""]
 
 
+## The art id of a race's logo (S26: `art.race_logo.<0-31>`, with `.small` 16 px or `.tiny` 8 px).
+static func logo_id(race: Race, suffix := ".small") -> String:
+	return "" if race == null or race.logo < 0 else "art.race_logo.%d%s" % [race.logo, suffix]
+
+
 ## The art id of a planet's picture (S26: picture (planet number + 8) mod 28).
 static func planet_id(planet_id_number: int) -> String:
 	return "art.planet.%d" % ((planet_id_number + 8) % 28)

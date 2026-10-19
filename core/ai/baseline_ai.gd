@@ -340,15 +340,29 @@ func _send_transport(fleet: Fleet) -> void:
 		var info := _info(planet.id)
 		if not info["known"] or not _is_enemy(info["owner"]):
 			continue
-		if int(info.get("starbase_design", -1)) >= 0:
+		# only on a fresh report: an old one undercounts the people and defenses now there; and
+		# not where the estimate hides the people (an owned planet estimated at none)
+		if int(info["report_age"]) > _ctx.param("invasion_report_age"):
 			continue
-		var troops := _troops_needed(info)
-		if troops <= 0 or troops > _cargo_room(fleet) + aboard or troops > spare + aboard:
+		if int(info["population"]) <= 0:
+			continue
+		if int(info.get("starbase_design", -1)) >= 0:
 			continue
 		var d2 := _d2(fleet.x, fleet.y, planet.x, planet.y)
 		if best >= 0 and d2 >= best_d2:
 			continue
-		if _warp_for(fleet, planet) == 0:
+		var warp := _warp_for(fleet, planet)
+		if warp == 0:
+			continue
+		# near enough that the planet doesn't outgrow the troops on the way, padded for its growth
+		# (compounded each year of the trip)
+		var years := ceili(float(_distance(fleet.x, fleet.y, planet.x, planet.y)) / (warp * warp))
+		if years > _ctx.param("invasion_max_years"):
+			continue
+		var troops := _troops_needed(info)
+		for y in years:
+			troops = troops * (100 + GROWTH_PER_YEAR_PCT) / 100
+		if troops <= 0 or troops > _cargo_room(fleet) + aboard or troops > spare + aboard:
 			continue
 		best = planet.id
 		best_d2 = d2

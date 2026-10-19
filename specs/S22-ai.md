@@ -217,7 +217,10 @@ nothing. Each turn, in this order:
    default battle plan, and its bombers bomb a planet left without a starbase (S17); a planet bombed out becomes
    unowned, a target for colony ships.
 8. **Troop transports**, without orders: away from the player's planets and empty, back to the nearest planet with
-   people; at one of its planets, the nearest planet known to be an enemy's, without a starbase (as known),
+   people; at one of its planets, the nearest planet known to be an enemy's, on a report at most
+   `invasion_report_age` (1) years old with a population estimate above 0 (an old report or a hidden estimate
+   undercounts the people there), that the transport reaches within `invasion_max_years` (10) years at the warp
+   chosen (the troops below then grow by 12% a year of the trip, compounded), without a starbase (as known),
    that it can reach and take: the troops needed are the top of the population estimate (+1/8) over the share
    of troops its defenses let through (a defense class c lets about 101 − 6c percent of bombs through; troops
    get U + (1 − U)/4 through, S17) and the race's troop strength (`invasion.troops_pct`), times 130%, plus one;

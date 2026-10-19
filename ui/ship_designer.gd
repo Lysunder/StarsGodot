@@ -53,6 +53,8 @@ var _categories: Array[String] = []
 var _parts: RowList
 var _part_ids: Array[String] = []
 var _part_info: Label
+## The picked part's picture, when a mod supplies it (ArtRegistry `art.<part id>`).
+var _part_picture: TextureRect
 var _picture_number: Label
 var _picture: FleetIcon
 var _choice: OptionButton
@@ -130,10 +132,19 @@ func _build_edit_box(left: Control) -> void:
 	_parts.drop_check = _is_slot_drag
 	_parts.drop_take = _take_back
 	_edit_box.add_child(_parts)
+	var info_row := HBoxContainer.new()
+	_edit_box.add_child(info_row)
+	_part_picture = TextureRect.new()
+	_part_picture.custom_minimum_size = FleetIcon.SIZE
+	_part_picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_part_picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_part_picture.visible = false
+	info_row.add_child(_part_picture)
 	_part_info = Label.new()
 	_part_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_part_info.custom_minimum_size = Vector2(LEFT_WIDTH, 80)
-	_edit_box.add_child(_part_info)
+	_part_info.custom_minimum_size = Vector2(LEFT_WIDTH - FleetIcon.SIZE.x, 80)
+	_part_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info_row.add_child(_part_info)
 
 
 func _build_top(right: Control) -> void:
@@ -394,6 +405,7 @@ func _show_parts() -> void:
 		rows.append({"left": GameSession.content.display_name(id)})
 	_parts.set_rows(rows, -1)
 	_part_info.text = ""
+	_part_picture.visible = false
 
 
 func _part_payload(index: int) -> Variant:
@@ -412,6 +424,8 @@ func _take_back(data: Variant) -> void:
 
 func _on_part_picked(index: int) -> void:
 	var id := _part_ids[index]
+	_part_picture.texture = ArtRegistry.texture("art." + id)
+	_part_picture.visible = _part_picture.texture != null
 	var part := GameSession.content.part(id)
 	var cost := ProductionCosts.part_cost(part, GameSession.view.me(), GameSession.content)
 	var lines := PackedStringArray([GameSession.content.display_name(id)])

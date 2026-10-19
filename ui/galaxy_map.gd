@@ -29,6 +29,14 @@ const PICK_PIXELS := 10.0
 const DEFAULT_WARP := 6
 const COLOR_BACKGROUND := Color(0.02, 0.02, 0.06)
 const COLOR_UNOWNED := Color(0.55, 0.55, 0.6)
+const COLOR_WORMHOLE := Color(0.75, 0.45, 1.0)
+const COLOR_SALVAGE := Color(0.6, 0.6, 0.6)
+const COLOR_TRADER := Color(1.0, 0.85, 0.2)
+## Minefield discs: fill and outline opacity.
+const MINEFIELD_FILL := 0.12
+const MINEFIELD_EDGE := 0.5
+## Objects drawn from a picture: their size on the map, in pixels.
+const OBJECT_SIZE := 16.0
 const PATH_ALPHA := 0.6
 ## Tallest mineral bar in the minerals views, in pixels.
 const MINERAL_BAR := 16.0
@@ -192,6 +200,7 @@ func _draw() -> void:
 	)
 	# only what is on screen (with room for labels and rings) is drawn
 	var visible := Rect2(Vector2.ZERO, size).grow(CULL_MARGIN)
+	_draw_minefields(view)
 	for pl in view.planets():
 		var at := to_screen(pl["x"], pl["y"])
 		if not visible.has_point(at):
@@ -218,6 +227,14 @@ func _draw() -> void:
 				10,
 				Color(1, 1, 1, 0.6)
 			)
+	_draw_objects(view, visible)
+	for f in MapObjects.seen_fleets(view):
+		var at := to_screen(f.x, f.y) + Vector2(5, 5)
+		if visible.has_point(at):
+			var tri := PackedVector2Array(
+				[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
+			)
+			draw_colored_polygon(tri, Palette.color(Palette.OTHER))
 	for f in view.fleets():
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
 		var selected := selection_kind == "fleet" and selection_id == f.number
@@ -230,6 +247,60 @@ func _draw() -> void:
 		if selected:
 			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
+
+
+## Minefields the player knows of: a faint disc of the field's radius (the square root of its
+## mines, S13) in its owner's colour, outlined.
+func _draw_minefields(view: PlayerView) -> void:
+	for m in MapObjects.minefields(view):
+		var at := to_screen(m.x, m.y)
+		var r := sqrt(float(m.mines)) * zoom
+		if r < 1.0 or not Rect2(Vector2.ZERO, size).grow(r).has_point(at):
+			continue
+		var colour := Palette.color(Palette.MINE if m.owner == view.player else Palette.OTHER)
+		draw_circle(at, r, Color(colour, MINEFIELD_FILL))
+		draw_arc(at, r, 0.0, TAU, 48, Color(colour, MINEFIELD_EDGE), 1.0)
+
+
+## Wormholes, packets and salvage, and Mystery Traders the player sees: their pictures when a mod
+## supplies them (ArtRegistry `art.object.*`), else small symbols of our own.
+func _draw_objects(view: PlayerView, visible: Rect2) -> void:
+	for w in MapObjects.wormholes(view):
+		_draw_object(to_screen(w.x, w.y), "art.object.wormhole", visible, COLOR_WORMHOLE, 0)
+	for k in MapObjects.packets(view):
+		var id := "art.object.salvage" if k.salvage else "art.object.packet"
+		var colour := COLOR_SALVAGE if k.salvage else Palette.cargo(0)
+		_draw_object(to_screen(k.x, k.y), id, visible, colour, 1)
+	for t in MapObjects.traders(view):
+		_draw_object(to_screen(t.x, t.y), "art.object.mystery_trader", visible, COLOR_TRADER, 2)
+
+
+## One object at `at`: its picture, or our symbol (0 ring, 1 square, 2 diamond).
+func _draw_object(at: Vector2, art_id: String, visible: Rect2, colour: Color, shape: int) -> void:
+	if not visible.has_point(at):
+		return
+	var art := ArtRegistry.texture(art_id)
+	if art != null:
+		var half := Vector2(OBJECT_SIZE, OBJECT_SIZE) / 2.0
+		draw_texture_rect(art, Rect2(at - half, half * 2.0), false)
+		return
+	match shape:
+		0:
+			draw_arc(at, 5.0, 0.0, TAU, 16, colour, 2.0)
+		1:
+			draw_rect(Rect2(at - Vector2(2, 2), Vector2(4, 4)), colour)
+		_:
+			draw_colored_polygon(
+				PackedVector2Array(
+					[
+						at + Vector2(0, -5),
+						at + Vector2(5, 0),
+						at + Vector2(0, 5),
+						at + Vector2(-5, 0)
+					]
+				),
+				colour
+			)
 
 
 ## A planet in one of the toolbar's views; returns the radius drawn. Value: a green circle sized

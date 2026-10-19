@@ -136,6 +136,16 @@ func _draw() -> void:
 			lines.append(("needs %d" if needs else "up to %d") % most)
 			_text_lines(r, lines, font, font_size)
 		else:
+			var art := ArtRegistry.texture("art." + entry.part)
+			if art != null:
+				# the part's picture (a mod's art), its count below
+				var line := float(font_size) + 4.0
+				var side := minf(r.size.x, r.size.y - line) - 2.0
+				var at := Vector2(r.get_center().x - side / 2.0, r.position.y + 1.0)
+				draw_texture_rect(art, Rect2(at, Vector2(side, side)), false)
+				var count_box := Rect2(r.position.x, r.end.y - line, r.size.x, line)
+				_text_lines(count_box, ["%d of %d" % [entry.count, most]], bold, font_size)
+				continue
 			lines.append(GameSession.content.display_name(entry.part))
 			lines.append("%d of %d" % [entry.count, most])
 			_text_lines(r, lines, bold, font_size)
