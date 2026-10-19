@@ -79,6 +79,11 @@ Your files
   %APPDATA%\\Godot\\app_userdata\\StarsGodot
   When you report a problem, a saved game from there helps a lot.
 
+The classic look
+  If you own Stars! 2.6i, "Import Classic Look..." on the main menu uses the pictures
+  from your own copy. They stay on your computer: please don't share them or post
+  screenshots that show them. See CLASSIC_LOOK.md on the project's page.
+
 Reporting problems
   Say which build this is (the window title shows it), what you did, what happened and
   what you expected.

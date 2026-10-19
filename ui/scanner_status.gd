@@ -53,6 +53,10 @@ func show_at(x: int, y: int, hit: Dictionary, from: Dictionary) -> void:
 			_name.text = info["name"]
 			_x.text = "X: %d" % info["x"]
 			_y.text = "Y: %d" % info["y"]
+		elif MapObjects.OBJECT_KINDS.has(hit["kind"]):
+			var o: Variant = MapObjects.find(GameSession.view, hit["kind"], hit["id"])
+			if o != null:
+				_name.text = MapObjects.object_name(GameSession.view, hit["kind"], o)
 		elif hit["kind"] == "seen_fleet":
 			var seen := MapObjects.seen_fleet_info(GameSession.view, hit["id"])
 			_id.text = tr("ID #%d") % (hit["id"] % MapObjects.FLEET_KEY + 1)

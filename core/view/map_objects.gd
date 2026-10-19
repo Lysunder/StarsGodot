@@ -6,6 +6,8 @@ extends RefCounted
 
 ## seen_fleet keys: owner * FLEET_KEY + fleet number.
 const FLEET_KEY := 512
+## The other things on the map the player can select, as selection kinds (S13, S14, S12, S18).
+const OBJECT_KINDS: Array[String] = ["minefield", "packet", "wormhole", "trader"]
 
 
 ## Other players' fleets the player sees this year (S15 view), in fleet order.
@@ -101,6 +103,66 @@ static func traders(v: PlayerView) -> Array[Trader]:
 		if seen.has(t.number):
 			out.append(t)
 	return out
+
+
+## The minefields, packets and salvage, wormholes and Mystery Traders the player sees within
+## `radius` of a point: [distance, {kind, id}], the id being object_key.
+static func objects_near(v: PlayerView, x: float, y: float, radius: float) -> Array:
+	var out: Array = []
+	for kind in OBJECT_KINDS:
+		for o: Variant in _of_kind(v, kind):
+			var d := Vector2(o.x - x, o.y - y).length()
+			if d <= radius:
+				out.append([d, {"kind": kind, "id": object_key(o)}])
+	return out
+
+
+## A map object's key in a selection: owner * FLEET_KEY + number for minefields and packets (which
+## each player numbers), the number for wormholes and traders.
+static func object_key(o: Variant) -> int:
+	if o is Minefield or o is Packet:
+		return o.owner * FLEET_KEY + o.number
+	return o.number
+
+
+## The map object of `kind` with key `key` that the player sees, or null.
+static func find(v: PlayerView, kind: String, key: int) -> Variant:
+	for o: Variant in _of_kind(v, kind):
+		if object_key(o) == key:
+			return o
+	return null
+
+
+## A map object's name for lists and titles: "Galdric Minefield #3", "Salvage", "Wormhole #2".
+static func object_name(v: PlayerView, kind: String, o: Variant) -> String:
+	match kind:
+		"minefield":
+			return "%s Minefield #%d" % [_race(v, o.owner), o.number + 1]
+		"packet":
+			return "Salvage" if o.salvage else "%s Mineral Packet" % _race(v, o.owner)
+		"wormhole":
+			return "Wormhole #%d" % (o.number + 1)
+		"trader":
+			return "Mystery Trader"
+	return ""
+
+
+static func _race(v: PlayerView, owner: int) -> String:
+	var p := v.state.player(owner)
+	return p.race.display_name() if p != null else "?"
+
+
+static func _of_kind(v: PlayerView, kind: String) -> Array:
+	match kind:
+		"minefield":
+			return minefields(v)
+		"packet":
+			return packets(v)
+		"wormhole":
+			return wormholes(v)
+		"trader":
+			return traders(v)
+	return []
 
 
 static func _view(v: PlayerView) -> Dictionary:

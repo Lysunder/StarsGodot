@@ -342,6 +342,22 @@ func _draw_objects(view: PlayerView, on_screen: Rect2) -> void:
 		_draw_object(to_screen(k.x, k.y), id, on_screen, colour, 1)
 	for t in MapObjects.traders(view):
 		_draw_object(to_screen(t.x, t.y), "art.object.mystery_trader", on_screen, COLOR_TRADER, 2)
+	if MapObjects.OBJECT_KINDS.has(selection_kind):
+		var o: Variant = MapObjects.find(view, selection_kind, selection_id)
+		if o != null:
+			draw_arc(to_screen(o.x, o.y), 9.0, 0.0, TAU, 20, Palette.color(Palette.SELECTED), 1.5)
+
+
+## The colour the map gives an object (minefields by owner); the summary's symbol uses it too.
+static func object_colour(view: PlayerView, kind: String, o: Variant) -> Color:
+	match kind:
+		"minefield":
+			return Palette.color(Palette.MINE if o.owner == view.player else Palette.OTHER)
+		"packet":
+			return COLOR_SALVAGE if o.salvage else Palette.cargo(0)
+		"wormhole":
+			return COLOR_WORMHOLE
+	return COLOR_TRADER
 
 
 ## One object at `at`: its picture, or our symbol (0 ring, 1 square, 2 diamond).

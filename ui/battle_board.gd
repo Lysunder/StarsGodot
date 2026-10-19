@@ -1,7 +1,8 @@
 class_name BattleBoard
 extends Control
 ## The battle viewer's board (D15): the 10 × 10 battle squares in a sunken black frame. Each square
-## shows its tokens' picture (a ship outline, or a ring for a starbase) in the owner's colour,
+## shows its tokens' picture (the design's small picture with its owner's tiny logo when a mod
+## supplies them, else a ship outline or a ring for a starbase in the owner's colour),
 ## the ships in the first token, and "+n" for further tokens; the selected square has a frame.
 ## A shot draws a line from the firing token to each square it hit (beams solid, torpedoes
 ## dashed), and a square where ships died gets a burst.
@@ -19,6 +20,8 @@ const TORPEDO := Color(1.0, 0.6, 0.2)
 const BURST := Color(1.0, 0.45, 0.2)
 const COUNT := Color(1, 1, 1)
 const TORPEDO_HIT := 4
+## A token's picture from a mod (ArtRegistry, the small ship pictures), in pixels.
+const PICTURE := 32.0
 
 var replay: BattleReplay
 ## The square framed as selected (BattleReplay.GONE for none).
@@ -91,7 +94,18 @@ func _draw_square(square: int) -> void:
 	)
 	var c := square_center(square) + Vector2(0, -4)
 	var s := CELL / 64.0
-	if int(rec["kind"]) == BattleReplay.KIND_STARBASE:
+	var art := ArtRegistry.texture(
+		ArtRegistry.ship_id(replay.design(first), replay.view.content, true)
+	)
+	if art != null:
+		# the design's small picture, with its owner's tiny logo in the corner (as the original)
+		var pic := Rect2(c - Vector2(PICTURE, PICTURE) / 2.0, Vector2(PICTURE, PICTURE))
+		draw_texture_rect(art, pic, false)
+		var owner_race := replay.view.state.player(int(rec["owner"])).race
+		var logo := ArtRegistry.texture(ArtRegistry.logo_id(owner_race, ".tiny"))
+		if logo != null:
+			draw_texture_rect(logo, Rect2(pic.position, logo.get_size()), false)
+	elif int(rec["kind"]) == BattleReplay.KIND_STARBASE:
 		draw_arc(c, 13.0 * s * 1.4, 0, TAU, 24, colour, 3.0)
 		draw_circle(c, 4.0 * s * 1.4, colour)
 	else:

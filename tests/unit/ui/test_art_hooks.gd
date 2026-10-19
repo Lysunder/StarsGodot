@@ -35,6 +35,9 @@ func before_test() -> void:
 	for logo in 32:
 		index["art.race_logo.%d.small" % logo] = {"file": "solid.png", "rect": [0, 0, 16, 16]}
 	index["art.part.beam.laser"] = {"file": "solid.png"}
+	for object_id in ["minefield.0", "minefield.1", "minefield.2", "packet", "salvage", "wormhole"]:
+		index["art.object." + object_id] = {"file": "solid.png", "rect": [0, 0, 16, 16]}
+	index["art.title"] = {"file": "solid.png"}
 	f = FileAccess.open(dir.path_join("art/index.json"), FileAccess.WRITE)
 	f.store_string(JSON.stringify(index))
 	f.close()
@@ -116,3 +119,38 @@ func test_the_map_shows_minefields_packets_and_rivals() -> void:
 			)
 			. is_true()
 		)
+
+
+## Minefields and the other map objects can be selected; the summary shows their picture, and the
+## main menu the title picture.
+func test_map_objects_are_selectable_with_their_pictures() -> void:
+	var path := "res://tests/fixtures/golden/mine1/t040.json"
+	GameSession._start(
+		SaveFile.decode(FileAccess.get_file_as_string(path), GameSession.content).state
+	)
+	var view := GameSession.view
+	var field: Minefield = MapObjects.minefields(view)[0]
+	var key := MapObjects.object_key(field)
+	var hits := view.objects_at(field.x, field.y, 1.0)
+	assert_bool(hits.has({"kind": "minefield", "id": key})).is_true()
+	var here := view.objects_here(field.x, field.y, 1.0).filter(
+		func(o: Dictionary) -> bool: return o["kind"] == "minefield"
+	)
+	assert_bool(here.is_empty()).is_false()
+	assert_str(here[0]["name"]).contains("Minefield")
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	screen._map.select("minefield", key)
+	var summary := screen._summary
+	assert_str(summary._title.text).contains("Minefield")
+	assert_str(summary._icon.art_id).is_equal(ArtRegistry.object_id("minefield", field))
+	assert_object(ArtRegistry.texture(summary._icon.art_id)).is_not_null()
+	screen._map.queue_redraw()
+	await get_tree().process_frame
+	screen.queue_free()
+	var menu := MainMenu.new()
+	add_child(menu)
+	assert_object(menu._title_art.texture).is_not_null()
+	menu.queue_free()
+	await get_tree().process_frame

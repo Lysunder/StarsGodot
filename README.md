@@ -12,16 +12,28 @@ Goals:
 
 ## Status
 
-Nothing is playable yet. The foundations are in place:
+The game is playable from start to finish, and is in playtesting:
 
-- **Content and mods:** the base game's parts, hulls, traits and constants as a content pack (`content/core/`),
-  loaded by a mod loader with dependencies, load order, patches and a ruleset hash.
-- **Game state:** the data model, the original's random number generator, and our own save format with validation.
-- **Verification harness:** a dev-only importer turns the original's host files into our save format, and a
-  field-by-field diff compares states. Small converted fixtures (`tests/fixtures/golden/`) check this in CI.
-- **Specifications:** the rules written up in our own words, one subsystem per spec (`specs/`).
+- **The rules:** the full Stars! 2.6i turn (economy, research, production, movement, minefields, packets,
+  scanning and cloaking, battles, bombing and invasion, random events, score and victory), checked turn by turn
+  against games played in the original.
+- **Computer players:** our own computer player and ports of the original's six personalities, at every difficulty.
+- **Ways to play:** single player against the computer, hotseat, and play by email.
+- **The interface:** the original's four-pane screen and its dialogs in a Windows 95 style of our own, with help
+  (F1), a tutorial, a language setting and colour-blind palettes.
+- **Mods:** the base game is itself a mod; data mods, formula and phase mods, script mods and cosmetic mods all
+  work. See [modding/](modding/README.md).
 
-Next: universe generation and the race wizard, then the turn engine (economy, orders, movement, combat).
+Bug reports and suggestions are welcome as GitHub issues.
+
+## Playing
+
+Run the game from Godot 4.7 (open this folder as a project), or from a build (`tools/build.sh` below). Choose
+**Tutorial** on the main menu for a guided first game, or **New Game...** to start one; the help (F1) explains the
+rest.
+
+The game uses its own pictures. If you own Stars! 2.6i, you can import the original's pictures from your own copy:
+see **[CLASSIC_LOOK.md](CLASSIC_LOOK.md)**.
 
 ## Development
 
@@ -42,8 +54,8 @@ rule specifications, [content/README.md](content/README.md) for the content and 
 ## Legal
 
 This project contains no code, art, sound or text from the original game. Specs and code are written in our own
-words from an analysis of how the game behaves. The verification harness needs your own copy of the original and
-never puts its files in this repository.
+words from an analysis of how the game behaves. The verification harness and the classic look import ([CLASSIC_LOOK.md](CLASSIC_LOOK.md)) need your own copy of
+the original, and never put its files in this repository or in the game's builds.
 
 Stars! is a trademark of its respective owners. This project is not affiliated with or endorsed by them.
 

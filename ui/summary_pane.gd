@@ -7,6 +7,8 @@ extends PanelContainer
 ## main design; the popup goes when the button is let go.
 
 const ROW_GAP := 2
+## Minefield types (Minefield.TYPES) as the summary names them.
+const MINEFIELD_TYPES := {"standard": "Standard", "heavy": "Heavy", "speed_bump": "Speed Bump"}
 
 var kind: String = ""
 var id: int = -1
@@ -90,6 +92,8 @@ func refresh() -> void:
 		_show_planet()
 	elif kind == "seen_fleet":
 		_show_seen_fleet()
+	elif MapObjects.OBJECT_KINDS.has(kind):
+		_show_object()
 	else:
 		_show_fleet()
 
@@ -137,6 +141,7 @@ func _show_fleet() -> void:
 	var design: Design = null
 	if fleet != null and not fleet.stacks.is_empty():
 		design = GameSession.view.me().ship_design(fleet.stacks[0].design)
+	_icon.object_kind = ""
 	_icon.art_id = ArtRegistry.ship_id(design, GameSession.content)
 	for child in _fleet_fields.get_children():
 		child.queue_free()
@@ -174,6 +179,7 @@ func _show_seen_fleet() -> void:
 	var design: Design = null
 	if not fleet.stacks.is_empty():
 		design = view.state.player(fleet.owner).ship_design(fleet.stacks[0].design)
+	_icon.object_kind = ""
 	_icon.art_id = ArtRegistry.ship_id(design, GameSession.content)
 	for child in _fleet_fields.get_children():
 		child.queue_free()
@@ -183,6 +189,44 @@ func _show_seen_fleet() -> void:
 	_field("Owner:", info["race"])
 	_field("Ship Count:", str(count))
 	_field("Mass:", "%skT" % CommandPane.thousands(info["mass"]))
+
+
+## A minefield, packet or salvage, wormhole or Mystery Trader: its picture (or our symbol) and what
+## the player knows of it (S13, S14, S12, S18).
+func _show_object() -> void:
+	var view := GameSession.view
+	var o: Variant = MapObjects.find(view, kind, id)
+	if o == null:
+		_title.text = ""
+		return
+	_title.text = tr("%s Summary") % MapObjects.object_name(view, kind, o)
+	_fleet_box.visible = true
+	_icon.art_id = ArtRegistry.object_id(kind, o)
+	_icon.object_kind = kind
+	_icon.tint = GalaxyMap.object_colour(view, kind, o)
+	for child in _fleet_fields.get_children():
+		child.queue_free()
+	match kind:
+		"minefield":
+			_field("Owner:", view.state.player(o.owner).race.display_name())
+			_field("Type:", MINEFIELD_TYPES.get(o.type, o.type))
+			_field("Mines:", CommandPane.thousands(o.mines))
+			_field("Radius:", tr("%d light years") % int(sqrt(float(o.mines))))
+		"packet":
+			if not o.salvage:
+				_field("Owner:", view.state.player(o.owner).race.display_name())
+			for m in 3:
+				_field(CommandPane.CARGO[m] + ":", "%skT" % CommandPane.thousands(o.minerals[m]))
+			if not o.salvage:
+				_field("Warp:", str(o.warp))
+				var to := view.state.planet(o.destination) if o.destination >= 0 else null
+				_field("Destination:", to.name if to != null else "?")
+		"wormhole":
+			var other: Variant = MapObjects.find(view, "wormhole", o.other_end)
+			_field("Leads to:", tr("(%d, %d)") % [other.x, other.y] if other != null else "Unknown")
+		"trader":
+			_field("Warp:", str(o.warp))
+	_field("Location:", tr("(%d, %d)") % [o.x, o.y])
 
 
 ## While a button is held on the fleet's picture: the left shows the ships in the fleet, the right

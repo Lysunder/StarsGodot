@@ -53,6 +53,21 @@ static func logo_id(race: Race, suffix := ".small") -> String:
 	return "" if race == null or race.logo < 0 else "art.race_logo.%d%s" % [race.logo, suffix]
 
 
+## The art id of a map object's picture (S26: `art.object.minefield.<type>`, `.packet`, `.salvage`,
+## `.wormhole`, `.mystery_trader`; kinds as MapObjects.OBJECT_KINDS).
+static func object_id(kind: String, o: Variant) -> String:
+	match kind:
+		"minefield":
+			return "art.object.minefield.%d" % maxi(Minefield.TYPES.find(o.type), 0)
+		"packet":
+			return "art.object.salvage" if o.salvage else "art.object.packet"
+		"wormhole":
+			return "art.object.wormhole"
+		"trader":
+			return "art.object.mystery_trader"
+	return ""
+
+
 ## The art id of a planet's picture (S26: picture (planet number + 8) mod 28).
 static func planet_id(planet_id_number: int) -> String:
 	return "art.planet.%d" % ((planet_id_number + 8) % 28)

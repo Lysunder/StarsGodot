@@ -14,6 +14,10 @@ const PLANET_STEPS := 12
 
 ## Draw a planet instead of a ship.
 var planet: bool = false
+## A map object (MapObjects.OBJECT_KINDS) to draw our own symbol for when there is no picture,
+## in `tint`; "" for a ship or planet.
+var object_kind := ""
+var tint := Color.WHITE
 ## The picture to show when a mod supplies it (ArtRegistry.ship_id, planet_id); "" for none.
 var art_id := "":
 	set(value):
@@ -39,6 +43,9 @@ func _draw() -> void:
 		return
 	var c := size / 2.0
 	var s := minf(size.x, size.y) / 64.0
+	if not object_kind.is_empty():
+		_draw_object_symbol(c, s)
+		return
 	if planet:
 		# a lit sphere: discs shrinking towards the light, dark to light
 		for i in PLANET_STEPS:
@@ -67,3 +74,23 @@ func _draw() -> void:
 		)
 		draw_colored_polygon(wing, TRIM)
 	draw_rect(Rect2(c + Vector2(-22, -4) * s, Vector2(4, 8) * s), TRIM)
+
+
+## Our own symbols for map objects, as the map draws them, larger.
+func _draw_object_symbol(c: Vector2, s: float) -> void:
+	match object_kind:
+		"minefield":
+			draw_circle(c, 24.0 * s, Color(tint, 0.3))
+			draw_arc(c, 24.0 * s, 0.0, TAU, 48, tint, 2.0)
+		"wormhole":
+			draw_arc(c, 18.0 * s, 0.0, TAU, 32, tint, 5.0 * s)
+		"packet":
+			draw_rect(Rect2(c - Vector2(10, 10) * s, Vector2(20, 20) * s), tint)
+		_:
+			var d := 18.0 * s
+			draw_colored_polygon(
+				PackedVector2Array(
+					[c + Vector2(0, -d), c + Vector2(d, 0), c + Vector2(0, d), c + Vector2(-d, 0)]
+				),
+				tint
+			)

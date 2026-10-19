@@ -11,11 +11,11 @@ overrides are planned but not built.
 |---|---|
 | Text: rename things, reword messages and descriptions (`lang/<locale>.json`) | Works |
 | Choosing a language in the game | Works: **Settings... > Language** lists the languages the mods have strings for. See [translating.md](translating.md). |
-| Art packs: pictures by art id (`art/index.json`) | Works: ship and planet pictures (the Planet and Fleet tiles, the summary, the ship designer), part pictures (the designer), race logos (Player Relations, the score) and map objects (wormholes, packets, salvage, the Mystery Trader). |
+| Art packs: pictures by art id (`art/index.json`) | Works: ship and planet pictures (the Planet and Fleet tiles, the summary, the ship designer), small ship pictures with tiny race logos (the battle viewer), part pictures (the designer), race logos (Player Relations, the score), map objects (on the map and in the summary when selected) and the title picture (the main menu). |
 | Themes (a Godot `Theme` from a mod) | Not yet |
 | Scene overrides (replace or add UI panels and map overlays) | Not yet |
 | Sound and music | Not yet |
-| Classic pack imported from your own copy of the original game | Works: main menu, **Import Classic Look...** (pictures and turn-message wording). |
+| Classic pack imported from your own copy of the original game | Works: main menu, **Import Classic Look...** (pictures and turn-message wording). See [CLASSIC_LOOK.md](../CLASSIC_LOOK.md). |
 
 A cosmetic mod may contain `mod.json`, `lang/` and `art/`. One with a `content/` or `patches/`
 folder is refused.

@@ -483,49 +483,42 @@ func _waypoint_label(wp: Waypoint) -> String:
 	return "Space (%d, %d)" % [wp.x, wp.y]
 
 
-## Planets, own fleets and other players' fleets seen (kind "seen_fleet", id MapObjects.fleet_key)
-## within `radius` of a point, nearest first: {kind, id}.
+## Planets, own fleets, other players' fleets seen (kind "seen_fleet", id MapObjects.fleet_key)
+## and the other objects the player sees (MapObjects.OBJECT_KINDS, id MapObjects.object_key)
+## within `radius` of a point, nearest first (then in that order of kinds): {kind, id}.
 func objects_at(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictionary]:
 	var hits := []
 	for pl in state.planets:
 		var d := Vector2(pl.x - x, pl.y - y).length()
 		if d <= radius:
-			hits.append([d, 0, {"kind": "planet", "id": pl.id}])
+			hits.append([d, 0, hits.size(), {"kind": "planet", "id": pl.id}])
 	for f in fleets():
 		var d := Vector2(f.x - x, f.y - y).length()
 		if d <= radius:
-			hits.append([d, 1, {"kind": "fleet", "id": f.number}])
+			hits.append([d, 1, hits.size(), {"kind": "fleet", "id": f.number}])
 	for f in MapObjects.seen_fleets(self):
 		var d := Vector2(f.x - x, f.y - y).length()
 		if d <= radius:
-			hits.append([d, 2, {"kind": "seen_fleet", "id": MapObjects.fleet_key(f)}])
+			hits.append([d, 2, hits.size(), {"kind": "seen_fleet", "id": MapObjects.fleet_key(f)}])
+	for near: Array in MapObjects.objects_near(self, x, y, radius):
+		hits.append([near[0], 3, hits.size(), near[1]])
 	hits.sort()
 	var out: Array[Dictionary] = []
 	for h: Array in hits:
-		out.append(h[2])
+		out.append(h[3])
 	return out
 
 
 ## The map's right-click menu (as the original's scanner): what sits exactly where the object
 ## nearest the point is, the planet first, then the player's fleets there in fleet order, then
-## other players' fleets seen there:
+## other players' fleets seen there, then minefields, packets, wormholes and traders there:
 ## [{kind, id, name}]; empty when nothing is within `radius`.
 func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var hits := objects_at(x, y, radius)
 	if hits.is_empty():
 		return out
-	var spot := Vector2i.ZERO
-	if hits[0]["kind"] == "planet":
-		var pl := state.planet(hits[0]["id"])
-		spot = Vector2i(pl.x, pl.y)
-	else:
-		var f := (
-			state.fleet(player, hits[0]["id"])
-			if hits[0]["kind"] == "fleet"
-			else MapObjects.seen_fleet(self, hits[0]["id"])
-		)
-		spot = Vector2i(f.x, f.y)
+	var spot := _position(hits[0])
 	for pl in state.planets:
 		if pl.x == spot.x and pl.y == spot.y:
 			out.append({"kind": "planet", "id": pl.id, "name": pl.name})
@@ -536,7 +529,28 @@ func objects_here(x: float, y: float, radius: float = PICK_RADIUS) -> Array[Dict
 		if f.x == spot.x and f.y == spot.y:
 			var key := MapObjects.fleet_key(f)
 			out.append({"kind": "seen_fleet", "id": key, "name": fleet_name(f)})
+	for kind in MapObjects.OBJECT_KINDS:
+		for near: Array in MapObjects.objects_near(self, spot.x, spot.y, 0.0):
+			if near[1]["kind"] == kind:
+				var o: Variant = MapObjects.find(self, kind, near[1]["id"])
+				var named := {"name": MapObjects.object_name(self, kind, o)}
+				out.append((near[1] as Dictionary).merged(named))
 	return out
+
+
+## Where a hit from objects_at is.
+func _position(hit: Dictionary) -> Vector2i:
+	var o: Variant = null
+	match hit["kind"]:
+		"planet":
+			o = state.planet(hit["id"])
+		"fleet":
+			o = state.fleet(player, hit["id"])
+		"seen_fleet":
+			o = MapObjects.seen_fleet(self, hit["id"])
+		_:
+			o = MapObjects.find(self, hit["kind"], hit["id"])
+	return Vector2i(o.x, o.y)
 
 
 ## Research settings and levels for the top bar and research dialog.

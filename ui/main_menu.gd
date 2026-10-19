@@ -10,6 +10,8 @@ extends CenterContainer
 signal start_game
 
 const BUTTON_WIDTH := 200
+## With the title picture shown: the share of the screen's height left above the menu.
+const TITLE_SPACE := 0.45
 
 var _status: Label
 var _new_game: NewGameDialog
@@ -19,13 +21,34 @@ var _personalities: PersonalityEditor
 var _turn_files: FileDialog
 var _mods: ModManager
 var _classic: FileDialog
+## The title picture behind the menu, when a mod supplies one (`art.title`, S26).
+var _title_art: TextureRect
+var _spacer: Control
 
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# top level (anchored to the window), so the centring container leaves it the whole screen
+	_title_art = TextureRect.new()
+	_title_art.top_level = true
+	_title_art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_title_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_title_art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_title_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_title_art)
+	_show_title_art()
 	var frame := PanelContainer.new()
 	frame.theme_type_variation = "TileBody"
-	add_child(frame)
+	# over the title picture
+	frame.z_index = 1
+	# under a spacer that, with the title picture shown, keeps the menu below the picture's title
+	var column := VBoxContainer.new()
+	add_child(column)
+	_spacer = Control.new()
+	column.add_child(_spacer)
+	column.add_child(frame)
+	resized.connect(_place_menu)
+	_place_menu.call_deferred()
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 6)
 	frame.add_child(box)
@@ -67,7 +90,11 @@ func _ready() -> void:
 	_classic.dir_selected.connect(_on_classic_folder)
 	add_child(_classic)
 	_mods = ModManager.new()
-	_mods.mods_changed.connect(func() -> void: _status.text = GameSession.load_errors)
+	_mods.mods_changed.connect(
+		func() -> void:
+			_status.text = GameSession.load_errors
+			_show_title_art()
+	)
 	add_child(_mods)
 	_personalities = PersonalityEditor.new()
 	add_child(_personalities)
@@ -127,7 +154,19 @@ func _on_classic_folder(dir: String) -> void:
 		on.append(ClassicImporter.MOD_ID)
 	ModSettings.save(on, ModSettings.trusted())
 	GameSession.reload_content()
+	_show_title_art()
 	_status.text = tr("%s The classic look is on (Mods... turns it off).") % " ".join(r.lines)
+
+
+func _show_title_art() -> void:
+	_title_art.texture = ArtRegistry.texture("art.title")
+	if _spacer != null:
+		_place_menu()
+
+
+func _place_menu() -> void:
+	var shown := _title_art.texture != null
+	_spacer.custom_minimum_size.y = size.y * TITLE_SPACE if shown else 0.0
 
 
 func _on_quit() -> void:

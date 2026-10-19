@@ -224,7 +224,16 @@ None.
 ## Mod hooks
 
 - Art ids as listed in section 1, read through the art registry (UI side): any cosmetic mod can supply them with
-  `art/index.json`, not only the classic pack.
+  `art/index.json`, not only the classic pack. Where the interface shows them:
+  - `art.hull.*` (64 px): the Planet and Fleet tiles, the Selection Summary, the ship designer;
+    `art.hull.*.small` with the owner's `art.race_logo.*.tiny` in its corner: the battle viewer's board.
+  - `art.planet.*`: the Planet tile and the summary. `art.part.*`: the ship designer.
+  - `art.race_logo.*.small`: Player Relations and the score window.
+  - `art.object.*`: on the map (wormholes, packets, salvage, the Mystery Trader) and in the Selection Summary when
+    a minefield, packet, salvage, wormhole or the Mystery Trader is selected (`art.object.minefield.<type>` by the
+    minefield's type: standard 0, heavy 1, speed bump 2).
+  - `art.title`: behind the main menu.
+  - The `ui.*` interface pieces are not used yet.
 - String keys `message.<x>.text` (S21), overridable by any cosmetic mod's `lang/<locale>.json`.
 
 ## Open questions
