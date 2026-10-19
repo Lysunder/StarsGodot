@@ -146,7 +146,7 @@ static func in_use() -> Array[Dictionary]:
 
 func _label_of(i: int) -> String:
 	var label_text: String = _templates[i]["name"]
-	return label_text if label_text != "" else "(empty %d)" % i
+	return label_text if label_text != "" else tr("(empty %d)") % i
 
 
 func _choose(i: int) -> void:
@@ -159,7 +159,7 @@ func _choose(i: int) -> void:
 	var view := GameSession.view
 	for d: Dictionary in t["queue"]:
 		var q := QueueItem.new(d["item"], int(d["count"]))
-		_items.add_item("%s  (up to %d)" % [view.queue_item_name(view.player, q), q.count])
+		_items.add_item(tr("%s  (up to %d)") % [view.queue_item_name(view.player, q), q.count])
 	if _items.item_count == 0:
 		_items.add_item("No auto-build items")
 		_items.set_item_disabled(0, true)
@@ -182,14 +182,14 @@ func _on_import() -> void:
 	var label_text: String = _templates[_chosen]["name"]
 	_rename.open(
 		"Name the Template",
-		label_text if label_text != "" else "Template %d" % _chosen,
+		label_text if label_text != "" else tr("Template %d") % _chosen,
 		ProductionTemplates.NAME_MAX
 	)
 
 
 func _on_named(text: String) -> void:
 	if text == "":
-		text = "Template %d" % _chosen
+		text = tr("Template %d") % _chosen
 	if _importing:
 		_import(text)
 	else:

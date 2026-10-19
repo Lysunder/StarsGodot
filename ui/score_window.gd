@@ -163,8 +163,8 @@ func _fill_victory() -> void:
 			l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			_victory.add_child(l)
 	var lines: Array[String] = [
-		"A winner must meet %d of the conditions switched on." % criteria,
-		"No winner can be declared before %d years have passed." % min_years,
+		tr("A winner must meet %d of the conditions switched on.") % criteria,
+		tr("No winner can be declared before %d years have passed.") % min_years,
 	]
 	var winners := ScoreView.winners(view)
 	if not winners.is_empty():
@@ -181,19 +181,25 @@ static func _condition_text(view: PlayerView, c: Dictionary) -> String:
 	match c["id"]:
 		"owns_planets":
 			var planets := view.state.planets.size()
-			return "Own %d%% of the planets (%d of %d)" % [v, (planets * v + 50) / 100, planets]
+			return (
+				TranslationServer.translate("Own %d%% of the planets (%d of %d)")
+				% [v, (planets * v + 50) / 100, planets]
+			)
 		"tech_level":
-			return "Reach tech level %d in %d fields" % [v, c.get("fields", 0)]
+			return (
+				TranslationServer.translate("Reach tech level %d in %d fields")
+				% [v, c.get("fields", 0)]
+			)
 		"score":
-			return "Reach a score of %s" % CommandPane.thousands(v)
+			return TranslationServer.translate("Reach a score of %s") % CommandPane.thousands(v)
 		"exceeds_second":
-			return "Lead the next best score by %d%%" % v
+			return TranslationServer.translate("Lead the next best score by %d%%") % v
 		"production":
-			return "Produce %d thousand resources a year" % v
+			return TranslationServer.translate("Produce %d thousand resources a year") % v
 		"capital_ships":
-			return "Own %d capital ships" % v
+			return TranslationServer.translate("Own %d capital ships") % v
 		"highest_score":
-			return "Have the best score after %d years" % v
+			return TranslationServer.translate("Have the best score after %d years") % v
 	return c["id"]
 
 

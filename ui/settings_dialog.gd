@@ -30,6 +30,8 @@ var _fonts: Array[CheckBox] = []
 var _size: OptionButton
 var _scale: OptionButton
 var _palette: OptionButton
+var _language: OptionButton
+var _locales: PackedStringArray = []
 var _swatches: HFlowContainer
 var _keys: Array[Button] = []
 ## The action waiting for its new key (-1 none).
@@ -113,6 +115,16 @@ func _build_display() -> Control:
 				_apply()
 	)
 	grid.add_child(_palette)
+	grid.add_child(_heading("Language"))
+	_language = OptionButton.new()
+	_language.item_selected.connect(
+		func(i: int) -> void:
+			if not _loading:
+				UiLocale.save(_locales[i])
+				UiLocale.apply(GameSession.content, _locales[i])
+				_apply()
+	)
+	grid.add_child(_language)
 	_swatches = HFlowContainer.new()
 	box.add_child(_swatches)
 	return box
@@ -155,6 +167,11 @@ func open() -> void:
 	_fill_sizes(font, UiSettings.font_size(font))
 	_scale.select(_scale.get_item_index(UiSettings.scale()))
 	_palette.select(Palette.MODES.find(UiSettings.palette()))
+	_locales = UiLocale.locales(GameSession.content)
+	_language.clear()
+	for loc in _locales:
+		_language.add_item(UiLocale.display_name(loc))
+	_language.select(maxi(_locales.find(GameSession.content.locale), 0))
 	_loading = false
 	_show_swatches()
 	_show_keys()

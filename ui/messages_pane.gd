@@ -276,11 +276,11 @@ func _show() -> void:
 		current = _first()
 	var year := ""
 	if GameSession.has_game():
-		year = "Year: %d%s   " % [GameSession.view.year(), "*" if GameSession.dirty else ""]
+		year = tr("Year: %d%s   ") % [GameSession.view.year(), "*" if GameSession.dirty else ""]
 	if count == 0:
 		_header.text = year + "Messages: (none)"
 	else:
-		_header.text = year + "Messages: %d of %d" % [current + 1, count]
+		_header.text = year + tr("Messages: %d of %d") % [current + 1, count]
 	if not _any_filtered():
 		show_all = false
 	var filtered := is_filtered(current)

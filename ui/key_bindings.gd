@@ -8,6 +8,7 @@ extends RefCounted
 const SECTION := "keys"
 ## [id, what it does, default key with modifiers], in the order Settings lists them.
 const ACTIONS := [
+	["help", "Help", KEY_F1],
 	["save", "Save the game", KEY_MASK_CTRL | KEY_S],
 	["reports", "Reports (press again for the next one)", KEY_F3],
 	["ship_design", "Ship design", KEY_F4],

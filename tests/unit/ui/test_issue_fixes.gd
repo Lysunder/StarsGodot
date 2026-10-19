@@ -156,3 +156,45 @@ func test_rival_fleets_can_be_selected() -> void:
 		assert_int(target["target_owner"]).is_equal(rival.owner)
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+## #7 a fleet's triangle points toward its next waypoint, up when it has none.
+func test_fleet_icons_point_toward_their_waypoint() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var map := screen._map
+	var fleet := GameSession.view.fleets()[0]
+	var at := Vector2(100, 100)
+	var shape := map._fleet_shape(fleet, at)
+	assert_float(shape[0].x).is_equal_approx(at.x, 0.01)
+	assert_float(shape[0].y).is_less(at.y)
+	var wp := {
+		"x": fleet.x + 50,
+		"y": fleet.y,
+		"target": "none",
+		"target_owner": -1,
+		"target_id": -1,
+		"warp": 5,
+		"task": "none",
+		"task_data": {},
+	}
+	var reason := GameSession.add_order(
+		{
+			"type": "waypoint_add",
+			"owner": GameSession.player,
+			"fleet": fleet.number,
+			"index": 1,
+			"waypoint": wp
+		}
+	)
+	assert_str(reason).is_empty()
+	fleet = GameSession.view.state.fleet(GameSession.player, fleet.number)
+	shape = map._fleet_shape(fleet, at)
+	assert_float(shape[0].x).is_greater(at.x)
+	assert_float(shape[0].y).is_equal_approx(at.y, 0.01)
+	map.queue_redraw()
+	await get_tree().process_frame
+	screen.queue_free()
+	await get_tree().process_frame

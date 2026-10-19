@@ -130,11 +130,11 @@ func _on_header_clicked(column: String, at: Vector2) -> void:
 		for i in ReportView.PARTS[column]:
 			var part: String = ReportTable.PART_NAMES[i]
 			_add(
-				"Sort by %s (%s)" % [label_text, part],
+				tr("Sort by %s (%s)") % [label_text, part],
 				{"kind": "sort", "column": column, "sub": i, "forward": true}
 			)
 			_add(
-				"Reverse Sort by %s (%s)" % [label_text, part],
+				tr("Reverse Sort by %s (%s)") % [label_text, part],
 				{"kind": "sort", "column": column, "sub": i, "forward": false}
 			)
 	else:
@@ -147,13 +147,13 @@ func _on_header_clicked(column: String, at: Vector2) -> void:
 	var hidden: Array = s["hidden"]
 	if table.columns.size() > 1:
 		_menu.add_separator()
-		_add("Hide the %s column" % label_text, {"kind": "hide", "column": column})
+		_add(tr("Hide the %s column") % label_text, {"kind": "hide", "column": column})
 	if not hidden.is_empty():
 		_menu.add_separator()
 		for c: String in ReportView.COLUMNS[report]:
 			if hidden.has(c):
 				_add(
-					"Show the %s column" % ReportTable.label(report, c),
+					tr("Show the %s column") % ReportTable.label(report, c),
 					{"kind": "show", "column": c}
 				)
 	_menu.position = Vector2i(at) + position

@@ -426,7 +426,7 @@ func _go(to: int) -> void:
 		step = 0
 	for i in _pages.size():
 		_pages[i].visible = i == step
-	title = "Race Wizard - Step %d of %d" % [step + 1, STEPS.size()]
+	title = tr("Race Wizard - Step %d of %d") % [step + 1, STEPS.size()]
 	_heading.text = STEPS[step]
 	_back.disabled = step == 0
 	_next.disabled = step == STEPS.size() - 1 or race.random
@@ -447,7 +447,7 @@ func _refresh_points() -> void:
 		_points.remove_theme_color_override("font_color")
 		return
 	var left := RaceMath.advantage_points(race, _content)
-	_points.text = "Advantage points left: %d" % left
+	_points.text = tr("Advantage points left: %d") % left
 	if left < 0:
 		_points.add_theme_color_override("font_color", BAD)
 	else:

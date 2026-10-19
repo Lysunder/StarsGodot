@@ -30,6 +30,9 @@ Next: universe generation and the race wizard, then the turn engine (economy, or
   `tests/`). Harness tests: `python -m unittest discover -s tools/harness -p "test_*.py"`.
 - **Lint:** gdtoolkit 4.5.0, `gdlint core tests tools` and `gdformat --check core tests tools`.
 - CI runs all of these on every push.
+- **Playtest build:** `GODOT_BIN=<path to Godot> bash tools/build.sh [out_dir]` exports the Windows build
+  (needs Godot's export templates), stamps the version and commit into it, checks the pack with
+  `tools/check_pack.py` and zips it with a short readme, by default into `../Stars builds/`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the clean-room rules, layout and code style, [specs/](specs/) for the
 rule specifications, [content/README.md](content/README.md) for the content and mod format,

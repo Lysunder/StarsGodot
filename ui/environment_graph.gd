@@ -38,12 +38,12 @@ func _draw() -> void:
 		var top := axis * ROW + 1.0
 		var baseline := top + (ROW + font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0
 		var label_w := (
-			font.get_string_size(LABELS[axis], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+			font.get_string_size(tr(LABELS[axis]), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		)
 		draw_string(
 			font,
 			Vector2(left - 6 - label_w, baseline),
-			LABELS[axis],
+			tr(LABELS[axis]),
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			font_size,

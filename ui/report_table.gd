@@ -130,7 +130,7 @@ func show_rows(p_report: String, p_columns: Array[String], p_rows: Array[Diction
 
 
 static func label(p_report: String, column: String) -> String:
-	return LABELS[p_report].get(column, column)
+	return str(TranslationServer.translate(LABELS[p_report].get(column, column)))
 
 
 func row_height() -> int:

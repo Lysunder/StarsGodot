@@ -266,7 +266,7 @@ func _show_side(widget: Control, c: int, amounts: Array[int], rooms: Array[int])
 	gauge.empty_colour = Gauge.COLONISTS_EMPTY if c == Fleet.CARGO_COLONISTS else Gauge.EMPTY
 	if c == Fleet.CARGO_FUEL:
 		gauge.show_values(
-			[[amounts[4], Palette.cargo(4)]], rooms[1], "%d of %dmg" % [amounts[4], rooms[1]]
+			[[amounts[4], Palette.cargo(4)]], rooms[1], tr("%d of %dmg") % [amounts[4], rooms[1]]
 		)
 		return
 	gauge.show_values([[amounts[c], Palette.cargo(c)]], rooms[0], "%dkT" % amounts[c])

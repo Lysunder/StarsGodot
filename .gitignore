@@ -31,3 +31,6 @@ __pycache__/
 *.dll
 *.wav
 /classic/
+
+# Build stamp written by tools/build.sh while it exports
+/build_info.json

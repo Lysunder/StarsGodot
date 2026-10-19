@@ -345,7 +345,7 @@ func _show_stats() -> void:
 		return
 	var s := GameSession.view.designer.design_stats(design, starbase)
 	var label := design.name if not design.name.is_empty() else "design"
-	_cost_title.text = "Cost of one %s" % label
+	_cost_title.text = tr("Cost of one %s") % label
 	for i in 4:
 		_cost[i].text = ("%dkT" % s["cost"][i]) if i < 3 else str(s["cost"][i])
 	_stats[0].text = "%skT" % CommandPane.thousands(s["mass"])
@@ -430,7 +430,10 @@ func _on_part_picked(index: int) -> void:
 	var cost := ProductionCosts.part_cost(part, GameSession.view.me(), GameSession.content)
 	var lines := PackedStringArray([GameSession.content.display_name(id)])
 	lines.append(
-		"Mass %dkT; I %d B %d G %d R %d" % [part.get("mass", 0), cost[0], cost[1], cost[2], cost[3]]
+		(
+			tr("Mass %dkT; I %d B %d G %d R %d")
+			% [part.get("mass", 0), cost[0], cost[1], cost[2], cost[3]]
+		)
 	)
 	var values: Dictionary = part.get("stats", {})
 	for key: String in values:
@@ -543,9 +546,9 @@ func _on_delete() -> void:
 	var saved := _saved(_picked_slot())
 	if saved == null:
 		return
-	var text := "Delete the design %s?" % saved.name
+	var text := tr("Delete the design %s?") % saved.name
 	if saved.remaining > 0:
-		text += "\nIts %d ships are removed with it." % saved.remaining
+		text += tr("\nIts %d ships are removed with it.") % saved.remaining
 	_confirm_delete.dialog_text = text
 	_confirm_delete.popup_centered()
 

@@ -14,6 +14,7 @@ const BUTTON_WIDTH := 200
 var _status: Label
 var _new_game: NewGameDialog
 var _settings: SettingsDialog
+var _help: HelpWindow
 var _personalities: PersonalityEditor
 var _turn_files: FileDialog
 var _mods: ModManager
@@ -36,12 +37,14 @@ func _ready() -> void:
 	box.add_child(title)
 	for spec: Array in [
 		["New Game...", _on_new],
+		["Tutorial", _on_tutorial],
 		["Open Game", _on_load],
 		["Open Turn File...", func() -> void: _turn_files.popup_centered_ratio(0.6)],
 		["Mods...", func() -> void: _mods.open()],
 		["Import Classic Look...", func() -> void: _classic.popup_centered_ratio(0.6)],
 		["Personalities...", func() -> void: _personalities.open()],
 		["Settings...", func() -> void: _settings.open()],
+		["Help...", func() -> void: _help.open()],
 		["Exit", _on_quit],
 	]:
 		var b := Button.new()
@@ -68,11 +71,13 @@ func _ready() -> void:
 	add_child(_mods)
 	_personalities = PersonalityEditor.new()
 	add_child(_personalities)
+	_help = HelpWindow.new()
+	add_child(_help)
 	_turn_files = FileDialog.new()
 	_turn_files.title = "Open Turn File"
 	_turn_files.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_turn_files.access = FileDialog.ACCESS_FILESYSTEM
-	_turn_files.filters = PackedStringArray(["*.%s ; Turn files" % TurnFile.EXTENSION])
+	_turn_files.filters = PackedStringArray([tr("*.%s ; Turn files") % TurnFile.EXTENSION])
 	_turn_files.file_selected.connect(_on_turn_file)
 	add_child(_turn_files)
 	_new_game = NewGameDialog.new()
@@ -86,6 +91,12 @@ func _on_new() -> void:
 
 func _on_game_chosen(options: NewGame.Options) -> void:
 	GameSession.new_game(options)
+	start_game.emit()
+
+
+func _on_tutorial() -> void:
+	GameSession.new_game(Tutorial.options())
+	GameSession.tutorial = true
 	start_game.emit()
 
 
@@ -116,7 +127,7 @@ func _on_classic_folder(dir: String) -> void:
 		on.append(ClassicImporter.MOD_ID)
 	ModSettings.save(on, ModSettings.trusted())
 	GameSession.reload_content()
-	_status.text = "%s The classic look is on (Mods... turns it off)." % " ".join(r.lines)
+	_status.text = tr("%s The classic look is on (Mods... turns it off).") % " ".join(r.lines)
 
 
 func _on_quit() -> void:

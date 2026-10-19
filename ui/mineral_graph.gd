@@ -57,11 +57,13 @@ func _draw() -> void:
 	for m in 3:
 		var top := m * ROW + 1.0
 		var baseline := top + (ROW + font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0
-		var label_w := font.get_string_size(LABELS[m], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var label_w := (
+			font.get_string_size(tr(LABELS[m]), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		)
 		draw_string(
 			font,
 			Vector2(left - 6 - label_w, baseline),
-			LABELS[m],
+			tr(LABELS[m]),
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			font_size,

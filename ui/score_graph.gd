@@ -117,7 +117,7 @@ func _draw() -> void:
 	draw_string(
 		font,
 		Vector2(MARGIN_LEFT, MARGIN + font.get_ascent(fsize)),
-		LABELS[field] + " by Year",
+		tr("%s by Year") % tr(LABELS[field]),
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
 		fsize,
@@ -138,7 +138,7 @@ func _draw() -> void:
 		draw_string(
 			font,
 			r.position + Vector2(8, 8 + font.get_ascent(fsize)),
-			"No history yet.",
+			tr("No history yet."),
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			fsize,

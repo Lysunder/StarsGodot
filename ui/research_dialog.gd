@@ -124,17 +124,17 @@ func _show() -> void:
 	_percent.set_value_no_signal(info["percent"])
 	var total := GameSession.view.total_resources()
 	var budget: int = total * info["percent"] / 100
-	_total.text = "Total resources: %s" % CommandPane.thousands(total)
-	_budget.text = "For research next year: %s" % CommandPane.thousands(budget)
+	_total.text = tr("Total resources: %s") % CommandPane.thousands(total)
+	_budget.text = tr("For research next year: %s") % CommandPane.thousands(budget)
 	var field: Dictionary = fields[info["field"]]
-	_title.text = "Researching %s, level %d" % [field["name"], field["level"] + 1]
+	_title.text = tr("Researching %s, level %d") % [field["name"], field["level"] + 1]
 	var needed: int = maxi(field["cost"] - field["points"], 0)
-	_needed.text = "Resources needed: %s" % CommandPane.thousands(needed)
+	_needed.text = tr("Resources needed: %s") % CommandPane.thousands(needed)
 	if budget <= 0:
 		_time.text = "Estimated time: never"
 	else:
 		var years := ceili(float(needed) / budget)
-		_time.text = "Estimated time: %d year%s" % [years, "" if years == 1 else "s"]
+		_time.text = tr("Estimated time: %d year%s") % [years, "" if years == 1 else "s"]
 	var rows: Array[Dictionary] = []
 	for label_text in field["benefits"]:
 		rows.append({"left": label_text})

@@ -23,7 +23,7 @@ func _init() -> void:
 
 func set_value(v: int) -> void:
 	value = clampi(v, 0, MAX_WARP)
-	show_values([[value, FILL]], MAX_WARP, "Stopped" if value == 0 else "Warp %d" % value)
+	show_values([[value, FILL]], MAX_WARP, "Stopped" if value == 0 else tr("Warp %d") % value)
 
 
 func _gui_input(event: InputEvent) -> void:

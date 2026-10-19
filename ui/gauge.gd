@@ -34,7 +34,7 @@ func show_values(p_segments: Array, p_maximum: int, p_caption: String) -> void:
 
 ## A single-colour gauge: "value of maximum<unit>".
 func show_amount(value: int, p_maximum: int, colour: Color, unit: String) -> void:
-	show_values([[value, colour]], p_maximum, "%d of %d%s" % [value, p_maximum, unit])
+	show_values([[value, colour]], p_maximum, tr("%d of %d%s") % [value, p_maximum, unit])
 
 
 func _draw() -> void:

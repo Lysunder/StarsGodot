@@ -121,7 +121,7 @@ func _fill() -> void:
 		row.set_text(4, "yes" if not str(entry["hash"]).is_empty() else "")
 		row.set_metadata(0, i)
 	if _mods.is_empty():
-		_details.text = "No mods found. Put mod folders in %s." % ModSettings.mods_dir
+		_details.text = tr("No mods found. Put mod folders in %s.") % ModSettings.mods_dir
 	elif selected >= 0 and selected < _mods.size():
 		root.get_child(selected).select(1)
 

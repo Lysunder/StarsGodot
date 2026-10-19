@@ -143,7 +143,7 @@ func _refill(pick: String) -> void:
 			continue
 		var p := PersonalityFile.from_content(content, id)
 		_entries.append({"personality": p, "own": false, "id": id})
-		_list.add_item("%s (built in)" % p["name"])
+		_list.add_item(tr("%s (built in)") % p["name"])
 	var selected := 0
 	for p: Dictionary in PersonalityStore.personalities():
 		if p["name"] == pick:
@@ -249,7 +249,7 @@ func _add_row(grid: GridContainer, s: Dictionary, level: int) -> void:
 	spin.step = 1
 	spin.value = PersonalityFile.value(_current, level, key)
 	spin.editable = _own and (override == null or override.button_pressed)
-	spin.tooltip_text = "%d to %d (default %d)" % [s["min"], s["max"], s["default"]]
+	spin.tooltip_text = tr("%d to %d (default %d)") % [s["min"], s["max"], s["default"]]
 	grid.add_child(spin)
 	_rows[key] = {"spin": spin, "override": override}
 	spin.value_changed.connect(func(v: float) -> void: _set_value(key, level, int(v)))
@@ -303,7 +303,7 @@ func _on_new() -> void:
 
 func _on_copy() -> void:
 	var p := _current.duplicate(true)
-	p["name"] = _unique_name("Copy of %s" % str(_current.get("name", "")))
+	p["name"] = _unique_name(tr("Copy of %s") % str(_current.get("name", "")))
 	_show(p, true)
 	_saved_name = ""
 	_status.text = "Not saved yet."
@@ -321,7 +321,7 @@ func _on_save() -> void:
 			str(e["personality"]["name"]) == label_text
 			and (not e["own"] or label_text != _saved_name)
 		):
-			_status.text = "Another personality is called %s." % label_text
+			_status.text = tr("Another personality is called %s.") % label_text
 			return
 	if PersonalityStore.save(_current).is_empty():
 		_status.text = "The personality could not be saved."

@@ -161,7 +161,7 @@ func _interval() -> float:
 
 func _set_speed(s: int) -> void:
 	_speed = clampi(s, 1, SPEED_MAX)
-	_speed_label.text = "Playback speed: %d" % _speed
+	_speed_label.text = tr("Playback speed: %d") % _speed
 	if not _timer.is_stopped():
 		_timer.start(_interval())
 
@@ -261,7 +261,7 @@ func _action_text() -> String:
 		if a["square"] == BattleReplay.GONE:
 			lines.append("leaves the battle.")
 		else:
-			lines.append("moves to %s." % _square_text(a["square"]))
+			lines.append(tr("moves to %s.") % _square_text(a["square"]))
 		return "\n".join(lines)
 	var target: int = a["target"]
 	lines.append("fires on " + _player(int(replay.battle["tokens"][target]["owner"])))
@@ -273,15 +273,15 @@ func _action_text() -> String:
 			else label_text
 		)
 	)
-	lines.append("at %s:" % _square_text(a["target_square"]))
+	lines.append(tr("at %s:") % _square_text(a["target_square"]))
 	if a["shield_damage"] > 0:
-		lines.append("%d damage to shields" % a["shield_damage"])
+		lines.append(tr("%d damage to shields") % a["shield_damage"])
 	if a["armor_damage"] > 0:
-		lines.append("%d damage to armor" % a["armor_damage"])
+		lines.append(tr("%d damage to armor") % a["armor_damage"])
 	if a["no_damage"]:
 		lines.append("no damage.")
 	if a["killed"] > 0:
-		lines.append("%d ship%s destroyed." % [a["killed"], "" if a["killed"] == 1 else "s"])
+		lines.append(tr("%d ship%s destroyed.") % [a["killed"], "" if a["killed"] == 1 else "s"])
 	return "\n".join(lines)
 
 
@@ -310,23 +310,26 @@ func _selection_text() -> String:
 		lines.append("Has left the battle")
 		return "\n".join(lines)
 	lines.append(
-		"Initiative: %d    Moves a round: %s" % [s["initiative"], _moves(s["movement_quarters"])]
+		(
+			tr("Initiative: %d    Moves a round: %s")
+			% [s["initiative"], _moves(s["movement_quarters"])]
+		)
 	)
 	var damage := "none"
 	if s["damaged"] > 0:
 		damage = (
 			"%d%%" % s["damage_pct"]
 			if s["starbase"]
-			else "%d at %d%%" % [s["damaged"], s["damage_pct"]]
+			else tr("%d at %d%%") % [s["damaged"], s["damage_pct"]]
 		)
-	lines.append("Armor: %d    Damage: %s" % [s["armor"], damage])
-	lines.append("Shields: %s" % (str(s["shields"]) if s["shields"] > 0 else "none"))
+	lines.append(tr("Armor: %d    Damage: %s") % [s["armor"], damage])
+	lines.append(tr("Shields: %s") % (str(s["shields"]) if s["shields"] > 0 else "none"))
 	if s["jamming"] > 0:
-		lines.append("Torpedo jamming: %d%%" % s["jamming"])
+		lines.append(tr("Torpedo jamming: %d%%") % s["jamming"])
 	if not s["starbase"]:
 		var tactic: String = BattlePlansDialog.TACTICS[mini(s["tactic"], 5)]
 		if s["tactic"] == 0:
-			tactic += " in %d moves" % s["countdown"]
+			tactic += tr(" in %d moves") % s["countdown"]
 		lines.append("Tactic: " + tactic)
 	lines.append("Primary target: " + BattlePlansDialog.TARGETS[mini(s["primary_target"], 7)])
 	lines.append("Secondary target: " + BattlePlansDialog.TARGETS[mini(s["secondary_target"], 7)])

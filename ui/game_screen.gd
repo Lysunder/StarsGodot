@@ -23,6 +23,9 @@ const MENU_PLANS := 12
 const MENU_RELATIONS := 13
 const MENU_END_TURN := 20
 const MENU_ABOUT := 40
+const MENU_HELP := 41
+## The tutorial coach's gap from the scanner's top right corner.
+const COACH_MARGIN := 8
 ## Report menu items are this plus the index in ReportView.REPORTS.
 const MENU_REPORT := 50
 const MENU_SCORE := 60
@@ -41,6 +44,7 @@ var _reports: ReportsWindow
 var _battle_viewer: BattleViewer
 var _score: ScoreWindow
 var _about: AcceptDialog
+var _help: HelpWindow
 var _settings: SettingsDialog
 var _eliminated: AcceptDialog
 ## The hotseat hand-off cover, its text, and the human players already wiped out when the year
@@ -95,6 +99,8 @@ func _ready() -> void:
 	toolbar.scanners_toggled.connect(_map.set_show_scanners)
 	toolbar.zoom_requested.connect(_map.zoom_by)
 	scanner.add_child(_map)
+	if GameSession.tutorial:
+		_add_coach()
 	_status = ScannerStatus.new()
 	scanner.add_child(_status)
 	_summary = SummaryPane.new()
@@ -120,11 +126,13 @@ func _ready() -> void:
 	_reports.battle_requested.connect(_battle_viewer.open)
 	_score = ScoreWindow.new()
 	add_child(_score)
+	_help = HelpWindow.new()
+	add_child(_help)
 	_about = AcceptDialog.new()
 	_about.title = "About StarsGodot"
 	_about.dialog_text = (
 		"StarsGodot\nA reimplementation of the game rules of Stars! 2.6i in Godot.\n"
-		+ "Version %s" % GameSession.game_version
+		+ tr("Version %s") % BuildInfo.label()
 	)
 	add_child(_about)
 	_settings = SettingsDialog.new()
@@ -177,6 +185,19 @@ func _build_handoff() -> void:
 	_handoff.hide()
 
 
+## The tutorial's coach over the top right of the scanner.
+func _add_coach() -> void:
+	var coach := TutorialCoach.new()
+	coach.anchor_left = 1.0
+	coach.anchor_right = 1.0
+	coach.offset_left = -COACH_MARGIN - TutorialCoach.WIDTH
+	coach.offset_right = -COACH_MARGIN
+	coach.offset_top = COACH_MARGIN
+	coach.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_map.add_child(coach)
+	coach.finished.connect(func() -> void: GameSession.tutorial = false)
+
+
 func _build_menu() -> void:
 	var menu := MenuBar.new()
 	add_child(menu)
@@ -218,6 +239,8 @@ func _build_menu() -> void:
 	menu.add_child(report)
 	var help := PopupMenu.new()
 	help.name = "Help"
+	_keyed_item(help, "Help Topics...", MENU_HELP, "help")
+	help.add_separator()
 	help.add_item("About StarsGodot...", MENU_ABOUT)
 	help.id_pressed.connect(_on_menu)
 	menu.add_child(help)
@@ -302,7 +325,9 @@ func _on_menu(menu_id: int) -> void:
 				_submit()
 				return
 			var err := GameSession.save_game(GameSession.default_save_path())
-			_messages.add("Game saved." if err == OK else "Saving failed (%s)." % error_string(err))
+			_messages.add(
+				"Game saved." if err == OK else tr("Saving failed (%s).") % error_string(err)
+			)
 		MENU_MAIN:
 			quit_requested.emit()
 		MENU_QUIT:
@@ -319,6 +344,8 @@ func _on_menu(menu_id: int) -> void:
 			_on_end_turn()
 		MENU_ABOUT:
 			_about.popup_centered()
+		MENU_HELP:
+			_help.open()
 		MENU_SETTINGS:
 			_settings.open()
 		MENU_REPORT:
@@ -358,7 +385,9 @@ func _submit() -> void:
 	if not problem.is_empty():
 		_messages.add(problem)
 		return
-	_messages.add("Orders saved to %s. Send that file to the host." % GameSession.submission_path())
+	_messages.add(
+		tr("Orders saved to %s. Send that file to the host.") % GameSession.submission_path()
+	)
 
 
 ## The year's start for the player at the controls: the messages, the orders refused, the map
@@ -377,15 +406,18 @@ func _on_player_changed() -> void:
 func _show_handoff() -> void:
 	var me := GameSession.view.me()
 	var lines := PackedStringArray()
-	lines.append("Year %d" % GameSession.view.year())
+	lines.append(tr("Year %d") % GameSession.view.year())
 	for p: int in _lost_players():
 		if not _lost.has(p):
 			lines.append(
-				"The %s have been wiped out." % GameSession.state.player(p).race.display_plural()
+				(
+					tr("The %s have been wiped out.")
+					% GameSession.state.player(p).race.display_plural()
+				)
 			)
 	_lost = _lost_players()
 	lines.append("")
-	lines.append("%s (player %d): your turn." % [me.race.display_plural(), me.index + 1])
+	lines.append(tr("%s (player %d): your turn.") % [me.race.display_plural(), me.index + 1])
 	lines.append("Everyone else, look away.")
 	_handoff_text.text = "\n".join(lines)
 	_handoff.show()

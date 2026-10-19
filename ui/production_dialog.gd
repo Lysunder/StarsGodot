@@ -138,7 +138,7 @@ func _load(id: int) -> void:
 	planet_id = id
 	_status.text = ""
 	var info := GameSession.view.planet_info(id)
-	title = "%s Production" % info["name"]
+	title = tr("%s Production") % info["name"]
 	_items.clear()
 	for q in GameSession.preview.state.planet(id).queue:
 		_items.append(q.to_dict())
@@ -209,7 +209,7 @@ func _show_queue() -> void:
 			. append(
 				{
 					"left": view.queue_item_name(view.player, q),
-					"right": ("Up to %d" % q.count) if auto else str(q.count),
+					"right": (tr("Up to %d") % q.count) if auto else str(q.count),
 					"italic": auto,
 					"colour": CommandPane.queue_color(when[i]) if i < when.size() else Color.BLACK,
 				}
@@ -228,7 +228,7 @@ func _show_cost() -> void:
 			l.text = ""
 		return
 	var item := _inventory_items[picked]
-	_cost_title.text = "Cost of one %s" % item["label"]
+	_cost_title.text = tr("Cost of one %s") % item["label"]
 	var cost := GameSession.view.unit_cost(planet_id, item)
 	for i in 4:
 		_cost[i].text = ("%dkT" % cost[i]) if i < 3 else str(cost[i])
@@ -249,12 +249,12 @@ func _show_queue_cost() -> void:
 	var view := GameSession.view
 	var q := ModelObject.object_from(QueueItem, item, "", PackedStringArray()) as QueueItem
 	var label_text := view.queue_item_name(view.player, q)
-	_queue_title.text = "Cost of %d × %s" % [count, label_text]
+	_queue_title.text = tr("Cost of %d × %s") % [count, label_text]
 	var cost := view.unit_cost(planet_id, item)
 	for m in 4:
 		var total := cost[m] * count
 		_queue_cost[m].text = ("%dkT" % total) if m < 3 else str(total)
-	var done := "%d%% done, completion: " % int(item["progress"])
+	var done := tr("%d%% done, completion: ") % int(item["progress"])
 	_completion.text = done + completion_text(_estimate, i, _is_auto(item))
 
 
@@ -272,10 +272,10 @@ static func completion_text(estimate: Dictionary, i: int, auto: bool) -> String:
 	if first == 0:
 		return "Never"
 	if last == 0:
-		return "%d - ? years" % first
+		return TranslationServer.translate("%d - ? years") % first
 	if first != last:
-		return "%d - %d years" % [first, last]
-	return "1 year" if first == 1 else "%d years" % first
+		return TranslationServer.translate("%d - %d years") % [first, last]
+	return "1 year" if first == 1 else TranslationServer.translate("%d years") % first
 
 
 func _step() -> int:

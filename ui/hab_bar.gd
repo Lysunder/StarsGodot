@@ -46,12 +46,12 @@ func _draw() -> void:
 	if race.is_immune(axis):
 		var font := get_theme_default_font()
 		var fsize := get_theme_default_font_size()
-		var w := font.get_string_size("Immune", HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
+		var w := font.get_string_size(tr("Immune"), HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
 		draw_rect(Rect2(1, 1, size.x - 2, size.y - 2), Palette.axis(axis))
 		draw_string(
 			font,
 			Vector2((size.x - w) / 2, (size.y + font.get_ascent(fsize)) / 2 - 2),
-			"Immune",
+			tr("Immune"),
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			fsize,

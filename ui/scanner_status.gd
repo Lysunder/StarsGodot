@@ -49,19 +49,19 @@ func show_at(x: int, y: int, hit: Dictionary, from: Dictionary) -> void:
 	if not hit.is_empty():
 		if hit["kind"] == "planet":
 			var info := GameSession.view.planet_info(hit["id"])
-			_id.text = "ID #%d" % (hit["id"] + 1)
+			_id.text = tr("ID #%d") % (hit["id"] + 1)
 			_name.text = info["name"]
 			_x.text = "X: %d" % info["x"]
 			_y.text = "Y: %d" % info["y"]
 		elif hit["kind"] == "seen_fleet":
 			var seen := MapObjects.seen_fleet_info(GameSession.view, hit["id"])
-			_id.text = "ID #%d" % (hit["id"] % MapObjects.FLEET_KEY + 1)
+			_id.text = tr("ID #%d") % (hit["id"] % MapObjects.FLEET_KEY + 1)
 			_name.text = "%s (%s)" % [seen.get("name", ""), seen.get("race", "")]
 		else:
 			var f := GameSession.view.fleet_info(hit["id"])
-			_id.text = "ID #%d" % (hit["id"] + 1)
+			_id.text = tr("ID #%d") % (hit["id"] + 1)
 			_name.text = f.get("name", "")
 	_distance.text = ""
 	if not from.is_empty():
 		var d := Vector2(x - from["x"], y - from["y"]).length()
-		_distance.text = "%.2f light years from %s" % [d, from["name"]]
+		_distance.text = tr("%.2f light years from %s") % [d, from["name"]]

@@ -97,5 +97,11 @@ jobs:
       - name: No original assets (D13)
         run: python tools/check_assets.py
 
+      - name: Help strings up to date
+        run: python tools/gen_help.py --check
+
+      - name: Translation template up to date
+        run: python tools/gen_ui_strings.py --check
+
       - name: Harness tests (Python)
         run: python -m unittest discover -s tools/harness -p "test_*.py" -v

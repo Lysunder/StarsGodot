@@ -133,11 +133,11 @@ func refresh() -> void:
 				]
 			)
 		)
-	_growth.text = "Most colonist growth a year: %d%%" % race.growth_rate
+	_growth.text = tr("Most colonist growth a year: %d%%") % race.growth_rate
 	var odds := RaceEditing.habitable_odds(race)
 	if odds == 0:
 		_odds.text = "Every planet will be habitable to your race."
 	elif odds == 1:
 		_odds.text = "Nearly every planet will be habitable to your race."
 	else:
-		_odds.text = "About 1 planet in %d will be habitable to your race." % odds
+		_odds.text = tr("About 1 planet in %d will be habitable to your race.") % odds

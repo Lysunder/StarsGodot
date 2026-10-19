@@ -35,6 +35,10 @@ const COLOR_SCAN_NORMAL := Color(0.55, 0.0, 0.0, 0.35)
 const COLOR_SCAN_PENETRATING := Color(0.0, 0.5, 0.0, 0.35)
 const COLOR_SALVAGE := Color(0.6, 0.6, 0.6)
 const COLOR_TRADER := Color(1.0, 0.85, 0.2)
+## A fleet's triangle: tip and back distance from its centre, and half its width, in pixels.
+const FLEET_TIP := 5.0
+const FLEET_BACK := 4.0
+const FLEET_HALF_WIDTH := 4.0
 ## Minefield discs: fill and outline opacity.
 const MINEFIELD_FILL := 0.12
 const MINEFIELD_EDGE := 0.5
@@ -259,10 +263,7 @@ func _draw() -> void:
 	for f in MapObjects.seen_fleets(view):
 		var at := to_screen(f.x, f.y) + Vector2(5, 5)
 		if on_screen.has_point(at):
-			var tri := PackedVector2Array(
-				[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
-			)
-			draw_colored_polygon(tri, Palette.color(Palette.OTHER))
+			draw_colored_polygon(_fleet_shape(f, at), Palette.color(Palette.OTHER))
 			if selection_kind == "seen_fleet" and selection_id == MapObjects.fleet_key(f):
 				draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 	for f in view.fleets():
@@ -270,13 +271,28 @@ func _draw() -> void:
 		var is_selected := selection_kind == "fleet" and selection_id == f.number
 		if not is_selected and not on_screen.has_point(at):
 			continue
-		var tri := PackedVector2Array(
-			[at + Vector2(0, -4), at + Vector2(4, 4), at + Vector2(-4, 4)]
-		)
-		draw_colored_polygon(tri, Palette.color(Palette.FLEET))
+		draw_colored_polygon(_fleet_shape(f, at), Palette.color(Palette.FLEET))
 		if is_selected:
 			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
+
+
+## A fleet's triangle at `at`, its tip toward the fleet's next waypoint (issue #7), up when it
+## has none or the waypoint is where the fleet is.
+func _fleet_shape(f: Fleet, at: Vector2) -> PackedVector2Array:
+	var heading := Vector2.UP
+	if f.waypoints.size() > 1:
+		var to := to_screen(f.waypoints[1].x, f.waypoints[1].y) - to_screen(f.x, f.y)
+		if to.length() > 0.001:
+			heading = to.normalized()
+	var side := Vector2(-heading.y, heading.x)
+	return PackedVector2Array(
+		[
+			at + heading * FLEET_TIP,
+			at - heading * FLEET_BACK + side * FLEET_HALF_WIDTH,
+			at - heading * FLEET_BACK - side * FLEET_HALF_WIDTH,
+		]
+	)
 
 
 ## The player's scanner coverage (issue #2), under everything else: each planet's and fleet's

@@ -26,12 +26,17 @@ var ruleset: Ruleset = StandardRuleset.build()
 ## The script mods' changes to the turn's phases, in load order: [op, target id, Phase or null,
 ## mod id] (ModApi; applied by StandardTurn.pipeline).
 var phase_edits: Array = []
+## Display strings from the mods' lang/<locale>.json files: locale -> {key -> String}. Read-only
+## outside loading.
+var strings: Dictionary = {}
+## The language display_name and string_for use when given none (the player's choice, UiLocale);
+## English fills any gaps. Display only: no rule reads it.
+var locale: String = "en"
 
 var _defs: Dictionary = {}  # type -> {id -> Dictionary}
 var _type_of: Dictionary = {}  # id -> type
 var _origins: Dictionary = {}  # id -> {def-relative pointer -> [mod, file, line]}
 var _provenance: Dictionary = {}  # id -> Array of String
-var _strings: Dictionary = {}  # locale -> {key -> String}
 var _gameplay_mods: PackedStringArray = []  # "id@version" in load order
 
 
@@ -108,19 +113,22 @@ func provenance(id: String) -> PackedStringArray:
 	return PackedStringArray(_provenance.get(id, []))
 
 
-## Display name of a definition; falls back to English, then to the id.
-func display_name(id: String, locale: String = "en") -> String:
+## Display name of a definition in `in_locale` (the current locale when empty); falls back to
+## English, then to the id.
+func display_name(id: String, in_locale: String = "") -> String:
 	var key := id + ".name"
-	for loc: String in [locale, "en"]:
-		if _strings.has(loc) and _strings[loc].has(key):
-			return _strings[loc][key]
+	for loc: String in [in_locale if not in_locale.is_empty() else locale, "en"]:
+		if strings.has(loc) and strings[loc].has(key):
+			return strings[loc][key]
 	return id
 
 
-func string_for(key: String, locale: String = "en") -> String:
-	for loc: String in [locale, "en"]:
-		if _strings.has(loc) and _strings[loc].has(key):
-			return _strings[loc][key]
+## A display string in `in_locale` (the current locale when empty); falls back to English, then
+## to the key.
+func string_for(key: String, in_locale: String = "") -> String:
+	for loc: String in [in_locale if not in_locale.is_empty() else locale, "en"]:
+		if strings.has(loc) and strings[loc].has(key):
+			return strings[loc][key]
 	return key
 
 
@@ -160,14 +168,14 @@ func add_patch_file(mod_id: String, file: String, text: String) -> void:
 
 
 ## A strings file is a flat object of key -> text for one locale. Later mods override earlier ones.
-func add_strings_file(mod_id: String, file: String, locale: String, text: String) -> void:
+func add_strings_file(mod_id: String, file: String, file_locale: String, text: String) -> void:
 	var parsed := _parse(mod_id, file, text)
 	if parsed == null:
 		return
 	if not (parsed.value is Dictionary):
 		_err(mod_id, file, 1, "a strings file must hold one object of key -> text")
 		return
-	var table: Dictionary = _strings.get_or_add(locale, {})
+	var table: Dictionary = strings.get_or_add(file_locale, {})
 	for key: String in parsed.value:
 		var value: Variant = parsed.value[key]
 		if value is String:
@@ -184,7 +192,7 @@ func finish() -> bool:
 			_validate(id, _defs[type_name][id])
 	for type_name in ContentSchemas.TYPES:
 		for id in ids(type_name):
-			if not _strings.get("en", {}).has(id + ".name"):
+			if not strings.get("en", {}).has(id + ".name"):
 				var origin := _origin(id, "")
 				_err(origin[0], origin[1], origin[2], 'no English name: add "%s.name"' % id)
 	for type_name in ContentSchemas.TYPES:

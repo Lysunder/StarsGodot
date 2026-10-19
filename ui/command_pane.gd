@@ -200,7 +200,9 @@ static func fill_gauges(info: Dictionary, fuel: Gauge, cargo: Gauge) -> void:
 		total += c[i]
 	cargo.empty_colour = Gauge.COLONISTS_EMPTY
 	cargo.show_values(
-		segments, info["cargo_capacity"], "%d of %dkT" % [total, info["cargo_capacity"]]
+		segments,
+		info["cargo_capacity"],
+		TranslationServer.translate("%d of %dkT") % [total, info["cargo_capacity"]]
 	)
 
 
@@ -243,20 +245,20 @@ func _planet_tiles() -> void:
 	t = _tile("Minerals on Hand")
 	for i in 3:
 		t.field(MINERALS[i], "%dkT" % info["surface"][i], Palette.cargo(i))
-	t.field("Mines", "%d of %d" % [info["operable_mines"], info["max_mines"]])
-	t.field("Factories", "%d of %d" % [info["operable_factories"], info["max_factories"]])
+	t.field("Mines", tr("%d of %d") % [info["operable_mines"], info["max_mines"]])
+	t.field("Factories", tr("%d of %d") % [info["operable_factories"], info["max_factories"]])
 	t = _tile("Status")
 	t.field("Population", thousands(info["population"] * 100))
 	t.field(
 		"Resources/Year",
-		"%s of %s" % [thousands(info["resources_production"]), thousands(info["resources"])]
+		tr("%s of %s") % [thousands(info["resources_production"]), thousands(info["resources"])]
 	)
 	var scanner: String = info["scanner"]
 	t.field("Scanner Type", GameSession.content.display_name(scanner) if scanner != "" else "None")
 	if scanner != "":
 		var reach: int = GameSession.content.part(scanner)["stats"]["scan_range"]
-		t.field("Scanner Range", "%d light years" % reach)
-	t.field("Defenses", "%d of %d" % [info["defenses"], info["max_defenses"]])
+		t.field("Scanner Range", tr("%d light years") % reach)
+	t.field("Defenses", tr("%d of %d") % [info["defenses"], info["max_defenses"]])
 	var defense: String = info["defense_type"]
 	t.field("Defense Type", GameSession.content.display_name(defense) if defense != "" else "None")
 	t = _tile("Fleets in Orbit")
@@ -304,7 +306,7 @@ func _starbase_tile(info: Dictionary) -> void:
 	t.field("Shields", "%sdp" % thousands(base["shields"]))
 	t.field("Damage", "None" if base["damage"] == 0 else "%sdp" % thousands(base["damage"]))
 	var driver: int = base["driver_warp"]
-	t.field("Mass Driver", "Warp %d" % driver if driver > 0 else "None")
+	t.field("Mass Driver", tr("Warp %d") % driver if driver > 0 else "None")
 	if driver <= 0:
 		return
 	var target: int = info["mass_driver_target"]
@@ -330,7 +332,7 @@ func _production_tile(info: Dictionary) -> void:
 	var queue: Array = info["queue"]
 	for i in queue.size():
 		var q: Dictionary = queue[i]
-		var right := "Up to %d" % q["count"] if q["auto"] else str(q["count"])
+		var right := tr("Up to %d") % q["count"] if q["auto"] else str(q["count"])
 		var colour := ClassicTheme.TEXT
 		if i < when.size():
 			colour = queue_color(when[i])
@@ -346,7 +348,7 @@ func _production_tile(info: Dictionary) -> void:
 	elif years == 1:
 		done = "1 year"
 	elif years > 0:
-		done = "%d years" % years
+		done = tr("%d years") % years
 	t.field("Completion", done)
 	var route: int = info["route"]
 	t.field("Route to", GameSession.view.planet_info(route)["name"] if route >= 0 else "None")
@@ -433,7 +435,7 @@ func _fleet_tiles() -> void:
 	)
 	var orbiting := view.planet_info(info["planet"]) if info["planet"] >= 0 else {}
 	t = _tile(
-		"Orbiting %s" % orbiting["name"] if info["planet"] >= 0 else "In Deep Space", "location"
+		tr("Orbiting %s") % orbiting["name"] if info["planet"] >= 0 else "In Deep Space", "location"
 	)
 	var r := t.row()
 	var go := t.button("Goto", func() -> void: goto.emit("planet", info["planet"]), r)
@@ -572,7 +574,7 @@ func _waypoint_tiles(info: Dictionary) -> void:
 			t.field("Coming From", waypoints[leg - 1]["label"])
 		else:
 			t.field("Next Way Pt", wp["label"])
-		t.field("Distance", "%.2f Light Years" % wp["distance"])
+		t.field("Distance", tr("%.2f Light Years") % wp["distance"])
 		var gauge := t.gauge("Warp Factor", WarpGauge.new()) as WarpGauge
 		gauge.set_value(wp["warp"])
 		gauge.value_dragged.connect(
@@ -640,7 +642,7 @@ func _fill_leg_fields(waypoints: Array) -> void:
 	var wp: Dictionary = waypoints[leg]
 	var years: int = wp["years"] - (waypoints[leg - 1].get("years", 0) if leg > 1 else 0)
 	var time: Label = _leg_fields["time"]
-	time.text = "Never" if wp["warp"] == 0 or wp["cannot_move"] else "%d years" % years
+	time.text = "Never" if wp["warp"] == 0 or wp["cannot_move"] else tr("%d years") % years
 	if years == 1 and wp["warp"] > 0 and not wp["cannot_move"]:
 		time.text = "1 year"
 	var fuel: Label = _leg_fields["fuel"]
@@ -730,7 +732,7 @@ func _transfer_choice(t: Tile, wp: Dictionary) -> void:
 	var raw: Array = wp["task_data"].get("raw", [0, 0, 0, 0, 0])
 	var to := OptionButton.new()
 	for p in others:
-		to.add_item("To player %d" % (p + 1))
+		to.add_item(tr("To player %d") % (p + 1))
 	to.select(clampi(int(raw[0]) if not raw.is_empty() else 0, 0, others.size() - 1))
 	to.item_selected.connect(
 		func(i: int) -> void:

@@ -36,6 +36,8 @@ var turn_file := ""
 var game_id := ""
 ## Orders changed since the game was last saved or loaded (the Messages pane's "*").
 var dirty: bool = false
+## The game was started as the tutorial (Tutorial): the game screen shows its coach.
+var tutorial: bool = false
 ## This year's orders of the human players by index (the one at the controls included), and the
 ## players who have ended their turn.
 var _orders := {}
@@ -61,6 +63,7 @@ func reload_content() -> void:
 		r = load_mods(PackedStringArray())
 	if r.ok():
 		content = r.registry
+		UiLocale.apply(content)
 	else:
 		load_errors = r.error_text()
 		push_error(load_errors)
@@ -119,7 +122,7 @@ func submission_path() -> String:
 func submit_orders() -> String:
 	var err := OrderSubmission.write(submission_path(), orders, game_id, game_version)
 	if err != OK:
-		return "The orders could not be written (%s)." % error_string(err)
+		return tr("The orders could not be written (%s).") % error_string(err)
 	dirty = false
 	changed.emit()
 	return ""
@@ -195,7 +198,7 @@ func _content_for(saved: PackedStringArray) -> String:
 		else:
 			wanted.append(id)
 	if not missing.is_empty():
-		return "This game needs mods that are not installed: %s." % ", ".join(missing)
+		return tr("This game needs mods that are not installed: %s.") % ", ".join(missing)
 	for id in ModSettings.enabled():
 		if installed.has(id) and (installed[id] as ModManifest).kind == "cosmetic":
 			wanted.append(id)
@@ -203,8 +206,9 @@ func _content_for(saved: PackedStringArray) -> String:
 	if not r.ok():
 		return "This game's mods could not be loaded:\n" + r.error_text()
 	if r.registry.gameplay_mods() != saved:
-		return "This game was played with other mods or content: %s." % ", ".join(saved)
+		return tr("This game was played with other mods or content: %s.") % ", ".join(saved)
 	content = r.registry
+	UiLocale.apply(content)
 	return ""
 
 
@@ -333,6 +337,7 @@ func _switch_to(p: int) -> void:
 func _start(s: GameState) -> void:
 	state = s
 	dirty = false
+	tutorial = false
 	turn_file = ""
 	game_id = ""
 	_orders.clear()

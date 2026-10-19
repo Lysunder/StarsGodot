@@ -1,0 +1,22 @@
+{
+  "tutorial.welcome.title": "Welcome",
+  "tutorial.welcome.text": "This tutorial walks you through your first years as the leader of a young race. Each step says what to do, and moves on by itself once you've done it.\n\nYou can hide the tutorial whenever you like. The help ({key:help}) explains everything in more detail.",
+  "tutorial.select_home.title": "Your homeworld",
+  "tutorial.select_home.text": "Your race starts on a single planet, its homeworld. It's selected now: the planet in your colour, with your fleets beside it.\n\nIts details are in the tiles on the left, and a summary at the bottom right. Clicking a planet or fleet on the map selects it; clicking your homeworld brings you back to it.\n\nChoose **Next** when you're ready.",
+  "tutorial.queue.title": "Put your planet to work",
+  "tutorial.queue.text": "A planet builds only what is in its production queue, and your homeworld's queue is empty.\n\nIn the **Production** tile, choose **Change**. Pick **Auto Factories** in the left list and press **Add ->**, then do the same with **Auto Mines**. Choose **OK** when you're done.\n\nFactories make the resources everything is paid with; mines dig up the minerals.",
+  "tutorial.research.title": "Research",
+  "tutorial.research.text": "Your scientists need a goal. Open **Commands > Research** ({key:research}), pick a field to study, and set how much of your resources goes to research. **Propulsion** gets your ships further; **Biotechnology** helps you settle more worlds.\n\nChoose **Done** to close the window.",
+  "tutorial.scout.title": "Explore",
+  "tutorial.scout.text": "You know almost nothing about the stars around you. Your two scouts can change that.\n\nClick the **Wayfarer** by your homeworld to select it (click again to step through the fleets there). Then hold **Shift** and click a planet some way off: that adds a waypoint, and the scout will fly there.",
+  "tutorial.colonize.title": "A new world",
+  "tutorial.colonize.text": "Your **Settler** carries colonists. Switch the map to the **Value** view on the toolbar: green planets suit your race, red ones don't.\n\nSelect the Settler, Shift-click a nearby green planet, and in the **Waypoint Task** tile choose **Colonize**.",
+  "tutorial.generate.title": "The first year",
+  "tutorial.generate.text": "Your orders are ready. Choose **Turn > Generate** ({key:generate}): every player's orders are carried out together, and a new year begins.",
+  "tutorial.messages.title": "News from your empire",
+  "tutorial.messages.text": "Each year brings messages, shown in the pane at the bottom left. Step through them with the arrow buttons; **Goto** takes you to what a message is about.\n\nRead them every year: they tell you what was built, what your scanners found, and what needs your attention.\n\nChoose **Next** when you've had a look.",
+  "tutorial.colony.title": "Waiting for the colony",
+  "tutorial.colony.text": "Keep generating years until your Settler reaches its planet and founds your first colony. Meanwhile, follow your scouts' discoveries and give them new waypoints when they arrive.\n\nA new colony starts with its own empty production queue: give it something to build too.",
+  "tutorial.done.title": "On your own",
+  "tutorial.done.text": "Your race has its first colony. From here on it's up to you: keep expanding to good planets, design better ships as your tech improves ({key:ship_design}), and keep an eye on your neighbour.\n\nThe help ({key:help}) covers everything this tutorial left out. Good luck!"
+}

@@ -144,10 +144,10 @@ func _draw() -> void:
 				var at := Vector2(r.get_center().x - side / 2.0, r.position.y + 1.0)
 				draw_texture_rect(art, Rect2(at, Vector2(side, side)), false)
 				var count_box := Rect2(r.position.x, r.end.y - line, r.size.x, line)
-				_text_lines(count_box, ["%d of %d" % [entry.count, most]], bold, font_size)
+				_text_lines(count_box, [tr("%d of %d") % [entry.count, most]], bold, font_size)
 				continue
 			lines.append(GameSession.content.display_name(entry.part))
-			lines.append("%d of %d" % [entry.count, most])
+			lines.append(tr("%d of %d") % [entry.count, most])
 			_text_lines(r, lines, bold, font_size)
 
 

@@ -6,6 +6,7 @@ extends Control
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	get_window().title = tr("StarsGodot %s") % BuildInfo.label()
 	UiSettings.apply(get_tree())
 	get_tree().root.size_changed.connect(func() -> void: UiSettings.rescale(get_tree()))
 	get_tree().node_added.connect(_on_node_added)

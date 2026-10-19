@@ -96,7 +96,7 @@ func refresh() -> void:
 
 func _show_planet() -> void:
 	var info := GameSession.view.planet_info(id)
-	_title.text = "%s Summary" % info["name"]
+	_title.text = tr("%s Summary") % info["name"]
 	_planet_box.visible = true
 	if not info["known"]:
 		_value.text = "No information."
@@ -105,11 +105,11 @@ func _show_planet() -> void:
 		_environment.show_planet({})
 		_minerals.show_planet({})
 		return
-	_value.text = "Value: %d%%" % info["habitability"]
+	_value.text = tr("Value: %d%%") % info["habitability"]
 	_report.text = _report_age(info["report_age"])
 	var about := "about " if info["population_estimated"] else ""
 	_population.text = (
-		"Population: %s%s" % [about, CommandPane.thousands(info["population"] * 100)]
+		tr("Population: %s%s") % [about, CommandPane.thousands(info["population"] * 100)]
 		if info["population"] > 0
 		else ""
 	)
@@ -123,7 +123,7 @@ static func _report_age(years: int) -> String:
 		return "Report is current"
 	if years == 1:
 		return "Report is 1 year old"
-	return "Report is %d years old" % years
+	return TranslationServer.translate("Report is %d years old") % years
 
 
 func _show_fleet() -> void:
@@ -131,7 +131,7 @@ func _show_fleet() -> void:
 	if info.is_empty():
 		_title.text = ""
 		return
-	_title.text = "%s Summary" % info["name"]
+	_title.text = tr("%s Summary") % info["name"]
 	_fleet_box.visible = true
 	var fleet := GameSession.view.state.fleet(GameSession.player, id)
 	var design: Design = null
@@ -168,7 +168,7 @@ func _show_seen_fleet() -> void:
 	if info.is_empty():
 		_title.text = ""
 		return
-	_title.text = "%s Summary" % info["name"]
+	_title.text = tr("%s Summary") % info["name"]
 	_fleet_box.visible = true
 	var fleet := MapObjects.seen_fleet(view, id)
 	var design: Design = null

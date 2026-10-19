@@ -17,6 +17,7 @@ and what does not exist yet ("not yet").
 | [phases.md](phases.md) | The turn pipeline: phase ids in order, and how phases can be added or replaced. |
 | [scripts.md](scripts.md) | Script mods: what they can do, trust, and the determinism rules. |
 | [cosmetic.md](cosmetic.md) | Cosmetic mods: strings and names today; art, themes and sound later. |
+| [translating.md](translating.md) | Translations: a language as a cosmetic mod, and the template of every string. |
 | [api/README.md](api/README.md) | API reference for every class in `core/`, generated from the code's doc comments. |
 
 `content/README.md` (next to the base game's content) is the short reference for the file

@@ -90,6 +90,8 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	t.set_font("font", "BoldLabel", bold)
 	t.set_type_variation("BoldButton", "Button")
 	t.set_font("font", "BoldButton", bold)
+	t.set_font("normal_font", "RichTextLabel", font)
+	t.set_font("bold_font", "RichTextLabel", bold)
 	var raised := _bevel(true, FACE)
 	var sunken := _bevel(false, FACE)
 	var field := _bevel(false, FIELD)
@@ -109,6 +111,7 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 		_text_colours(t, type)
 	for type in ["Label"]:
 		t.set_color("font_color", type, TEXT)
+	t.set_color("default_color", "RichTextLabel", TEXT)
 	for type in ["LineEdit", "SpinBox", "TextEdit"]:
 		t.set_stylebox("normal", type, field)
 		t.set_stylebox("focus", type, none)

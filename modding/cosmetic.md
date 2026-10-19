@@ -10,8 +10,8 @@ overrides are planned but not built.
 | Feature | Status |
 |---|---|
 | Text: rename things, reword messages and descriptions (`lang/<locale>.json`) | Works |
-| Choosing a language in the game | Not yet: the interface always asks for English (`en`) |
-| Art packs: pictures by art id (`art/index.json`) | Works for ship and planet pictures (the Planet and Fleet tiles, the summary, the ship designer). Part icons, race logos and map objects are imported but not shown yet. |
+| Choosing a language in the game | Works: **Settings... > Language** lists the languages the mods have strings for. See [translating.md](translating.md). |
+| Art packs: pictures by art id (`art/index.json`) | Works: ship and planet pictures (the Planet and Fleet tiles, the summary, the ship designer), part pictures (the designer), race logos (Player Relations, the score) and map objects (wormholes, packets, salvage, the Mystery Trader). |
 | Themes (a Godot `Theme` from a mod) | Not yet |
 | Scene overrides (replace or add UI panels and map overlays) | Not yet |
 | Sound and music | Not yet |
