@@ -309,8 +309,14 @@ func production_inventory(id: int) -> Array[Dictionary]:
 	if pl.owner != player:
 		return out
 	var items := []
+	# terraforming that can't change the planet is not offered (issue #5): its environment is
+	# already the best the player's terraforming reaches (automatic items stay, as standing orders)
+	var terraformed := _terraform_best(pl.environment, pl.environment_original) == pl.environment
 	for item_id in content.ids("production_item"):
-		items.append([int(content.get_def("production_item", item_id).get("order", 0)), item_id])
+		var def := content.get_def("production_item", item_id)
+		if terraformed and def.get("effect") == "terraform" and not def.get("auto", false):
+			continue
+		items.append([int(def.get("order", 0)), item_id])
 	items.sort()
 	for pair: Array in items:
 		(

@@ -30,6 +30,9 @@ const DEFAULT_WARP := 6
 const COLOR_BACKGROUND := Color(0.02, 0.02, 0.06)
 const COLOR_UNOWNED := Color(0.55, 0.55, 0.6)
 const COLOR_WORMHOLE := Color(0.75, 0.45, 1.0)
+## Scanner coverage: normal and penetrating ranges (translucent, so overlaps darken a little).
+const COLOR_SCAN_NORMAL := Color(0.55, 0.0, 0.0, 0.35)
+const COLOR_SCAN_PENETRATING := Color(0.0, 0.5, 0.0, 0.35)
 const COLOR_SALVAGE := Color(0.6, 0.6, 0.6)
 const COLOR_TRADER := Color(1.0, 0.85, 0.2)
 ## Minefield discs: fill and outline opacity.
@@ -55,6 +58,8 @@ var waypoint: int = -1
 var view_mode: View = View.NORMAL
 ## Planet names overlay: on always shows the names; off shows them only when zoomed in.
 var show_names: bool = false
+## Scanner coverage overlay: the player's normal scanner ranges in red, penetrating in green.
+var show_scanners: bool = false
 
 var _dragging := false
 ## Where the right button went down, and whether the mouse has since moved far enough to pan.
@@ -68,6 +73,9 @@ var _pick_index := 0
 ## The waypoint being dragged (-1: none), where the press started and where the mouse is.
 ## While set, the next click on a planet is passed to it (Route, Set Dest); Escape cancels.
 var _planet_pick := Callable()
+## Whether the universe has been fitted once, and the size the map had at the last layout.
+var _fitted := false
+var _last_size := Vector2.ZERO
 var _drag_waypoint := -1
 var _drag_from := Vector2.ZERO
 var _drag_to := Vector2.ZERO
@@ -77,7 +85,7 @@ func _ready() -> void:
 	clip_contents = true
 	focus_mode = Control.FOCUS_CLICK
 	GameSession.changed.connect(queue_redraw)
-	resized.connect(_fit)
+	resized.connect(_on_resized)
 	Input.set_custom_mouse_cursor(_crosshair(), Input.CURSOR_CROSS, Vector2(CROSS_ARM, CROSS_ARM))
 	_object_menu = PopupMenu.new()
 	_object_menu.id_pressed.connect(
@@ -128,6 +136,19 @@ func _fit() -> void:
 	var width := float(GameSession.view.universe_width())
 	zoom = minf(size.x, size.y) / (width + 40.0)
 	offset = size / 2.0 - Vector2(width, width) / 2.0 * zoom
+	_fitted = true
+	_last_size = size
+	queue_redraw()
+
+
+## The first time the map has a size, the whole universe fits; after that a change of size (a pane
+## growing, the window resized) keeps the zoom and what is in the middle (issue #3).
+func _on_resized() -> void:
+	if not _fitted:
+		_fit()
+		return
+	offset += (size - _last_size) / 2.0
+	_last_size = size
 	queue_redraw()
 
 
@@ -176,6 +197,11 @@ func set_show_names(on: bool) -> void:
 	queue_redraw()
 
 
+func set_show_scanners(on: bool) -> void:
+	show_scanners = on
+	queue_redraw()
+
+
 func zoom_by(factor: float) -> void:
 	_zoom_at(size / 2.0, factor)
 
@@ -200,6 +226,8 @@ func _draw() -> void:
 	)
 	# only what is on screen (with room for labels and rings) is drawn
 	var visible := Rect2(Vector2.ZERO, size).grow(CULL_MARGIN)
+	if show_scanners:
+		_draw_scanners(view)
 	_draw_minefields(view)
 	for pl in view.planets():
 		var at := to_screen(pl["x"], pl["y"])
@@ -247,6 +275,29 @@ func _draw() -> void:
 		if selected:
 			draw_arc(at, 7.0, 0.0, TAU, 16, Palette.color(Palette.SELECTED), 1.5)
 			_draw_path(f)
+
+
+## The player's scanner coverage (issue #2), under everything else: each planet's and fleet's
+## normal range as a red disc, then the penetrating ranges in green over them (S15 ranges).
+func _draw_scanners(view: PlayerView) -> void:
+	var me := view.me()
+	var circles: Array = []  # [x, y, normal, penetrating]
+	for pl in view.state.planets:
+		if pl.owner == view.player:
+			var r := Scanning.planet_ranges(view.state, view.content, pl)
+			circles.append([pl.x, pl.y, r[0], r[1]])
+	for f in view.fleets():
+		var s := Scanning.fleet_scanner(f, me, view.content)
+		circles.append([f.x, f.y, maxi(s.range, 0), s.pen])
+	for layer in [2, 3]:
+		var colour := COLOR_SCAN_PENETRATING if layer == 3 else COLOR_SCAN_NORMAL
+		for c: Array in circles:
+			var radius := float(c[layer]) * zoom
+			if radius < 1.0:
+				continue
+			var at := to_screen(c[0], c[1])
+			if Rect2(Vector2.ZERO, size).grow(radius).has_point(at):
+				draw_circle(at, radius, colour)
 
 
 ## Minefields the player knows of: a faint disc of the field's radius (the square root of its

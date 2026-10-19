@@ -92,6 +92,7 @@ func _ready() -> void:
 	_command.pick_planet_requested.connect(_map.pick_planet)
 	toolbar.view_chosen.connect(_map.set_view)
 	toolbar.names_toggled.connect(_map.set_show_names)
+	toolbar.scanners_toggled.connect(_map.set_show_scanners)
 	toolbar.zoom_requested.connect(_map.zoom_by)
 	scanner.add_child(_map)
 	_status = ScannerStatus.new()

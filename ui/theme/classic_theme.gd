@@ -14,6 +14,7 @@ const NAVY := Color("000080")
 const TEXT := Color("000000")
 const TEXT_DISABLED := Color("808080")
 const TEXT_SELECTED := Color("ffffff")
+const TOOLTIP := Color("ffffe1")
 ## How much a bold label thickens the font (FontVariation embolden).
 const EMBOLDEN := 0.8
 ## The bundled UI fonts, each with its usual size and the sizes the player may pick. Pixel fonts
@@ -135,6 +136,15 @@ static func build(font_index: int = DEFAULT_FONT, font_size: int = 0) -> Theme:
 	t.set_color("font_color", "PopupMenu", TEXT)
 	t.set_color("font_hover_color", "PopupMenu", TEXT_SELECTED)
 	t.set_color("font_disabled_color", "PopupMenu", TEXT_DISABLED)
+	# shortcut keys in the item's own colour, as Windows menus show them (issue #1)
+	t.set_color("font_accelerator_color", "PopupMenu", TEXT)
+	# tooltips: the Windows pale yellow box with a black border and black text (issue #4)
+	var tip := _flat(TOOLTIP)
+	tip.border_color = DARK
+	tip.set_border_width_all(1)
+	t.set_stylebox("panel", "TooltipPanel", tip)
+	t.set_color("font_color", "TooltipLabel", TEXT)
+	t.set_color("font_shadow_color", "TooltipLabel", Color(0, 0, 0, 0))
 	# a menu's unchecked check items show nothing, as Windows menus do (only a check mark when on)
 	var blank := Image.create(CHECK_SIZE, CHECK_SIZE, false, Image.FORMAT_RGBA8)
 	blank.fill(Color(0, 0, 0, 0))

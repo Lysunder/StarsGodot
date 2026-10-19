@@ -1,10 +1,12 @@
 class_name ScannerToolbar
 extends PanelContainer
 ## The toolbar over the Scanner (D15): the exclusive views (Normal, Surface Minerals, Mineral
-## Concentration, Planet Value, Population), the Planet Names overlay, and zoom in and out.
+## Concentration, Planet Value, Population), the Planet Names and Scanner Coverage overlays, and
+## zoom in and out.
 
 signal view_chosen(view: GalaxyMap.View)
 signal names_toggled(on: bool)
+signal scanners_toggled(on: bool)
 signal zoom_requested(factor: float)
 
 const ZOOM_STEP := 1.25
@@ -47,6 +49,13 @@ func _ready() -> void:
 	names.focus_mode = Control.FOCUS_NONE
 	names.toggled.connect(func(on: bool) -> void: names_toggled.emit(on))
 	row.add_child(names)
+	var scan := Button.new()
+	scan.text = "Scan"
+	scan.tooltip_text = "Scanner coverage: red normal, green penetrating"
+	scan.toggle_mode = true
+	scan.focus_mode = Control.FOCUS_NONE
+	scan.toggled.connect(func(on: bool) -> void: scanners_toggled.emit(on))
+	row.add_child(scan)
 	row.add_child(VSeparator.new())
 	for spec: Array in [["+", ZOOM_STEP, "Zoom in"], ["-", 1.0 / ZOOM_STEP, "Zoom out"]]:
 		var b := Button.new()

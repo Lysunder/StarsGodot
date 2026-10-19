@@ -26,6 +26,13 @@ const TASKS := [
 	["route", "Route", "planet"],
 	["transfer", "Transfer fleet", ""],
 ]
+## The transport task's quick options: [label, minerals, colonists ("" leaves it), fuel].
+const QUICK := [
+	["Quick Load", "load_all", "", ""],
+	["Quick Drop", "unload_all", "unload_all", ""],
+	["Wait Load", "wait_percent", "", ""],
+	["Clear", "none", "none", "none"],
+]
 const ACTIONS := [
 	["none", "No action"],
 	["load_all", "Load all available"],
@@ -673,7 +680,17 @@ func _transport_task(t: Tile, wp: Dictionary) -> void:
 			_cargo_shown = i
 			_queue_rebuild()
 	)
-	t.body.add_child(kind_choice)
+	var head := HBoxContainer.new()
+	t.body.add_child(head)
+	kind_choice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(kind_choice)
+	var quick := MenuButton.new()
+	quick.text = "Quick"
+	quick.flat = false
+	for i in QUICK.size():
+		quick.get_popup().add_item(QUICK[i][0], i)
+	quick.get_popup().id_pressed.connect(func(i: int) -> void: _quick_cargo(wp, i))
+	head.add_child(quick)
 	var r := t.row()
 	var c := _cargo_shown
 	var current: String = cargo[c]["action"]
@@ -725,6 +742,22 @@ func _transfer_choice(t: Tile, wp: Dictionary) -> void:
 			_change_waypoint(wp, wp["warp"], "transfer", {"raw": words})
 	)
 	t.body.add_child(to)
+
+
+## The transport task's quick options (issue #6): every cargo type's action set at once, as one
+## waypoint change. QUICK holds [label, action for the minerals, action for colonists (or "" to
+## leave it), action for fuel (or "")].
+func _quick_cargo(wp: Dictionary, which: int) -> void:
+	var spec: Array = QUICK[which]
+	var data: Dictionary = wp["task_data"].duplicate(true)
+	var cargo: Array = data.get("cargo", _empty_cargo())
+	for c in Fleet.CARGO_FUEL + 1:
+		var action: String = spec[1] if c < Fleet.CARGO_COLONISTS else spec[c - 1]
+		if action.is_empty():
+			continue
+		cargo[c] = {"action": action, "amount": 100 if action == "wait_percent" else 0}
+	data["cargo"] = cargo
+	_change_waypoint(wp, wp["warp"], "transport", data)
 
 
 func _set_cargo_action(wp: Dictionary, c: int, action: String, amount: int) -> void:
