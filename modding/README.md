@@ -57,15 +57,21 @@ of loading it with the wrong rules.
 | Place | What |
 |---|---|
 | `res://content/<id>/` | Built-in mods, shipped with the game. Today that is only `core`. |
-| `user://mods/<id>/` | Player-installed mods. **Not yet**: no part of the game reads this folder yet. |
+| `user://mods/<id>/` | Player-installed mods. The main menu's **Mods...** window lists them, turns them on and sets their order. |
 | `res://tests/...` | Test-only mods (such as `tests/harness_compat`). They load only in test runs; the loader refuses them anywhere else. |
 
 `user://` is Godot's per-user data folder. On Windows it is
 `%APPDATA%\Godot\app_userdata\StarsGodot\`.
 
-**Not yet:** the game itself loads only `res://content` (`ui/game_session.gd`); turning mods on
-from `user://mods/` comes with the mod manager (M14). Today you check a mod with the validator
-below, and tests load mods directly.
+The **Mods...** window (main menu) shows every mod found, with its version, kind and whether it
+has scripts. Tick the mods to use and order them with Up and Down; OK loads the content with them
+and saves the choice (in `user://settings.cfg`, section `[mods]`). If they can't be used together,
+the window says why and nothing changes. A mod with scripts asks once for trust in that version.
+OK also re-reads every mod from disk, so while you work on a mod you can change its files and press
+OK again to see the change, without restarting.
+
+A saved game remembers its gameplay mods. Opening it turns those mods on for that game if they are
+installed (in the versions it was played with), or says which are missing.
 
 ## Load order
 

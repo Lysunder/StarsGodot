@@ -19,6 +19,7 @@ var _population: Label
 var _environment: EnvironmentGraph
 var _minerals: MineralGraph
 var _fleet_box: HBoxContainer
+var _icon: FleetIcon
 var _fleet_fields: GridContainer
 var _fuel: Gauge
 var _cargo: Gauge
@@ -52,10 +53,10 @@ func _ready() -> void:
 	_planet_box.add_child(_minerals)
 	_fleet_box = HBoxContainer.new()
 	box.add_child(_fleet_box)
-	var icon := FleetIcon.new()
-	icon.mouse_filter = Control.MOUSE_FILTER_STOP
-	icon.gui_input.connect(_on_icon_input)
-	_fleet_box.add_child(icon)
+	_icon = FleetIcon.new()
+	_icon.mouse_filter = Control.MOUSE_FILTER_STOP
+	_icon.gui_input.connect(_on_icon_input)
+	_fleet_box.add_child(_icon)
 	_popup = HoldPopup.new()
 	add_child(_popup)
 	_fleet_fields = GridContainer.new()
@@ -130,6 +131,11 @@ func _show_fleet() -> void:
 		return
 	_title.text = "%s Summary" % info["name"]
 	_fleet_box.visible = true
+	var fleet := GameSession.view.state.fleet(GameSession.player, id)
+	var design: Design = null
+	if fleet != null and not fleet.stacks.is_empty():
+		design = GameSession.view.me().ship_design(fleet.stacks[0].design)
+	_icon.art_id = ArtRegistry.ship_id(design, GameSession.content)
 	for child in _fleet_fields.get_children():
 		child.queue_free()
 	var count := 0

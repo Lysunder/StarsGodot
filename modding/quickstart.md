@@ -249,8 +249,9 @@ Every problem is reported as `mod:file:line: message`, for example
 Fix the first few and run it again: one mistake can cause several messages. When all is well it
 lists what the mod adds or patches and ends with `OK: no problems found.`
 
-**In the game.** Not yet: the game can't enable mods from `user://mods/` until the mod manager
-exists (M14). Until then the validator is the way to check a mod.
+**In the game.** Put the mod's folder in `user://mods/` (the Mods window's **Open Mods Folder**
+button opens it), open **Mods...** in the main menu, tick your mod and press OK. Start a new game:
+the new hull is in the ship designer once your construction tech reaches it.
 
 **Common mistakes:**
 

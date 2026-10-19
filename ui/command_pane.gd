@@ -230,7 +230,7 @@ func _planet_tiles() -> void:
 	var t := _tile(info["name"], "planet")
 	_picture_row(
 		t,
-		FleetIcon.new(true),
+		FleetIcon.new(true, ArtRegistry.planet_id(id)),
 		[["Prev", func() -> void: _cycle_planet(-1)], ["Next", func() -> void: _cycle_planet(1)]]
 	)
 	t = _tile("Minerals on Hand")
@@ -399,6 +399,15 @@ func _cycle_planet(delta: int) -> void:
 # --- Fleet tiles --------------------------------------------------------------------------------
 
 
+## The art id of a fleet's picture: its first design's.
+func _fleet_art(number: int) -> String:
+	var fleet := GameSession.view.state.fleet(GameSession.player, number)
+	if fleet == null or fleet.stacks.is_empty():
+		return ""
+	var design := GameSession.view.me().ship_design(fleet.stacks[0].design)
+	return ArtRegistry.ship_id(design, GameSession.content)
+
+
 func _fleet_tiles() -> void:
 	var view := GameSession.view
 	var info := view.fleet_info(id)
@@ -408,7 +417,7 @@ func _fleet_tiles() -> void:
 	var t := _tile(info["name"], "fleet")
 	_picture_row(
 		t,
-		FleetIcon.new(),
+		FleetIcon.new(false, _fleet_art(id)),
 		[
 			["Prev", func() -> void: _cycle_fleet(-1)],
 			["Next", func() -> void: _cycle_fleet(1)],

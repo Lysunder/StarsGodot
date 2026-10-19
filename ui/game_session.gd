@@ -43,14 +43,34 @@ var _submitted := {}
 
 
 func _ready() -> void:
-	var loader := ModLoader.new()
-	game_version = loader.game_version
-	var r := loader.load_mods(FolderModSource.discover("res://content"), [])
+	game_version = ModLoader.new().game_version
+	reload_content()
+
+
+## Loads the content with the player's mods (ModSettings: those turned on, in order, script mods
+## only when trusted). When they don't load, the base game loads alone and `load_errors` says why.
+func reload_content() -> void:
+	ArtRegistry.reload()
+	load_errors = ""
+	var r := load_mods(ModSettings.enabled())
+	if not r.ok():
+		load_errors = (
+			"The mods could not be loaded, so the game runs without them:\n" + r.error_text()
+		)
+		push_warning(load_errors)
+		r = load_mods(PackedStringArray())
 	if r.ok():
 		content = r.registry
 	else:
 		load_errors = r.error_text()
 		push_error(load_errors)
+
+
+## The content with `enabled` mods (and the base game), trusted as the player trusts them.
+func load_mods(enabled: PackedStringArray) -> ModLoader.LoadResult:
+	var loader := ModLoader.new()
+	loader.trusted = ModSettings.trusted()
+	return loader.load_mods(ModSettings.sources(), enabled)
 
 
 func has_game() -> bool:
@@ -109,6 +129,12 @@ func submit_orders() -> String:
 ## them); returns "" or the problems.
 func load_game(path: String) -> String:
 	var result := SaveStore.read(path, content)
+	if result.ok() and result.content_mismatch:
+		var switched := _content_for(result.saved_mods)
+		if switched.is_empty():
+			result = SaveStore.read(path, content)
+		else:
+			return switched
 	if not result.ok():
 		return "\n".join(result.errors)
 	_start(result.state)
@@ -146,6 +172,40 @@ func save_game(path: String) -> Error:
 		dirty = false
 		changed.emit()
 	return err
+
+
+## Switches the content to the gameplay mods a saved game was played with (keeping the player's
+## cosmetic mods), when they are all installed and load; returns "" or why the game can't load.
+func _content_for(saved: PackedStringArray) -> String:
+	var installed := {}
+	for source in ModSettings.sources():
+		var m := ModManifest.from_json(source.read_text(ModManifest.FILE), source.root())
+		if m.errors.is_empty():
+			installed[m.id] = m
+	var wanted := PackedStringArray()
+	var missing := PackedStringArray()
+	for entry in saved:
+		var at := entry.rfind("@")
+		var id := entry.substr(0, at)
+		var version := entry.substr(at + 1)
+		if id == ModLoader.CORE_ID:
+			continue
+		if not installed.has(id) or (installed[id] as ModManifest).version != version:
+			missing.append("%s %s" % [id, version])
+		else:
+			wanted.append(id)
+	if not missing.is_empty():
+		return "This game needs mods that are not installed: %s." % ", ".join(missing)
+	for id in ModSettings.enabled():
+		if installed.has(id) and (installed[id] as ModManifest).kind == "cosmetic":
+			wanted.append(id)
+	var r := load_mods(wanted)
+	if not r.ok():
+		return "This game's mods could not be loaded:\n" + r.error_text()
+	if r.registry.gameplay_mods() != saved:
+		return "This game was played with other mods or content: %s." % ", ".join(saved)
+	content = r.registry
+	return ""
 
 
 ## The human players who give orders this year, in player order: active and not eliminated.

@@ -1,8 +1,8 @@
 class_name FleetIcon
 extends Control
 ## The picture in a Planet or Fleet tile (D15): a sunken black frame with a simple ship outline or
-## planet drawn here. The original's ship and planet pictures come only from the local classic
-## import mod (D13); until that exists every fleet and planet gets this placeholder.
+## planet drawn here, or the picture a mod turned on supplies for `art_id` (ArtRegistry: the
+## original's pictures come only from the local classic import, D13).
 
 const SIZE := Vector2(64, 64)
 const HULL := Color(0.75, 0.78, 0.85)
@@ -14,10 +14,16 @@ const PLANET_STEPS := 12
 
 ## Draw a planet instead of a ship.
 var planet: bool = false
+## The picture to show when a mod supplies it (ArtRegistry.ship_id, planet_id); "" for none.
+var art_id := "":
+	set(value):
+		art_id = value
+		queue_redraw()
 
 
-func _init(p_planet: bool = false) -> void:
+func _init(p_planet: bool = false, p_art_id := "") -> void:
 	planet = p_planet
+	art_id = p_art_id
 	custom_minimum_size = SIZE
 
 
@@ -27,6 +33,10 @@ func _draw() -> void:
 	draw_rect(r.grow(-1), BACKGROUND)
 	draw_line(Vector2(size.x - 1, 0), size - Vector2(1, 1), ClassicTheme.HIGHLIGHT)
 	draw_line(Vector2(0, size.y - 1), size - Vector2(1, 1), ClassicTheme.HIGHLIGHT)
+	var art := ArtRegistry.texture(art_id)
+	if art != null:
+		draw_texture_rect(art, r.grow(-1), false)
+		return
 	var c := size / 2.0
 	var s := minf(size.x, size.y) / 64.0
 	if planet:

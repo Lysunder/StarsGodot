@@ -1,0 +1,370 @@
+{
+ "format": "starsgodot-classic-ids",
+ "format_version": 1,
+ "note": "Resource ids and picture numbers of the original's sprite sheets (spec S26). Numbers only.",
+ "ships": {
+  "sheets": [
+   552,
+   553,
+   554,
+   555,
+   556
+  ],
+  "small_sheets": [
+   557,
+   558,
+   559,
+   560,
+   561
+  ],
+  "tile": 64,
+  "small_tile": 32,
+  "per_sheet": 32,
+  "columns": 8,
+  "rows": 4,
+  "count": 148
+ },
+ "parts": {
+  "sheets": [
+   500,
+   501,
+   502,
+   503,
+   504,
+   505,
+   506
+  ],
+  "tile": 64,
+  "per_sheet": 32,
+  "columns": 8,
+  "rows": 4
+ },
+ "planets": {
+  "sheet": 112,
+  "tile": 64,
+  "columns": 7,
+  "rows": 4,
+  "count": 28,
+  "offset": 8
+ },
+ "race_logos": {
+  "sheets": {
+   "": 133,
+   ".small": 80,
+   ".tiny": 79
+  },
+  "tiles": {
+   "": 32,
+   ".small": 16,
+   ".tiny": 8
+  },
+  "columns": 8,
+  "count": 32
+ },
+ "objects": {
+  "sheet": 87,
+  "tile": 64,
+  "ids": [
+   "minefield.0",
+   "minefield.1",
+   "minefield.2",
+   "packet",
+   "salvage",
+   "wormhole",
+   "mystery_trader"
+  ]
+ },
+ "title": 449,
+ "messages": {
+  "segment": 6,
+  "chars": 4085,
+  "groups": 4157,
+  "lens": 4171,
+  "stream": 4556,
+  "codes": {
+   "E": [
+    "axis_value"
+   ],
+   "F": [
+    "fleet_designs"
+   ],
+   "I": [
+    "flag"
+   ],
+   "L": [
+    "player"
+   ],
+   "M": [
+    "minefield_type"
+   ],
+   "O": [
+    "fleet"
+   ],
+   "P": [
+    "basis_points"
+   ],
+   "S": [
+    "player"
+   ],
+   "U": [
+    "amount"
+   ],
+   "V": [
+    "amount"
+   ],
+   "X": [
+    "fleet",
+    "minefield",
+    "number",
+    "space_object"
+   ],
+   "Z": [
+    "players"
+   ],
+   "e": [
+    "axis"
+   ],
+   "i": [
+    "colonists",
+    "number"
+   ],
+   "j": [
+    "field"
+   ],
+   "k": [
+    "item"
+   ],
+   "l": [
+    "player"
+   ],
+   "m": [
+    "cargo"
+   ],
+   "n": [
+    "object_kind+object"
+   ],
+   "o": [
+    "object"
+   ],
+   "p": [
+    "planet"
+   ],
+   "s": [
+    "fleet",
+    "object"
+   ],
+   "v": [
+    "amount",
+    "population"
+   ],
+   "z": [
+    "design",
+    "own_design"
+   ]
+  }
+ },
+ "part_pictures": {
+  "part.armor.carbonic_armor": 70,
+  "part.armor.crobmnium": 65,
+  "part.armor.depleted_neutronium": 79,
+  "part.armor.fielded_kelarium": 78,
+  "part.armor.kelarium": 67,
+  "part.armor.mega_poly_shell": 110,
+  "part.armor.neutronium": 69,
+  "part.armor.organic_armor": 71,
+  "part.armor.strobnium": 68,
+  "part.armor.superlatanium": 77,
+  "part.armor.tritanium": 64,
+  "part.armor.valanium": 66,
+  "part.beam.anti_matter_pulverizer": 23,
+  "part.beam.big_mutha_cannon": 31,
+  "part.beam.blackjack": 14,
+  "part.beam.bludgeon": 15,
+  "part.beam.blunderbuss": 13,
+  "part.beam.colloidal_phaser": 192,
+  "part.beam.disruptor": 27,
+  "part.beam.gatling_gun": 26,
+  "part.beam.gatling_neutrino_cannon": 30,
+  "part.beam.heavy_blaster": 193,
+  "part.beam.laser": 28,
+  "part.beam.mark_iv_blaster": 25,
+  "part.beam.mega_disruptor": 195,
+  "part.beam.mini_blaster": 24,
+  "part.beam.mini_gun": 20,
+  "part.beam.multi_contained_munition": 111,
+  "part.beam.myopic_disruptor": 194,
+  "part.beam.phased_sapper": 18,
+  "part.beam.phaser_bazooka": 21,
+  "part.beam.pulsed_sapper": 17,
+  "part.beam.streaming_pulverizer": 22,
+  "part.beam.syncro_sapper": 16,
+  "part.beam.x_ray_laser": 29,
+  "part.beam.yakimora_light_phaser": 19,
+  "part.bomb.annihilator_bomb": 116,
+  "part.bomb.black_cat_bomb": 36,
+  "part.bomb.cherry_bomb": 39,
+  "part.bomb.enriched_neutron_bomb": 114,
+  "part.bomb.hush_a_boom": 182,
+  "part.bomb.lady_finger_bomb": 35,
+  "part.bomb.lbu_17_bomb": 32,
+  "part.bomb.lbu_32_bomb": 33,
+  "part.bomb.lbu_74_bomb": 34,
+  "part.bomb.m_70_bomb": 37,
+  "part.bomb.m_80_bomb": 38,
+  "part.bomb.neutron_bomb": 113,
+  "part.bomb.peerless_bomb": 115,
+  "part.bomb.retro_bomb": 174,
+  "part.bomb.smart_bomb": 112,
+  "part.electrical.anti_matter_generator": 126,
+  "part.electrical.battle_computer": 165,
+  "part.electrical.battle_nexus": 167,
+  "part.electrical.battle_super_computer": 166,
+  "part.electrical.energy_capacitor": 127,
+  "part.electrical.energy_dampener": 124,
+  "part.electrical.flux_capacitor": 190,
+  "part.electrical.jammer_10": 120,
+  "part.electrical.jammer_20": 121,
+  "part.electrical.jammer_30": 122,
+  "part.electrical.jammer_50": 123,
+  "part.electrical.multi_function_pod": 189,
+  "part.electrical.stealth_cloak": 99,
+  "part.electrical.super_stealth_cloak": 100,
+  "part.electrical.tachyon_detector": 125,
+  "part.electrical.transport_cloaking": 98,
+  "part.electrical.ultra_stealth_cloak": 101,
+  "part.engine.alpha_drive_8": 3,
+  "part.engine.daddy_long_legs_7": 2,
+  "part.engine.enigma_pulsar": 109,
+  "part.engine.fuel_mizer": 9,
+  "part.engine.galaxy_scoop": 191,
+  "part.engine.interspace_10": 12,
+  "part.engine.long_hump_6": 1,
+  "part.engine.quick_jump_5": 0,
+  "part.engine.radiating_hydro_ram_scoop": 7,
+  "part.engine.settler_s_delight": 8,
+  "part.engine.sub_galactic_fuel_scoop": 5,
+  "part.engine.trans_galactic_drive": 4,
+  "part.engine.trans_galactic_fuel_scoop": 6,
+  "part.engine.trans_galactic_mizer_scoop": 11,
+  "part.engine.trans_galactic_super_scoop": 10,
+  "part.engine.trans_star_10": 117,
+  "part.mechanical.beam_deflector": 209,
+  "part.mechanical.cargo_pod": 96,
+  "part.mechanical.colonization_module": 106,
+  "part.mechanical.fuel_tank": 104,
+  "part.mechanical.jump_gate": 208,
+  "part.mechanical.maneuvering_jet": 102,
+  "part.mechanical.multi_cargo_pod": 118,
+  "part.mechanical.orbital_construction_module": 107,
+  "part.mechanical.overthruster": 103,
+  "part.mechanical.super_cargo_pod": 97,
+  "part.mechanical.super_fuel_tank": 105,
+  "part.mine_layer.heavy_dispenser_110": 136,
+  "part.mine_layer.heavy_dispenser_200": 137,
+  "part.mine_layer.heavy_dispenser_50": 135,
+  "part.mine_layer.mine_dispenser_130": 131,
+  "part.mine_layer.mine_dispenser_40": 128,
+  "part.mine_layer.mine_dispenser_50": 129,
+  "part.mine_layer.mine_dispenser_80": 130,
+  "part.mine_layer.speed_trap_20": 132,
+  "part.mine_layer.speed_trap_30": 133,
+  "part.mine_layer.speed_trap_50": 134,
+  "part.mining_robot.alien_miner": 181,
+  "part.mining_robot.orbital_adjuster": 173,
+  "part.mining_robot.robo_maxi_miner": 141,
+  "part.mining_robot.robo_midget_miner": 138,
+  "part.mining_robot.robo_miner": 140,
+  "part.mining_robot.robo_mini_miner": 139,
+  "part.mining_robot.robo_super_miner": 142,
+  "part.mining_robot.robo_ultra_miner": 143,
+  "part.orbital.mass_driver_5": 151,
+  "part.orbital.mass_driver_6": 152,
+  "part.orbital.mass_driver_7": 153,
+  "part.orbital.stargate_100_250": 144,
+  "part.orbital.stargate_100_any": 148,
+  "part.orbital.stargate_150_600": 146,
+  "part.orbital.stargate_300_500": 147,
+  "part.orbital.stargate_any_300": 145,
+  "part.orbital.stargate_any_800": 149,
+  "part.orbital.stargate_any_any": 150,
+  "part.orbital.super_driver_8": 154,
+  "part.orbital.super_driver_9": 155,
+  "part.orbital.ultra_driver_10": 156,
+  "part.orbital.ultra_driver_11": 157,
+  "part.orbital.ultra_driver_12": 158,
+  "part.orbital.ultra_driver_13": 159,
+  "part.planetary.genesis_device": 175,
+  "part.planetary.laser_battery": 74,
+  "part.planetary.missile_battery": 73,
+  "part.planetary.neutron_shield": 76,
+  "part.planetary.planetary_shield": 75,
+  "part.planetary.scoper_150": 82,
+  "part.planetary.scoper_220": 83,
+  "part.planetary.scoper_280": 90,
+  "part.planetary.sdi": 72,
+  "part.planetary.snooper_320x": 84,
+  "part.planetary.snooper_400x": 85,
+  "part.planetary.snooper_500x": 86,
+  "part.planetary.snooper_620x": 91,
+  "part.planetary.viewer_50": 80,
+  "part.planetary.viewer_90": 81,
+  "part.scanner.bat_scanner": 59,
+  "part.scanner.chameleon_scanner": 63,
+  "part.scanner.cheetah_scanner": 62,
+  "part.scanner.dna_scanner": 52,
+  "part.scanner.dolphin_scanner": 54,
+  "part.scanner.eagle_eye_scanner": 51,
+  "part.scanner.elephant_scanner": 55,
+  "part.scanner.ferret_scanner": 53,
+  "part.scanner.gazelle_scanner": 50,
+  "part.scanner.mole_scanner": 49,
+  "part.scanner.peerless_scanner": 58,
+  "part.scanner.pick_pocket_scanner": 56,
+  "part.scanner.possum_scanner": 61,
+  "part.scanner.rhino_scanner": 48,
+  "part.scanner.rna_scanner": 60,
+  "part.scanner.robber_baron_scanner": 57,
+  "part.shield.bear_neutrino_barrier": 45,
+  "part.shield.complete_phase_shield": 119,
+  "part.shield.cow_hide_shield": 43,
+  "part.shield.croby_sharmor": 40,
+  "part.shield.elephant_hide_fortress": 47,
+  "part.shield.gorilla_delagator": 46,
+  "part.shield.langston_shell": 183,
+  "part.shield.mole_skin_shield": 42,
+  "part.shield.shadow_shield": 41,
+  "part.shield.wolverine_diffuse_shield": 44,
+  "part.terraform.gravity_terraform_11": 162,
+  "part.terraform.gravity_terraform_15": 163,
+  "part.terraform.gravity_terraform_3": 160,
+  "part.terraform.gravity_terraform_7": 161,
+  "part.terraform.radiation_terraform_11": 178,
+  "part.terraform.radiation_terraform_15": 179,
+  "part.terraform.radiation_terraform_3": 176,
+  "part.terraform.radiation_terraform_7": 177,
+  "part.terraform.temp_terraform_11": 170,
+  "part.terraform.temp_terraform_15": 171,
+  "part.terraform.temp_terraform_3": 168,
+  "part.terraform.temp_terraform_7": 169,
+  "part.terraform.total_terraform_10": 187,
+  "part.terraform.total_terraform_15": 188,
+  "part.terraform.total_terraform_20": 180,
+  "part.terraform.total_terraform_25": 172,
+  "part.terraform.total_terraform_3": 184,
+  "part.terraform.total_terraform_30": 164,
+  "part.terraform.total_terraform_5": 185,
+  "part.terraform.total_terraform_7": 186,
+  "part.torpedo.alpha_torpedo": 87,
+  "part.torpedo.anti_matter_torpedo": 108,
+  "part.torpedo.armageddon_missile": 203,
+  "part.torpedo.beta_torpedo": 88,
+  "part.torpedo.delta_torpedo": 89,
+  "part.torpedo.doomsday_missile": 202,
+  "part.torpedo.epsilon_torpedo": 92,
+  "part.torpedo.jihad_missile": 200,
+  "part.torpedo.juggernaut_missile": 201,
+  "part.torpedo.omega_torpedo": 95,
+  "part.torpedo.rho_torpedo": 93,
+  "part.torpedo.upsilon_torpedo": 94
+ }
+}

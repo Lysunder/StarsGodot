@@ -14,7 +14,7 @@ behaviour that data can't express: a new formula, a new turn phase, a new kind o
 | `ruleset.gd` with `build(ruleset)` | Test mods only (mods under `res://tests/`); other mods use `entry`. |
 | Hooks (`on_planet_colonized` and the like) and modifier stacks | Not yet. |
 | New computer player brains | Not yet. Brains are built in (`AiBrains.IDS`); personalities are content. |
-| Turning a mod on in the game | Not yet: the mod manager comes later. The validator and tests load mods today. |
+| Turning a mod on in the game | Works: the main menu's Mods window, with the trust question. |
 
 ### The entry script
 
@@ -53,10 +53,9 @@ any program.
 
 The game loads a script mod only when the player trusts that exact version of it. Trust is tied
 to the SHA-256 of the mod's scripts (every `.gd` file, path and text): change one character and
-the mod must be trusted again. Until then loading stops with "contains scripts: trust this
-version first". The question itself will be asked by the mod manager, which comes later; today
-the validator trusts the mod it checks, and code can pass trust to the loader
-(`ModLoader.trusted[mod_id] = ModLoader.script_hash(source)`).
+the mod must be trusted again. The Mods window asks when you turn such a mod on, and remembers the
+answer for that version. Without trust, loading stops with "contains scripts: trust this version
+first". The validator trusts the mod it checks.
 
 Planned (decision D10): script mods are allowed everywhere, including play-by-email games, and a
 play-by-email host can choose to allow data-only mods only. Only install script mods from people

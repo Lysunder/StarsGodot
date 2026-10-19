@@ -2,8 +2,10 @@ class_name MainMenu
 extends CenterContainer
 ## The start screen (D15): the game's name over New Game, Open Game, Open Turn File,
 ## Personalities, Settings and Exit. New Game opens the New Game window; Open Game loads the saved
-## game; Open Turn File opens a play-by-email turn file from the host (S27); Personalities opens the
-## computer player personality editor; Settings opens the interface settings.
+## game; Open Turn File opens a play-by-email turn file from the host (S27); Mods chooses the mods
+## the game loads; Import Classic Look reads the player's own copy of Stars! 2.6i (S26, D13);
+## Personalities opens the computer player personality editor; Settings opens the interface
+## settings.
 
 signal start_game
 
@@ -14,6 +16,8 @@ var _new_game: NewGameDialog
 var _settings: SettingsDialog
 var _personalities: PersonalityEditor
 var _turn_files: FileDialog
+var _mods: ModManager
+var _classic: FileDialog
 
 
 func _ready() -> void:
@@ -34,6 +38,8 @@ func _ready() -> void:
 		["New Game...", _on_new],
 		["Open Game", _on_load],
 		["Open Turn File...", func() -> void: _turn_files.popup_centered_ratio(0.6)],
+		["Mods...", func() -> void: _mods.open()],
+		["Import Classic Look...", func() -> void: _classic.popup_centered_ratio(0.6)],
 		["Personalities...", func() -> void: _personalities.open()],
 		["Settings...", func() -> void: _settings.open()],
 		["Exit", _on_quit],
@@ -51,6 +57,15 @@ func _ready() -> void:
 		_status.text = GameSession.load_errors
 	_settings = SettingsDialog.new()
 	add_child(_settings)
+	_classic = FileDialog.new()
+	_classic.title = "Your Stars! 2.6i Folder"
+	_classic.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	_classic.access = FileDialog.ACCESS_FILESYSTEM
+	_classic.dir_selected.connect(_on_classic_folder)
+	add_child(_classic)
+	_mods = ModManager.new()
+	_mods.mods_changed.connect(func() -> void: _status.text = GameSession.load_errors)
+	add_child(_mods)
 	_personalities = PersonalityEditor.new()
 	add_child(_personalities)
 	_turn_files = FileDialog.new()
@@ -88,6 +103,20 @@ func _on_turn_file(path: String) -> void:
 		start_game.emit()
 	else:
 		_status.text = err
+
+
+## Imports the classic look from the player's install folder and turns it on (S26).
+func _on_classic_folder(dir: String) -> void:
+	var r := ClassicImporter.run(dir, GameSession.content)
+	if not r.ok():
+		_status.text = "\n".join(r.errors)
+		return
+	var on := ModSettings.enabled()
+	if not on.has(ClassicImporter.MOD_ID):
+		on.append(ClassicImporter.MOD_ID)
+	ModSettings.save(on, ModSettings.trusted())
+	GameSession.reload_content()
+	_status.text = "%s The classic look is on (Mods... turns it off)." % " ".join(r.lines)
 
 
 func _on_quit() -> void:

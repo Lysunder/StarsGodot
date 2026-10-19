@@ -4,21 +4,39 @@ A cosmetic mod changes how the game looks or reads, never how it plays. Each pla
 own cosmetic mods: they are not part of the ruleset hash and are never recorded in saves or turn
 files. Set `"kind": "cosmetic"` in `mod.json`.
 
-**Honest status:** today a cosmetic mod can only change text. Art packs, themes, sound and scene
+**Status:** a cosmetic mod can change text and supply pictures by art id. Themes, sound and scene
 overrides are planned but not built.
 
 | Feature | Status |
 |---|---|
 | Text: rename things, reword messages and descriptions (`lang/<locale>.json`) | Works |
 | Choosing a language in the game | Not yet: the interface always asks for English (`en`) |
-| Art packs (hull, planet and part pictures by art id) | Not yet |
+| Art packs: pictures by art id (`art/index.json`) | Works for ship and planet pictures (the Planet and Fleet tiles, the summary, the ship designer). Part icons, race logos and map objects are imported but not shown yet. |
 | Themes (a Godot `Theme` from a mod) | Not yet |
 | Scene overrides (replace or add UI panels and map overlays) | Not yet |
 | Sound and music | Not yet |
-| Classic pack imported from your own copy of the original game | Not yet |
+| Classic pack imported from your own copy of the original game | Works: main menu, **Import Classic Look...** (pictures and turn-message wording). |
 
-A cosmetic mod may contain only `mod.json` and `lang/`. One with a `content/` or `patches/`
+A cosmetic mod may contain `mod.json`, `lang/` and `art/`. One with a `content/` or `patches/`
 folder is refused.
+
+## Pictures
+
+A mod supplies pictures in `art/`: PNG files and an `art/index.json` mapping art ids to them:
+
+```json
+{
+  "art.hull.scout.0": { "file": "sheets/ships.png", "rect": [0, 0, 64, 64] },
+  "art.planet.3": { "file": "planet3.png" }
+}
+```
+
+`file` is a path inside `art/`; `rect` (x, y, width, height) picks part of a larger sheet and may
+be left out. Mods turned on later win. Art ids follow one rule: `art.` plus the content id it shows,
+plus `.<k>` for one of several pictures (a hull's four, `art.hull.scout.0` to `.3`) and `.small`
+for a smaller version; planets are `art.planet.<0-27>` (a planet shows picture (its number + 8)
+mod 28). Where no mod supplies a picture, the game draws its own. The classic import
+(`classic_import/`, spec S26) writes exactly such a mod, `user://mods/classic/`.
 
 ## Text
 

@@ -1,6 +1,6 @@
 # S26 Classic asset import
 
-Status: draft (2026-10-18). Read from the decompiled code and from the resource table of the player's executable;
+Status: draft (2026-10-18; implemented: `classic_import/`, the art registry `ui/art_registry.gd`, message wording; shown so far: ship and planet pictures). Read from the decompiled code and from the resource table of the player's executable;
 no harness checks yet. Formats were checked with a throw-away probe outside the repository (every bitmap resource
 decodes with Godot's own BMP loader); nothing extracted was kept.
 References: `LoadAppResources@1000:0000` (start-up loads of bitmaps, icons and cursors), `LoadResourceFile@1038:ad28`,

@@ -54,6 +54,7 @@ var _parts: RowList
 var _part_ids: Array[String] = []
 var _part_info: Label
 var _picture_number: Label
+var _picture: FleetIcon
 var _choice: OptionButton
 var _name: LineEdit
 var _schematic: HullSchematic
@@ -140,7 +141,8 @@ func _build_top(right: Control) -> void:
 	right.add_child(top)
 	var picture := VBoxContainer.new()
 	top.add_child(picture)
-	picture.add_child(FleetIcon.new(false))
+	_picture = FleetIcon.new(false)
+	picture.add_child(_picture)
 	var arrows := HBoxContainer.new()
 	picture.add_child(arrows)
 	_button(arrows, "<", func() -> void: _on_picture(-1))
@@ -293,6 +295,7 @@ func _picked_slot() -> int:
 
 func _show_design() -> void:
 	_schematic.show_design(design, editing)
+	_picture.art_id = ArtRegistry.ship_id(design, GameSession.content)
 	_name.text = design.name if design != null else ""
 	_update_controls()
 	_show_stats()
@@ -442,6 +445,7 @@ func _on_picture(delta: int) -> void:
 		return
 	var first: int = GameSession.content.hull(design.hull).get("pictures", 0)
 	design.picture = first + posmod(design.picture - first + delta, PartRules.PICTURES_PER_HULL)
+	_picture.art_id = ArtRegistry.ship_id(design, GameSession.content)
 	_update_controls()
 
 

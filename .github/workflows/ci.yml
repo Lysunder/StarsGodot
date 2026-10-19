@@ -89,10 +89,13 @@ jobs:
         run: pip install gdtoolkit==4.5.0
 
       - name: gdlint
-        run: gdlint core tests tools ui mods
+        run: gdlint core tests tools ui mods classic_import
 
       - name: gdformat --check
-        run: gdformat --check core tests tools ui mods
+        run: gdformat --check core tests tools ui mods classic_import
+
+      - name: No original assets (D13)
+        run: python tools/check_assets.py
 
       - name: Harness tests (Python)
         run: python -m unittest discover -s tools/harness -p "test_*.py" -v
