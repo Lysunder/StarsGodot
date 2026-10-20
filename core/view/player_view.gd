@@ -301,41 +301,26 @@ func queue_item_name(owner: int, q: QueueItem) -> String:
 	return content.display_name(q.item)
 
 
-## What the planet's queue can take: standard items, then the player's ship designs (and
-## starbase designs at a planet the player owns). Each: {label, order item fields}.
+## What the planet's queue can take (ProductionList, S09 section 9): the ship designs its dock
+## takes, other starbase designs, then the standard items that make sense there. Each: {label,
+## order item fields}.
 func production_inventory(id: int) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var pl := state.planet(id)
 	if pl.owner != player:
 		return out
-	var items := []
 	# terraforming that can't change the planet is not offered (issue #5): its environment is
-	# already the best the player's terraforming reaches (automatic items stay, as standing orders)
-	var terraformed := _terraform_best(pl.environment, pl.environment_original) == pl.environment
-	for item_id in content.ids("production_item"):
-		var def := content.get_def("production_item", item_id)
-		if terraformed and def.get("effect") == "terraform" and not def.get("auto", false):
-			continue
-		items.append([int(def.get("order", 0)), item_id])
-	items.sort()
-	for pair: Array in items:
-		(
-			out
-			. append(
-				{
-					"label": content.display_name(pair[1]),
-					"item": pair[1],
-					"design": -1,
-					"starbase": false,
-				}
-			)
-		)
-	for d in me().ship_designs:
-		out.append({"label": d.name, "item": "", "design": d.slot, "starbase": false})
-	for d in me().starbase_designs:
-		out.append(
-			{"label": d.name + " (starbase)", "item": "", "design": d.slot, "starbase": true}
-		)
+	# already the best the player's terraforming reaches
+	var can_terraform := _terraform_best(pl.environment, pl.environment_original) != pl.environment
+	for e in ProductionList.entries(pl, me(), content, can_terraform):
+		var label := ""
+		if e["item"] != "":
+			label = content.display_name(e["item"])
+		elif e["starbase"]:
+			label = me().starbase_design(e["design"]).name + " (starbase)"
+		else:
+			label = me().ship_design(e["design"]).name
+		out.append(e.merged({"label": label}))
 	return out
 
 

@@ -273,6 +273,29 @@ words of item number and count).
   defenses, CA terraforming — the same rule as a new colony's default queue); the planet's leftover setting becomes
   the template's.
 
+### 9. The production list (`BuildProductionList@10c8:0100`)
+
+What the production window offers for one of the player's planets, in this order:
+
+1. **Ship designs**, in slot order, only when the planet's starbase has a dock (its hull's dock capacity is not 0):
+   each design whose mass is at most the dock capacity (an unlimited dock, −1, takes any).
+2. **Starbase designs**, in slot order, except the design the planet's starbase already is.
+3. **Genesis Device** (13), when the player can build its part (tech and race, S04).
+4. **Packets** (14–17), when the planet's starbase has a mass driver (driver speed above 0, S14).
+5. **Factories** (7), **mines** (8) and **defenses** (9), each only while the planet has fewer than its maximum
+   (S08).
+6. **Mineral alchemy** (11), always.
+7. **Planetary scanner** (27), only when the planet has none, and never for a race without planetary scanners
+   (`production.no_planetary_scanner`: Alternate Reality). The scanners of one kind (18–26) are never offered:
+   a planet's scanner is always the best one its owner can build (S15), so it improves with research by itself.
+8. **Terraform** (12), while terraforming can still change the planet (S10).
+9. **Auto items** (0–6), except those the race skips (`colony.skips_auto_<effect>`, as in section 8: Alternate
+   Reality has no auto mines, factories or defenses, Claim Adjuster no auto terraforming).
+
+The original also caps each count it shows by what is left after the queue's items (for example the factories still
+to build); the list itself doesn't depend on the queue. An item a mod adds with an effect not named above is offered
+after the standard items, by its `order`.
+
 ## Randomness
 
 Only the Genesis Device draws: 12 draws per device, 4 per index (two for the environment axis, then two for the
