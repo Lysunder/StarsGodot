@@ -465,6 +465,13 @@ func _waypoint_label(wp: Waypoint) -> String:
 		"fleet":
 			var f := state.fleet(wp.target_owner, wp.target_id)
 			return fleet_name(f) if f != null else "fleet"
+	if MapObjects.OBJECT_KINDS.has(wp.target):
+		var key := wp.target_id
+		if wp.target == "minefield" or wp.target == "packet":
+			key += wp.target_owner * MapObjects.FLEET_KEY
+		var o: Variant = MapObjects.find(self, wp.target, key)
+		if o != null:
+			return MapObjects.object_name(self, wp.target, o)
 	return "Space (%d, %d)" % [wp.x, wp.y]
 
 

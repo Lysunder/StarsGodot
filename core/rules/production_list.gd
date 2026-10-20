@@ -54,6 +54,29 @@ static func entries(
 	return out
 
 
+## How many more units of item `item_id` the planet has room for with `queued` already in its
+## queue (S09 section 9, issue #16): factories, mines and defenses up to the planet's maximum (S08)
+## less those built; -1 for an item without a limit (auto items only ever build what fits).
+static func room(
+	planet: Planet, owner: Player, content: ContentRegistry, item_id: String, queued: int
+) -> int:
+	var def := content.get_def("production_item", item_id)
+	if def.get("auto", false):
+		return -1
+	var race := owner.race
+	var left := -1
+	match str(def.get("effect", "")):
+		"factories":
+			left = PlanetEconomy.max_factories(planet, race, content) - planet.factories
+		"mines":
+			left = PlanetEconomy.max_mines(planet, race, content) - planet.mines
+		"defenses":
+			left = PlanetEconomy.max_defenses(planet, race, content) - planet.defenses
+		_:
+			return -1
+	return maxi(left - queued, 0)
+
+
 ## Whether a standard (not auto) item belongs in the planet's list (S09 section 9).
 static func _offered(
 	def: Dictionary,

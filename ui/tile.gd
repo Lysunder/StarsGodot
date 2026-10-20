@@ -20,6 +20,8 @@ var collapsed: bool = false
 
 var _toggle: Button
 var _grid: GridContainer
+## While a tile is dragged: each control's own mouse filter, to put back (see `_take_drops`).
+var _mouse_filters := {}
 
 
 ## The title bar: drags as its tile.
@@ -84,6 +86,33 @@ func set_collapsed(p_collapsed: bool) -> void:
 	collapsed = p_collapsed
 	body.get_parent().visible = not collapsed
 	_toggle.icon = ClassicTheme.collapse_icon(collapsed)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		var data: Variant = get_viewport().gui_get_drag_data()
+		if data is Dictionary and data.has("tile"):
+			_take_drops(true)
+	elif what == NOTIFICATION_DRAG_END:
+		_take_drops(false)
+
+
+## While a tile is dragged the whole tile takes the drop: the buttons, gauges and lists inside it
+## let the mouse through (they would stop it otherwise), and are put back when the drag ends.
+func _take_drops(on: bool) -> void:
+	if on != _mouse_filters.is_empty():
+		return
+	if on:
+		_mouse_filters[self] = mouse_filter
+		for c: Control in find_children("*", "Control", true, false):
+			_mouse_filters[c] = c.mouse_filter
+			c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		return
+	for c: Control in _mouse_filters:
+		if is_instance_valid(c):
+			c.mouse_filter = _mouse_filters[c]
+	_mouse_filters.clear()
 
 
 func _can_drop_data(_at: Vector2, data: Variant) -> bool:

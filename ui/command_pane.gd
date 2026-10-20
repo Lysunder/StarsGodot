@@ -62,10 +62,6 @@ var _tiles: VBoxContainer
 var _production: ProductionDialog
 var _rename_dialog: RenameDialog
 var _cargo: CargoDialog
-## Per tile key: collapsed or not; per kind ("planet", "fleet"): the tile keys in pane order. Both
-## last for the session, so a tile stays where the player dragged it.
-var _collapsed := {}
-var _tile_order := {}
 var _waypoint := -1
 var _pending_rebuild := false
 ## The Fleet Waypoints list, and whether a warp slider is being dragged: while it is, warp orders
@@ -78,11 +74,14 @@ var _cargo_shown := 0
 var _merge_dialog: MergeDialog
 var _split_dialog: SplitDialog
 var _live := false
+## The Starbase tile's design popup (shown while the button is held).
+var _popup: HoldPopup
 
 
 func _ready() -> void:
 	_tiles = VBoxContainer.new()
 	_tiles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_tiles.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_child(_tiles)
 	_production = ProductionDialog.new()
 	add_child(_production)
@@ -97,6 +96,8 @@ func _ready() -> void:
 	_rename_dialog = RenameDialog.new()
 	_rename_dialog.name_entered.connect(_rename)
 	add_child(_rename_dialog)
+	_popup = HoldPopup.new()
+	add_child(_popup)
 	GameSession.changed.connect(_queue_rebuild)
 
 
@@ -126,7 +127,11 @@ func _queue_rebuild() -> void:
 
 func _rebuild() -> void:
 	_pending_rebuild = false
+	# Delete in the Fleet Waypoints list (issue #9) needs the rebuilt list to keep the focus
+	var refocus := is_instance_valid(_waypoint_list) and _waypoint_list.rows_have_focus()
+	_waypoint_list = null
 	for child in _tiles.get_children():
+		_tiles.remove_child(child)
 		child.queue_free()
 	if not GameSession.has_game():
 		return
@@ -135,7 +140,9 @@ func _rebuild() -> void:
 			_planet_tiles()
 		"fleet":
 			_fleet_tiles()
-	_apply_tile_order()
+	TileLayout.arrange(_tiles, kind, _move_tile)
+	if refocus and _waypoint_list != null:
+		_waypoint_list.focus_rows()
 	if not status_text.is_empty():
 		var l := Label.new()
 		l.text = status_text
@@ -147,34 +154,15 @@ func _rebuild() -> void:
 ## A new tile titled `title`; `key` names the kind of tile when the title changes with the object.
 func _tile(title: String, key: String = "") -> Tile:
 	var t := Tile.new(title, key)
-	t.set_collapsed(_collapsed.get(t.key, false))
-	t.collapse_toggled.connect(func(k: String, c: bool) -> void: _collapsed[k] = c)
-	t.tile_dropped.connect(_on_tile_dropped)
+	t.set_collapsed(TileLayout.is_collapsed(t.key))
+	t.collapse_toggled.connect(TileLayout.set_collapsed)
 	_tiles.add_child(t)
 	return t
 
 
-## Puts the tiles in the order the player dragged them into (new kinds of tile keep their place).
-func _apply_tile_order() -> void:
-	var order: Array = _tile_order.get(kind, [])
-	var tiles: Array[Tile] = []
-	for child in _tiles.get_children():
-		if child is Tile and not child.is_queued_for_deletion():
-			tiles.append(child)
-			if not order.has(child.key):
-				order.append(child.key)
-	_tile_order[kind] = order
-	tiles.sort_custom(func(a: Tile, b: Tile) -> bool: return order.find(a.key) < order.find(b.key))
-	for i in tiles.size():
-		_tiles.move_child(tiles[i], i)
-
-
-func _on_tile_dropped(from_key: String, to_key: String) -> void:
-	var order: Array = _tile_order.get(kind, [])
-	if not order.has(from_key) or not order.has(to_key):
-		return
-	order.erase(from_key)
-	order.insert(order.find(to_key), from_key)
+## A tile dragged to `column`, above tile `before` ("" for the bottom); the layout keeps it.
+func _move_tile(key: String, column: int, before: String = "") -> void:
+	TileLayout.move(kind, key, column, before)
 	_queue_rebuild()
 
 
@@ -300,6 +288,7 @@ func _starbase_tile(info: Dictionary) -> void:
 	if base.is_empty():
 		t.line("This planet has no starbase.")
 		return
+	_starbase_popup(t)
 	var dock: int = base["dock"]
 	t.field("Dock Capacity", "Unlimited" if dock < 0 else ("None" if dock == 0 else "%dkT" % dock))
 	t.field("Armor", "%sdp" % thousands(base["armor"]))
@@ -318,6 +307,29 @@ func _starbase_tile(info: Dictionary) -> void:
 	speed.set_value(info["mass_driver_warp"] if info["mass_driver_warp"] > 0 else driver)
 	speed.value_set.connect(func(v: int) -> void: _set_planet(info, {"mass_driver_warp": v}))
 	r.add_child(speed)
+
+
+## While a button is held on the Starbase tile (issue #10): the starbase's design, its hull with
+## the parts in place and its totals, as the original shows it; letting go closes it.
+func _starbase_popup(t: Tile) -> void:
+	var frame := t.body.get_parent() as Control
+	frame.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	frame.gui_input.connect(
+		func(event: InputEvent) -> void:
+			if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT:
+				return
+			if not event.pressed:
+				_popup.close()
+				return
+			var pl := GameSession.view.state.planet(id)
+			if pl == null or pl.starbase == null:
+				return
+			var design := GameSession.view.me().starbase_design(pl.starbase.design)
+			var content := SummaryPane.design_view(design, true)
+			if content != null:
+				_popup.open(content, get_global_mouse_position())
+			frame.accept_event()
+	)
 
 
 ## The Production tile: the queue coloured by when each item will be built (green: all of it this

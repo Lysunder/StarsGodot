@@ -8,7 +8,10 @@ its surface. Open it from the planet's Production tile.
 - The left list shows what the planet can build; the right list is the queue, built from the top down.
 - **Add** puts the selected item into the queue; **Remove** takes it out; the arrows move an item up or down.
 - Hold **Shift** to add or remove 10 at a time, and **Ctrl** for 100.
-- The cost of the selected item and an estimate of when each item will be finished are shown below the lists.
+- Factories, mines and defenses can only be queued up to the number the planet can use, counting those already
+  built and queued.
+- The cost of the selected item and an estimate of when each item will be finished are shown below the lists. The
+  estimate follows the leftover box below: with it checked, nothing is set aside for research first.
 
 Anything the planet can't finish this year carries on next year, keeping what has been spent on it. When the
 queue runs dry, leftover resources can go to research (the "contribute only leftover resources to research"

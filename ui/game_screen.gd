@@ -11,7 +11,8 @@ extends VBoxContainer
 
 signal quit_requested
 
-const LEFT_WIDTH := 400
+## The left panes take the Command pane's two columns of tiles (issue #11).
+const LEFT_WIDTH := TileLayout.COLUMN_WIDTH * TileLayout.COLUMNS + TileLayout.COLUMN_GAP
 const SUMMARY_HEIGHT := 200
 const MESSAGES_HEIGHT := 150
 const MENU_SAVE := 0
@@ -72,6 +73,7 @@ func _ready() -> void:
 	left.add_child(command_scroll)
 	_command = CommandPane.new()
 	_command.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_command.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_command.goto.connect(_on_goto)
 	command_scroll.add_child(_command)
 	_messages = MessagesPane.new()
@@ -295,15 +297,46 @@ func _on_message_goto(goto: Dictionary) -> void:
 			_map.select("planet", b["planet"])
 		_battle_viewer.open(goto["battle"])
 	elif goto.has("planet"):
-		_map.select("planet", goto["planet"])
-	elif goto.has("fleet") and goto.get("owner", -1) == GameSession.player:
-		if GameSession.view.state.fleet(GameSession.player, goto["fleet"]) != null:
-			_map.select("fleet", goto["fleet"])
+		var pl := GameSession.view.planet_info(goto["planet"])
+		_goto_on_map("planet", goto["planet"], pl["x"], pl["y"])
+	elif goto.has("fleet"):
+		_goto_fleet(goto["fleet"], goto.get("owner", GameSession.player))
 	elif goto.has("research"):
 		_research.open()
 	elif goto.has("hulls"):
 		_designer.open()
 		_designer._set_mode(ShipDesigner.MODE_HULLS)
+	else:
+		# the Mystery Trader, a minefield, a packet or salvage, a wormhole (issue #14)
+		for kind in MapObjects.OBJECT_KINDS:
+			if goto.has(kind):
+				var key: int = goto[kind]
+				if kind == "minefield" or kind == "packet":
+					key += int(goto.get("owner", 0)) * MapObjects.FLEET_KEY
+				var o: Variant = MapObjects.find(GameSession.view, kind, key)
+				if o != null:
+					_goto_on_map(kind, key, o.x, o.y)
+				return
+
+
+## A message's fleet: the player's own, or another player's while it is seen this year.
+func _goto_fleet(number: int, owner_index: int) -> void:
+	var view := GameSession.view
+	if owner_index == GameSession.player:
+		var f := view.state.fleet(GameSession.player, number)
+		if f != null:
+			_goto_on_map("fleet", number, f.x, f.y)
+		return
+	var key := owner_index * MapObjects.FLEET_KEY + number
+	var seen := MapObjects.seen_fleet(view, key)
+	if seen != null:
+		_goto_on_map("seen_fleet", key, seen.x, seen.y)
+
+
+## Selects what a message's Goto shows and scrolls the scanner to it.
+func _goto_on_map(kind: String, id: int, x: float, y: float) -> void:
+	_map.select(kind, id)
+	_map.show_point(x, y)
 
 
 ## The status bar: what is under the mouse and how far it is from the selected object.

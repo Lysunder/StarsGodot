@@ -13,10 +13,13 @@ const BLUE_YELLOW := "blue_yellow"
 const MODES := [STANDARD, RED_GREEN, BLUE_YELLOW]
 const MODE_NAMES := ["Standard", "Red-green safe", "Blue-yellow safe"]
 
-## Roles. On the dark map: MINE, OTHER, FLEET, SELECTED, GOOD, BAD. As text or bars on the light
+## Roles. On the dark map: MINE, OTHER, FLEET, SELECTED, GOOD, BAD, and FRIEND and NEUTRAL for
+## other players' planet flags (OTHER is an enemy's). As text or bars on the light
 ## panes: TEXT_GOOD, TEXT_BAD, TEXT_POOR, the cargo kinds, the queue estimate, the environment axes.
 const MINE := "mine"
 const OTHER := "other"
+const FRIEND := "friend"
+const NEUTRAL := "neutral"
 const FLEET := "fleet"
 const SELECTED := "selected"
 const GOOD := "good"
@@ -44,6 +47,8 @@ const COLORS := {
 	{
 		MINE: Color(0.3, 0.85, 0.35),
 		OTHER: Color(0.9, 0.3, 0.25),
+		FRIEND: Color(1.0, 1.0, 0.0),
+		NEUTRAL: Color(0.55, 0.05, 0.05),
 		FLEET: Color(0.45, 0.75, 1.0),
 		SELECTED: Color(1.0, 0.9, 0.3),
 		GOOD: Color(0.2, 0.85, 0.3),
@@ -67,6 +72,8 @@ const COLORS := {
 	{
 		MINE: Color("56b4e9"),
 		OTHER: Color("e69f00"),
+		FRIEND: Color("f0e442"),
+		NEUTRAL: Color("8c5a00"),
 		FLEET: Color("e8e8e8"),
 		SELECTED: Color("f0e442"),
 		GOOD: Color("56b4e9"),
@@ -90,6 +97,8 @@ const COLORS := {
 	{
 		MINE: Color("2ec27e"),
 		OTHER: Color("e8453c"),
+		FRIEND: Color("ffd24d"),
+		NEUTRAL: Color("7a1a14"),
 		FLEET: Color("e8e8e8"),
 		SELECTED: Color("ffd24d"),
 		GOOD: Color("2ec27e"),

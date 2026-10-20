@@ -4,10 +4,12 @@ The screen has four panes, and most of the game is played in them.
 
 ## Command pane (left)
 
-Tiles for the planet or fleet you have selected. Each tile has a title bar; click it to fold the tile up or open it
-again. For a planet you see its status, production, starbase and routes; for a fleet, its ships, cargo, waypoints,
-the task at the selected waypoint, and its battle plan. The arrow buttons next to the name step through your
-planets or fleets.
+Tiles for the planet or fleet you have selected, in two columns. Each tile has a title bar; click its arrow to fold
+the tile up or open it again. Drag a tile by its title bar onto another tile to put it there, or below a column's
+tiles to put it at the bottom of that column; the game remembers where you put them. For a planet you see its
+status, production, starbase and routes (hold the mouse button down on the starbase tile to see its design); for a
+fleet, its ships, cargo, waypoints, the task at the selected waypoint, and its battle plan. The arrow buttons next
+to the name step through your planets or fleets.
 
 ## Scanner (centre)
 

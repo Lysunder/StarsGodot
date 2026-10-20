@@ -17,8 +17,8 @@ func _game() -> GameState:
 	return NewGame.create(_content, options)
 
 
-func _items(pl: Planet, owner: Player, can_terraform := false) -> Array:
-	return ProductionList.entries(pl, owner, _content, can_terraform).map(
+func _items(pl: Planet, player: Player, can_terraform := false) -> Array:
+	return ProductionList.entries(pl, player, _content, can_terraform).map(
 		func(e: Dictionary) -> String:
 			if e["item"] != "":
 				return e["item"]
@@ -96,3 +96,29 @@ func test_alternate_reality_has_no_scanner_or_auto_installations() -> void:
 	assert_bool(items.has("production_item.auto_mines")).is_false()
 	assert_bool(items.has("production_item.auto_factories")).is_false()
 	assert_bool(items.has("production_item.auto_alchemy")).is_true()
+
+
+func test_room_for_factories_mines_and_defenses_after_the_queue() -> void:
+	var s := _game()
+	var me := s.player(0)
+	var home := s.planet(me.homeworld)
+	var most := PlanetEconomy.max_defenses(home, me.race, _content)
+	var room := ProductionList.room(home, me, _content, "production_item.defenses", 0)
+	assert_int(room).is_equal(most - home.defenses)
+	(
+		assert_int(ProductionList.room(home, me, _content, "production_item.defenses", room - 3))
+		. is_equal(3)
+	)
+	(
+		assert_int(ProductionList.room(home, me, _content, "production_item.defenses", room + 5))
+		. is_equal(0)
+	)
+	var factories := PlanetEconomy.max_factories(home, me.race, _content) - home.factories
+	assert_int(ProductionList.room(home, me, _content, "production_item.factories", 0)).is_equal(
+		factories
+	)
+	# no limit on auto items, alchemy or designs' items
+	assert_int(ProductionList.room(home, me, _content, "production_item.auto_mines", 99)).is_equal(
+		-1
+	)
+	assert_int(ProductionList.room(home, me, _content, "production_item.alchemy", 99)).is_equal(-1)

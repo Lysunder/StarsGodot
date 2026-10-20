@@ -18,7 +18,8 @@ have selected.
 
 With one of your fleets selected:
 
-- **Shift-click** adds a waypoint after the selected one: a planet, a fleet (to follow it), or a point in space.
+- **Shift-click** adds a waypoint after the selected one: a planet, a fleet (to follow it), a wormhole, the Mystery
+  Trader, a minefield, a packet or salvage, or a point in space.
 - **Drag** a waypoint to move it somewhere else.
 - The fleet's path is drawn from waypoint to waypoint.
 
@@ -31,7 +32,8 @@ The toolbar above the map switches the view:
 - **Normal:** planets in their owners' colours.
 - **Minerals:** the minerals lying on each planet's surface.
 - **Conc.:** how rich each planet's mineral deposits are.
-- **Value:** how good each planet is for your race (see [[planets]]).
+- **Value:** how good each planet is for your race (see [[planets]]). A flag marks each planet someone lives on, in
+  your colour, a friend's (yellow), a neutral's (dark red) or an enemy's (red).
 - **Pop.:** population.
 
 **Names** writes planet names next to the planets. **Scan** shows your scanner coverage: normal scanners in red,

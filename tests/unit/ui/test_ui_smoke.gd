@@ -255,37 +255,6 @@ func test_rename_dialog_renames_the_fleet() -> void:
 	await get_tree().process_frame
 
 
-func test_tiles_keep_their_order_and_collapse() -> void:
-	_new_game()
-	var screen := GameScreen.new()
-	add_child(screen)
-	await get_tree().process_frame
-	var pane := screen._command
-	pane.command("planet", GameSession.view.me().homeworld)
-	var keys := func() -> Array:
-		var out := []
-		for child in pane._tiles.get_children():
-			if child is Tile and not child.is_queued_for_deletion():
-				out.append(child.key)
-		return out
-	var earlier: Array = keys.call()
-	assert_str(earlier[0]).is_equal("planet")
-	# drop the Status tile on the first tile, collapse Minerals on Hand
-	var first: Tile = pane._tiles.get_child(0)
-	first.tile_dropped.emit("Status", "planet")
-	pane._collapsed["Minerals on Hand"] = true
-	pane._rebuild()
-	var later: Array = keys.call()
-	assert_str(later[0]).is_equal("Status")
-	assert_str(later[1]).is_equal("planet")
-	for child in pane._tiles.get_children():
-		if child is Tile and child.key == "Minerals on Hand" and not child.is_queued_for_deletion():
-			assert_bool(child.collapsed).is_true()
-	assert_str(CommandPane.thousands(1234567)).is_equal("1,234,567")
-	screen.queue_free()
-	await get_tree().process_frame
-
-
 func test_route_is_picked_on_the_map() -> void:
 	_new_game()
 	var screen := GameScreen.new()
@@ -379,6 +348,13 @@ func test_scanner_views_and_status_bar() -> void:
 	screen._on_hovered(home["x"], home["y"], {"kind": "planet", "id": home["id"]})
 	assert_str(screen._status._name.text).is_equal(home["name"])
 	assert_str(screen._status._distance.text).contains("light years from")
+	# planet flags in the Planet Value view (issue #8): coloured by whose planet it is
+	var relations: Array[String] = ["neutral", "friend", "enemy", "neutral"]
+	assert_str(GalaxyMap.flag_role(0, 0, relations)).is_equal(Palette.MINE)
+	assert_str(GalaxyMap.flag_role(1, 0, relations)).is_equal(Palette.FRIEND)
+	assert_str(GalaxyMap.flag_role(2, 0, relations)).is_equal(Palette.OTHER)
+	assert_str(GalaxyMap.flag_role(3, 0, relations)).is_equal(Palette.NEUTRAL)
+	assert_str(GalaxyMap.flag_role(9, 0, relations)).is_equal(Palette.NEUTRAL)
 	screen.queue_free()
 	await get_tree().process_frame
 

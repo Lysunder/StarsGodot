@@ -39,6 +39,10 @@ const COLOR_TRADER := Color(1.0, 0.85, 0.2)
 const FLEET_TIP := 5.0
 const FLEET_BACK := 4.0
 const FLEET_HALF_WIDTH := 4.0
+## A planet flag (Planet Value view): the pole's height above the planet, the flag's size, pixels.
+const FLAG_HEIGHT := 19.0
+const FLAG_WIDTH := 7.0
+const FLAG_DEPTH := 6.0
 ## Minefield discs: fill and outline opacity.
 const MINEFIELD_FILL := 0.12
 const MINEFIELD_EDGE := 0.5
@@ -153,6 +157,15 @@ func _on_resized() -> void:
 		return
 	offset += (size - _last_size) / 2.0
 	_last_size = size
+	queue_redraw()
+
+
+## Scrolls the map to centre universe point (x, y) when it isn't on screen (a message's Goto, as
+## the original does), keeping the zoom.
+func show_point(x: float, y: float) -> void:
+	if Rect2(Vector2.ZERO, size).grow(-PICK_PIXELS).has_point(to_screen(x, y)):
+		return
+	offset += size / 2.0 - to_screen(x, y)
 	queue_redraw()
 
 
@@ -402,6 +415,8 @@ func _draw_view(at: Vector2, pl: Dictionary) -> float:
 			var v: int = info["habitability"]
 			var r := 2.0 + 8.0 * absi(v) / 100.0
 			draw_circle(at, r, Palette.color(Palette.GOOD if v > 0 else Palette.BAD))
+			if pl["owner"] >= 0:
+				_draw_flag(at, pl["owner"])
 			return r
 		View.POPULATION:
 			if info["population"] <= 0:
@@ -425,6 +440,28 @@ func _draw_view(at: Vector2, pl: Dictionary) -> float:
 			draw_circle(at, 1.5, COLOR_UNOWNED)
 			return 3.0
 	return PLANET_RADIUS
+
+
+## An owned planet's flag in the Planet Value view (issue #8), as the original draws it: a pole
+## rising from the planet with a flag at the top, on a black backing, coloured by whose it is
+## (the player's, a friend's, a neutral's, an enemy's).
+func _draw_flag(at: Vector2, planet_owner: int) -> void:
+	var colour := Palette.color(
+		flag_role(planet_owner, GameSession.player, GameSession.view.me().relations)
+	)
+	var x := roundf(at.x)
+	var y := roundf(at.y)
+	draw_rect(Rect2(x - 1, y - FLAG_HEIGHT - 1, FLAG_WIDTH + 2, FLAG_DEPTH + 2), Color.BLACK)
+	draw_rect(Rect2(x, y - FLAG_HEIGHT, 1, FLAG_HEIGHT + 2), colour)
+	draw_rect(Rect2(x, y - FLAG_HEIGHT, FLAG_WIDTH, FLAG_DEPTH), colour)
+
+
+## The Palette role of `planet_owner`'s flag for `player`, whose relations are `relations`.
+static func flag_role(planet_owner: int, player: int, relations: Array[String]) -> String:
+	if planet_owner == player:
+		return Palette.MINE
+	var relation := relations[planet_owner] if planet_owner < relations.size() else "neutral"
+	return {"friend": Palette.FRIEND, "enemy": Palette.OTHER}.get(relation, Palette.NEUTRAL)
 
 
 func _draw_path(f: Fleet) -> void:
@@ -651,6 +688,26 @@ func _target_at(at: Vector2) -> Dictionary:
 						"target": "fleet",
 						"target_owner": other.owner,
 						"target_id": other.number,
+					},
+					true
+				)
+			)
+			break
+		# wormholes, the Mystery Trader, packets and salvage, minefields (issues #13, #15)
+		if MapObjects.OBJECT_KINDS.has(hit["kind"]):
+			var o: Variant = MapObjects.find(GameSession.view, hit["kind"], hit["id"])
+			if o == null:
+				continue
+			var by: int = o.owner if (o is Minefield or o is Packet) else -1
+			(
+				out
+				. merge(
+					{
+						"x": o.x,
+						"y": o.y,
+						"target": hit["kind"],
+						"target_owner": by,
+						"target_id": o.number,
 					},
 					true
 				)

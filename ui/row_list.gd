@@ -85,6 +85,15 @@ func select(index: int) -> void:
 		ensure_visible_row(index)
 
 
+## Whether the rows have the keyboard focus, and taking it (a rebuilt list keeps the old one's).
+func rows_have_focus() -> bool:
+	return _canvas.has_focus()
+
+
+func focus_rows() -> void:
+	_canvas.grab_focus()
+
+
 func ensure_visible_row(index: int) -> void:
 	var top := index * row_height()
 	if top < scroll_vertical:

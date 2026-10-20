@@ -293,7 +293,9 @@ What the production window offers for one of the player's planets, in this order
    Reality has no auto mines, factories or defenses, Claim Adjuster no auto terraforming).
 
 The original also caps each count it shows by what is left after the queue's items (for example the factories still
-to build); the list itself doesn't depend on the queue. An item a mod adds with an effect not named above is offered
+to build); the list itself doesn't depend on the queue. The production window does the same when adding: factories,
+mines and defenses go into the queue only up to the planet's maximum (S08) less those built and those already queued
+(`ProductionList.room`); auto items, which only ever build what fits, have no cap. An item a mod adds with an effect not named above is offered
 after the standard items, by its `order`.
 
 ## Randomness

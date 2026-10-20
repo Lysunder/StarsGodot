@@ -101,7 +101,11 @@ func _ready() -> void:
 	box.add_child(bottom)
 	_leftover = CheckBox.new()
 	_leftover.text = "Contribute only leftover resources to research"
-	_leftover.toggled.connect(func(on: bool) -> void: _leftover_on = on)
+	_leftover.toggled.connect(
+		func(on: bool) -> void:
+			_leftover_on = on
+			_show_queue()
+	)
 	bottom.add_child(_leftover)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -187,10 +191,12 @@ func _is_auto(item: Dictionary) -> bool:
 
 
 ## The queue rows: the top-of-queue marker, then the items coloured by ProductionEstimate on a copy
-## with the edited queue.
+## with the edited queue and leftover box.
 func _show_queue() -> void:
 	var copy := GameSession.preview.state.copy() as GameState
 	var planet := copy.planet(planet_id)
+	# the box changes what the planet spends, so the completion years follow it (issue #12)
+	planet.leftover_to_research = _leftover_on
 	planet.queue.clear()
 	var errors := PackedStringArray()
 	for d: Dictionary in _items:
@@ -305,6 +311,14 @@ func _on_add() -> void:
 	}
 	if _is_auto(item):
 		entry["count"] = maxi(entry["count"], AUTO_DEFAULT_COUNT)
+	# no more factories, mines or defenses than the planet can use (issue #16)
+	var room := _room(item)
+	if room == 0:
+		_status.text = tr("The planet has no room for more of these: %s.") % item["label"]
+		return
+	if room > 0:
+		entry["count"] = mini(entry["count"], room)
+	_status.text = ""
 	var at := _queue_index()
 	if at >= 0 and at < _items.size():
 		var row: Dictionary = _items[at]
@@ -320,6 +334,19 @@ func _on_add() -> void:
 	_items.insert(at + 1, entry)
 	_queue.selected = at + 2
 	_show_queue()
+
+
+## How many more of inventory item `item` the planet can use after those in the edited queue
+## (-1: no limit).
+func _room(item: Dictionary) -> int:
+	if item["item"] == "":
+		return -1
+	var queued := 0
+	for d: Dictionary in _items:
+		if d["item"] == item["item"]:
+			queued += int(d["count"])
+	var pl := GameSession.preview.state.planet(planet_id)
+	return ProductionList.room(pl, GameSession.view.me(), GameSession.content, item["item"], queued)
 
 
 func _on_remove() -> void:
