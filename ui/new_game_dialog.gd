@@ -12,6 +12,8 @@ extends AcceptDialog
 ## The tutorial waits for M11 step 11.
 
 signal game_chosen(options: NewGame.Options)
+## Begin Tutorial was pressed: the tutorial game instead.
+signal tutorial_chosen
 
 const DIFFICULTIES := ["Easy", "Standard", "Harder", "Expert"]
 const SIZES := ["Tiny", "Small", "Medium", "Large", "Huge"]
@@ -19,13 +21,13 @@ const DENSITIES := ["sparse", "normal", "dense", "packed"]
 const POSITIONS := ["close", "moderate", "farther", "distant"]
 ## [settings flag, label, built yet]
 const FLAGS := [
-	["max_minerals", "Beginner: Maximum Minerals", true],
-	["slow_tech", "Slower Tech Advances", true],
-	["accelerated_start", "Accelerated BBS Play", true],
-	["no_random_events", "No Random Events", true],
-	["computer_alliances", "Computer Players Form Alliances", true],
-	["public_scores", "Public Player Scores", false],
-	["galaxy_clumping", "Galaxy Clumping", true],
+	["max_minerals", "Beginner: Maximum Minerals"],
+	["slow_tech", "Slower Tech Advances"],
+	["accelerated_start", "Accelerated BBS Play"],
+	["no_random_events", "No Random Events"],
+	["computer_alliances", "Computer Players Form Alliances"],
+	["public_scores", "Public Player Scores"],
+	["galaxy_clumping", "Galaxy Clumping"],
 ]
 
 ## Advanced Game's computer player list: the personality and level choices, and the rows.
@@ -82,9 +84,13 @@ func _ready() -> void:
 	_button(right, "Advanced Game...", _open_advanced)
 	var bottom := HBoxContainer.new()
 	box.add_child(bottom)
-	var tutorial := _button(bottom, "Begin Tutorial", func() -> void: pass)
-	tutorial.disabled = true
-	tutorial.tooltip_text = "The tutorial comes later."
+	_button(
+		bottom,
+		"Begin Tutorial",
+		func() -> void:
+			hide()
+			tutorial_chosen.emit()
+	)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bottom.add_child(spacer)
@@ -142,9 +148,6 @@ func _build_advanced() -> void:
 	for spec: Array in FLAGS:
 		var c := CheckBox.new()
 		c.text = spec[1]
-		c.disabled = not spec[2]
-		if not spec[2]:
-			c.tooltip_text = "Comes with public scores (later)."
 		right.add_child(c)
 		_flags.append(c)
 	var seed_row := HBoxContainer.new()

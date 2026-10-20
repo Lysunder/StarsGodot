@@ -184,7 +184,8 @@ For each of the player's fleets, in fleet order:
    first (any fleet for the targets none, any and starbase, unlike S12's retargeting) and whose owner the plan attacks. A fleet no patrol of this player picked this turn is preferred: the
    first such fleet replaces a picked one, and after that only a nearer unpicked fleet replaces it; until one is
    found, any nearer fleet replaces the current one. An unpicked choice becomes picked. When the choice's squared
-   distance is above 0 and at most the range² (range (data word 1 + 1) × 50 ly; 550 means any distance, 10000):
+   distance is above 0 and at most the range² (range (data word 1 + 1) × 50 ly for words 0 to 10, 50 to 550 ly; word 11, "any enemy", is any distance, 10000. The
+   original took 550 ly itself for any distance and gave "any enemy" 600 ly: B55, fixed):
    - with one waypoint: a new waypoint 1 is added, a patrol with waypoint 0's task data (other words 0); its speed is
      data word 0, or the fleet's default warp when that is 0. A repeating fleet also gets a copy of waypoint 0 as
      waypoint 2, at the default warp;

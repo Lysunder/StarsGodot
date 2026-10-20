@@ -60,3 +60,29 @@ func test_advanced_game_chooses_the_computer_players() -> void:
 	PersonalityStore.dir = PersonalityStore.DIR
 	dialog.queue_free()
 	await get_tree().process_frame
+
+
+func test_begin_tutorial_and_public_scores_are_offered() -> void:
+	var dialog := NewGameDialog.new()
+	add_child(dialog)
+	var tutorial := []
+	dialog.tutorial_chosen.connect(func() -> void: tutorial.append(true))
+	for b: Button in dialog.find_children("*", "Button", true, false):
+		if b.text == "Begin Tutorial":
+			assert_bool(b.disabled).is_false()
+			b.pressed.emit()
+	assert_array(tutorial).has_size(1)
+	# every game option can be picked, public scores too, and reaches the game's settings
+	var chosen: Array = []
+	dialog.game_chosen.connect(func(o: NewGame.Options) -> void: chosen.append(o))
+	for i in NewGameDialog.FLAGS.size():
+		assert_bool(dialog._flags[i].disabled).is_false()
+		if NewGameDialog.FLAGS[i][0] == "public_scores":
+			dialog._flags[i].button_pressed = true
+	dialog._on_ok()
+	var options: NewGame.Options = chosen[0]
+	assert_bool(options.flags.has("public_scores")).is_true()
+	options.race = Race.new()
+	assert_bool(NewGame.create(GameSession.content, options).settings.public_scores).is_true()
+	dialog.queue_free()
+	await get_tree().process_frame

@@ -55,6 +55,29 @@ func test_adding_stops_at_what_the_planet_can_use() -> void:
 	await get_tree().process_frame
 
 
+func test_a_queue_item_stops_at_the_queue_limit_and_ok_still_works() -> void:
+	var made := _dialog()
+	var screen: GameScreen = made[0]
+	var dialog: ProductionDialog = made[1]
+	await get_tree().process_frame
+	var home := GameSession.view.me().homeworld
+	dialog.open(home)
+	var most := int(GameSession.content.constant("constant.limits.queue_count"))
+	_pick(dialog, "production_item.alchemy")
+	dialog._on_add()
+	dialog._items[0]["count"] = most - 2
+	dialog._queue.selected = 1
+	for i in 4:
+		dialog._on_add()
+	assert_int(dialog._items.size()).is_equal(1)
+	assert_int(dialog._items[0]["count"]).is_equal(most)
+	assert_str(dialog._status.text).is_not_empty()
+	assert_bool(dialog._commit()).is_true()
+	dialog.hide()
+	screen.queue_free()
+	await get_tree().process_frame
+
+
 func test_the_leftover_box_changes_the_completion_years() -> void:
 	var made := _dialog()
 	var screen: GameScreen = made[0]

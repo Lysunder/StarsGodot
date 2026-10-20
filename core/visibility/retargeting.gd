@@ -10,9 +10,11 @@ const WARP_MAX := 10
 const FUEL_LIMIT := 121
 const FULL_TAG := "full_default_warp"
 const SAFE_TAG := "warp10_safe"
-## Patrol range: (data word 1 + 1) × RANGE_STEP ly; ANY_RANGE stands for "any distance".
+## Patrol range: data word 1 picks (word + 1) × RANGE_STEP ly, 50 to 550 ly; ANY_ENEMY and above,
+## "any enemy", is any distance. The original took 550 ly itself for any distance, and gave "any
+## enemy" 600 ly (B55, fixed).
 const RANGE_STEP := 50
-const ANY_RANGE := 550
+const ANY_ENEMY := 11
 const ANY_DISTANCE := 10000
 const NO_CHOICE := 100000000
 ## Transport actions by their number in the original's task data (S11).
@@ -93,9 +95,8 @@ static func _patrol(
 			unpicked = true
 	if unpicked:
 		picked[best] = true
-	var scan_range := (_words(wp0)[1] + 1) * RANGE_STEP
-	if scan_range == ANY_RANGE:
-		scan_range = ANY_DISTANCE
+	var word := _words(wp0)[1]
+	var scan_range := ANY_DISTANCE if word >= ANY_ENEMY else (word + 1) * RANGE_STEP
 	if best == null or best_d2 == 0 or best_d2 > scan_range * scan_range:
 		return
 	var added: Waypoint

@@ -109,6 +109,7 @@ func _ready() -> void:
 	add_child(_turn_files)
 	_new_game = NewGameDialog.new()
 	_new_game.game_chosen.connect(_on_game_chosen)
+	_new_game.tutorial_chosen.connect(_on_tutorial)
 	add_child(_new_game)
 
 

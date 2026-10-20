@@ -116,7 +116,7 @@ static func _production_queue(
 		if not errors.is_empty():
 			return "bad queue item: %s" % errors[0]
 		if q.count < 0 or q.count > content.constant("constant.limits.queue_count"):
-			return "bad queue item count"
+			return _count_reason(content, q.count)
 		if q.progress < 0 or q.progress > 100:
 			return "bad queue item progress"
 		if q.is_design():
@@ -250,6 +250,12 @@ static func _player_defaults(
 	return ""
 
 
+## Why a queue item's count is refused: one item holds 0 to `constant.limits.queue_count` units.
+static func _count_reason(content: ContentRegistry, count: int) -> String:
+	var most := int(content.constant("constant.limits.queue_count"))
+	return "a queue item holds 0 to %d units, not %d" % [most, count]
+
+
 ## Standard queue items (no designs), progress 0, into `out`; returns why not, or "".
 static func _standard_queue(
 	content: ContentRegistry, items: Array, out: Array[QueueItem]
@@ -262,7 +268,7 @@ static func _standard_queue(
 		if q.is_design() or not content.ids("production_item").has(q.item):
 			return "no such production item"
 		if q.count < 0 or q.count > content.constant("constant.limits.queue_count"):
-			return "bad queue item count"
+			return _count_reason(content, q.count)
 		q.progress = 0
 		out.append(q)
 	return ""

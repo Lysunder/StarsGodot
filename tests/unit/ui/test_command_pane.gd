@@ -206,3 +206,58 @@ func test_starbase_tile_shows_the_design_while_held() -> void:
 	assert_bool(pane._popup.visible).is_false()
 	screen.queue_free()
 	await get_tree().process_frame
+
+
+## The Waypoint Task tile's OptionButtons after the task one, and its warp gauges.
+func _task_controls(pane: CommandPane) -> Dictionary:
+	for t: Tile in pane._tiles.find_children("*", "Tile", true, false):
+		if t.key == "Waypoint Task" and t.is_inside_tree():
+			return {
+				"lists": t.find_children("*", "OptionButton", true, false).slice(1),
+				"gauges": t.find_children("*", "WarpGauge", true, false),
+			}
+	return {}
+
+
+func test_lay_mines_and_patrol_tasks_have_their_settings() -> void:
+	_new_game()
+	var screen := GameScreen.new()
+	add_child(screen)
+	await get_tree().process_frame
+	var map := screen._map
+	var fleet := GameSession.view.fleets()[0]
+	map.size = Vector2(800, 600)
+	map._fit()
+	map.select("fleet", fleet.number)
+	var target: Dictionary = GameSession.view.planets()[0]
+	map._add_waypoint(map.to_screen(target["x"], target["y"]))
+	await get_tree().process_frame
+	var pane := screen._command
+	var wp := func() -> Dictionary: return GameSession.view.fleet_info(fleet.number)["waypoints"][1]
+	# lay mines: for 1 to 5 years or indefinitely (word 0: 0 to 5)
+	pane._change_waypoint(wp.call(), wp.call()["warp"], "lay_mines", {"raw": [0, 0, 0, 0, 0]})
+	await get_tree().process_frame
+	var lists: Array = _task_controls(pane)["lists"]
+	assert_int(lists.size()).is_equal(1)
+	var years: OptionButton = lists[0]
+	assert_int(years.item_count).is_equal(6)
+	years.item_selected.emit(5)
+	await get_tree().process_frame
+	assert_int(wp.call()["task_data"]["raw"][0]).is_equal(5)
+	# patrol: 50 to 550 ly or any enemy (word 1), and the intercept speed (word 0)
+	pane._change_waypoint(wp.call(), wp.call()["warp"], "patrol", {"raw": [0, 0, 0, 0, 0]})
+	await get_tree().process_frame
+	var controls := _task_controls(pane)
+	var reach: OptionButton = controls["lists"][0]
+	assert_int(reach.item_count).is_equal(Retargeting.ANY_ENEMY + 1)
+	reach.item_selected.emit(Retargeting.ANY_ENEMY)
+	await get_tree().process_frame
+	var speed: WarpGauge = _task_controls(pane)["gauges"].back()
+	assert_str(speed.zero_text).is_equal("Automatic")
+	speed.value_set.emit(6)
+	await get_tree().process_frame
+	var raw: Array = wp.call()["task_data"]["raw"]
+	assert_int(raw[0]).is_equal(6)
+	assert_int(raw[1]).is_equal(Retargeting.ANY_ENEMY)
+	screen.queue_free()
+	await get_tree().process_frame

@@ -70,7 +70,9 @@ func test_queue_change_is_checked() -> void:
 	assert_str(change.call(1, 0, [])).is_equal("not the player's planet")
 	assert_str(change.call(0, 1, [])).is_equal("not the player's planet")
 	assert_str(change.call(0, 0, [_item("nothing", 1)])).is_equal("no such production item")
-	assert_str(change.call(0, 0, [_item("mines", 2000)])).is_equal("bad queue item count")
+	assert_str(change.call(0, 0, [_item("mines", 2000)])).is_equal(
+		"a queue item holds 0 to 1023 units, not 2000"
+	)
 	var design := _item("mines", 1)
 	design["item"] = ""
 	design["design"] = 3

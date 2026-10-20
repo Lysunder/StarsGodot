@@ -12,6 +12,8 @@ const MAX_WARP := 10
 const FILL := Color("ff0000")
 
 var value: int = 0
+## What warp 0 reads ("Automatic" for a patrol's intercept speed).
+var zero_text := "Stopped"
 var _dragging := false
 
 
@@ -23,7 +25,7 @@ func _init() -> void:
 
 func set_value(v: int) -> void:
 	value = clampi(v, 0, MAX_WARP)
-	show_values([[value, FILL]], MAX_WARP, "Stopped" if value == 0 else tr("Warp %d") % value)
+	show_values([[value, FILL]], MAX_WARP, zero_text if value == 0 else tr("Warp %d") % value)
 
 
 func _gui_input(event: InputEvent) -> void:

@@ -456,14 +456,9 @@ func _fleet_tiles() -> void:
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	r.add_child(spacer)
 	if not orbiting.is_empty():
-		var xfer := t.button("Xfer", func() -> void: _cargo.open_with_planet(id, info["planet"]), r)
-		xfer.disabled = not orbiting["mine"]
-		if not orbiting["mine"]:
-			xfer.tooltip_text = "Transfers with other players' planets come later."
+		t.button("Xfer", func() -> void: _cargo.open_with_planet(id, info["planet"]), r)
 	else:
-		var jettison := t.button("Jettison", func() -> void: pass, r)
-		jettison.disabled = true
-		jettison.tooltip_text = "Jettisoning cargo comes with salvage (S14)."
+		t.button("Jettison", func() -> void: _cargo.open_deep_space(id), r)
 	t = _tile("Fuel & Cargo")
 	var fuel := t.gauge("Fuel")
 	var cargo := t.gauge("Cargo")
@@ -642,8 +637,10 @@ func _waypoint_tiles(info: Dictionary) -> void:
 			_transport_task(t, wp_here)
 		"transfer":
 			_transfer_choice(t, wp_here)
-		"lay_mines", "patrol":
-			t.line("Not carried out yet: minefields and battles come later (M7, M9).")
+		"lay_mines":
+			WaypointTaskPanels.lay_mines(t, wp_here, _change_waypoint)
+		"patrol":
+			WaypointTaskPanels.patrol(t, wp_here, _change_waypoint)
 
 
 ## The leg's travel time (years for that leg) and fuel, the fuel in red when the fleet runs short.
@@ -867,7 +864,8 @@ func _on_cargo_gauge_input(event: InputEvent, info: Dictionary) -> void:
 
 
 ## Opens the cargo transfer of the fleet under command (`info` its fleet_info) with its planet if
-## it is the player's, else with another of the player's fleets here.
+## it is the player's, else with another of the player's fleets here, else with the planet it
+## orbits (another player's).
 func open_cargo(info: Dictionary) -> void:
 	var planet: int = info["planet"]
 	if planet >= 0 and GameSession.view.planet_info(planet)["mine"]:
@@ -877,6 +875,9 @@ func open_cargo(info: Dictionary) -> void:
 		if f.number != id and f.x == info["x"] and f.y == info["y"]:
 			_cargo.open_with_fleet(id, f.number)
 			return
+	if planet >= 0:
+		_cargo.open_with_planet(id, planet)
+		return
 	status_text = "There is nothing here to transfer cargo with."
 	_queue_rebuild()
 

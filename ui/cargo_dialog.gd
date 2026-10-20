@@ -7,6 +7,9 @@ extends AcceptDialog
 ## held. Dragging in a fleet's gauge sets how much of that cargo it carries. Moves are limited by
 ## what the giver has and the receiver's room (a planet takes any minerals and colonists but no
 ## fuel). OK sends one `cargo_transfer` order with the net amounts (S11); Cancel drops them.
+## With another player's planet, or in deep space (Jettison), the right side starts empty and counts
+## what the fleet gives: colonists dropped on someone else's planet fight for it (S17), and
+## jettisoned cargo is lost (S14).
 
 signal transferred(reason: String)
 
@@ -21,7 +24,7 @@ const REPEAT_EVERY := 0.06
 const SIDE_WIDTH := 240
 
 var fleet_number: int = -1
-## {"planet": id} or {"fleet": number, "owner": owner}.
+## {"planet": id}, {"fleet": number, "owner": owner} or {"deep_space": true}.
 var other: Dictionary = {}
 
 ## Amounts per cargo type: the fleet's and the other side's as edited, and the fleet's at the
@@ -125,6 +128,11 @@ func open_with_fleet(p_fleet: int, other_fleet: int) -> void:
 	_open(p_fleet, {"fleet": other_fleet, "owner": GameSession.player})
 
 
+## Opens the window to jettison the fleet's cargo into deep space.
+func open_deep_space(p_fleet: int) -> void:
+	_open(p_fleet, {"deep_space": true})
+
+
 func _open(p_fleet: int, p_other: Dictionary) -> void:
 	fleet_number = p_fleet
 	other = p_other
@@ -141,10 +149,16 @@ func _open(p_fleet: int, p_other: Dictionary) -> void:
 		_other = (o["cargo"] as Array).duplicate()
 		_other_room = [o["cargo_capacity"], o["fuel_capacity"]]
 		_right_title.text = o["name"]
+	elif other.has("deep_space"):
+		_other = [0, 0, 0, 0, 0]
+		_other_room = [-1, 0]
+		_right_title.text = "Deep Space"
 	else:
 		var p := view.planet_info(other["planet"])
-		var surface: Array = p["surface"]
-		_other = [surface[0], surface[1], surface[2], p["population"], 0]
+		_other = [0, 0, 0, 0, 0]
+		if p.get("mine", false):
+			var surface: Array = p["surface"]
+			_other = [surface[0], surface[1], surface[2], p["population"], 0]
 		_other_room = [-1, 0]
 		_right_title.text = p["name"]
 	for i in ROWS.size():

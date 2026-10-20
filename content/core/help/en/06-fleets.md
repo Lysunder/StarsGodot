@@ -20,8 +20,10 @@ place to go, with the warp speed to fly there and a task to do on arrival.
 - **Remote mining:** mine an uninhabited planet with a fleet that has mining robots.
 - **Merge with fleet:** join another of your fleets there.
 - **Scrap fleet:** take the ships apart; part of their minerals are recovered at the planet.
-- **Lay mines:** lay a minefield with the fleet's mine layers.
-- **Patrol:** look for enemy fleets nearby and go after them.
+- **Lay mines:** lay a minefield with the fleet's mine layers, for 1 to 5 years or indefinitely. A fleet lays
+  only while it stays put (Space Demolition fleets also lay at half the rate while moving).
+- **Patrol:** look for enemy fleets within the intercept range (or any enemy) and go after them, at the intercept
+  speed (Automatic picks the fleet's most economical warp).
 - **Route:** send the fleet on to the planet's route destination.
 - **Transfer fleet:** give the fleet to another player.
 
@@ -32,5 +34,6 @@ A fleet can repeat its orders: when it reaches its last waypoint, it starts over
 - **Fleet composition:** the ships in the fleet; split ships off into new fleets, or merge fleets that are
   together.
 - **Cargo:** what the fleet carries; the cargo dialog moves cargo between the fleet and a planet or another fleet
-  in the same place.
+  in the same place. At another player's planet (**Xfer**) the fleet can only give: colonists dropped there fight
+  for the planet. In deep space, **Jettison** throws cargo out, and it is lost.
 - **Battle plan:** how the fleet behaves when a fight starts (see [[combat]]).

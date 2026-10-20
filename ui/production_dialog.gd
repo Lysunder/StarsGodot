@@ -328,12 +328,22 @@ func _on_add() -> void:
 			and row["starbase"] == entry["starbase"]
 		)
 		if same:
-			row["count"] += entry["count"]
+			# one queue item holds at most the queue limit of units (the order refuses more)
+			var most := _queue_limit()
+			if row["count"] >= most:
+				_status.text = tr("A queue item holds at most %d.") % most
+				return
+			row["count"] = mini(row["count"] + entry["count"], most)
 			_show_queue()
 			return
+	entry["count"] = mini(entry["count"], _queue_limit())
 	_items.insert(at + 1, entry)
 	_queue.selected = at + 2
 	_show_queue()
+
+
+func _queue_limit() -> int:
+	return int(GameSession.content.constant("constant.limits.queue_count"))
 
 
 ## How many more of inventory item `item` the planet can use after those in the edited queue
